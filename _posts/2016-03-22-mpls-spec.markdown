@@ -1,0 +1,169 @@
+---
+layout:     post
+title:      "解析 BluRay mpls"
+subtitle:   ""
+date:       2016-03-22
+author:     "TautCony"
+header-img: "img/post-bg-mpls.jpg"
+tags:
+    - BluRay
+---
+
+
+试着记录一下当初解析 mpls 的文件结构时经历的过程。
+
+> mpls, 即指蓝光的播放列表, 该文件以二进制的形式保存了包括播放顺序, 播放对应的视频、音频、字幕、章节信息
+
+##正文
+
+我最初的目标仅仅是要获取其中的章节信息, 在[BD Chapters MOD](https://www.nmm-hd.org/newbbs/viewtopic.php?f=16&t=517)这里找到了一个可用的实现, 这个程序获取章节的姿势略微奇巧, 因为mpls中的章节是位于文件的结尾处并且有一定的特点的, 通常是以形如 `0001 yyyy xxxxxxxx FFFF 000000` 来表示一个时间戳, 于是, 在那个程序里就会发现这样一个函数
+
+```python
+
+CHAPTER_MARK = b'\xff\xff\x00\x00\x00\x00'
+
+...
+
+def get_playlist(mpls):#done
+    '''
+    get playlist info
+    '''
+    input = open(mpls, 'rb')       
+    content = input.read()
+    bytelist = []
+    ptsinfo = []
+    multi_ptsinfo = []
+    #read the 14 bytes from buttom eachtime
+    #eg. 0001 yyyy xxxxxxxx FFFF 000000
+    offset=0
+    offset = content.rfind(CHAPTER_MARK)
+    offset = len(content) - offset - 6
+    
+    pl_index=0
+    pre_m2ts_index = -1
+    
+    while True:
+        pl_index += 1
+        input.seek(-14*pl_index-offset, 2)
+        
+        
+        bytelist = []
+        for x in range(14):
+            bytelist.append(input.read(1))
+        
+        m2ts_index = str2int(bytelist[2:4])
+        if m2ts_index != pre_m2ts_index:
+            ptsinfo = []
+            cinfo = ChapInfo(ptsinfo, m2ts_index)
+            multi_ptsinfo.append(cinfo)
+            pre_m2ts_index = m2ts_index
+        
+        #last 6 bits: ff ff 00 00 00 00 per section
+        if ord(bytelist[13]) != 0:
+            break 
+        if bytelist[1] == PALY_MARK_TYPE:
+            ptsinfo.insert(0, str2int(bytelist[4:8]))
+        
+        if len(ptsinfo)>1 and ptsinfo[-1] == ptsinfo[-2]:
+            ptsinfo.pop(-1)
+            break
+        
+    for info in multi_ptsinfo:
+        info.shift_pts()
+            
+    input.close()
+    temp = []
+    temp.extend(multi_ptsinfo)
+    for ci in temp:
+            pi = ci.pts 
+            #remove playlist that contains only one entry.
+            if len(pi) < 2:
+                multi_ptsinfo.remove(ci)
+    return multi_ptsinfo
+
+```
+
+于是我将这个程序转写成C#并将之实作于[ChapterTool](https://github.com/tautcony/ChapterTool)中, 如果这个能够一直正确地使用下去的话, 那也不会有我重写的事情了.
+
+有一天, 探姬同我讲灰色的果实原盘里的mpls所提取的章节与视频文件的文件名不匹配, 这个问题, 经过我一番探查, 涉及到另一个函数
+
+```python
+SEARCH_M2TS = b'M2TS' 
+
+...
+
+def get_m2ts_list(mpls):#done
+    m2ts_list = []
+    input = open(mpls, 'rb')    
+    content = input.read()
+    input.close()
+    
+    #get m2ts file list    
+    pos_from = 0
+
+    while True:            
+        pos = content.find(SEARCH_M2TS, pos_from)
+        if pos == -1:
+            break
+        m2ts_name = content[pos-5:pos+4]
+        videoatt_pos = content.find(VIDEO_ATT_MARK, pos) 
+        if videoatt_pos != -1:
+            attr = content[videoatt_pos+2:videoatt_pos+3]
+            fpstype = ord(attr) & 15
+            format = ord(attr) >> 4
+            fps = FrameRate.get(fpstype, 0)
+        #python3
+        if not type(content) == type(''):
+            m2ts_name = str(m2ts_name, encoding='ascii')
+        m2ts_list.append((m2ts_name, fps))
+        pos_from = pos+4  
+    return m2ts_list
+```
+
+这里也是是使用文件名后面必定存在的`m2ts`来做文章, 找出所有的标记从而获得mpls中的所有的视频文件的文件名. 看起来十分地合理, 可是这个函数遗漏了一种略为少见的情况, **某个playlist存在多个angle**, 
+
+> 这里的这个`angle`类似于分支, 通过选项可以使得视频的播放中的某一段有多个不同的片段供播放, 从而实现NCOP/多结局等效果而不必大费周章地再生成一个新的playlist.
+
+那么, 多angle必然导致mpls中在对应的片段中相比普通的一个视频文件变成 `angle`个视频文件, 于是章节名列表中就会多出几个, 从而使得通过PlaylistMark中给定的index获得文件名会出现不对应的情况. 可是, 这已经可以归属于方法上的硬伤了, 通过这种搜索标记的方法必然无法获得足够的信息以判定这个文件是否为多angle中的一个.
+
+这样分析之后, 就足以判明通过打补丁的方法是不足以更正这个问题的, 需要用另外的方法来获取更多的信息从而判断各个章节的归属.
+
+起初我搜索的姿势还不够纯熟, 找到了这个页面[wikibooks/mpls](https://en.wikibooks.org/wiki/User:Bdinfo/mpls), 这个页面上有一部分关于mpls文件结构的描述. 
+
+有总比没有强, 于是我就开始了解析工作. 说起来其实并不是很困难, 照着页面中说的读取就行了, 但是其中缺了很多东西, 甚至连章节名之类的在哪里都没有说. 我当时采取的方法是: 使用[BDEdit](http://pel.hu/bdedit/)来更改mpls文件, 观察更改前后的变化从而得知各个地方的数据的作用是什么, 这样一个字节一个字节地往下扣, 我补上了`Play Item section`,`stream entry`,`stream attributes`这些信息, 并尽可能的把每一个字节的功用记录下来.
+
+这样, 差不多章节读取功能就算是实现了, 然而多angle相关的信息我还是不甚了解, 于是我就先退而求其次, 用硬编码, 如果发现是多angle的将`Play Item Entry`向后移`0x3e`*即默认所有多angle我只当是2*(好懒), ~~The Grand Budapest Hotel的原盘一些片段有4个angle, 据说还有7个angel的, 分别显示不同的语言的标识, 手动害怕~~.
+
+后来, 在准备往ChapterTool中加入对ifo格式章节的解析的时候, 找到了[Chapter Grabber](http://jvance.com/pages/ChapterGrabber.xhtml), 从中参考了很多代码, 也将一个mpls生成一个完整的章节的功能也加了上去.
+
+再后来, 找到了完整的[mpls spec](https://github.com/lerks/BluRay/wiki/MPLS), 详尽到我驾驭不住了, 在仔细参阅后明白了这个多angle对每一个angle需要[跳多长](https://github.com/lerks/BluRay/wiki/PlayItem), 对不同的stream对应的`language code`的位置在哪里等等之前一直不明白的问题.
+
+```cs
+//_data 储存整个mpls文件的byte数据的数组
+//playItemEntries playItem的起点位置
+
+var lengthOfPlayItem = Byte2Int16(_data, playItemEntries);
+var bytes = new byte[lengthOfPlayItem + 2];
+Array.Copy(_data, playItemEntries, bytes, 0, lengthOfPlayItem);
+
+...
+
+var isMultiAngle = (bytes[0x0c] >> 4) & 0x01;
+StringBuilder nameBuilder  = new StringBuilder(Encoding.ASCII.GetString(bytes, 0x02, 0x05));
+
+if (isMultiAngle == 1)  //skip multi-angle
+{
+    int numberOfAngles = bytes[0x22];
+    for (int i = 1; i < numberOfAngles; i++)
+    {
+        nameBuilder.Append("&" + Encoding.ASCII.GetString(bytes, 0x24+(i-1)*0x0a, 0x05));
+    }
+    itemStartAdress = playItemEntries + 0x02 + (numberOfAngles - 1) * 0x0a;
+}
+```
+
+完整代码详见[mplsData.cs](https://github.com/tautcony/ChapterTool/blob/master/Time_Shift/Util/mplsData.cs)
+
+#### 著作权声明
+
+作者 TautCony，首次发布于 [TC Blog](http://tautcony.github.io/)，转载请保留以上链接

@@ -7,54 +7,50 @@ header-img: "img/about-bg.jpg"
 
 <!-- Language Selector -->
 <select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-    <option value="0" selected> 中文 Chinese </option>
-    <option value="1"> English 英语 </option>
+    <option value="0" selected> 中文 </option>
+    <option value="1"> 日本語 </option>
 </select>
 
 <!-- Chinese Version -->
 <div class="zh">
     <blockquote>
-        混吃等死
+        夜空彼方与飞机尾云
     </blockquote>
-
-    paragraph1<br><br>paragraph2<br><br>paragraph3<br><br>paragraph4<br><br>paragraph5
-
+        <p>唯「以后我们也能一直组乐队就好了」</p>
+        <p>律「是啊」</p>
+        <p>紬「嗯」</p>
+        <p>梓「是啊」</p>
+        <p>澪「嗯。就这样，直到永远吧」<p>
     <p style="text-align:right;">
-        —— <a href="#">Source</a>
+        —— <a href="http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html">K-ON!! EP12</a>
     </p>
-
 </div>
 
-<!-- English Version -->
-<div class="en">
+<!-- Japanese Version -->
+<div class="jp">
     <blockquote>
-        block
+        夜空ノムコウとひこうき雲
     </blockquote>
-
-    <p>
-        p1
-    </p>
-
-    <p>
-        p2
-    </p>
-
+        <p>唯「これからもずっと、みんなでバンドできたらいいね」<p>
+        <p>律「そうだな」<p>
+        <p>紬「うん」<p>
+        <p>梓「そうですね」<p>
+        <p>澪「ああ。ずっと、ずっとな」<p>
     <p style="text-align:right;">
-    -- name
+        —— <a href="http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html">K-ON!! EP12</a>
     </p>
-
 </div>
 
 <!-- Handle Language Change -->
 <script type="text/javascript">
     var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
+    var $jp = document.querySelector(".jp");
     function onLanChange(index){
         if(index == 0){
             $zh.style.display = "block";
-            $en.style.display = "none";
+            $jp.style.display = "none";
         }else{
-            $en.style.display = "block";
+            $jp.style.display = "block";
             $zh.style.display = "none";
         }
     }

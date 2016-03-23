@@ -9,6 +9,7 @@ header-img: "img/about-bg.jpg"
 <select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
     <option value="0" selected> 中文 </option>
     <option value="1"> 日本語 </option>
+    <option value="2"> English </option>
 </select>
 
 <!-- Chinese Version -->
@@ -41,18 +42,31 @@ header-img: "img/about-bg.jpg"
     </p>
 </div>
 
+<!-- English Version -->
+<div class="en">
+    <blockquote>
+        Translation Server Error :)
+    </blockquote>
+        <p>Yui「I hope I can playing in a band with you guys forever」<p>
+        <p>Ritsu「I konw what you mean」<p>
+        <p>Mugi「Hum」<p>
+        <p>Azusa「Me, too」<p>
+        <p>Mio「Yeah! Forever. And ever」<p>
+    <p style="text-align:right;">
+        —— <a href="http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html">K-ON!! EP12</a>
+    </p>
+</div>
+
 <!-- Handle Language Change -->
 <script type="text/javascript">
-    var $zh = document.querySelector(".zh");
-    var $jp = document.querySelector(".jp");
+    var lang = [document.querySelector(".zh"),
+                document.querySelector(".jp"),
+                document.querySelector(".en")];
     function onLanChange(index){
-        if(index == 0){
-            $zh.style.display = "block";
-            $jp.style.display = "none";
-        }else{
-            $jp.style.display = "block";
-            $zh.style.display = "none";
+        for (var i = 0; i < lang.length; i++) {
+            lang[i].style.display = "none";
         }
+        lang[index].style.display = "block";
     }
     onLanChange(0);
 </script>

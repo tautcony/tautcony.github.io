@@ -25,8 +25,9 @@ github_username:    tautcony
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+MathJax: true
 
 
 
@@ -50,7 +51,7 @@ kramdown:
 #disqus_username: _your_disqus_short_name_
 
 # Duoshuo settings
-#duoshuo_username: tautconyblog
+duoshuo_username: tautcony
 # Share component is depend on Comment so we can NOT use share only.
 #duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
@@ -59,10 +60,10 @@ kramdown:
 
 # Analytics settings
 # Baidu Analytics
-##ba_track_id: 
+##ba_track_id:
 # Google Analytics
 ##ga_track_id: ''            # Format: UA-xxxxxx-xx
-##ga_domain: 
+##ga_domain:
 
 
 
@@ -84,5 +85,9 @@ friends: [
     {
         title: "VCB-Studio",
         href: "http://vcb-s.com/"
+    },
+    {
+        title: "小马哥",
+        href: "http://www.vigoss18.com/"
     }
 ]

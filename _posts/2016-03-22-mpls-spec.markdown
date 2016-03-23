@@ -75,7 +75,7 @@ def get_playlist(mpls):
 有一天, 探姬同我讲灰色的果实原盘里的mpls所提取的章节与视频文件的文件名不匹配, 这个问题, 经过我一番探查, 涉及到另一个函数.
 
 ```python
-SEARCH_M2TS = b'M2TS' 
+SEARCH_M2TS = b'M2TS'
 
 ...
 
@@ -109,7 +109,7 @@ def get_m2ts_list(mpls):
 
 这样分析之后, 就足以判明通过打补丁的方法是不足以更正这个问题的, 需要用另外的方法来获取更多的信息从而判断各个章节的归属.
 
-起初我搜索的姿势还不够纯熟, 找到了这个页面[wikibooks/mpls](https://en.wikibooks.org/wiki/User:Bdinfo/mpls), 这个页面上有一部分关于mpls文件结构的描述. 
+起初我搜索的姿势还不够纯熟, 找到了这个页面[wikibooks/mpls](https://en.wikibooks.org/wiki/User:Bdinfo/mpls), 这个页面上有一部分关于mpls文件结构的描述.
 
 有总比没有强, 于是我就开始了解析工作. 说起来其实并不是很困难, 照着页面中说的读取就行了, 但是其中缺了**很多东西**, 甚至连章节名之类的在哪里都没有说. 我当时采取的方法是: 使用[BDEdit](http://pel.hu/bdedit/)来更改mpls文件, 观察更改前后的变化从而得知各个地方的数据的作用是什么, 这样一个字节一个字节地抠, 从而补上了`Play Item section`,`stream entry`,`stream attributes`这些信息, 并尽可能的把每一个字节的功用记录下来.
 
@@ -139,7 +139,7 @@ Array.Copy(_data, playItemEntries, bytes, 0, lengthOfPlayItem);
 var isMultiAngle = (bytes[0x0c] >> 4) & 0x01;
 StringBuilder nameBuilder  = new StringBuilder(Encoding.ASCII.GetString(bytes, 0x02, 0x05));
 
-if (isMultiAngle == 1)  //skip multi-angle
+if (isMultiAngle == 1) //skip multi-angle
 {
     int numberOfAngles = bytes[0x22];
     for (int i = 1; i < numberOfAngles; i++)

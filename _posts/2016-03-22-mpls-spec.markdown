@@ -115,7 +115,7 @@ def get_m2ts_list(mpls):
 
 这样, 差不多章节读取功能就算是实现了, 然而多angle相关的信息我还是不甚了解, 于是我就先退而求其次, 用硬编码, 如果发现是多angle的将`Play Item Entry`向后移`0x3e`*即默认所有多angle我只当是2*(好懒), ~~The Grand Budapest Hotel的原盘一些片段有4个angle, 据说还有7个angel的, 分别显示不同的语言的标识, 手动害怕~~.
 
-后来, 在准备往ChapterTool中加入对ifo格式章节的解析的时候, 找到了[Chapter Grabber](http://jvance.com/pages/ChapterGrabber.xhtml), 从中参考了很多代码, 也将一个mpls生成一个完整的章节的功能也加了上去, 虽然Chapter Grabber中有跳过多angle的操作, 但是他的代码结构与我的不尽相同, 难以直接套用.
+后来, 在准备往[ChapterTool](https://github.com/tautcony/ChapterTool)中加入对ifo格式章节的解析的时候, 找到了[Chapter Grabber](http://jvance.com/pages/ChapterGrabber.xhtml), 从中参考了很多代码, 也将一个mpls生成一个完整的章节的功能也加了上去, 虽然Chapter Grabber中有跳过多angle的操作, 但是他的代码结构与我的不尽相同, 难以直接套用.
 
 ```cs
 //ignore angles

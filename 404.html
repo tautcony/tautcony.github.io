@@ -9,8 +9,8 @@ permalink: /404.html
 <!-- Page Header -->
 <header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
     {%if site.particle404 %}
-    <div class="CanvasContainer" id="container">
-        <!-- canvas from http://hotdot.pro/en/404/ -->
+    <div class="CanvasContainer" id="container" style="background: url('/img/404/inner_bck.jpg')">
+    <!-- canvas from http://hotdot.pro/en/404/ -->
     {% endif %}
     <div class="container">
         <div class="row">
@@ -32,9 +32,9 @@ permalink: /404.html
 </script>
 
 {%if site.particle404 %}
-<link type="text/css" rel="stylesheet" href="css/404.css">
-<script type="text/javascript" src="js/404/independent/modernizr.custom.js"></script>
-<script type="text/javascript" src="js/404/404-base.js"></script>
-<script type="text/javascript" src="js/404/independent/three.min_r56.js"></script>
-<script type="text/javascript" src="js/404/404.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/404.css">
+<script type="text/javascript" src="/js/404/independent/modernizr.custom.js"></script>
+<script type="text/javascript" src="/js/404/404-base.js"></script>
+<script type="text/javascript" src="/js/404/independent/three.min_r56.js"></script>
+<script type="text/javascript" src="/js/404/404.js"></script>
 {% endif %}

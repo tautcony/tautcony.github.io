@@ -12,12 +12,13 @@ baseurl: ""                             # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: false
-#weibo_username:     tautcony
-#zhihu_username:     tautcony
+#weibo_username:    tautcony
+#zhihu_username:    tautcony
 github_username:    tautcony
-#twitter_username:  tautcony
-#facebook_username:  tautcony
-
+#twitter_username:    tautcony
+#facebook_username:    tautcony
+#instagram_username:
+#pinterest_username:
 
 
 # Build settings
@@ -53,7 +54,7 @@ kramdown:
 # Duoshuo settings
 duoshuo_username: tautcony
 # Share component is depend on Comment so we can NOT use share only.
-#duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+duoshuo_share: false                     # set to false if you want to use Comment without Sharing
 
 
 

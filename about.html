@@ -9,7 +9,7 @@ header-img: "img/about-bg.jpg"
 <select id = "langSelect" onchange= "onLanChange(this.options[this.options.selectedIndex].value)"></select>
 
 <!-- Chinese Version -->
-<div class="lang" title="中文">
+<div class="lang" title="中文" lang="zh">
     <blockquote>
         夜空彼方与飞机尾云
     </blockquote>
@@ -24,7 +24,7 @@ header-img: "img/about-bg.jpg"
 </div>
 
 <!-- Japanese Version -->
-<div class="lang" title="日本語">
+<div class="lang" title="日本語" lang="jp">
     <blockquote>
         夜空ノムコウとひこうき雲
     </blockquote>
@@ -39,7 +39,7 @@ header-img: "img/about-bg.jpg"
 </div>
 
 <!-- English Version -->
-<div class="lang" title="English">
+<div class="lang" title="English" lang="en">
     <blockquote>
         Translation Server Error :)
     </blockquote>
@@ -56,22 +56,31 @@ header-img: "img/about-bg.jpg"
 <!-- Handle Language Change -->
 <script type="text/javascript">
     var lang = document.getElementsByClassName("lang");
+    var selecter = document.getElementById("langSelect");
+    var currentLanguageIndex = 0;
     (function(){
-        var selecter = document.getElementById("langSelect");
+        var currentLanguage = window.navigator.userLanguage || window.navigator.language;
         for (var i = 0; i < lang.length; i++) {
             var opt = document.createElement("option");
             opt.value = i;
             opt.innerHTML = lang[i].title;
+            if(currentLanguage.indexOf(lang[i].lang) >= 0)
+            {
+                currentLanguageIndex = i;
+                console.log(currentLanguage);
+            }
             selecter.appendChild(opt);
         }
+        selecter.options.selectedIndex = currentLanguageIndex;
     })();
     function onLanChange(index){
         for (var i = 0; i < lang.length; i++) {
             lang[i].style.display = "none";
         }
         lang[index].style.display = "block";
+        selecter.selectedIndex = index;
     }
-    onLanChange(0);
+    onLanChange(currentLanguageIndex);
 </script>
 
 
@@ -80,12 +89,7 @@ header-img: "img/about-bg.jpg"
 <!-- 多说评论框 start -->
 <div class="comment">
     <div class="ds-thread"
-    {% if site.duoshuo_username == "huxblog" %}
-        data-thread-id="1187623191091085319"
-    {% else %}
-        data-thread-key="{{site.duoshuo_username}}/about"
-    {% endif %}
-
+    data-thread-key="{{site.duoshuo_username}}/about"
     data-title="{{page.title}}"
     data-url="{{site.url}}/about/"></div>
 </div>

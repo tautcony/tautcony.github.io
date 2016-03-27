@@ -152,7 +152,7 @@ internal static class RemoveWaterMark
         {
             for (int y = 0; y < imageHeight; ++y)
             {
-                bool isMask = (_imageMask.GetPixel(x, y).ToArgb() & 0xFFFFFF) < 0x111111;
+                bool isMask = (_imageMask.GetPixel(x, y).ToArgb() & 0xFFFFFF) == 0x000000;
                 if (!isMask) continue;
                 int color = _imageSource.GetPixel(x, y).ToArgb() & 0xFFFFFF;
                 double r = (color >> 16) & 0xFF, g = (color >> 8) & 0xFF, b = color & 0xFF;

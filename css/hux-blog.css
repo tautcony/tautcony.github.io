@@ -1087,3 +1087,7 @@ img::-moz-selection {
 .page-fullscreen footer .copyright a:hover {
   color: #ddd;
 }
+
+#ds-thread #ds-reset .ds-textarea-wrapper textarea {
+    background: url("/img/ds-bg.png") right no-repeat;
+}

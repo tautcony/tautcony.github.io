@@ -90,13 +90,13 @@ internal static class RemoveWaterMark
             int diff = (source2 - source1) - (masked2 - masked1);
             if (diff == 0)
             {
-                Console.WriteLine("ERROR: Faild to calcute the mask info !");
+                Console.WriteLine("ERROR: Faild to calculate the mask info !");
                 return false;
             }
             double m = (1.0 * (masked1 * source2 - masked2 * source1)) / (source2 - source1 - masked2 + masked1);
             if (Math.Abs(m - source1) < 1e-5)
             {
-                Console.WriteLine("ERROR: Faild to calcute the mask info !");
+                Console.WriteLine("ERROR: Faild to calculate the mask info !");
                 return false;
             }
             maskAlpha += (1.0 * (masked1 - source1)) / (m - source1);

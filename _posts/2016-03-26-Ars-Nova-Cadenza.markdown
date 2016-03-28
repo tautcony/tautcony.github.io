@@ -132,17 +132,17 @@ int main(void)
 
             do
             {
-                xx = prexx + VX; yy = preyy + VY;       /*electron 1 position after 1SS*/
+                xx = prexx + VX; yy = preyy + VY;        /*electron 1 position after 1SS*/
                 preVY = VY; preWN = WN;
                 vk = VX*VX + VY*VY;
-                leng = sqrt(vk)*1.0e-14;               /*moving length (m) for 1 SS*/
-                wav = h / (rm*sqrt(vk)*1.0e9);         /*de Broglie wavelength (m)*/
-                WN = WN + leng / wav;                  /*add de Broglie wavelength*/
-                                                       /*calculation of VX,VY from Coulomb force*/
-                ra = sqrt(prexx*prexx + preyy*preyy);  /*between nucleus and electron*/
+                leng = sqrt(vk) * 1.0e-14;               /*moving length (m) for 1 SS*/
+                wav = h / (rm*sqrt(vk) * 1.0e9);         /*de Broglie wavelength (m)*/
+                WN = WN + leng / wav;                    /*add de Broglie wavelength*/
+                                                         /*calculation of VX,VY from Coulomb force*/
+                ra = sqrt(prexx*prexx + preyy*preyy);    /*between nucleus and electron*/
                 rb = sqrt(4.0*prexx*prexx + 2.0*preyy*preyy); /*between two electrons*/
 
-                ra = ra*1.0e-14; rb = rb*1.0e-14;      /*change MM to meter*/
+                ra = ra*1.0e-14; rb = rb*1.0e-14;        /*change MM to meter*/
                 prexx = prexx*1.0e-14; preyy = preyy*1.0e-14;
                 ac = (ele*ele) / (4.0*pai*epsi*rm);
                 /*acceleration (MM/SS^2)*/

@@ -78,12 +78,11 @@ function RemoveItemByClassName(className) {
 var unSorted = document.getElementsByClassName('tag');
 var toBeSort = [];
 for (var i = 0; i < unSorted.length; i++) {
-    toBeSort.push(tags[i]);
+    toBeSort.push(unSorted[i]);
 }
+toBeSort.sort();
 
 RemoveItemByClassName('tag');
-toBeSort.sort(function(a, b) {return a.title < b.title;});
-
 var tagCloud = document.getElementById('tag_cloud');
 for (var i = 0; i < toBeSort.length; i++) {
    tagCloud.appendChild(toBeSort[i]);

@@ -29,19 +29,17 @@ tags:
 这些值都有了的话, 我们就能对上式进行变形, 得: $$Z=\frac{Z-AY}{1-A}$$, 将被水印覆盖的部分的每一个像素的三个分量如此操作, 就能实现一个去水印的效果了.
 
 #### 效果
-<blockquote>
-源图像
-</blockquote>
+
+> 源图像
+
 ![源图像](/img/in-post/remove-watermark/source.png)
 
-<blockquote>
-Mask
-</blockquote>
+> Mask
+
 ![Mask](/img/in-post/remove-watermark/mask.png)
 
-<blockquote>
-结果
-</blockquote>
+> 结果
+
 ![效果](/img/in-post/remove-watermark/output.png)
 
 由于所选定的颜色对效果有较大影响, 所以选的颜色不佳(~~其实也不能说是不佳, 就是是人品不好~~)会导致效果不理想, 如颜色偏深等.
@@ -60,6 +58,7 @@ void calcMaskColor(){
 
 ...
 
+}
 ```
 
 这里的`color_before`指的是被mask覆盖后现在的颜色, 而`color_after`才是真正原来的颜色, 然后我就弄反了, alpha值总是一个负数……, 虽然这个注释里说有说, 但是这个变量名……, 颇有误导性, 大概是要表述前景色, 这种感觉.
@@ -70,16 +69,14 @@ void calcMaskColor(){
 
 所以在这里, 需要将mask中灰色的像素也纳入处理范围, 由于此处的灰色是通过对黑色增加一个alpha值的处理而的到的. 很容易得出, 其附加的透明度$$alpha_{extra}=1-\frac{color}{255}$$, 将它与之前得到的水印的alpha值相乘, 得到最终的alpha值并用这个值来处理图像, 就能将残留的部分也处理掉了.
 
-<blockquote>
-优化后的结果
-</blockquote>
+> 优化后的结果
+
 ![效果2](/img/in-post/remove-watermark/output1.png)
 
 #### 代码
 
-<blockquote>
-C# Version
-</blockquote>
+> C# Version
+
 ```cs
 internal static class RemoveWaterMark
 {
@@ -233,9 +230,8 @@ internal static class RemoveWaterMark
 
 在花了两节课之后, pyhton版也写出来了, 对python的全局变量还是不大了解, 总是失效, 于是靠返回值解决, 当然, 代码还是同一个套路……
 
-<blockquote>
-Python Version
-</blockquote>
+> Python Version
+
 ```python
 from PIL import Image
 

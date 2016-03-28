@@ -8,6 +8,8 @@ header-img: "img/post-bg-remove-watermark.png"
 tags:
     - 编程
     - 图像处理
+    - C#
+    - Python
 ---
 
 大概算一篇译文, 在找到苍蓝钢铁的琶音的代码考据的网站上看到了[一篇有趣的文章](http://qiita.com/YSRKEN/items/b0ab9c956f928ffdb483).
@@ -219,16 +221,8 @@ internal static class RemoveWaterMark
 
     private static void Main(string[] args)
     {
-        ColorPair pair1 = new ColorPair
-        {
-            Masked = Color.FromArgb(0xa1c9dd),
-            Source = Color.FromArgb(0xfff0e0)
-        };
-        ColorPair pair2 = new ColorPair
-        {
-            Masked = Color.FromArgb(0x988faf),
-            Source = Color.FromArgb(0xea6a77)
-        };
+        ColorPair pair1 = new ColorPair(Color.FromArgb(0xa1c9dd), Color.FromArgb(0xfff0e0));
+        ColorPair pair2 = new ColorPair(Color.FromArgb(0x988faf), Color.FromArgb(0xea6a77));
         DeWaterMark("sample.png", "mask.png", pair1, pair2, "output.png");
     }
 }
@@ -320,7 +314,7 @@ def ModifyImage(imageSource, imageMask, maskInfo, targetPath):
     except:
         print("ERROR: Save Failed")
 
-def DEWaterMark(sourcePath, maskPath, pair1, pair2,targetPath):
+def DeWaterMark(sourcePath, maskPath, pair1, pair2,targetPath):
     info = CalculateMaskInfo(pair1, pair2)
     if(len(info) < 2): return
     images = LoadImage(sourcePath, maskPath)
@@ -330,7 +324,7 @@ def DEWaterMark(sourcePath, maskPath, pair1, pair2,targetPath):
 ###
 p1 = (0xfff0e0, 0xa1c9dd)
 p2 = (0xea6a77, 0x988faf)
-DEWaterMark('sample.png', 'mask.png', p1, p2, 'pyOutput.png')
+DeWaterMark('sample.png', 'mask.png', p1, p2, 'pyOutput.png')
 ###
 
 ```

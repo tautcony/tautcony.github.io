@@ -8,6 +8,8 @@ header-img: "img/post-bg-cadenza.jpg"
 tags:
     - 动画
     - 编程
+    - C
+    - C++
 ---
 
 今天苍蓝钢铁的琶音的剧场版的下半部[Ars Nova Cadenza](http://vcb-s.com/archives/5164)先行版发布了. 算是`1day`吧. 嘛, 这些不是关键, 在视频很多地方, 如4分30秒左右(大和)、19分35秒左右（那智）、23分左右(401)等等, 出现了一坨C++代码, 甚是好奇, 于是就往Google上写了一部分上去搜, 不出意外, 搜到了……

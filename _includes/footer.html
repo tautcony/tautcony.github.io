@@ -157,7 +157,27 @@
 
 
 <!-- Goto Top -->
-<div id="gotop" style="display: none; position: fixed; right: 20px; bottom: 20px; padding: 10px 14px 4px; font-size: 20px; background: #777; color: white; cursor: pointer; line-height: initial;">^</div>
+<style type="text/css">
+#gotop{
+    position: fixed;
+    right:  20px;
+    bottom: 20px;
+    height: 40px;
+    width:  40px;
+    border-radius: 20px;
+    background-color: #777;
+    font-size: 22px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+#gotop:hover{
+    background-color: #999;
+}
+</style>
+
+<div id="gotop" style="display:none;">▲</div>
+
 <script type="text/javascript">
 $(function(){
     $("#gotop").click(function(){

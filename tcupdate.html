@@ -1,0 +1,52 @@
+<!DOCTYPE html><html>
+<head>
+	<meta charset="utf-8">
+	<title>TautCony Tools Downloads</title>
+	<meta name='BaseUrl'				content='7xsjmh.com2.z0.glb.clouddn.com'>
+	<meta name='ChapterTool' 			content='2.33.32.1'>
+	<meta name='AutoTorrentInspection' 	content='1.0.2.3'>
+	<meta name='RPChecker' 				content='1.0.3.1'>
+	<style> @import url('css/tcupdate.css'); </style>
+	<link href="https://cdn.bootcss.com/simple-line-icons/2.2.3/css/simple-line-icons.css" rel="stylesheet"/>
+	<script src="https://cdn.bootcss.com/vue/1.0.7/vue.min.js"></script>
+	<script>if (!window.Vue) document.write('<script src="js/vue.min.js">\x3C/script>')</script>
+</head>
+<body>
+	<section id="tool-downloads" class="general">
+		<h2>TautCony Tools Downloads</h2>
+		<p>The original intention of these tools is make it easier for encoder to do their work. Although my coding skill isn't very high, I hope what I have done can make some help for them.</p>
+		<div id="downlinks">
+		<a class="middle" href="http://{{releases_ct[0].site}}/bin/ChapterTool.v{{releases_ct[0].version}}.exe" target="_blank"><icon class="icon-cloud-download"></icon>ChapterTool<br>version {{(releases_ct[0].version)}}<span>Updated {{releases_ct[0].date}}.</span></a>
+        <a class="wide" href="http://{{releases_ati[0].site}}/bin/AutoTorrentInspection.v{{releases_ati[0].version}}.exe" target="_blank"><icon class="icon-cloud-download"></icon>AutoTorrentInspection<br>version {{(releases_ati[0].version)}}<span>Updated {{releases_ati[0].date}}.</span></a>
+        <a class="middle" href="http://{{releases_rp[0].site}}bin/RPChecker.v{{releases_rp[0].version}}.exe" target="_blank"><icon class="icon-cloud-download"></icon>RPChecker<br>version {{(releases_rp[0].version)}}<span>Updated {{releases_rp[0].date}}.</span></a>
+		</div>
+        <br><br>
+        <p><a href="https://github.com/tautcony/ChapterTool">ChapterTool</a> is made for extracting chapters from various type of file.</p>
+        <p><a href="https://bitbucket.org/TautCony/auto-torrent-inspection">AutoTorrentInspection</a> is made for checking issues in such as file's naming, text file's encoding.</p>
+        <p><a href="https://bitbucket.org/TautCony/rp-checker">RPChecker</a> is made for comparing difference between two video clip by calculating the <a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> Value.</p>
+
+		<h3>History releases: ChapterTool</h3>
+		<div class="all-releases-w"><ul id="all-releases_ct">
+			<li v-for="r in (releases_ct.slice(1))">
+				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/chaptertool/ChapterTool.v{{r.version}}.7z" target="_blank"> ChapterTool version {{r.version}} </a>({{r.date}})
+			</li>
+		</ul></div>
+
+        <h3>AutoTorrentInspection</h3>
+		<div class="all-releases-w"><ul id="all-releases_ati">
+			<li v-for="r in (releases_ati.slice(1))">
+				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/ati/AutoTorrentInspection.v{{r.version}}.7z" target="_blank"> AutoTorrentInspection version {{r.version}} </a>({{r.date}})
+			</li>
+		</ul></div>
+
+        <h3>RPChecker</h3>
+		<div class="all-releases-w"><ul id="all-releases_rp">
+			<li v-for="r in (releases_rp.slice(1))">
+				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/rpchecker/RPChecker.v{{r.version}}.7z" target="_blank"> RPChecker version {{r.version}} </a>({{r.date}})
+			</li>
+		</ul></div>
+	</section>
+	<div id="copyright-line">Copyright (c) 2015-2016 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/">be5invis</a>.</div>
+	<script src='tcupdate.js'></script>
+</body>
+</html>

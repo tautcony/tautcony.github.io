@@ -106,7 +106,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: IosevkaWEB, monospace, monospace;
   font-size: 1em;
 }
 button,
@@ -1511,7 +1511,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: IosevkaWEB, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 code {
   padding: 2px 4px;

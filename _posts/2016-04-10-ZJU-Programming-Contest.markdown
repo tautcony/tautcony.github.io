@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Dice Notation [The 16th ZJU Programming Contest]"
+title:      "Dice Notation [ZOJ 3930]"
 subtitle:   ""
 date:       2016-04-10
 author:     "TautCony"
@@ -24,7 +24,7 @@ string ToString(long long num)
 {
     string res = "";
     while (num != 0) {
-        res ((char)(num % 10 + '0')) + res;
+        res = ((char)(num % 10 + '0')) + res;
         num /= 10;
     }
     return res;
@@ -92,7 +92,7 @@ public:
     }
 };
 
-void append(bool &dice, string &answer, Number &numberBeforeDice, string & numberAfterDice)
+void append(bool &dice, string &answer, Number &numberBeforeDice, string &numberAfterDice)
 {
     if (dice)
     {

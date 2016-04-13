@@ -1,9 +1,9 @@
 var DEFAULT = '7xsjmh.com2.z0.glb.clouddn.com';
 var display = new Vue({
-	el: '#tool-downloads',
-	data: {
-		releases_ct: [
-			{version: '2.33.32.1', site: DEFAULT, date: 'Apr 02, 2016'},
+    el: '#tool-downloads',
+    data: {
+        releases_ct: [
+            {version: '2.33.32.1', site: DEFAULT, date: 'Apr 02, 2016'},
             {version: '2.33.31.3', site: DEFAULT, date: 'Mar 15, 2016'},
             {version: '2.33.31.2', site: DEFAULT, date: 'Mar 09, 2016'},
             {version: '2.33.31.1', site: DEFAULT, date: 'Feb 29, 2016'},
@@ -46,9 +46,9 @@ var display = new Vue({
             {version: '2.2.0.0',   site: DEFAULT, date: 'Jan 01, 1970'},
             {version: '2.1.0.0',   site: DEFAULT, date: 'Jan 01, 1970'},
             {version: '2.0.0.0',   site: DEFAULT, date: 'Jan 01, 1970'}  */
-		],
+        ],
         releases_ati: [
-			{version: '1.0.2.4', site: DEFAULT, date: 'Apr 02, 2016'},
+            {version: '1.0.2.4', site: DEFAULT, date: 'Apr 02, 2016'},
             {version: '1.0.2.3', site: DEFAULT, date: 'Mar 17, 2016'},
             {version: '1.0.2.2', site: DEFAULT, date: 'Feb 18, 2016'},
             {version: '1.0.2.1', site: DEFAULT, date: 'Feb 08, 2016'},
@@ -58,7 +58,7 @@ var display = new Vue({
             {version: '1.0.1.0', site: DEFAULT, date: 'Dec 29, 2015'}
         ],
         releases_rp: [
-			{version: '1.0.3.2', site: DEFAULT, date: 'Apr 02, 2016'},
+            {version: '1.0.3.2', site: DEFAULT, date: 'Apr 02, 2016'},
             {version: '1.0.3.1', site: DEFAULT, date: 'Feb 29, 2016'},
             {version: '1.0.3.0', site: DEFAULT, date: 'Jan 15, 2016'},
             {version: '1.0.2.1', site: DEFAULT, date: 'Jan 01, 2016'},
@@ -67,5 +67,5 @@ var display = new Vue({
             {version: '1.0.1.0', site: DEFAULT, date: 'Nov 11, 2015'},
             {version: '1.0.0.4', site: DEFAULT, date: 'Oct 19, 2015'}
         ]
-	}
+    }
 });

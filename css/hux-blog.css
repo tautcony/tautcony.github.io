@@ -1089,5 +1089,31 @@ img::-moz-selection {
 }
 
 #ds-thread #ds-reset .ds-textarea-wrapper textarea {
-    background: url("/img/ds-bg.png") right no-repeat;
+  background: url("/img/ds-bg.png") right no-repeat;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: IosevkaWEB, Menlo, Monaco, Consolas, "Courier New", monospace !important;
+}
+
+#gotop{
+  z-index: 450;
+  position: fixed;
+  right:  20px;
+  bottom: 20px;
+  height: 40px;
+  width:  40px;
+  border-radius: 20px;
+  background-color: #777;
+  font-size: 22px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
+#gotop:hover{
+  background-color: #999;
 }

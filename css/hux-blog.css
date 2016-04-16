@@ -1092,28 +1092,29 @@ img::-moz-selection {
   background: url("/img/ds-bg.png") right no-repeat;
 }
 
-code,
-kbd,
-pre,
-samp {
-  font-family: IosevkaWEB, Menlo, Monaco, Consolas, "Courier New", monospace !important;
+code, kbd, pre, samp {
+  font-family: IosevkaWEB, Menlo, Monaco, Consolas, "Microsoft YaHei", "Hiragino Sans GB", "Courier New", monospace !important;
 }
 
-#gotop{
+#gotop:before {
+  content: "▲";
+  font-size: 22px;
+  color: white;
+}
+
+#gotop {
   z-index: 450;
   position: fixed;
-  right:  20px;
+  right:  30px;
   bottom: 20px;
   height: 40px;
   width:  40px;
+  text-align: center;
   border-radius: 20px;
   background-color: #777;
-  font-size: 22px;
-  text-align: center;
-  color: white;
   cursor: pointer;
 }
 
-#gotop:hover{
+#gotop:hover {
   background-color: #999;
 }

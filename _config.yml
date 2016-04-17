@@ -34,7 +34,7 @@ particle404: true                       # enable a particle effect 404 page
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
-gems: [jekyll-paginate]
+gems: [jekyll-paginate, jekyll-sitemap]
 
 
 
@@ -45,7 +45,6 @@ gems: [jekyll-paginate]
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
-
 
 
 # Disqus settings

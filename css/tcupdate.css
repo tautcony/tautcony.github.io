@@ -48,6 +48,9 @@ section#introduction h1 {
 	display: flex;
 	justify-content: center;
 }
+@media all and (-ms-high-contrast:none) {
+  *::-ms-backdrop, #downlinks { margin-left: -5em; } /* IE11 */
+}
 #downlinks a {
 	display: block;
 	flex: none;

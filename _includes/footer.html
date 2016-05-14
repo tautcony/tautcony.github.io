@@ -182,6 +182,17 @@ $(function() {
 });
 </script>
 
+<!-- SomeThing interesting-->
+<script type="text/javascript">
+var initalTitle = document.title;
+document.addEventListener('visibilitychange', function(event) {
+    if (!document.hidden) {
+        document.title = initalTitle;
+    } else {
+        document.title = " _(:з」∠)_ " + initalTitle;
+    }
+});
+</script>
 
 <!-- Google Analytics -->
 {% if site.ga_track_id %}

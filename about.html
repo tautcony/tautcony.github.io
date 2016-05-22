@@ -53,6 +53,19 @@ header-img: "img/about-bg.jpg"
     </p>
 </div>
 
+<div class="qr-container">
+    <p id="donate">啊哈，不考虑资助一下贫苦的山区儿童么（雾</p>
+    <img id="qrcode" src="/img/alipay_qr.png" alt="" />
+</div>
+
+<!-- Handle QrCode Hover -->
+<style>
+.qr-container { }
+#qrcode { width: 0; height: 0; opacity: 0.0; float: left; padding-top: 25px; z-index: -1993; transition: all 200ms ease-in-out; }
+#donate { float: left; opacity: 0.5; margin-bottom: 10px; }
+#donate:hover + #qrcode { z-index: 1250; opacity: 1.0; width: 350px; height: 350px; }
+</style>
+
 <!-- Handle Language Change -->
 <script type="text/javascript">
     var lang = document.getElementsByClassName("lang");

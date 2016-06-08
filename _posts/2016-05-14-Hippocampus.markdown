@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "《声之形》宣传画中的鲤鱼"
+title:      "《声之形》宣传画中的背后"
 subtitle:   ""
 date:       2016-05-14
 author:     "TautCony"

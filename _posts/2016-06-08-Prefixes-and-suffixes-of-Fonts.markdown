@@ -13,7 +13,7 @@ tags:
 
 「A-OTF」「U-OTF」「G-OTF」之间的区别
 
-「A-OTF」全称为 Adobe Japan Character Collection for CID-Keyed Fonts，简要地说就是Adobe规格的字体[文档](https://partners.adobe.com/public/developer/en/font/5078.Adobe-Japan1-6.pdf)
+「A-OTF」全称为 Adobe Japan Character Collection for CID-Keyed Fonts，简要地说就是Adobe规格的字体[[文档](https://partners.adobe.com/public/developer/en/font/5078.Adobe-Japan1-6.pdf)]
 
 「U-OTF」= 包含了[U-PRESS](http://www.morisawa.co.jp/culture/dictionary/1950)规定的文字集的字体。
 
@@ -48,7 +48,7 @@ tags:
 
 不带N的是遵循JIS90的笔划有略写的字形。
 
-带N的则是遵循JIS2004的旧字形。
+带N的则是遵循JIS2004的笔画遵照了旧字形。
 
 [详细对照](http://www.adobe.com/jp/support/winvista/pdfs/JIS2004_Comparison.pdf)
 [JIS官网](http://www.jisc.go.jp/newstopics/2005/040220kanjicode.pdf)

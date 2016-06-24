@@ -3,6 +3,8 @@ var display = new Vue({
     el: '#tool-downloads',
     data: {
         releases_ct: [
+            {version: '2.33.32.31', site: DEFAULT, date: 'Jun 24, 2016'},
+            {version: '2.33.32.3', site: DEFAULT, date: 'May 17, 2016'},
             {version: '2.33.32.2', site: DEFAULT, date: 'May 05, 2016'},
             {version: '2.33.32.1', site: DEFAULT, date: 'Apr 02, 2016'},
             {version: '2.33.31.3', site: DEFAULT, date: 'Mar 15, 2016'},
@@ -49,6 +51,7 @@ var display = new Vue({
             {version: '2.0.0.0',   site: DEFAULT, date: 'Jan 01, 1970'}  */
         ],
         releases_ati: [
+            {version: '1.0.3.3', site: DEFAULT, date: 'Jun 24, 2016'},
             {version: '1.0.3.2', site: DEFAULT, date: 'Jun 10, 2016'},
             {version: '1.0.3.1', site: DEFAULT, date: 'May 08, 2016'},
             {version: '1.0.2.4', site: DEFAULT, date: 'Apr 02, 2016'},

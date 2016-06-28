@@ -1154,3 +1154,10 @@ code, kbd, pre, samp {
   background-color: #999;
   opacity: 0.8;
 }
+
+.heimu, .heimu a, a .heimu, .heimu a.new {
+    background-color: #252525 !important;
+    color: #252525 !important;
+    text-shadow: none !important;
+    line-height: 100% !important;
+}

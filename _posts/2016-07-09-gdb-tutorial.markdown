@@ -13,11 +13,13 @@ Windows上用VS, Linux 上用qt creator, 编程、调试，似乎没有什么不
 
 但如果某个电脑上没有顺手的IDE怎么办，难不成就靠打log完成调试，考虑到多一门技巧多一门路，于是对gdb的使用进行了简单的学习。
 
-<img style="float:right" src="/img/in-post/gdb-tutorial/archer.png" alt="archer" />
+<a href="https://en.wikipedia.org/wiki/Archerfish" target="_blank" >
+<img style="float:right; cursor: pointer;" src="/img/in-post/gdb-tutorial/archer.png" alt="GDB's Mascot" />
+</a>
 
 应该，绝大多数IDE本质上就是在调用gdb达到调试的效果的
 
-首先要做的自然是编译，需要注意的是，编译参数中需要加入 `-g` 使编译器一并生成所需的调试信息 如 `g++ -std=c++11 -Wall -g -O0 a.cc -o a.out`。编译完成后就可以执行gdb进行调试了。
+首先要做的自然是编译，需要注意的是，编译参数中需要加入 `-g` 使编译器一并生成所需的调试信息，如 `g++ -std=c++11 -Wall -g -O0 a.cc -o a.out`。编译完成后就可以执行gdb进行调试了。
 
 通过命令 `gdb a.out` or <ruby><rb>`gdb -tui a.out`</rb><rp>(</rp><rt class="heimu">非常洋气的图形界面</rt><rp>)</rp></ruby> 启动gdb
 

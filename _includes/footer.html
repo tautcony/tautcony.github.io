@@ -16,7 +16,7 @@
                     {% endif %}
                     
                     {% for account in site.SocialAccount %}
-                    <li>
+                    <li data-toggle="tooltip" title="{{ account.title }}">
                         <a target="_blank" href="{{ account.href }}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -126,6 +126,13 @@ $(function() {
             document.title = gogatsubyou[Math.floor((Math.random() * gogatsubyou.length))] + " " + initalTitle;
         }
     });
+});
+</script>
+
+<!-- Tooltip for icons -->
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 

@@ -24,6 +24,12 @@ SocialAccount: [
         href: "http://weibo.com/3268177885",
         icon: "fa-weibo",
         content: ""
+    },
+    {
+        title: "asciiflow",
+        href: "http://tautcony.github.io/apps/asciiflow2",
+        icon: "fa-terminal",
+        content: ""
     }
 ]
 

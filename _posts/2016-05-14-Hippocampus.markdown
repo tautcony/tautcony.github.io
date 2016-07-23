@@ -5,6 +5,9 @@ subtitle:   ""
 date:       2016-05-14
 author:     "TautCony"
 header-img: "img/post-bg-koe-no-katachi.jpg"
+image:
+  credit: 聲の形
+  creditlink: http://koenokatachi-movie.com/
 tags:
     - 生活
     - 动画

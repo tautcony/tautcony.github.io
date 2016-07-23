@@ -5,6 +5,9 @@ subtitle:   "附赠抽取教程_(:з」∠)_"
 date:       2016-04-03
 author:     "TautCony"
 header-img: "img/post-bg-beautiful-word-beautiful-world.jpg"
+image:
+  credit: 心が叫びたがってるんだ。
+  creditlink: http://www.kokosake.jp/
 tags:
     - 动画
     - 教程

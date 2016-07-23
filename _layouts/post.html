@@ -23,6 +23,7 @@ layout: default
     {% endif %}
 </style>
 <header class="intro-header" >
+    {% if page.image.credit %}<div class="image-credit">Image source: {% if page.image.creditlink %}<a target="_blank" href="{{ page.image.creditlink }}">{% endif %}{{ page.image.credit }}{% if page.image.creditlink %}</a>{% endif %}</div><!-- image-credit -->{% endif %}
     <div class="header-mask"></div>
     <div class="container">
         <div class="row">

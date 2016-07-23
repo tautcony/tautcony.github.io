@@ -5,13 +5,20 @@ subtitle:   ""
 date:       2016-04-10
 author:     "TautCony"
 header-img: "img/post-bg-default.png"
+image:
+  credit: himawari-8
+  creditlink: http://himawari8.nict.go.jp/
 tags:
     - 编程
     - ACM
     - C++
 ---
 
-题目虽然老长老长一大段(应该很大一段都是从[Wiki](https://en.wikipedia.org/wiki/Dice_notation)复制来的)，其实都没多大用，大意就是给你一串形如`((2d6)     +5)*((12*       3d6))`的字符串，字符串中$$NdX$$的部分, $$N$$是指骰子次数，$$X$$指骰子面数，这样的式子需要展开为$$\underbrace{([dX] + … + [dX])}_{N}$$的形式, 同时，只有在`+-*/`的左右有且仅有一个空格。最后在结尾加上` = [Result]`，这么就结束了。
+题目虽然老长老长一大段(应该很大一段都是从[Wiki](https://en.wikipedia.org/wiki/Dice_notation)复制来的)，其实都没多大用。
+
+<!--more-->
+
+大意就是给你一串形如`((2d6)     +5)*((12*       3d6))`的字符串，字符串中$$NdX$$的部分, $$N$$是指骰子次数，$$X$$指骰子面数，这样的式子需要展开为$$\underbrace{([dX] + … + [dX])}_{N}$$的形式, 同时，只有在`+-*/`的左右有且仅有一个空格。最后在结尾加上` = [Result]`，这么就结束了。
 
 相当有意思，这题[Dice Notation](http://acm.zju.edu.cn/onlinejudge/showProblem.do?problemCode=3930)大概是在最后15分钟左右A出来的, 坑其实不算多, 应该就是以下三点：
 

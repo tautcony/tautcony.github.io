@@ -5,6 +5,9 @@ subtitle:   "其实是给自己做个备忘"
 date:       2016-07-09
 author:     "TautCony"
 header-img: "img/post-bg-default.png"
+image:
+  credit: himawari-8
+  creditlink: http://himawari8.nict.go.jp/
 tags:
     - 编程
 ---

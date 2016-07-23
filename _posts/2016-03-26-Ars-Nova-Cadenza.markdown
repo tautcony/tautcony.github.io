@@ -5,6 +5,9 @@ subtitle:   "代码恒久远，两段永流传"
 date:       2016-03-26
 author:     "TautCony"
 header-img: "img/post-bg-cadenza.jpg"
+image:
+  credit: 蒼き鋼のアルペジオ –アルス・ノヴァ- Cadenza
+  creditlink: http://aokihagane.com/
 tags:
     - 动画
     - 编程

@@ -5,6 +5,9 @@ subtitle:   ""
 date:       2016-06-08
 author:     "TautCony"
 header-img: "img/post-bg-default.png"
+image:
+  credit: himawari-8
+  creditlink: http://himawari8.nict.go.jp/
 tags:
     - 字体
 ---

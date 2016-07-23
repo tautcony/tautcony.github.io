@@ -5,6 +5,9 @@ subtitle:   ""
 date:       2016-03-27
 author:     "TautCony"
 header-img: "img/post-bg-remove-watermark.png"
+image:
+  credit: ゆるゆり
+  creditlink: http://yuruyuri.com/
 tags:
     - 编程
     - 图像处理

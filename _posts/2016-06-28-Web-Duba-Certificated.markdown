@@ -5,6 +5,9 @@ subtitle:   "早点知道就能写在答辩的slides里了（雾"
 date:       2016-06-28
 author:     "TautCony"
 header-img: "img/post-bg-default.png"
+image:
+  credit: himawari-8
+  creditlink: http://himawari8.nict.go.jp/
 tags:
     - 编程
     - 画网页

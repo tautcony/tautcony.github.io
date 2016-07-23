@@ -873,13 +873,14 @@ img::-moz-selection {
   }
 }
 #tag-heading {
-  padding: 70px 0 60px;
+  padding: 95px 0 70px;
 }
 @media only screen and (min-width: 768px) {
   #tag-heading {
-    padding: 55px 0;
+    padding: 150px 0;
   }
 }
+
 #tag_cloud {
   margin: 20px 0 15px 0;
 }

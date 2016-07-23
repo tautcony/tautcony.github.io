@@ -16,6 +16,8 @@ tags:
 
 「A-OTF」「U-OTF」「G-OTF」之间的区别
 
+<!--more-->
+
 「A-OTF」全称为 Adobe Japan Character Collection for CID-Keyed Fonts，简要地说就是Adobe规格的字体[[文档](https://partners.adobe.com/public/developer/en/font/5078.Adobe-Japan1-6.pdf)]
 
 「U-OTF」= 包含了[U-PRESS](http://www.morisawa.co.jp/culture/dictionary/1950)规定的文字集的字体。

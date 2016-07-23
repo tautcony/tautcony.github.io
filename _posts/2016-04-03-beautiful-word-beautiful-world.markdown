@@ -17,6 +17,8 @@ tags:
 
 终于有一天闲了把[映画『心が叫びたがってるんだ。』](http://www.kokosake.jp/)的字幕给OCR了一遍……, 当然不出意外的, 抽取字幕过程有些字幕缺失, OCR结果惨不忍睹, 几乎是把这一整天给搭上了…….
 
+<!--more-->
+
 嗯, 也稍微描述下操作步骤吧, 首先用[eac3to](http://forum.doom9.org/showthread.php?t=125966)从原盘中抽取字幕 `eac3to "sourceFile.m2ts" index: subtitleFile.sup`, 其中`index`指字幕所在的轨道数.
 
 然后用[SUPread](http://forum.doom9.org/showthread.php?t=121535)载入`sup`字幕, 首先把`Options`下的`Output Folder`设置成一个已存在的文件夹, 然后点击   `Save Bitmaps`. 嗯, 尽量啊, 别乱点, 这个软件挺不稳定的.

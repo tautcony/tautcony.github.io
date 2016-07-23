@@ -16,6 +16,8 @@ Windows上用VS, Linux 上用qt creator, 编程、调试，似乎没有什么不
 
 但如果某个电脑上没有顺手的IDE怎么办，难不成就靠打log完成调试，考虑到多一门技巧多一门路，于是对gdb的使用进行了简单的学习。
 
+<!--more-->
+
 <a href="https://en.wikipedia.org/wiki/Archerfish" target="_blank" >
 <img style="float:right; cursor: pointer;" src="/img/in-post/gdb-tutorial/archer.png" alt="GDB's Mascot" />
 </a>

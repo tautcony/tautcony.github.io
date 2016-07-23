@@ -57,7 +57,6 @@ duoshuo_share: false                     # set to false if you want to use Comme
 
 
 
-
 # Analytics settings
 # Baidu Analytics
 ##ba_track_id:
@@ -91,3 +90,6 @@ friends: [
         href: "http://www.vigoss18.com/"
     }
 ]
+
+
+excerpt_separator: <!--more-->

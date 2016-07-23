@@ -9,16 +9,23 @@ url: "tautcony.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
 
-
 # SNS settings
 RSS: false
-#weibo_username:    tautcony
-#zhihu_username:    tautcony
-github_username:    tautcony
-#twitter_username:    tautcony
-#facebook_username:    tautcony
-#instagram_username:
-#pinterest_username:
+# It should be set a proper icon from http://fontawesome.io/ or use a word instead
+SocialAccount: [
+    {
+        title: "github",
+        href: "https://github.com/tautcony",
+        icon: "fa-github",
+        content: ""
+    },
+    {
+        title: "weibo",
+        href: "http://weibo.com/3268177885",
+        icon: "fa-weibo",
+        content: ""
+    }
+]
 
 
 # Build settings

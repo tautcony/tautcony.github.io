@@ -184,13 +184,16 @@ $(function() {
 
 <!-- SomeThing interesting-->
 <script type="text/javascript">
-var initalTitle = document.title;
-document.addEventListener('visibilitychange', function(event) {
-    if (!document.hidden) {
-        document.title = initalTitle;
-    } else {
-        document.title = " _(:з」∠)_ " + initalTitle;
-    }
+$(function() {
+    var initalTitle = document.title;
+    var gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀", "_(:зゝ∠)_", "_(:3」[＿]", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ"];
+    document.addEventListener('visibilitychange', function(event) {
+        if (!document.hidden) {
+            document.title = initalTitle;
+        } else {
+            document.title = gogatsubyou[Math.floor((Math.random() * gogatsubyou.length))] + " " + initalTitle;
+        }
+    });
 });
 </script>
 

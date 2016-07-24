@@ -43,11 +43,10 @@ function makeList(stream) {
         if (scriptGroups[scriptGroup] === undefined) {
             scriptGroups[scriptGroup] = {};
             scriptGroups[scriptGroup].allCnt = 1;
-            scriptGroups[scriptGroup].unique = new Set(String.fromCodePoint(cps[i]));//String.fromCodePoint(cps[i]) + '\u200B';
+            scriptGroups[scriptGroup].unique = new Set(String.fromCodePoint(cps[i]));
         } else {
-            var char = String.fromCodePoint(cps[i]);
             scriptGroups[scriptGroup].allCnt += 1;
-            if (!scriptGroups[scriptGroup].unique.has(char)) scriptGroups[scriptGroup].unique.add(char);// += char + '\u200B';
+            scriptGroups[scriptGroup].unique.add(String.fromCodePoint(cps[i]));
         }
     }
 
@@ -58,7 +57,7 @@ function makeList(stream) {
     // check whether a unique column is needed
     var uniqueNeeded = false;
     for(var key of keys) {
-        if(scriptGroups[key].allCnt != scriptGroups[key].unique) {
+        if(scriptGroups[key].allCnt !== scriptGroups[key].unique.size) {
             uniqueNeeded = true;
             break;
         }

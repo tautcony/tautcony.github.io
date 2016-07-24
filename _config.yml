@@ -11,7 +11,7 @@ baseurl: ""                             # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: false
-# It should be set a proper icon from http://fontawesome.io/ or use a word instead
+# It should be set a proper icon from http://fontawesome.io/icons/ or use a word instead
 SocialAccount: [
     {
         title: "github",
@@ -27,8 +27,14 @@ SocialAccount: [
     },
     {
         title: "asciiflow",
-        href: "http://tautcony.github.io/apps/asciiflow2",
+        href: "/apps/asciiflow2",
         icon: "fa-terminal",
+        content: ""
+    },
+    {
+        title: "List characters",
+        href: "/apps/listcharacters",
+        icon: "fa-font",
         content: ""
     }
 ]

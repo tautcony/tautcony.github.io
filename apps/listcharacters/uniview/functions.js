@@ -774,10 +774,7 @@ function findString(searchString) {
                 }
             }
         }
-    }
-
-        // otherwise search the database, excluding certain ranges
-    else {
+    } else {// otherwise search the database, excluding certain ranges
         var records = '';
         var count = 0;
         var re = new RegExp(searchString, "i");

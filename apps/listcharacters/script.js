@@ -42,40 +42,43 @@ function makeList(stream) {
         var scriptGroup = findScriptGroup(cps[i]);
         if (scriptGroups[scriptGroup] === undefined) {
             scriptGroups[scriptGroup] = {};
-            scriptGroups[scriptGroup].all = String.fromCodePoint(cps[i]) + '\u200B';
-            scriptGroups[scriptGroup].unique = String.fromCodePoint(cps[i]) + '\u200B';
+            scriptGroups[scriptGroup].allCnt = 1;
+            scriptGroups[scriptGroup].unique = new Set(String.fromCodePoint(cps[i]));//String.fromCodePoint(cps[i]) + '\u200B';
         } else {
             var char = String.fromCodePoint(cps[i]);
-            scriptGroups[scriptGroup].all += char + '\u200B';
-            var re = new RegExp(escapeRegExp(char));
-            if (!scriptGroups[scriptGroup].unique.match(re)) scriptGroups[scriptGroup].unique += char + '\u200B';
+            scriptGroups[scriptGroup].allCnt += 1;
+            if (!scriptGroups[scriptGroup].unique.has(char)) scriptGroups[scriptGroup].unique.add(char);// += char + '\u200B';
         }
     }
+
     // output the list
     var out = '<table><tbody>\n';
     var keys = Object.keys(scriptGroups);
     keys.sort();
     // check whether a unique column is needed
     var uniqueNeeded = false;
-    for (var x = 0; x < keys.length; x++) {
-        if (scriptGroups[keys[x]].all.length !== scriptGroups[keys[x]].unique.length) {
+    for(var key of keys) {
+        if(scriptGroups[key].allCnt != scriptGroups[key].unique) {
             uniqueNeeded = true;
             break;
         }
     }
+
     if (uniqueNeeded) out += '<tr><th></th><th>Unique</th><th>Total</th><th></th></tr>';
     // construct a table
-    for (x = 0; x < keys.length; x++) {
+    for (var key of keys) {
         out += '<tr>';
-        out += '<th class="sg">' + keys[x] + '</th>';
-        var count = scriptGroups[keys[x]].unique.length / 2;
+        out += '<th class="sg">' + key + '</th>';
+        var count = scriptGroups[key].unique.size
         out += '<td class="count">' + count + '</td>';
-        if (uniqueNeeded && scriptGroups[keys[x]].unique.length !== scriptGroups[keys[x]].all.length) {
-            count = scriptGroups[keys[x]].all.length / 2;
+        if (uniqueNeeded && scriptGroups[key].unique.size !== scriptGroups[key].allCnt) {
+            count = scriptGroups[key].allCnt;
             out += '<td class="count">' + count + '</td>';
         }
         else if (uniqueNeeded) out += '<td class="count"></td>';
-        out += '<td class="chars">' + scriptGroups[keys[x]].unique + '</td>';
+        var uniqueString = "";
+        for (var item of scriptGroups[key].unique) uniqueString += item;
+        out += '<td class="chars">' + uniqueString + '</td>';
         out += '<td class="select" title="Copy to clipboard" onclick="copyToClipboard(this.previousSibling)"><span class="icon icon-lg">content_copy</span></td>';
         out += '</tr>\n';
     }
@@ -88,12 +91,10 @@ function makeList(stream) {
 }
 
 function copyToClipboard(node) {
-    var oldContent = node.textContent;
-    node.textContent = node.textContent.replace(/\u200B/g, '');
     node.contentEditable = true;
     node.focus();
     document.execCommand('selectAll');
     document.execCommand('copy');
+    document.execCommand('unselect');
     node.contentEditable = false;
-    node.textContent = oldContent;
 }

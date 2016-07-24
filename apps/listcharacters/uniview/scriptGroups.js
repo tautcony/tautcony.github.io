@@ -280,9 +280,8 @@ var titles = new Array(
 "▲");
 
 
-var scriptGroups = []
+var scriptGroups = [];
 for (var i=0; i<titles.length; i++) {
-	scriptGroups[i+1] = titles[i].split('¶');
-	}
+    scriptGroups[i+1] = titles[i].split('¶');
+    }
 scriptGroups[0] = "▲";
-

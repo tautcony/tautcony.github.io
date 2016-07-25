@@ -8,6 +8,7 @@
 	<meta name='RPChecker'				content='1.0.3.2'>
 	<meta name="theme-color" content="#000000">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
 	<style> @import url('css/tcupdate.css'); </style>
 	<link href="https://cdn.bootcss.com/simple-line-icons/2.2.3/css/simple-line-icons.css" rel="stylesheet"/>
 	<script src="https://cdn.bootcss.com/vue/1.0.7/vue.min.js"></script>
@@ -16,7 +17,7 @@
 <body>
 	<template></template>
 	<section id="tool-downloads" class="general">
-		<h2>TautCony Tools Downloads</h2>
+		<h2>TC Tools Downloads</h2>
 		<p>The original intention of these tools is make it easier for encoder to do their work. Although my coding skill isn't very high, I hope what I have done can make some help for them.</p>
 		<div id="downlinks">
 		<a class="middle" href="http://{{releases_ct[0].site}}/bin/ChapterTool.v{{releases_ct[0].version}}.exe" target="_blank"><icon class="icon-cloud-download"></icon>ChapterTool<br>version {{(releases_ct[0].version)}}<span>Updated {{releases_ct[0].date}}.</span></a>
@@ -43,21 +44,21 @@
 		<h3>History releases: ChapterTool</h3>
 		<div class="all-releases-w"><ul id="all-releases_ct">
 			<li v-for="r in (releases_ct.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/chaptertool/ChapterTool.v{{r.version}}.7z" target="_blank"> ChapterTool version {{r.version}} </a>({{r.date}})
+				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/chaptertool/ChapterTool.v{{r.version}}.7z" target="_blank"> ChapterTool {{r.version}} </a>({{r.date}})
 			</li>
 		</ul></div>
 
 		<h3>AutoTorrentInspection</h3>
 		<div class="all-releases-w"><ul id="all-releases_ati">
 			<li v-for="r in (releases_ati.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/ati/AutoTorrentInspection.v{{r.version}}.7z" target="_blank"> AutoTorrentInspection version {{r.version}} </a>({{r.date}})
+				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/ati/AutoTorrentInspection.v{{r.version}}.7z" target="_blank"> AutoTorrentInspection {{r.version}} </a>({{r.date}})
 			</li>
 		</ul></div>
 
 		<h3>RPChecker</h3>
 		<div class="all-releases-w"><ul id="all-releases_rp">
 			<li v-for="r in (releases_rp.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/rpchecker/RPChecker.v{{r.version}}.7z" target="_blank"> RPChecker version {{r.version}} </a>({{r.date}})
+				<icon class="icon-cloud-download"></icon><a class="link" href="http://{{r.site}}/rpchecker/RPChecker.v{{r.version}}.7z" target="_blank"> RPChecker {{r.version}} </a>({{r.date}})
 			</li>
 		</ul></div>
 	</section>

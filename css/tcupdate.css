@@ -48,6 +48,16 @@ section#introduction h1 {
 	display: flex;
 	justify-content: center;
 }
+
+@media screen and (max-device-width: 768px) {
+    #downlinks {
+        display: block;
+    }
+    #downlinks a {
+        margin: 0.5em auto !important;
+    }
+}
+
 @media all and (-ms-high-contrast:none) {
   *::-ms-backdrop, #downlinks { margin-left: -5em; } /* IE11 */
 }
@@ -265,6 +275,7 @@ snippet { display: none }
 	opacity: 0.4;
 	text-align: center;
 	font-size: 0.8rem;
+    margin-bottom: 1em;
 }
 section#tool-downloads {
 	max-width: 36rem;
@@ -286,8 +297,8 @@ section#tool-downloads h2:before, section#tool-downloads h2:after, section#tool-
 	content: '';
 	display: inline-block;
 	border-bottom: 1px solid #ddd;
-	width: 2em;
-	margin: 0 0.5em;
+	width: 1em;
+	margin: 0 0.2em;
 	vertical-align: 0.3em;
 }
 

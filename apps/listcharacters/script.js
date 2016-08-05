@@ -70,7 +70,7 @@ function makeList(stream) {
         out += '<th class="sg">' + key + '</th>';
         var count = scriptGroups[key].unique.size
         out += '<td class="count">' + count + '</td>';
-        if (uniqueNeeded && scriptGroups[key].unique.size !== scriptGroups[key].allCnt) {
+        if (uniqueNeeded) {
             count = scriptGroups[key].allCnt;
             out += '<td class="count">' + count + '</td>';
         }

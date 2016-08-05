@@ -3,7 +3,7 @@ if (!String.prototype.format) {
         'use strict';
         var args = arguments;
         return this.replace(/{(\d+)}/g, function (match, number) {
-            return typeof args[number] != 'undefined' ? args[number] : match;
+            return typeof args[number] !== undefined ? args[number] : match;
         });
     };
 }
@@ -19,27 +19,27 @@ function getOption() {
 }
 
 function comparisonGenerate(stream, sortArray) {
-    'use strict'
+    'use strict';
     var compareCount = getOption() + 1;
     var urls = stream.replace('\r', '').split('\n');
     var inpng = [];
     var indexs = [];
-    urls.find( (url, index) => {
-        if(url.indexOf('png') < 0) {
+    urls.find((url, index) => {
+        if (url.indexOf('png') < 0) {
             inpng.push(url);
             indexs.push(index);
         }
     });
-    for(var i = indexs.length - 1; i >= 0; --i) {
+    for (var i = indexs.length - 1; i >= 0; --i) {
         urls.splice(indexs[i], 1);
     }
     console.log('nonPNG',inpng);
-    if(urls.length % compareCount != 0) {
+    if (urls.length % compareCount != 0) {
         //document.getElementById('error-text').innerHTML = "Picture number dosen't match";
         document.getElementById("a-warning").click();
         return;
     }
-    if($('input#sort_urls_switch.access-hide')[0].checked) {
+    if ($('input#sort_urls_switch.access-hide')[0].checked) {
         urls.sort();
     }
 
@@ -59,7 +59,7 @@ function comparisonGenerate(stream, sortArray) {
                 src = url;
             }
         }
-        if(ripv === '' && compareCount == 3) {
+        if (ripv === '' && compareCount == 3) {
             ripv = ripu;
         }
         switch (compareCount) {

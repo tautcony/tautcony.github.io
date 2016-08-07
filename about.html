@@ -55,7 +55,7 @@ header-img: "img/about-bg.jpg"
 
 <div class="qr-container">
     <p id="donate">啊哈，不考虑资助一下贫苦的山区儿童么（雾</p>
-    <img id="qrcode" src="/img/alipay_qr.png" alt="" />
+    <img id="qrcode" src="" alt="" />
 </div>
 
 <!-- Handle QrCode Hover -->
@@ -65,6 +65,13 @@ header-img: "img/about-bg.jpg"
 #donate { float: left; opacity: 0.5; margin-bottom: 10px; }
 #donate:hover + #qrcode { z-index: 1250; opacity: 1.0; width: 350px; height: 350px; }
 </style>
+
+<!-- Handle QrCode Loading -->
+<script type="text/javascript">
+document.getElementById("qrcode").style.display = "none";
+document.getElementById("qrcode").src = "/img/qr_alipay.png";
+document.getElementById("qrcode").style.display = "block";
+</script>
 
 <!-- Handle Language Change -->
 <script type="text/javascript">

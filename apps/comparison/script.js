@@ -24,9 +24,9 @@ function comparisonGenerate(stream, sortArray) {
     var urls = stream.replace('\r', '').split('\n');
     var inpng = [];
     var indexs = [];
-    urls.find((url, index) => {
-        if (url.indexOf('png') < 0) {
-            inpng.push(url);
+    urls.find((item, index) => {
+        if (item.indexOf('png') < 0) {
+            inpng.push(item);
             indexs.push(index);
         }
     });
@@ -59,7 +59,7 @@ function comparisonGenerate(stream, sortArray) {
                 src = url;
             }
         }
-        if (ripv === '' && compareCount == 3) {
+        if (ripv === '' && compareCount === 3) {
             ripv = ripu;
         }
         switch (compareCount) {
@@ -83,18 +83,19 @@ var TITLE = {
 }
 
 function copyToClipboard(type) {
+    'use strict';
     var title = document.getElementById('title');
     if (type === 'eng') {
         title.innerHTML = TITLE.eng[getOption()-2];
-    } else {
+    } else if (type === 'chs') {
         title.innerHTML = TITLE.chs[getOption()-2];
     }
     var node = document.getElementById('bbcode-context');
-    node.contentEditable = true;
+    node.contentEditable = 'true';
     node.focus();
     document.execCommand('selectAll');
     document.execCommand('copy');
     document.execCommand('unselect');
-    node.contentEditable = false;
+    node.contentEditable = 'false';
     title.innerHTML = "";
 }

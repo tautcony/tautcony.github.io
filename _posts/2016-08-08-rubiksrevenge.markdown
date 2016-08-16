@@ -52,7 +52,7 @@ tags:
 
 这还给不给人活路啊，之前也有考虑到是不是这个原因，但是想着这能差多少啊，总不会有特别大的差距吧……
 
-![unordered map with debuge mode](/img/in-post/rubiksrevenge/diagsession_debug.png)
+![unordered map with release mode](/img/in-post/rubiksrevenge/diagsession_release.png)
 
 但是感觉这个耗时还是很不科学，说好的$$\mathcal{O}(1)$$超过半数时间还是在这个`unordered_map`上，太魔法了。
 

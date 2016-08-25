@@ -42,7 +42,7 @@ function comparisonGenerate(stream, sortArray) {
         return;
     }
     if ($('input#sort_urls_switch.access-hide')[0].checked) {
-        var pat = /\d+/;
+        var pat = /\d+.?\.png/;
         urls.sort((lhs, rhs) => {
             var l = parseInt(lhs.match(pat));
             var r = parseInt(rhs.match(pat));

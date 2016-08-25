@@ -33,14 +33,22 @@ function comparisonGenerate(stream, sortArray) {
     for (var i = indexs.length - 1; i >= 0; --i) {
         urls.splice(indexs[i], 1);
     }
-    console.log('nonPNG',inpng);
+    if (inpng.length > 0) {
+        console.log('nonPNG',inpng);
+    }
     if (urls.length % compareCount != 0) {
         //document.getElementById('error-text').innerHTML = "Picture number dosen't match";
         document.getElementById("a-warning").click();
         return;
     }
     if ($('input#sort_urls_switch.access-hide')[0].checked) {
-        urls.sort();
+        var pat = /\d+/;
+        urls.sort((lhs, rhs) => {
+            var l = parseInt(lhs.match(pat));
+            var r = parseInt(rhs.match(pat));
+            if (l === r) return lhs > rhs;
+            return l > r;
+        });
     }
 
     var groupNumber = urls.length / compareCount;

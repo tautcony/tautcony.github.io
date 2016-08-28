@@ -55,7 +55,7 @@ header-img: "img/about-bg.jpg"
 
 <div class="qr-container">
     <p id="donate">啊哈，不考虑资助一下贫苦的山区儿童么（雾</p>
-    <img id="qrcode" src="" alt="" />
+    <img id="qrcode" rel="nofollow" src="" alt="" />
 </div>
 
 <!-- Handle QrCode Hover -->
@@ -68,9 +68,21 @@ header-img: "img/about-bg.jpg"
 
 <!-- Handle QrCode Loading -->
 <script type="text/javascript">
-document.getElementById("qrcode").style.display = "none";
-document.getElementById("qrcode").src = "/img/qr_alipay.png";
-document.getElementById("qrcode").style.display = "block";
+(function() {
+    var qrcode = document.getElementById("qrcode");
+    var qr_url = "/#i#m#g#/#a#l#i#p#a#y#_#q#r#.#p#n#g".replace(/#/g, "");
+
+    document.addEventListener('DOMContentLoaded', function() {
+    $("#donate").hover(
+        function() {
+            qrcode.src = qr_url;
+        }, function() {
+            setTimeout(function() {
+                qrcode.src = "";
+            }, 200);
+        });
+    }, false);
+})();
 </script>
 
 <!-- Handle Language Change -->

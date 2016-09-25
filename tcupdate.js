@@ -68,6 +68,7 @@ var display = new Vue({
             {version: '1.0.1.0', site: DEFAULT, date: 'Dec 29, 2015'}
         ],
         releases_rp: [
+            {version: '1.0.3.3', site: DEFAULT, date: 'Sep 25, 2016'},
             {version: '1.0.3.2', site: DEFAULT, date: 'Apr 02, 2016'},
             {version: '1.0.3.1', site: DEFAULT, date: 'Feb 29, 2016'},
             {version: '1.0.3.0', site: DEFAULT, date: 'Jan 15, 2016'},

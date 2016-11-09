@@ -15,7 +15,12 @@ description: "ようこそ　僕のページへ"
         </h3>
         {% endif %}
         <div class="post-content-preview">
-            {{ post.excerpt | remove: '<p>' | remove: '</p>' | post.content | strip_html | truncate:200 }}
+            {% assign excerpt = post.excerpt | remove: '<p>' | remove: '</p>' | strip %}
+            {% if excerpt != nil and excerpt != "" %}
+                {{ excerpt }}
+            {% else %}
+                {{ post.content | strip_html | truncate: 128 }}
+            {% endif %}
         </div>
     </a>
     <p class="post-meta">

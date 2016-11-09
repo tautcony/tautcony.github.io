@@ -81,6 +81,7 @@ function comparisonGenerate(stream, sortArray) {
     }
     document.getElementById('bbcode-context').innerHTML = ret;
     document.getElementById('out').style.display = "block";
+    preview(ret);
 }
 
 var TITLE = {
@@ -106,4 +107,19 @@ function copyToClipboard(type) {
     document.execCommand('unselect');
     node.contentEditable = 'false';
     title.innerHTML = "";
+}
+
+function preview(bbcodeText)
+{
+    var result = XBBCODE.process({
+            text: bbcodeText,
+            removeMisalignedTags: false,
+            addInLineBreaks: true
+        });
+    var out = document.getElementById('preview');
+    if(result.error) {
+        out.innerHTML = result.errorQueue.join("<br/>");
+    } else {
+        out.innerHTML = result.html;
+    }
 }

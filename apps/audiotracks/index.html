@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
-    <title>Audio Tracks Tools</title>
+    <title>Audio Tracks Tool</title>
     <!-- css -->
     <link href="../material/css/base.min.css" rel="stylesheet">
     <link href="../material/css/project.min.css" rel="stylesheet">
 </head>
 <body class="page-brand">
 
-<main class="content">
+<main class="content" onchange="get_result();">
     <div class="content-header ui-content-header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-lg-push-3 col-sm-10 col-sm-push-1">
-                    <h1 class="content-heading">Audio Tracks Tools</h1>
+                    <h1 class="content-heading">Audio Tracks Tool</h1>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                         <div id="mkv" class="checkbox-inline"></div>
                     </div>
                     <div class="mka-container">
-                        <span class="label label-red mka">mka</span>
+                        <span class="label label-red">mka</span>
                         <span class="margin-right">: </span>
                         <div id="mka" class="checkbox-inline mka"></div>
                     </div>
@@ -74,11 +74,11 @@
     <div class="fbtn-container">
 		<div class="fbtn-inner">
         <a class="fbtn fbtn-lg fbtn-red waves-attach waves-circle waves-effect"
-                onclick="remove_track();">
+                onclick="remove_track(); get_result();">
                 <span class="icon">remove</span>
             </a>
             <a class="fbtn fbtn-lg waves-attach waves-circle waves-effect"
-                onclick="add_track();">
+                onclick="add_track(); get_result();">
                 <span class="icon">add</span>
             </a>
             <a class="fbtn fbtn-lg waves-attach waves-circle waves-effect"

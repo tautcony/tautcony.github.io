@@ -64,16 +64,13 @@ function get_result() {
     var mkv = [];
     var mka = [];
     
-    if ((norArr.length + comArr.length) > 2) {
-        if (norArr.length > 0) {
-            mkv.push(norArr[0]);
-            for(var i = 1; i < norArr.length; ++i) mka.push(norArr[i]);
-        }
-        for(var com of comArr) mka.push(com);
+    if (norArr.length >= 2) {
+        mkv.push(norArr[0]);
+        for(var i = 1; i < norArr.length; ++i) mka.push(norArr[i]);
     } else {
         for(var nor of norArr) mkv.push(nor);
-        for(var com of comArr) mkv.push(com);
     }
+    for(var com of comArr) mkv.push(com);
     $('#mkv').html(''); $('#mka').html('');
 
     for(var item of mkv) $('#mkv').append(get_label('{' + item.index + ': ' + item.result + '}'));

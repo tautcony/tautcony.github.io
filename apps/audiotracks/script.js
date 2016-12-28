@@ -38,6 +38,11 @@ function add_track() {
     $('#input-container').append(get_option(track_id++));
 }
 
+function remove_track() {
+    if($('#input-container .form-group').length <= 1) return;
+    $('#input-container .form-group:last-child').remove();
+}
+
 function get_label(value) {
     return '<span class="label label-brand checkbox-inline">'+ value +'</sapn>'
 }

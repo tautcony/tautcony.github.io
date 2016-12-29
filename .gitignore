@@ -1,5 +1,19 @@
+### jekyll ###
 .jekyll-metadata
-node_modules
 _site
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
+jspm_packages
+
+### Typings ###
+## Ignore downloaded typings
+typings
+
 *.sh
-typings/

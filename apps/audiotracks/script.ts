@@ -78,7 +78,7 @@ function get_result(): void {
     let norArr: Array<Result> = [];
     let comArr: Array<Result> = [];
     let index: number = 0;
-    $.each($('#input-container .form-group'), function(index, track) {
+    $.each($('#input-container .form-group'), function(_, track) {
         let option: string      = $(track).find('select').val();
         let commentary: boolean = $(track).find('div label input').is(':checked');
         let result: string = commentary? data[option].c: data[option].n;

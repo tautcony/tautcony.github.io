@@ -59,7 +59,7 @@ function get_result() {
     var norArr = [];
     var comArr = [];
     var index = 0;
-    $.each($('#input-container .form-group'), function (index, track) {
+    $.each($('#input-container .form-group'), function (_, track) {
         var option = $(track).find('select').val();
         var commentary = $(track).find('div label input').is(':checked');
         var result = commentary ? data[option].c : data[option].n;

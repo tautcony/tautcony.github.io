@@ -12,7 +12,7 @@ tags:
     - 
 ---
 
-周知TypeScript为JavaScript的超集，在我看来，最为明显的区别就是增加了强类型。那么，对于基于js实现的各种库，就有点麻烦了。
+周知`TypeScript`为`JavaScript`的超集，在我看来，最为明显的区别就是增加了强类型。那么，对于使用`JavaScript`实现的各种库，就有点麻烦了。
 
 需要增加一个定义文件`*.d.ts`才能正常使用，本文讲以jQuery为例讲述获取该文件整个流程。
 
@@ -24,7 +24,7 @@ tags:
 
 其实在早先，这个声明文件是通过[`tsd`](https://github.com/DefinitelyTyped/tsd)来管理的，但是这个工具已经被[抛弃](https://github.com/DefinitelyTyped/tsd/issues/269)了
 
-现在推荐使用的是[typings](https://github.com/typings/typings)，其实这个链接点进去就够了的（
+现在推荐使用的是[`typings`](https://github.com/typings/typings)，其实这个链接点进去就够了的（
 
 如果尚未安装，可通过`npm install typings --global`来获取，如果连npm都没有的话，请安装[Node.js](https://nodejs.org/)
 
@@ -48,7 +48,7 @@ jquery-backstretch   dt     https://github.com/srobbin/jquery-backstretch       
 ```
 会获得近似上述的结果
 
-如果曾经有使用tsd的经验，可能使用这样的命令来安装，然而在typings里这样是不对的
+如果曾经有使用`tsd`的经验，可能使用这样的命令来安装，然而在`typings`里这样是不对的
 
 ```
 > typings install jquery --save --global
@@ -85,7 +85,7 @@ jquery
 │   └── index.d.ts
 └── typings.json
 ```
-于是我们就能在TypeScript中引用它了
+于是我们就能在`TypeScript`中引用它了
 
 ```ts
 /// <reference path="typings/globals/jquery/index.d.ts" />

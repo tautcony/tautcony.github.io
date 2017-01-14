@@ -8,8 +8,8 @@ image:
   credit: himawari-8
   creditlink: http://himawari8.nict.go.jp/
 tags:
-- '编程 '
-- ACM
+    - 编程
+    - ACM
 ---
 
 垃圾如我，好不容易去了资本主义地区<ruby>比赛<rt>观光</rt></ruby>。却依然脑子不灵光，抄歪模板，特判特判再特判，使得唯一有点机会的首A奖都完全没戏了。

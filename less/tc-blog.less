@@ -20,21 +20,16 @@ p {
     margin: 30px 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     .sans-serif;
     line-height: 1.1;
     font-weight: bold;
 }
-h1{
+h1 {
     // drop V1.1.1
     //font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-h4{
+h4 {
     font-size: 21px;
 }
 a {
@@ -43,16 +38,15 @@ a {
     &:focus {
         color: @brand-primary;
     }
-}
-
-a img {
-    &:hover,
-    &:focus {
-        cursor: zoom-in;
+    img {
+        &:hover,
+        &:focus {
+            cursor: zoom-in;
+        }
     }
 }
 
-article{
+article {
     overflow-x : hidden;
 }
 blockquote {
@@ -60,27 +54,27 @@ blockquote {
     font-style: italic;
     font-size: 0.95em;
     margin: 20px 0 20px;
-    p{
+    p {
         margin: 0;
     }
 }
 
 // Utils Style Class can be used in Markdown.
-small.img-hint{
+small.img-hint {
     display: block;
     margin-top: -20px;
     text-align: center;
 }
-br + small.img-hint{
+br + small.img-hint {
     margin-top: -40px;
 }
-img.shadow{
+img.shadow {
     box-shadow: rgba(0, 0, 0, 0.258824) 0px 2px 5px 0px;
 }
 // Utils Style End
 
 @media screen and (max-width: 768px){
-    select{
+    select {
         -webkit-appearance:none;
         margin-top:15px;
         color:#337ab7;
@@ -90,7 +84,7 @@ img.shadow{
     }
 }
 // override table style in bootstrap
-.table th, .table td{
+.table th, .table td {
     border: 1px solid #eee !important;
 }
 
@@ -101,25 +95,26 @@ hr.small {
     border-color: white;
 }
 // add by Hux
-pre,.table-responsive{
+pre, .table-responsive {
     // sometimes you should use vendor-feature.
     -webkit-overflow-scrolling: touch;
 }
-pre code{
+code, kbd, pre, samp {
     display: block;
     width: auto;
     white-space: pre;    // save it but no-wrap;
     word-wrap: normal;    // no-wrap
+    font-family: IosevkaWEB, Menlo, Monaco, Consolas, "Microsoft YaHei", "Hiragino Sans GB", "Courier New", monospace !important;
 }
 
 // In the list of posts
-.postlist-container{
+.postlist-container {
     margin-bottom: 15px;
 }
 
 // In the post.
-.post-container{
-    a{
+.post-container {
+    a {
         color:#337ab7;
         // different to @brand-primary
         &:hover,
@@ -127,31 +122,26 @@ pre code{
             color: @brand-primary;
         }
     }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
+    h1, h2, h3, h4, h5, h6 {
         margin: 30px 0 10px;
     }
-    h5{
+    h5 {
         font-size: 19px;
         font-weight: 600;
         color:gray;
-        & + p{
+        & + p {
             margin-top: 5px;
         }
     }
-    h6{
+    h6 {
         font-size: 16px;
         font-weight: 600;
         color: gray;
-        & + p{
+        & + p {
             margin-top: 5px;
         }
     }
-    ul,ol{
+    ul, ol {
         margin-bottom: 40px;
         @media screen and (max-width: 768px){
             &{
@@ -164,27 +154,27 @@ pre code{
             }
         }
     }
-    ol ol, ol ul, ul ol, ul ul{
+    ol ol, ol ul, ul ol, ul ul {
         margin-bottom: 5px
     }
-    li{
-        p{
+    li {
+        p {
             margin: 0;
             margin-bottom: 5px;
         }
-        h1,h2,h3,h4,h5,h6{
+        h1, h2, h3, h4, h5, h6 {
             line-height: 2;
             margin-top: 20px;
         }
     }
     // V1.6 Hux display title by default.
-    .pager li{
+    .pager li {
         width: 48%;
-        &.next{ float: right};
-        &.previous{ float: left};
+        &.next { float: right };
+        &.previous { float: left };
         > a {
             width: 100%;
-            > span{
+            > span {
                 color: @gray;
                 font-weight: normal;
                 letter-spacing: 0.5px;
@@ -204,7 +194,7 @@ pre code{
      * Since V1.6 we use absolute positioning to prevent to expand container-fluid
      * which would cover tags. A absolute positioning make a new layer.
      */
-    .navbar-default .navbar-collapse{
+    .navbar-default .navbar-collapse {
         position: absolute; 
          right: 0;
         border: none;
@@ -218,7 +208,7 @@ pre code{
      * Animation
      * HuxBlog-Navbar using genuine Material Design Animation
      */
-    #huxblog_navbar{     
+    #huxblog_navbar {     
         /**
          * Sharable code and 'out' function
          */
@@ -234,7 +224,7 @@ pre code{
             font-size: 13px;
             line-height: 28px;
         }
-        .navbar-collapse{    // the navbar do height-transition
+        .navbar-collapse {    // the navbar do height-transition
             height: 0px;     // to solve container-mask-tags issue (default state).
             transform: scaleY(0);
             transform-origin: top right;
@@ -243,7 +233,7 @@ pre code{
             -webkit-transform-origin: top right;
             -webkit-transition: -webkit-transform 400ms cubic-bezier(0.32, 1, 0.23, 1) 0ms;
         }
-        li{
+        li {
             opacity: 0;
             transition: opacity 100ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
             -webkit-transition: opacity 100ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
@@ -257,13 +247,13 @@ pre code{
             opacity: 1;
             transition: all 250ms cubic-bezier(0.23,1,0.32,1) 0ms;
             -webkit-transition: all 250ms cubic-bezier(0.23,1,0.32,1) 0ms;
-            .navbar-collapse{
+            .navbar-collapse {
                 transform: scaleY(1);
                 -webkit-transform: scaleY(1);
                 transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
                 -webkit-transition: -webkit-transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
             }
-            li{
+            li {
                 opacity: 1;
                 transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1) 205ms;
                 -webkit-transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1) 205ms;
@@ -288,7 +278,7 @@ pre code{
         color: white;
         height: 56px;
         line-height: 25px;
-        &:hover{
+        &:hover {
             color: rgba(255, 255, 255, 0.8);
         }
     }
@@ -301,14 +291,14 @@ pre code{
                 font-weight: 800;
                 letter-spacing: 1px;
                 // only highlight in mobile
-                &:active{
+                &:active {
                     background: rgba(0,0,0,0.12)
                 }
             }
         }
     }
     @media only screen and (min-width: 768px) {
-        body{
+        body {
             font-size: 20px;
         }
         background: transparent;
@@ -331,7 +321,7 @@ pre code{
                     &:focus {
                         color: @white-faded;
                     }
-                    &:active{
+                    &:active {
                         background: none;
                     }
                 }
@@ -411,7 +401,7 @@ pre code{
         }
     }
     // masterialize
-    .site-heading{
+    .site-heading {
         padding: 95px 0 70px;
         @media only screen and (min-width: 768px) {
             padding: 150px 0;
@@ -520,28 +510,28 @@ pre code{
         }
     }
     @media only screen and (min-width: 768px) {
-        > a {
+        a {
             > .post-title {
                 font-size: 26px;
                 line-height: 1.3;
                 margin-bottom: 10px;
             }
-            > .post-subtitle{
+            > .post-subtitle {
                 font-size: 16px;
             }
         }
-        .post-meta{
+        .post-meta {
             font-size: 18px;
         }
     }
 }
 
 // Hux add home-page post-content-preview
-.post-content-preview{
+.post-content-preview {
     font-size: 13px;
     font-style: italic;
     color:#a3a3a3;
-    &:hover{
+    &:hover {
         color: @brand-primary;
     }
     @media only screen and (min-width: 768px) {
@@ -579,7 +569,7 @@ footer {
         font-size: 14px;
         text-align: center;
         margin-bottom: 0;
-        a{
+        a {
             color:#337ab7;
             // different to @brand-primary
             &:hover,
@@ -623,9 +613,9 @@ footer {
         vertical-align: baseline;
         opacity: 0;
         -webkit-transition: top 0.3s ease,opacity 0.3s ease;
-        -moz-transition: top 0.3s ease,opacity 0.3s ease;
-        -ms-transition: top 0.3s ease,opacity 0.3s ease;
-        transition: top 0.3s ease,opacity 0.3s ease;
+           -moz-transition: top 0.3s ease,opacity 0.3s ease;
+            -ms-transition: top 0.3s ease,opacity 0.3s ease;
+                transition: top 0.3s ease,opacity 0.3s ease;
     }
     &::not(:first-child) {
         padding-left: 14px;
@@ -709,7 +699,7 @@ form .row:first-child .floating-label-form-group {
             border: 1px solid @brand-primary;
 
             // V1.6 display title
-            > span{
+            > span {
                 color: white;
             }
         }
@@ -753,9 +743,9 @@ img::-moz-selection {
 
 
 /* Hux add tags support */
-.tags{
+.tags {
     margin-bottom: -5px;
-    a,.tag{
+    a,.tag {
         display: inline-block;
         border: 1px solid rgba(255,255,255,0.8);
         border-radius: 999em;
@@ -766,7 +756,7 @@ img::-moz-selection {
         text-decoration: none;
         margin: 0 1px;
         margin-bottom: 6px;
-        &:hover, &:active{
+        &:hover, &:active {
             color:white;
             border-color: white;
             background-color: rgba(255,255,255,0.4);
@@ -779,7 +769,7 @@ img::-moz-selection {
     }
 }
 
-#tag-heading{
+#tag-heading {
     padding: 95px 0 70px;
     @media only screen and (min-width: 768px) {
         padding:150px 0;
@@ -787,16 +777,16 @@ img::-moz-selection {
 
 }
 // tag_cloud
-#tag_cloud{
+#tag_cloud {
     margin:20px 0 15px 0;
-    a,.tag{
+    a,.tag {
         font-size: 14px;
         border: none;
         line-height: 28px;
         margin: 0 2px;
         margin-bottom: 8px;
         background: #D6D6D6;
-        &:hover, &:active{
+        &:hover, &:active {
             background-color: #0085a1 !important;
         }
     }
@@ -805,26 +795,26 @@ img::-moz-selection {
     }
 }
 
-.tag-comments{
+.tag-comments {
     font-size: 12px;
         @media only screen and (min-width: 768px) {
         font-size:14px;
     }
 }
 
-.t{
+.t {
     //margin-top: 50px;
-    &:first-child{
+    &:first-child {
         margin-top: 0px;
     }
-    hr:last-of-type{
+    hr:last-of-type {
         //display: none;
     }
 }
-.listing-seperator{
+.listing-seperator {
     color:#0085a1;
     font-size: 21px !important;
-    &::before{
+    &:before {
         margin-right: 5px;
     }
     @media only screen and (min-width: 768px) {
@@ -834,24 +824,24 @@ img::-moz-selection {
 }
 
 // Customize Style for Posts in One-Tag-List
-.one-tag-list{
-    .tag-text{
+.one-tag-list {
+    .tag-text {
         font-weight: 200;
         .sans-serif;
     }
     .post-preview {
         position: relative;
         > a {
-            .post-title{
+            .post-title {
                 font-size: 16px;
                 font-weight: 500;
                 margin-top: 20px;
             }
-            .post-subtitle{
+            .post-subtitle {
                 font-size: 12px;
             }
         }
-        > .post-meta{
+        > .post-meta {
             position: absolute;
             right: 5px;
             bottom: 0px;
@@ -861,16 +851,16 @@ img::-moz-selection {
         }
         @media only screen and (min-width: 768px) {
             margin-left: 20px;
-            > a {
+            a {
                 > .post-title {
                     font-size: 18px;
                     line-height: 1.3
                 }
-                > .post-subtitle{
+                > .post-subtitle {
                     font-size: 14px;
                 }
             }
-            .post-meta{
+            .post-meta {
                 font-size: 18px;
             }
         }
@@ -880,7 +870,7 @@ img::-moz-selection {
 /* Tags support End*/
 
 /* Hux make all img responsible in post-container */
-.post-container img{
+.post-container img {
     display: block;
     max-width: 100%;
     height: auto;
@@ -890,84 +880,88 @@ img::-moz-selection {
 
 /* Hux Optimize UserExperience */
 .navbar-default .navbar-toggle {
-    &:focus, &:hover{
+    &:focus, &:hover {
         background-color: inherit;
     }
-      &:active{
+      &:active {
           background-color: rgba(255, 255, 255, 0.25);
       }
 }
 
 /* Hux customize Style for navBar button */
 
-.navbar-default .navbar-toggle{
+.navbar-default .navbar-toggle {
     border-color: transparent;
     padding:19px 16px;
     margin-top: 2px;
     margin-right: 2px;
     margin-bottom: 2px;
     border-radius: 50%;
-    .icon-bar{
+    .icon-bar {
         width: 18px;
         border-radius: 0px;
         // materialize
         background-color: white;
     }
-    .icon-bar+.icon-bar{
+    .icon-bar+.icon-bar {
         margin-top: 3px;
     }
 }
 
 
 /* Hux customize Style for Duoshuo */
-.comment{
+.comment {
     margin-top: 20px;
     #ds-thread {
         #ds-reset {
-            a.ds-like-thread-button{
+            a.ds-like-thread-button {
                 border:1px solid #ddd;
                 border-radius: 0px;
                 background: white;
                 box-shadow: none;
                 text-shadow: none;
             }
-            a.ds-thread-liked{
+            a.ds-thread-liked {
 
             }
-            li.ds-tab a.ds-current{
+            li.ds-tab a.ds-current {
                 border:1px solid #ddd;
                 border-radius: 0px;
                 background: white;
                 box-shadow: none;
                 text-shadow: none;
             }
-            .ds-textarea-wrapper{
+            .ds-textarea-wrapper {
                 //border:1px solid #ddd;
                 background: none;
             }
-            .ds-gradient-bg{
+            .ds-gradient-bg {
                 background: none;
             }
-            .ds-post-options{
+            .ds-post-options {
                 border-bottom: 1px solid #ccc;
             }
-            .ds-post-button{
+            .ds-post-button {
                 border-bottom: 1px solid #ccc;
             }
             //v1.6 flatten button
-            .ds-post-button{
+            .ds-post-button {
                 background: white;
                 box-shadow: none;
-                &:hover{
+                &:hover {
                     background: @gray-light;
                 }
             }
             .ds-textarea-wrapper textarea {
                 background: url("/img/ds-bg.png") right no-repeat;
             }
-            .ds-avatar img {
+            .ds-avatar {
+                img {
                 -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8) !important;
                    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8) !important;
+                   -ms-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8) !important;
+                    -o-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8) !important;
+                       box-shadow: 0 0 4px rgba(0, 0, 0, 0.8) !important;
                 -webkit-transition: 0.4s all ease-in-out !important;
                    -moz-transition: 0.4s all ease-in-out !important;
                     -ms-transition: 0.4s all ease-in-out !important;
@@ -975,14 +969,23 @@ img::-moz-selection {
                         transition: 0.4s all ease-in-out !important;
                 -webkit-border-radius: 50% !important;
                    -moz-border-radius: 50% !important;
+                    -ms-border-radius: 50% !important;
+                     -o-border-radius: 50% !important;
                         border-radius: 50% !important;
-                &.hover img {
+                }
+                &:hover img {
                     -webkit-transform: rotate(360deg) !important;
                        -moz-transform: rotate(360deg) !important;
                         -ms-transform: rotate(360deg) !important;
                          -o-transform: rotate(360deg) !important;
                             transform: rotate(360deg) !important;
                 }
+            }
+            .ds-comments-info, .ds-powered-by, .ds-sync {
+                display: none !important;
+            }
+            .ds-smilies-tabs {
+                height: 140px !important;
             }
         }
     }
@@ -992,57 +995,54 @@ img::-moz-selection {
 }
 
 
-// Hux fullscreen mode in 404.html
 
-.page-fullscreen .intro-header{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-.page-fullscreen #tag-heading{
-    position: fixed;
-    left: 0;
-    top: 0;
-    padding-bottom: 150px;
-    width: 100%;
-    height: 100%;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
+.page-fullscreen {
+    .intro-header {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #tag-heading {
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-bottom: 150px;
+        width: 100%;
+        height: 100%;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
 
-    display: -webkit-flex;
-    -webkit-align-items: center;
-    -webkit-justify-content: center;
-    -webkit-flex-direction: column;
+        display: -webkit-flex;
+        -webkit-align-items: center;
+        -webkit-justify-content: center;
+        -webkit-flex-direction: column;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-.page-fullscreen footer{
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    padding-bottom: 20px;
-    opacity: 0.6;
-    color: #fff;
-}
-.page-fullscreen footer .copyright{
-    color: #fff;
-}
-.page-fullscreen footer .copyright a{
-    color: #fff;
-}
-.page-fullscreen footer .copyright a:hover{
-    color: #ddd;
-}
-
-code, kbd, pre, samp {
-  font-family: IosevkaWEB, Menlo, Monaco, Consolas, "Microsoft YaHei", "Hiragino Sans GB", "Courier New", monospace !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    footer {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        padding-bottom: 20px;
+        opacity: 0.6;
+        color: #fff;
+        .copyright {
+            color: #fff;
+            a {
+                color: #fff;
+                &:hover {
+                    color: #ddd;
+                }
+            }
+        }
+    }
 }
 
 #gotop {
@@ -1062,12 +1062,12 @@ code, kbd, pre, samp {
       -ms-transition: background-color 0.3s linear;
        -o-transition: background-color 0.3s linear;
           transition: background-color 0.3s linear;
-    &.before {
+    &:before {
         content: "▲";
         font-size: 22px;
         color: white;
     }
-    &.hover {
+    &:hover {
         background-color: #999;
         opacity: 0.8;
     }
@@ -1099,7 +1099,7 @@ code, kbd, pre, samp {
            -moz-transition: all 400ms ease;
              -o-transition: all 400ms ease;
                 transition: all 400ms ease;
-        &.focus {
+        &:focus {
             background-color: #f9f9f9;
             width: 218px;
         }
@@ -1151,4 +1151,3 @@ code, kbd, pre, samp {
         max-width:960px
     }
 }
-

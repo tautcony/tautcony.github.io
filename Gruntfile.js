@@ -46,14 +46,14 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: ['js/<%= pkg.name %>.js'],
-                tasks: ['uglify', 'usebanner'],
+                tasks: ['uglify'],
                 options: {
                     spawn: false,
                 },
             },
             less: {
                 files: ['less/*.less'],
-                tasks: ['less', 'usebanner'],
+                tasks: ['less'],
                 options: {
                     spawn: false,
                 }

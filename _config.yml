@@ -53,7 +53,7 @@ particle404: true                       # enable a particle effect 404 page
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
-gems: [jekyll-paginate, jekyll-sitemap, jekyll-admin]
+gems: [jekyll-paginate, jekyll-sitemap]
 
 
 
@@ -112,3 +112,4 @@ friends: [
 
 
 excerpt_separator: <!--more-->
+incremental: true

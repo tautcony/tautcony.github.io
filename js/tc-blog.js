@@ -28,13 +28,13 @@
 // });
 
 // responsive tables
-$(document).ready(function() {
+$(document).ready(function () {
     $("table").wrap("<div class='table-responsive'></div>");
     $("table").addClass("table");
 });
 
 // responsive embed videos
-$(document).ready(function() {
+$(document).ready(function () {
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
     $('iframe[src*="youtube.com"]').addClass('embed-responsive-item');
     $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
@@ -42,17 +42,15 @@ $(document).ready(function() {
 });
 
 // Navigation Scripts to Show Header on Scroll-Up
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     var MQL = 1170;
 
     //primary navigation slide-in effect
     if ($(window).width() > MQL) {
         var headerHeight = $('.navbar-custom').height(),
-            bannerHeight  = $('.intro-header .container').height();     
-        $(window).on('scroll', {
-                previousTop: 0
-            },
-            function() {
+            bannerHeight = $('.intro-header .container').height();
+        $(window).on('scroll', { previousTop: 0 },
+            function () {
                 var currentTop = $(window).scrollTop(),
                     $catalog = $('.side-catalog');
 
@@ -81,4 +79,56 @@ jQuery(document).ready(function($) {
                 }
             });
     }
+});
+
+function async(url, func) {
+    var script = document.createElement('script'),
+        orgins = document.getElementsByTagName('script')[0];
+    script.src = url;
+    if (func) { script.addEventListener('load', function (e) { func(null, e); }, false); }
+    orgins.parentNode.insertBefore(script, orgins);
+}
+
+async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+    // var $nav = document.querySelector("nav");
+    // if($nav) FastClick.attach($nav);
+
+    // global FastClick!!
+    FastClick.attach(document.body);
+})
+
+// only load tagcloud.js in tag.html
+if ($('#tag_cloud').length !== 0) {
+    async("/js/jquery.tagcloud.js", function () {
+        $.fn.tagcloud.defaults = {
+            //size: {start: 1, end: 1, unit: 'em'},
+            color: { start: '#bbbbee', end: '#0085a1' },
+        };
+        $('#tag_cloud a').tagcloud();
+    });
+}
+
+$(function () {
+    $("#gotop").click(function () {
+        $("html, body").animate({ scrollTop: 0 }, 1000);
+    });
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('#gotop').fadeIn("fast");
+        } else {
+            $('#gotop').stop().fadeOut("fast");
+        }
+    });
+});
+
+$(function () {
+    var initalTitle = document.title;
+    var gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀", "_(:зゝ∠)_", "_(:3」[＿]", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ"];
+    document.addEventListener('visibilitychange', function (event) {
+        if (!document.hidden) {
+            document.title = initalTitle;
+        } else {
+            document.title = gogatsubyou[Math.floor((Math.random() * gogatsubyou.length))] + " " + initalTitle;
+        }
+    });
 });

@@ -228,7 +228,6 @@ code,
 kbd,
 pre,
 samp {
-  display: block;
   width: auto;
   white-space: pre;
   word-wrap: normal;

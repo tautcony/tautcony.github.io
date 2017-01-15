@@ -1,0 +1,24 @@
+<!-- SNS Link -->
+<ul class="list-inline{% if center != false %}{{" text-center"}}{% endif %}">
+    {% if site.RSS %}
+    <li>
+        <a href="{{ "/feed.xml" | prepend: site.baseurl }}">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+    </li>
+    {% endif %}
+    
+    {% for account in site.SocialAccount %} {% if account.in_sidebar != false or center != false %}
+    <li data-toggle="tooltip" title="{{ account.title }}">
+        <a target="_blank" href="{{ account.href }}">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa {{ account.icon }} fa-stack-1x fa-inverse"> {{ account.content }} </i>
+            </span>
+        </a>
+    </li>
+    {% endif %}{% endfor %}
+</ul>

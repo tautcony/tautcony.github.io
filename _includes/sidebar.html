@@ -1,0 +1,31 @@
+<!-- Sidebar Container -->
+<div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container">
+    <div align=right>
+        <form method="get" id="searchform" action="//www.google.com/search">
+            <input type="text" class="field" name="q" id="s" placeholder="Search">
+            <input type="hidden" name="as_sitesearch" value="tautcony.github.io">
+        </form>
+    </div>
+    {% if site.featured-tags %}
+    {% include featured-tags.html %}
+    {% endif %}
+
+    <!-- Short About -->
+    <section class="visible-md visible-lg">
+        <hr><h5><a href="{{'/about/' | prepend: site.baseurl }}">ABOUT ME</a></h5>
+        <div class="short-about">
+            {% if site.sidebar-avatar %}
+                <img src="{{site.sidebar-avatar}}" />
+            {% endif %}
+            {% if site.sidebar-about-description %}
+                <p>{{site.sidebar-about-description}}</p>
+            {% endif %}
+            {% assign center = false %}
+            {% include sns.html %}
+        </div>
+    </section>
+    {% assign spilt = true %}
+    {% if site.friends %}
+    {% include friends.html %}
+    {% endif %}
+</div>

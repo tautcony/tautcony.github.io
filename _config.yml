@@ -29,13 +29,15 @@ SocialAccount: [
         title: "asciiflow",
         href: "/apps/asciiflow2",
         icon: "fa-terminal",
-        content: ""
+        content: "",
+        in_sidebar: false
     },
     {
         title: "List characters",
         href: "/apps/listcharacters",
         icon: "fa-font",
-        content: ""
+        content: "",
+        in_sidebar: false
     }
 ]
 
@@ -45,7 +47,7 @@ SocialAccount: [
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","LICENSE", "apps/material/templates/"]
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","LICENSE","apps/material/templates/","js/tc-blog.js","css/tc-blog.css"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
 MathJax: true
 particle404: true                       # enable a particle effect 404 page

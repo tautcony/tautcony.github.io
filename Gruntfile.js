@@ -3,7 +3,14 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        banner: '/*!\n' +
+                ' * <%= pkg.title %> v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
+                ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+                ' */\n',
         uglify: {
+            options: {
+                banner: '<%= banner %>'
+            },
             main: {
                 src: 'js/<%= pkg.name %>.js',
                 dest: 'js/<%= pkg.name %>.min.js'
@@ -21,26 +28,26 @@ module.exports = function(grunt) {
             minified: {
                 options: {
                     paths: ["css"],
-                    cleancss: true
+                    banner: '<%= banner %>',
+                    compress: true
                 },
                 files: {
                     "css/<%= pkg.name %>.min.css": "less/<%= pkg.name %>.less"
                 }
             }
         },
-        banner: '/*!\n' +
-            ' * <%= pkg.title %> v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
-            ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-            ' */\n',
-        usebanner: {
+        htmlmin: {
             dist: {
                 options: {
-                    position: 'top',
-                    banner: '<%= banner %>'
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    minifyJS: true,
+                    minifyCSS: true
                 },
-                files: {
-                    src: ['css/<%= pkg.name %>.css', 'css/<%= pkg.name %>.min.css', 'js/<%= pkg.name %>.min.js']
-                }
+                files: [{
+                    expand: true,
+                    src: ['_site/**/*.html']
+                }]
             }
         },
         watch: {
@@ -58,16 +65,16 @@ module.exports = function(grunt) {
                     spawn: false,
                 }
             },
-        },
+        }
     });
 
     // Load the plugins.
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-banner');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify', 'less', 'usebanner']);
+    grunt.registerTask('default', ['uglify', 'less']);
 
 };

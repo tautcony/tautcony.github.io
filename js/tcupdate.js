@@ -3,6 +3,7 @@ var display = new Vue({
     el: '#tool-downloads',
     data: {
         releases_ct: [
+            {version: '2.33.33.1', site: DEFAULT, date: 'Jan 22, 2017'},
             {version: '2.33.32.33', site: DEFAULT, date: 'Sep 10, 2016'},
             {version: '2.33.32.32', site: DEFAULT, date: 'Aug 13, 2016'},
             {version: '2.33.32.31', site: DEFAULT, date: 'Jun 24, 2016'},

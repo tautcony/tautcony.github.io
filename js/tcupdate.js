@@ -54,6 +54,7 @@ var display = new Vue({
             {version: '2.0.0.0',   site: DEFAULT, date: 'Jan 01, 1970'}  */
         ],
         releases_ati: [
+            {version: '1.0.4.2', site: DEFAULT, date: 'Jan 23, 2017'},
             {version: '1.0.4.1', site: DEFAULT, date: 'Oct 27, 2016'},
             {version: '1.0.4.0', site: DEFAULT, date: 'Oct 26, 2016'},
             {version: '1.0.3.5', site: DEFAULT, date: 'Sep 07, 2016'},

@@ -5,7 +5,7 @@
 	<meta name='BaseUrl'				content='7xsjmh.com2.z0.glb.clouddn.com'>
 	<meta name='ChapterTool'			content='2.33.33.1'>
 	<meta name='AutoTorrentInspection'	content='1.0.4.2'>
-	<meta name='RPChecker'				content='1.0.3.3'>
+	<meta name='RPChecker'				content='1.0.4.0'>
 	<meta name="theme-color" content="#000000">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
     <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
@@ -40,22 +40,21 @@
 		<p id="RPChecker">
 			<a href="https://bitbucket.org/TautCony/rp-checker">RPChecker</a> is made for comparing difference between two video clip by calculating the <a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> Value.
 		</p>
-
-		<h3>History releases: ChapterTool</h3>
+		<h3>ChapterTool history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_ct">
 			<li v-for="r in (releases_ct.slice(1))">
 				<icon class="icon-cloud-download"></icon><a class="link" v-bind:href="'http://'+r.site+'/chaptertool/ChapterTool.v'+r.version+'.7z'" target="_blank"> ChapterTool {{r.version}} </a>({{r.date}})
 			</li>
 		</ul></div>
 
-		<h3>AutoTorrentInspection</h3>
+		<h3>AutoTorrentInspection history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_ati">
 			<li v-for="r in (releases_ati.slice(1))">
 				<icon class="icon-cloud-download"></icon><a class="link" v-bind:href="'http://'+r.site+'/ati/AutoTorrentInspection.v'+r.version+'.7z'" target="_blank"> AutoTorrentInspection {{r.version}} </a>({{r.date}})
 			</li>
 		</ul></div>
 
-		<h3>RPChecker</h3>
+		<h3>RPChecker history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_rp">
 			<li v-for="r in (releases_rp.slice(1))">
 				<icon class="icon-cloud-download"></icon><a class="link" href="'http://'+r.site+'/rpchecker/RPChecker.v'+r.version+'.7z'" target="_blank"> RPChecker {{r.version}} </a>({{r.date}})

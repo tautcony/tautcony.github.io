@@ -7,6 +7,7 @@
         </form>
     </div>
     {% if site.featured-tags %}
+    {% assign split = false %}
     {% include featured-tags.html %}
     {% endif %}
 
@@ -24,7 +25,6 @@
             {% include sns.html %}
         </div>
     </section>
-    {% assign spilt = true %}
     {% if site.friends %}
     {% include friends.html %}
     {% endif %}

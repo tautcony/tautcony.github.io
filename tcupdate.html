@@ -5,17 +5,17 @@
 	<meta name='BaseUrl'				content='7xsjmh.com2.z0.glb.clouddn.com'>
 	<meta name='ChapterTool'			content='2.33.33.1'>
 	<meta name='AutoTorrentInspection'	content='1.0.4.2'>
-	<meta name='RPChecker'				content='1.0.4.0'>
+	<meta name='RPChecker'				content='1.0.4.2'>
 	<meta name="theme-color" content="#000000">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
-    <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+    <link rel="amphtml" href="tcupdate.amp.html">
+    <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
 	<style> @import url('css/tcupdate.css'); </style>
 	<link href="https://cdn.bootcss.com/simple-line-icons/2.2.3/css/simple-line-icons.css" rel="stylesheet"/>
 	<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js"></script>
 	<script>if (!window.Vue) document.write('<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js">\x3C/script>')</script>
 </head>
 <body>
-	<template></template>
 	<section id="tool-downloads" class="general">
 		<h2>TC Tools Downloads</h2>
 		<p>The original intention of these tools is make it easier for encoder to do their work. Although my coding skill isn't very high, I hope what I have done can make some help for them.</p>
@@ -61,7 +61,7 @@
 		<h3>RPChecker history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_rp">
 			<li v-for="r in (releases_rp.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" href="'http://'+r.site+'/rpchecker/RPChecker.v'+r.version+'.7z'" target="_blank"> RPChecker {{r.version}} </a>({{r.date}})
+				<icon class="icon-cloud-download"></icon><a class="link" v-bind:href="'http://'+r.site+'/rpchecker/RPChecker.v'+r.version+'.7z'" target="_blank"> RPChecker {{r.version}} </a>({{r.date}})
 			</li>
 		</ul></div>
 	</section>

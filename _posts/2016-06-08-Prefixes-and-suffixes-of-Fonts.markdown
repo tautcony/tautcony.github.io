@@ -4,6 +4,7 @@ title:      "日文字体前缀与后缀的意义"
 subtitle:   ""
 date:       2016-06-08
 author:     "TautCony"
+catalog:    true
 header-img: "img/post-bg-default.png"
 image:
   credit: himawari-8

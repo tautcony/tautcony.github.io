@@ -56,6 +56,7 @@ particle404: true                       # enable a particle effect 404 page
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
 gems: [jekyll-paginate, jekyll-sitemap]
+#octopress-minify-html
 
 
 
@@ -69,13 +70,7 @@ kramdown:
 
 
 # Disqus settings
-#disqus_username: _your_disqus_short_name_
-
-# Duoshuo settings
-duoshuo_username: tautcony
-# Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: false                     # set to false if you want to use Comment without Sharing
-
+disqus_username: tautcony-blog
 
 
 # Analytics settings

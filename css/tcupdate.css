@@ -1,217 +1,214 @@
 @import url(fonts.css);
 html {
-	font-size: 16px;
+  font-size: 16px;
 }
 a {
-	color: black;
-	background-image: linear-gradient(white 50%, #888 50%);
-	background-position: 0px 1.075em;
-	background-repeat: repeat-x;
-	background-size: 2px 2px;
-	text-decoration: none;
-	text-shadow: white -1px 0px 0px, white 1px 0px 0px;
+  background-image: linear-gradient(white 50%, #888888 50%);
+  background-position: 0px 1.075em;
+  background-repeat: repeat-x;
+  background-size: 2px 2px;
+  color: black;
+  text-decoration: none;
+  text-shadow: white -1px 0px 0px, white 1px 0px 0px;
 }
 a:hover {
-	background-image: linear-gradient(white 50%, black 50%);
+  background-image: linear-gradient(white 50%, black 50%);
 }
-html, body {
-	font-family: "IosevkaWEB", monospace;
+html,
+body {
+  font-family: "IosevkaWEB", monospace;
 }
-pre, code {
-	font-family: inherit;
+pre,
+code {
+  font-family: inherit;
 }
 body {
-	margin: 0;
-	padding: 0;
-	line-height: 1.5;
-	-moz-font-feature-settings: "locl";
-	-ms-font-feature-settings: "locl";
-	-webkit-font-feature-settings: "locl";
-	font-feature-settings: "locl";
+  -moz-font-feature-settings: "locl";
+  -ms-font-feature-settings: "locl";
+  -webkit-font-feature-settings: "locl";
+  font-feature-settings: "locl";
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 p {
-	margin: 1rem 0;
+  margin: 1rem 0;
 }
-
 section {
-	max-width: 50rem;
-	padding: 4rem 1rem;
-	margin: 0 auto;
+  margin: 0 auto;
+  max-width: 50rem;
+  padding: 4rem 1rem;
 }
-
 section#introduction h1 {
-	text-align: center;
-	font-size: 10rem;
-	font-weight: 700;
+  font-size: 10rem;
+  font-weight: 700;
+  text-align: center;
 }
 #downlinks {
-	display: flex;
-	justify-content: center;
-}
-
-@media screen and (max-device-width: 768px) {
-    #downlinks {
-        display: block;
-    }
-    #downlinks a {
-        margin: 0.5em auto !important;
-    }
-    section#tool-downloads h2 {
-        font-size: 1.7rem;
-    }
-}
-
-@media all and (-ms-high-contrast:none) {
-  *::-ms-backdrop, #downlinks { margin-left: -5em; } /* IE11 */
+  display: flex;
+  justify-content: center;
 }
 #downlinks a {
-	display: block;
-	flex: none;
-	width: 10em;
-	margin: 0.5em;
-	padding: 0.5em 0.5em 0.5em 3em;
-	background: black;
-	text-shadow: none;
-	text-align: left;
-	color: white;
-	position: relative;
-	line-height: 1em;
-}
-#downlinks a.wide {
-	width: 12em;
-}
-#downlinks a.narrow {
-	width: 4em;
+  background: black;
+  color: white;
+  display: block;
+  flex: none;
+  line-height: 1em;
+  margin: 0.5em;
+  padding: 0.5em 0.5em 0.5em 3em;
+  position: relative;
+  text-align: left;
+  text-shadow: none;
+  width: 10em;
 }
 #downlinks a:hover {
-	background: #333;
+  background: #333333;
 }
 #downlinks a icon {
-	position: absolute;
-	display: block;
-	font-size: 1.5em;
-	top: 50%;
-	margin-top: -0.5em;
-	left: 0.5em;
+  display: block;
+  font-size: 1.5em;
+  left: 0.5em;
+  margin-top: -0.5em;
+  position: absolute;
+  top: 50%;
 }
 #downlinks a span {
-	display: block;
-	font-size: 60%;
+  display: block;
+  font-size: 60%;
 }
-
-section + section:before {
-	content: ' ';
-	display: block;
-	height: 1px;
-	background: #eee;
-	position: absolute;
-	left: 0;
-	right: 0;
-	margin-top: -4rem;
+#downlinks a.wide {
+  width: 12em;
 }
-section#descriptions {
-	display: flex;
-	justify-content: space-between;
+#downlinks a.narrow {
+  width: 4em;
 }
-section#descriptions h2 {
-	margin: 3rem 0 0.5rem;
+@media screen and (max-device-width: 768px) {
+  #downlinks {
+    display: block;
+  }
+  #downlinks a {
+    margin: 0.5em auto !important;
+  }
+  section#tool-downloads h2 {
+    font-size: 1.7rem;
+  }
 }
-section#descriptions h2 + p {
-	margin-top: 0.5rem;
-}
-section#descriptions ul.col {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	flex: none;
-	width: calc((100% - 2rem) / 2);
-}
-section#descriptions ul.col > li:first-child h2 {
-	margin-top: 0
-}
-
-#copyright-line {
-	opacity: 0.4;
-	text-align: center;
-	font-size: 0.8rem;
-    margin-bottom: 1em;
+@media all and (-ms-high-contrast: none) {
+  *::-ms-backdrop,
+  #downlinks {
+    margin-left: -5em;
+  }
+  /* IE11 */
 }
 section#tool-downloads {
-	max-width: 36rem;
+  max-width: 36rem;
 }
 section#tool-downloads h2 {
-	font-weight: 200;
-	text-align: center;
-	font-size: 2rem;
-	margin-top: 0;
-	margin-bottom: 3rem;
+  font-size: 1.7rem;
+  font-size: 2rem;
+  font-weight: 200;
+  margin-bottom: 3rem;
+  margin-top: 0;
+  text-align: center;
 }
 section#tool-downloads h3 {
-	font-weight: normal;
-	font-size: 1em;
-	margin-top: 8rem;
-	text-align: center;
+  font-size: 1em;
+  font-weight: normal;
+  margin-top: 8rem;
+  text-align: center;
 }
-section#tool-downloads h2:before, section#tool-downloads h2:after, section#tool-downloads h3:before, section#tool-downloads h3:after {
-	content: '';
-	display: inline-block;
-	border-bottom: 1px solid #ddd;
-	width: 1em;
-	margin: 0 0.2em;
-	vertical-align: 0.3em;
-}
-
 section#tool-downloads li a.link {
-	font-weight: bold;
+  font-weight: bold;
 }
-
 section#tool-downloads .all-releases-w {
-	text-align: center;
+  text-align: center;
 }
-
 section#tool-downloads #all-releases_ct {
-	display: inline-block;
-	max-width: 30rem;
-	list-style: none;
-	margin: 0;
-	padding: 0;
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  max-width: 30rem;
+  padding: 0;
 }
 section#tool-downloads #all-releases_ct li {
-	padding: 0.5em 0;
-	text-align: left;
+  padding: 0.5em 0;
+  text-align: left;
 }
 section#tool-downloads #all-releases_ct li icon {
-	vertical-align: -0.1em;
+  vertical-align: -0.1em;
 }
-
-
 section#tool-downloads #all-releases_ati {
-	display: inline-block;
-	max-width: 30rem;
-	list-style: none;
-	margin: 0;
-	padding: 0;
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  max-width: 30rem;
+  padding: 0;
 }
 section#tool-downloads #all-releases_ati li {
-	padding: 0.5em 0;
-	text-align: left;
+  padding: 0.5em 0;
+  text-align: left;
 }
 section#tool-downloads #all-releases_ati li icon {
-	vertical-align: -0.1em;
+  vertical-align: -0.1em;
 }
-
-
 section#tool-downloads #all-releases_rp {
-	display: inline-block;
-	max-width: 30rem;
-	list-style: none;
-	margin: 0;
-	padding: 0;
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  max-width: 30rem;
+  padding: 0;
 }
 section#tool-downloads #all-releases_rp li {
-	padding: 0.5em 0;
-	text-align: left;
+  padding: 0.5em 0;
+  text-align: left;
 }
 section#tool-downloads #all-releases_rp li icon {
-	vertical-align: -0.1em;
+  vertical-align: -0.1em;
+}
+section + section:before {
+  background: #eeeeee;
+  content: ' ';
+  display: block;
+  height: 1px;
+  left: 0;
+  margin-top: -4rem;
+  position: absolute;
+  right: 0;
+}
+section#descriptions {
+  display: flex;
+  justify-content: space-between;
+}
+section#descriptions h2 {
+  margin: 3rem 0 0.5rem;
+}
+section#descriptions h2 + p {
+  margin-top: 0.5rem;
+}
+section#descriptions ul.col {
+  flex: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: calc(49%);
+}
+section#descriptions ul.col > li:first-child h2 {
+  margin-top: 0;
+}
+#copyright-line {
+  font-size: 0.8rem;
+  margin-bottom: 1em;
+  opacity: 0.4;
+  text-align: center;
+}
+section#tool-downloads h2:before,
+section#tool-downloads h2:after,
+section#tool-downloads h3:before,
+section#tool-downloads h3:after {
+  border-bottom: 1px solid #dddddd;
+  content: '';
+  display: inline-block;
+  margin: 0 0.2em;
+  vertical-align: 0.3em;
+  width: 1em;
 }

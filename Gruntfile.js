@@ -22,7 +22,8 @@ module.exports = function(grunt) {
                     paths: ["css"]
                 },
                 files: {
-                    "css/<%= pkg.name %>.css": "less/<%= pkg.name %>.less"
+                    "css/<%= pkg.name %>.css": "less/<%= pkg.name %>.less",
+                    "css/tcupdate.css": "less/tcupdate.less"
                 }
             },
             minified: {
@@ -32,7 +33,8 @@ module.exports = function(grunt) {
                     compress: true
                 },
                 files: {
-                    "css/<%= pkg.name %>.min.css": "less/<%= pkg.name %>.less"
+                    "css/<%= pkg.name %>.min.css": "less/<%= pkg.name %>.less",
+                    "css/tcupdate.min.css": "less/tcupdate.less"
                 }
             }
         },

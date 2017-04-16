@@ -72,6 +72,7 @@ var releases_data = {
         {version: '1.0.1.0', site: DEFAULT, date: 'Dec 29, 2015'}
     ],
     releases_rp: [
+        {version: '1.0.4.3', site: DEFAULT, date: 'Apr 16, 2017'},
         {version: '1.0.4.2', site: DEFAULT, date: 'Mar 06, 2017'},
         {version: '1.0.4.0', site: DEFAULT, date: 'Feb 18, 2017'},
         {version: '1.0.3.3', site: DEFAULT, date: 'Sep 25, 2016'},

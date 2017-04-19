@@ -1,6 +1,22 @@
 @import url(fonts.css);
 html {
-  font-size: 16px;
+  font-size: 1em;
+}
+body {
+  -moz-font-feature-settings: "locl";
+  -ms-font-feature-settings: "locl";
+  -webkit-font-feature-settings: "locl";
+  font-feature-settings: "locl";
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  font-family: "IosevkaWEB", monospace;
+}
+p {
+  margin: 1rem 0;
 }
 a {
   background-image: linear-gradient(white 50%, #888888 50%);
@@ -14,35 +30,99 @@ a {
 a:hover {
   background-image: linear-gradient(white 50%, black 50%);
 }
-html,
-body {
-  font-family: "IosevkaWEB", monospace;
-}
 pre,
 code {
   font-family: inherit;
 }
-body {
-  -moz-font-feature-settings: "locl";
-  -ms-font-feature-settings: "locl";
-  -webkit-font-feature-settings: "locl";
-  font-feature-settings: "locl";
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
-}
-p {
-  margin: 1rem 0;
-}
 section {
   margin: 0 auto;
-  max-width: 50rem;
+  max-width: 40rem;
   padding: 4rem 1rem;
 }
-section#introduction h1 {
-  font-size: 10rem;
-  font-weight: 700;
+section + section:before {
+  background: #eeeeee;
+  content: ' ';
+  display: block;
+  height: 1px;
+  left: 0;
+  margin-top: -4rem;
+  position: absolute;
+  right: 0;
+}
+section#descriptions {
+  display: flex;
+  justify-content: space-between;
+}
+section#descriptions h2 {
+  font-weight: bold !important;
+  margin: 3rem 0 0.5rem;
+}
+section#descriptions h2 + p {
+  margin-top: 0.5rem;
+}
+section#descriptions ul.col {
+  flex: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: calc(49%);
+}
+section#descriptions ul.col > li:first-child h2 {
+  margin-top: 0;
+}
+section#tool-downloads h2 {
+  font-size: 1.7rem;
+  font-size: 2rem;
+  font-weight: 200;
+  margin-bottom: 3rem;
+  margin-top: 0;
   text-align: center;
+}
+section#tool-downloads h2:before,
+section#tool-downloads h2:after {
+  border-bottom: 1px solid #dddddd;
+  content: '';
+  display: inline-block;
+  margin: 0 0.2em;
+  vertical-align: 0.3em;
+  width: 1em;
+}
+section#tool-downloads h3 {
+  font-size: 1em;
+  font-weight: normal;
+  margin-top: 8rem;
+  text-align: center;
+}
+section#tool-downloads h3:before,
+section#tool-downloads h3:after {
+  border-bottom: 1px solid #dddddd;
+  content: '';
+  display: inline-block;
+  margin: 0 0.2em;
+  vertical-align: 0.3em;
+  width: 1em;
+}
+section#tool-downloads li a.link {
+  font-weight: bold;
+}
+section#tool-downloads .all-releases-w {
+  text-align: center;
+}
+section#tool-downloads .all-releases-w li {
+  padding: 0.5em 0;
+  text-align: left;
+}
+section#tool-downloads .all-releases-w li icon {
+  vertical-align: -0.1em;
+}
+section#tool-downloads #all-releases_ct,
+section#tool-downloads #all-releases_ati,
+section#tool-downloads #all-releases_rp {
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  max-width: 30rem;
+  padding: 0;
 }
 #downlinks {
   display: flex;
@@ -64,6 +144,12 @@ section#introduction h1 {
 #downlinks a:hover {
   background: #333333;
 }
+#downlinks a.wide {
+  width: 12em;
+}
+#downlinks a.narrow {
+  width: 4em;
+}
 #downlinks a icon {
   display: block;
   font-size: 1.5em;
@@ -76,12 +162,6 @@ section#introduction h1 {
   display: block;
   font-size: 60%;
 }
-#downlinks a.wide {
-  width: 12em;
-}
-#downlinks a.narrow {
-  width: 4em;
-}
 @media screen and (max-device-width: 768px) {
   #downlinks {
     display: block;
@@ -90,7 +170,13 @@ section#introduction h1 {
     margin: 0.5em auto !important;
   }
   section#tool-downloads h2 {
-    font-size: 1.7rem;
+    font-size: 1.7rem !important;
+  }
+  section#tool-downloads h3 {
+    font-size: 0.9rem !important;
+  }
+  .all-releases-w li {
+    font-size: 0.8em !important;
   }
 }
 @media all and (-ms-high-contrast: none) {
@@ -100,115 +186,9 @@ section#introduction h1 {
   }
   /* IE11 */
 }
-section#tool-downloads {
-  max-width: 36rem;
-}
-section#tool-downloads h2 {
-  font-size: 1.7rem;
-  font-size: 2rem;
-  font-weight: 200;
-  margin-bottom: 3rem;
-  margin-top: 0;
-  text-align: center;
-}
-section#tool-downloads h3 {
-  font-size: 1em;
-  font-weight: normal;
-  margin-top: 8rem;
-  text-align: center;
-}
-section#tool-downloads li a.link {
-  font-weight: bold;
-}
-section#tool-downloads .all-releases-w {
-  text-align: center;
-}
-section#tool-downloads #all-releases_ct {
-  display: inline-block;
-  list-style: none;
-  margin: 0;
-  max-width: 30rem;
-  padding: 0;
-}
-section#tool-downloads #all-releases_ct li {
-  padding: 0.5em 0;
-  text-align: left;
-}
-section#tool-downloads #all-releases_ct li icon {
-  vertical-align: -0.1em;
-}
-section#tool-downloads #all-releases_ati {
-  display: inline-block;
-  list-style: none;
-  margin: 0;
-  max-width: 30rem;
-  padding: 0;
-}
-section#tool-downloads #all-releases_ati li {
-  padding: 0.5em 0;
-  text-align: left;
-}
-section#tool-downloads #all-releases_ati li icon {
-  vertical-align: -0.1em;
-}
-section#tool-downloads #all-releases_rp {
-  display: inline-block;
-  list-style: none;
-  margin: 0;
-  max-width: 30rem;
-  padding: 0;
-}
-section#tool-downloads #all-releases_rp li {
-  padding: 0.5em 0;
-  text-align: left;
-}
-section#tool-downloads #all-releases_rp li icon {
-  vertical-align: -0.1em;
-}
-section + section:before {
-  background: #eeeeee;
-  content: ' ';
-  display: block;
-  height: 1px;
-  left: 0;
-  margin-top: -4rem;
-  position: absolute;
-  right: 0;
-}
-section#descriptions {
-  display: flex;
-  justify-content: space-between;
-}
-section#descriptions h2 {
-  margin: 3rem 0 0.5rem;
-}
-section#descriptions h2 + p {
-  margin-top: 0.5rem;
-}
-section#descriptions ul.col {
-  flex: none;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: calc(49%);
-}
-section#descriptions ul.col > li:first-child h2 {
-  margin-top: 0;
-}
 #copyright-line {
   font-size: 0.8rem;
   margin-bottom: 1em;
   opacity: 0.4;
   text-align: center;
-}
-section#tool-downloads h2:before,
-section#tool-downloads h2:after,
-section#tool-downloads h3:before,
-section#tool-downloads h3:after {
-  border-bottom: 1px solid #dddddd;
-  content: '';
-  display: inline-block;
-  margin: 0 0.2em;
-  vertical-align: 0.3em;
-  width: 1em;
 }

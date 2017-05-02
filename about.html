@@ -97,8 +97,12 @@ function decode(str) {
     document.addEventListener('DOMContentLoaded',function() {
         var qrcode = window['qrcode'];
         var donate = window['donate'];
-        donate.addEventListener('mouseover', function() { qrcode.src = decode(qr_url); });
-        donate.addEventListener('mouseout' , function() { setTimeout(function() { qrcode.src = ""; }, 200); });
+        donate.addEventListener('mouseover', function() {
+            setTimeout(function() { qrcode.src = decode(qr_url); }, 201);
+        });
+        donate.addEventListener('mouseout' , function() {
+            setTimeout(function() { qrcode.src = ""; }, 201);
+        });
     }, false);
 })();
 </script>

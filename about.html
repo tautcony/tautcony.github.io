@@ -61,27 +61,44 @@ header-img: "img/about-bg.jpg"
 
 <!-- Handle QrCode Hover -->
 <style>
-.qr-container { }
-#qrcode { width: 0; height: 0; opacity: 0.0; float: left; padding-top: 25px; z-index: -1993; transition: all 200ms ease-in-out; }
+#qrcode { width: 350px; height: 0; opacity: 0.0; float: left; padding-top: 25px; z-index: -1993; transition: all 200ms ease-in-out; }
 #donate { float: left; opacity: 0.5; margin-bottom: 10px; }
 #donate:hover + #qrcode { z-index: 1250; opacity: 1.0; width: 350px; height: 350px; }
 </style>
 
 <!-- Handle QrCode Loading -->
 <script type="text/javascript">
-(function() {
-    var qrcode = document.getElementById("qrcode");
-    var qr_url = "/#i#m#g#/#a#l#i#p#a#y#_#q#r#.#p#n#g".replace(/#/g, "");
+var cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
 
-    document.addEventListener('DOMContentLoaded', function() {
-    $("#donate").hover(
-        function() {
-            qrcode.src = qr_url;
-        }, function() {
-            setTimeout(function() {
-                qrcode.src = "";
-            }, 200);
-        });
+function decode_block(str, offset) {
+    var input = [0,0,0];
+    for (var i = offset; i < offset + 4; ++i) {
+        var c = str.charCodeAt(i);
+        var v = (c>=43&&c<=122)?cd64[c-43]==='$'?0:cd64.charCodeAt(c-43)-61:0;
+        input[i-offset] = v-1;
+    }
+    return String.fromCharCode(
+        ((0xff & input[0] << 2) | input[1] >> 4),
+        ((0xff & input[1] << 4) | input[2] >> 2),
+        ((0xc0 & input[2] << 6) | input[3] >> 0)
+        );
+}
+
+function decode(str) {
+    ret = "";
+    for (var i = 0; i < str.length; i += 4) {
+        ret += decode_block(str, i);
+    }
+    return ret;
+}
+
+(function() {
+    var qr_url = 'L2ltZy9hbGlwYXlfcXIucG5n';
+    document.addEventListener('DOMContentLoaded',function() {
+        var qrcode = window['qrcode'];
+        var donate = window['donate'];
+        donate.addEventListener('mouseover', function() { qrcode.src = decode(qr_url); });
+        donate.addEventListener('mouseout' , function() { setTimeout(function() { qrcode.src = ""; }, 200); });
     }, false);
 })();
 </script>
@@ -97,8 +114,7 @@ header-img: "img/about-bg.jpg"
             var opt = document.createElement("option");
             opt.value = i;
             opt.innerHTML = lang[i].title;
-            if(currentLanguage.indexOf(lang[i].lang) >= 0)
-            {
+            if(currentLanguage.indexOf(lang[i].lang) >= 0) {
                 currentLanguageIndex = i;
                 console.log(currentLanguage);
             }

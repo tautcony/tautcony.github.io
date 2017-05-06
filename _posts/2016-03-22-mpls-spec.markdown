@@ -158,6 +158,19 @@ if (isMultiAngle == 1) //skip multi-angle
 
 完整代码详见[mplsData.cs](https://github.com/tautcony/ChapterTool/blob/master/Time_Shift/Util/mplsData.cs)
 
+
+-----
+
+随着UHD的蓝精灵2宣告被破解，我之前的这个补丁摞补丁的代码终于撑不住了，于是就对parser按照spec展开了重写。
+
+相较于以前两眼摸黑，这回就接近于纯体力活了，unlimited class define work（雾
+
+除了`ExtensionData`以外的所有结果都恰当地读了出来。也发现了version3与version2之间的区别，`STNTable`中的元素尾部多了些padding，以往是没有的，于是旧代码中默认每个元素之间紧贴，读出了一堆0。
+
+说起来在这个<ruby>时间点<rt>2017-05-06</rt></ruby>还没`[几个|有]`工具支持UHD的的章节读取呢。
+
+乘机把ChapterTool的一部分历史遗留代码重构了一下，稍微工整一点了。嘛，就算用wpf重写一遍，也没什么很大的好处，就继续WinForm丑下去吧（雾
+
 #### 著作权声明
 
 作者 TautCony，首次发布于 [TC Blog](http://tautcony.github.io/)，转载请保留以上链接

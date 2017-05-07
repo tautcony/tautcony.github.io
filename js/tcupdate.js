@@ -2,6 +2,7 @@ var DEFAULT = '7xsjmh.com2.z0.glb.clouddn.com';
 
 var releases_data = {
     releases_ct: [
+        {version: '2.33.33.3', site: DEFAULT, date: 'May 7, 2017'},
         {version: '2.33.33.2', site: DEFAULT, date: 'May 4, 2017'},
         {version: '2.33.33.1', site: DEFAULT, date: 'Jan 22, 2017'},
         {version: '2.33.32.33', site: DEFAULT, date: 'Sep 10, 2016'},

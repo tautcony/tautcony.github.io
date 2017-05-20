@@ -13,20 +13,14 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div id="huxblog_navbar">
+        <div id="blog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{{ site.baseurl }}/">Home</a>
-                    </li>
+                    <li><a href="{{ site.baseurl }}/">Home</a></li>
                     {% for page in site.pages %}{% if page.title %}
-                    <li>
-                        <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-                    </li>
+                    <li><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></li>
                     {% endif %}{% endfor %}
-                    <li>
-                        <a href="/tcupdate.html">Tool</a>
-                    </li>
+                    <li><a href="/tcupdate.html">Tool</a></li>
                 </ul>
             </div>
         </div>
@@ -38,34 +32,34 @@
     // Drop Bootstarp low-performance Navbar
     // Use customize navbar with high-quality material design animation
     // in high-perf jank-free CSS3 implementation
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
+    var $body     = document.body;
+    var $toggle   = document.querySelector('.navbar-toggle');
+    var $navbar   = document.querySelector('#blog_navbar');
     var $collapse = document.querySelector('.navbar-collapse');
 
     var __Nav__ = {
-        close: function(){
+        close: function() {
             $navbar.className = " ";
             // wait until animation end.
-            setTimeout(function(){
+            setTimeout(function() {
                 // prevent frequently toggle
                 if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
+                    $collapse.style.height = "0px";
                 }
             },400)
         },
-        open: function(){
-            $collapse.style.height = "auto"
+        open: function() {
+            $collapse.style.height = "auto";
             $navbar.className += " in";
         }
-    }
+    };
 
     // Bind Event
     $toggle.addEventListener('click', function(e){
         if ($navbar.className.indexOf('in') > 0) {
-            __Nav__.close()
-        }else{
-            __Nav__.open()
+            __Nav__.close();
+        } else {
+            __Nav__.open();
         }
     })
 
@@ -76,11 +70,11 @@
      * $toggle/$collapse will break global delegation.
      *
      * Instead, we use a 'e.target' filter to prevent handler
-     * added to document close HuxNav.
+     * added to document close Nav.
      *
      * Also, we use 'click' instead of 'touchstart' as compromise
      */
-    document.addEventListener('click', function(e){
+    document.addEventListener('click', function(e) {
         if(e.target == $toggle) return;
         if(e.target.className == 'icon-bar') return;
         __Nav__.close();

@@ -51,6 +51,7 @@ exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","LICEN
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
 MathJax: true
 particle404: true                       # enable a particle effect 404 page
+service-worker: false                   # need an https to enable it
 
 
 # Gems

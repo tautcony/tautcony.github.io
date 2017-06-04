@@ -223,7 +223,11 @@ samp {
 .postlist-container {
   margin-bottom: 15px;
 }
+.post-container {
+  /* Hux make all img responsible in post-container */
+}
 .post-container a {
+  display: inline-block;
   color: #337ab7;
 }
 .post-container a:hover,
@@ -305,6 +309,12 @@ samp {
   color: #808080;
   font-weight: normal;
   letter-spacing: 0.5px;
+}
+.post-container img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5em auto 1.6em auto;
 }
 @media only screen and (max-width: 767px) {
   /**
@@ -942,13 +952,6 @@ img::-moz-selection {
   }
 }
 /* Tags support End*/
-/* Hux make all img responsible in post-container */
-.post-container img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 1.5em auto 1.6em auto;
-}
 /* Hux Optimize UserExperience */
 .navbar-default .navbar-toggle:focus,
 .navbar-default .navbar-toggle:hover {
@@ -1091,20 +1094,19 @@ a .heimu,
   padding: 10px 15px;
   background-color: rgba(34, 34, 34, 0.5);
   color: #fff;
-  font-size: 12px;
   font-size: .75rem;
   text-align: right;
   -webkit-border-top-right-radius: 3px;
-  -webkit-border-bottom-right-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -webkit-border-top-left-radius: 3px;
   -moz-border-radius-topright: 3px;
-  -moz-border-radius-bottomright: 0;
-  -moz-border-radius-bottomleft: 0;
-  -moz-border-radius-topleft: 3px;
   border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-radius-bottomright: 0;
   border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
   border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
@@ -1124,4 +1126,58 @@ a .heimu,
   .image-credit {
     max-width: 960px;
   }
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+::-webkit-scrollbar-button:start {
+  width: 10px;
+  height: 10px;
+  background: url(/img/scrollbar_arrow.png) no-repeat 0 0;
+}
+::-webkit-scrollbar-button:start:hover {
+  background: url(/img/scrollbar_arrow.png) no-repeat -15px 0;
+}
+::-webkit-scrollbar-button:start:active {
+  background: url(/img/scrollbar_arrow.png) no-repeat -30px 0;
+}
+::-webkit-scrollbar-button:end {
+  width: 10px;
+  height: 10px;
+  background: url(/img/scrollbar_arrow.png) no-repeat 0 -18px;
+}
+::-webkit-scrollbar-button:end:hover {
+  background: url(/img/scrollbar_arrow.png) no-repeat -15px -18px;
+}
+::-webkit-scrollbar-button:end:active {
+  background: url(/img/scrollbar_arrow.png) no-repeat -30px -18px;
+}
+::-webkit-scrollbar-button:end:decrement,
+::-webkit-scrollbar-button:start:increment {
+  display: none;
+}
+::-webkit-scrollbar-corner {
+  display: block;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent;
+}
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-track {
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent;
+}
+::-webkit-scrollbar-track:hover {
+  background-color: rgba(0, 0, 0, 0.15);
 }

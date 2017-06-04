@@ -3,9 +3,9 @@ html {
   font-size: 1em;
 }
 body {
+  -webkit-font-feature-settings: "locl";
   -moz-font-feature-settings: "locl";
   -ms-font-feature-settings: "locl";
-  -webkit-font-feature-settings: "locl";
   font-feature-settings: "locl";
   line-height: 1.5;
   margin: 0;
@@ -45,9 +45,9 @@ section + section:before {
   display: block;
   height: 1px;
   left: 0;
+  right: 0;
   margin-top: -4rem;
   position: absolute;
-  right: 0;
 }
 section#descriptions {
   display: flex;
@@ -72,7 +72,6 @@ section#descriptions ul.col > li:first-child h2 {
 }
 section#tool-downloads h2 {
   font-size: 1.7rem;
-  font-size: 2rem;
   font-weight: 200;
   margin-bottom: 3rem;
   margin-top: 0;
@@ -183,8 +182,8 @@ section#tool-downloads #all-releases_rp {
   *::-ms-backdrop,
   #downlinks {
     margin-left: -5em;
+    /* IE11 */
   }
-  /* IE11 */
 }
 #copyright-line {
   font-size: 0.8rem;

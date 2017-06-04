@@ -2,7 +2,7 @@
  * sw.js
  * ===========================================================
  * Copyright 2016 @huxpro
- * Licensed under Apache 2.0 
+ * Licensed under Apache 2.0
  * Register service worker.
  * ========================================================== */
 
@@ -43,7 +43,7 @@ const isNavigationReq = (req) => (req.mode === 'navigate' || (req.method === 'GE
 
 // The Util Function to detect if a req is end with extension
 // Accordin to Fetch API spec <https://fetch.spec.whatwg.org/#concept-request-destination>
-// Any HTML's navigation has consistently mode="navigate" type="" and destination="document" 
+// Any HTML's navigation has consistently mode="navigate" type="" and destination="document"
 // including requesting an img (or any static resources) from URL Bar directly.
 // So It ends up with that regExp is still the king of URL routing ;)
 // P.S. An url.pathname has no '.' can not indicate it ends with extension (e.g. /api/version/1.2/)
@@ -101,7 +101,7 @@ self.addEventListener('activate',  event => {
 /**
  *  @Functional Fetch
  *  All network requests are being intercepted here.
- * 
+ *
  *  void respondWith(Promise<Response> r);
  */
 self.addEventListener('fetch', event => {
@@ -129,7 +129,7 @@ self.addEventListener('fetch', event => {
 
     // Call respondWith() with whatever we get first.
     // If the fetch fails (e.g disconnected), wait for the cache.
-    // If there’s nothing in cache, wait for the fetch. 
+    // If there’s nothing in cache, wait for the fetch.
     // If neither yields a response, return offline pages.
     event.respondWith(
       Promise.race([fetched.catch(_ => cached), cached])

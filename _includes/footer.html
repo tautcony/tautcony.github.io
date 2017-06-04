@@ -17,9 +17,9 @@
 <!-- Goto Top -->
 <div id="gotop" style="display:none;"></div>
 <!-- jQuery -->
-<script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="{{ "/js/tc-blog.min.js " | prepend: site.baseurl }}"></script>
 <!-- Service Worker -->
@@ -88,8 +88,8 @@
     // toggle side catalog
     $(".catalog-toggle").click((function(e){
         e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
+        $('.side-catalog').toggleClass("fold");
+    }));
 
     /*
      * Doc: https://github.com/davist11/jQuery-One-Page-Nav

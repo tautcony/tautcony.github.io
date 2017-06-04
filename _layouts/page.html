@@ -25,7 +25,7 @@ layout: default
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 postlist-container">
             {{ content }}
         </div>
-        {% include no-sidebar.html %}
+        {% include sidebar-disable.html %}
 
         {% else %}
 
@@ -33,7 +33,7 @@ layout: default
     	<div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 postlist-container">
     		{{ content }}
     	</div>
-        {% include sidebar.html %}
+        {% include sidebar-enable.html %}
         {% endif %}
 	</div>
 </div>

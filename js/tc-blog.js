@@ -36,9 +36,9 @@ $(document).ready(function() {
 // responsive embed videos
 $(document).ready(function() {
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-    $('iframe[src*="youtube.com"]').addClass('embed-responsive-item');
+    $('iframe[src*="youtube.com"]').addClass("embed-responsive-item");
     $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-    $('iframe[src*="vimeo.com"]').addClass('embed-responsive-item');
+    $('iframe[src*="vimeo.com"]').addClass("embed-responsive-item");
 });
 
 // Navigation Scripts to Show Header on Scroll-Up
@@ -47,62 +47,64 @@ jQuery(document).ready(function ($) {
 
     //primary navigation slide-in effect
     if ($(window).width() > MQL) {
-        var headerHeight = $('.navbar-custom').height(),
-            bannerHeight = $('.intro-header .container').height();
+        var headerHeight = $(".navbar-custom").height(),
+            bannerHeight = $(".intro-header .container").height();
         $(window).scroll({ previousTop: 0 }, function (event) {
             var currentTop = $(window).scrollTop();
-            var $catalog = $('.side-catalog');
+            var $catalog = $(".side-catalog");
 
             //check if user is scrolling up by mouse or keyborad
             if (currentTop < event.data.previousTop) {
                 //if scrolling up...
-                if (currentTop > 0 && $('.navbar-custom').hasClass('is-fixed')) {
-                    $('.navbar-custom').addClass('is-visible');
+                if (currentTop > 0 && $(".navbar-custom").hasClass("is-fixed")) {
+                    $(".navbar-custom").addClass("is-visible");
                 } else {
-                    $('.navbar-custom').removeClass('is-visible is-fixed');
+                    $(".navbar-custom").removeClass("is-visible is-fixed");
                 }
             } else {
                 //if scrolling down...
-                $('.navbar-custom').removeClass('is-visible');
-                if (currentTop > headerHeight && !$('.navbar-custom').hasClass('is-fixed')) $('.navbar-custom').addClass('is-fixed');
+                $(".navbar-custom").removeClass("is-visible");
+                if (currentTop > headerHeight && !$(".navbar-custom").hasClass("is-fixed")) $(".navbar-custom").addClass("is-fixed");
             }
             event.data.previousTop = currentTop;
 
             //adjust the appearance of side-catalog
-            $catalog.show()
+            $catalog.show();
             if (currentTop > bannerHeight) {
-                $catalog.addClass('fixed')
+                $catalog.addClass("fixed");
             } else {
-                $catalog.removeClass('fixed')
+                $catalog.removeClass("fixed");
             }
         });
     }
 });
 
 function async(url, func) {
-    var script = document.createElement('script');
-    var orgins = document.getElementsByTagName('script')[0];
+    var script = document.createElement("script");
+    var orgins = document.getElementsByTagName("script")[0];
     script.src = url;
-    if (func) { script.addEventListener('load', function (e) { func(null, e); }, false); }
+    if (func) { script.addEventListener("load", function (e) { func(null, e); }, false); }
     orgins.parentNode.insertBefore(script, orgins);
 }
 
-async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
+async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function() {
     var $nav = document.querySelector("nav");
     if($nav) FastClick.attach($nav);
 });
 
 jQuery(document).ready(function ($) {
     // only load tagcloud.js in tag.html
-    if ($('#tag_cloud').length !== 0) {
-        async("/js/jquery.tagcloud.js", function() {
-            $.fn.tagcloud.defaults = {
-                //size: {start: 1, end: 1, unit: 'em'},
-                color: { start: '#bbbbee', end: '#0085a1' },
-            };
-            $('#tag_cloud a').tagcloud();
-        });
+    if ($("#tag_cloud").length === 0) {
+        return;
     }
+    async("/js/tagcloud.js",
+        function() {
+            var config = {
+                color: { start: "#bbbbee", end: "#0085a1" },
+                size: { start: 1, end: 1, unit: "em" }
+            };
+            TagCloud.tagcloud($("#tag_cloud a"), config);
+        });
 });
 
 jQuery(document).ready(function ($) {
@@ -111,22 +113,22 @@ jQuery(document).ready(function ($) {
     });
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
-            $('#gotop').fadeIn("fast");
+            $("#gotop").fadeIn("fast");
         } else {
-            $('#gotop').stop().fadeOut("fast"); 
+            $("#gotop").stop().fadeOut("fast");
         }
     });
 });
 
-jQuery(document).ready(function ($) {
+jQuery(document).ready(() => {
     var initalTitle = document.title;
     var gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_"   , "_(┐「ε:)_" , "_(:3」∠❀",
                        "_(:зゝ∠)_" , "_(:3」[＿]" , "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];
-    document.addEventListener('visibilitychange', function(event) {
+    document.addEventListener("visibilitychange", function(event) {
         if (!document.hidden) {
             document.title = initalTitle;
         } else {
-            document.title = gogatsubyou[Math.floor((Math.random() * gogatsubyou.length))] + " " + initalTitle;
+            document.title = gogatsubyou[Math.floor(Math.random() * gogatsubyou.length)] + " " + initalTitle;
         }
     });
 });

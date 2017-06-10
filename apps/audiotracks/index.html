@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 </head>
 <body class="page-brand">
 
-<main class="content" onchange="get_result();">
+<main class="content" onchange="AudioTrackCount.get_result();">
     <div class="content-header ui-content-header">
         <div class="container">
             <div class="row">
@@ -26,29 +26,29 @@
             <div class="card margin-bottom-no">
                 <div class="card-main">
                     <div class="card-inner" id="input-container">
-<!--
-<div class="form-group form-group-label margin-left">
-    <label class="floating-label" for="ui_track__select">Type</label>
-    <select class="form-control form-control-inline" id="ui_track__select">
-        <option></option>
-        <option value="PCM">PCM</option>
-        <option value="TrueHD">True-HD</option>
-        <option value="DTSHDMA">DTS-HD MA</option>
-        <option value="DTS">DTS</option>
-        <option value="AC3">AC-3</option>
-    </select>
-    <div class="checkbox checkbox-inline checkbox-adv margin-left">
-		<label for="ui_checkbox__">
-			<input class="access-hide" id="ui_checkbox__" name="ui_checkbox__" type="checkbox">
-            Commentary
-			<span class="checkbox-circle"></span>
-            <span class="checkbox-circle-check"></span>
-            <span class="checkbox-circle-icon icon">done</span>
-		</label>
-	</div>
-    <span id="result-container"></span>
-</div>
--->
+                        <!--
+                        <div class="form-group form-group-label margin-left">
+                            <label class="floating-label" for="ui_track__select">Type</label>
+                            <select class="form-control form-control-inline" id="ui_track__select">
+                                <option></option>
+                                <option value="PCM">PCM</option>
+                                <option value="TrueHD">True-HD</option>
+                                <option value="DTSHDMA">DTS-HD MA</option>
+                                <option value="DTS">DTS</option>
+                                <option value="AC3">AC-3</option>
+                            </select>
+                            <div class="checkbox checkbox-inline checkbox-adv margin-left">
+                                <label for="ui_checkbox__">
+                                    <input class="access-hide" id="ui_checkbox__" name="ui_checkbox__" type="checkbox">
+                                    Commentary
+                                    <span class="checkbox-circle"></span>
+                                    <span class="checkbox-circle-check"></span>
+                                    <span class="checkbox-circle-icon icon">done</span>
+                                </label>
+                            </div>
+                            <span id="result-container"></span>
+                        </div>
+                        -->
                     </div>
                 </div>
             </div>
@@ -57,34 +57,35 @@
             <div class="card margin-bottom-no">
                 <div class="card-main">
                     <div class="card-inner" id="group-container">
-                    <div class="mkv-container">
-                        <span class="label label-red">mkv</span>
-                        <span class="margin-right">: </span>
-                        <div id="mkv" class="checkbox-inline"></div>
-                    </div>
-                    <div class="mka-container">
-                        <span class="label label-red">mka</span>
-                        <span class="margin-right">: </span>
-                        <div id="mka" class="checkbox-inline mka"></div>
+                        <div class="mkv-container">
+                            <span class="label label-red">mkv</span>
+                            <span class="margin-right">: </span>
+                            <div id="mkv" class="checkbox-inline"></div>
+                        </div>
+                        <div class="mka-container">
+                            <span class="label label-red">mka</span>
+                            <span class="margin-right">: </span>
+                            <div id="mka" class="checkbox-inline mka"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="fbtn-container">
-		<div class="fbtn-inner">
-        <a class="fbtn fbtn-lg fbtn-red waves-attach waves-circle waves-effect"
-                onclick="remove_track(); get_result();">
-                <span class="icon">remove</span>
-            </a>
-            <a class="fbtn fbtn-lg waves-attach waves-circle waves-effect"
-                onclick="add_track(); get_result();">
-                <span class="icon">add</span>
-            </a>
-            <a class="fbtn fbtn-lg waves-attach waves-circle waves-effect"
-                onclick="get_result();">
-                <span class="icon">code</span>
-            </a>
+        <div class="fbtn-container">
+            <div class="fbtn-inner">
+                <a class="fbtn fbtn-lg fbtn-red waves-attach waves-circle waves-effect"
+                   onclick="AudioTrackCount.remove_track(); AudioTrackCount.get_result();">
+                    <span class="icon">remove</span>
+                </a>
+                <a class="fbtn fbtn-lg waves-attach waves-circle waves-effect"
+                   onclick="AudioTrackCount.add_track(); AudioTrackCount.get_result();">
+                    <span class="icon">add</span>
+                </a>
+                <a class="fbtn fbtn-lg waves-attach waves-circle waves-effect"
+                   onclick="AudioTrackCount.get_result();">
+                    <span class="icon">code</span>
+                </a>
+            </div>
         </div>
     </div>
 </main>
@@ -92,6 +93,6 @@
 <script src="../material/js/base.min.js"></script>
 <script src="../material/js/project.min.js"></script>
 <script src="script.js"></script>
-<script>add_track();</script>
+<script>AudioTrackCount.add_track();</script>
 </body>
 </html>

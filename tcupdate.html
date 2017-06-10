@@ -1,4 +1,4 @@
-<!DOCTYPE html><html>
+﻿<!DOCTYPE html><html>
 <head>
 	<meta charset="utf-8">
 	<title>TautCony Tools Downloads</title>
@@ -8,15 +8,15 @@
 	<meta name='RPChecker'				content='1.0.4.3'>
 	<meta name="theme-color" content="#000000">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
-    <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
 	<style> @import url('css/tcupdate.min.css'); </style>
 	<link href="https://cdn.bootcss.com/simple-line-icons/2.2.3/css/simple-line-icons.css" rel="stylesheet"/>
 	<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js"></script>
-	<script>if (!window.Vue) document.write('<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js">\x3C/script>')</script>
+	<script>if (!window.Vue) document.write('<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js">\x3C/script>');</script>
 </head>
 <body>
 	<section id="tool-downloads" class="general">
-		<h2>TC Tools Downloads</h2>
+		<h2 style="font-family:Orbitron">TC Tools Downloads</h2>
 		<p>The original intention of these tools is make it easier for encoder to do their work. Although my coding skill isn't very high, I hope what I have done can make some help for them.</p>
 		<div id="downlinks">
 		<a class="middle" v-bind:href="'http://'+releases_ct[0].site+'/bin/ChapterTool.v'+releases_ct[0].version+'.exe'" target="_blank"><icon class="icon-cloud-download"></icon>ChapterTool<br>version {{(releases_ct[0].version)}}<span>Updated {{releases_ct[0].date}}.</span></a>
@@ -37,16 +37,16 @@
 			<a href="https://bitbucket.org/TautCony/auto-torrent-inspection">AutoTorrentInspection</a> is made for checking issues in such as file's naming, text file's encoding.
 		</p>
 		<p id="RPChecker">
-			<a href="https://bitbucket.org/TautCony/rp-checker">RPChecker</a> is made for comparing difference between two video clip by calculating the 
-            <a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> / 
-            <a href="https://en.wikipedia.org/wiki/Structural_similarity">SSIM</a> Value.
-            <div style="font-size: 13px;">
-                PS₁: You need to make sure 
-                <a href="https://www.python.org/downloads/" target="_blank"><b>Python</b></a>, 
-                <a href="https://github.com/vapoursynth/vapoursynth/releases" target="_blank"><b>VapourSynth</b></a>, 
-                <a href="https://www.dropbox.com/sh/3i81ttxf028m1eh/AAABkQn4Y5w1k-toVhYLasmwa" target="_blank"><b>L-SMASH-Works</b></a>, 
-                <a href="https://github.com/HomeOfVapourSynthEvolution/mvsfunc/releases" target="_blank"><b>mvsfunc</b></a> 
-                have been installed correctly before using the RPChecker.</br>
+			<a href="https://bitbucket.org/TautCony/rp-checker">RPChecker</a> is made for comparing difference between two video clip by calculating the
+			<a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> /
+			<a href="https://en.wikipedia.org/wiki/Structural_similarity">SSIM</a> Value.
+			<div style="font-size: 13px;">
+				PS₁: You need to make sure
+				<a href="https://www.python.org/downloads/" target="_blank"><b>Python</b></a>,
+				<a href="https://github.com/vapoursynth/vapoursynth/releases" target="_blank"><b>VapourSynth</b></a>,
+				<a href="https://www.dropbox.com/sh/3i81ttxf028m1eh/AAABkQn4Y5w1k-toVhYLasmwa" target="_blank"><b>L-SMASH-Works</b></a>,
+				<a href="https://github.com/HomeOfVapourSynthEvolution/mvsfunc/releases" target="_blank"><b>mvsfunc</b></a>
+				have been installed correctly before using the RPChecker.<br>
 				PS₂: The SSIM support is powered by FFmpeg, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank"><b>HERE</b></a>.
 			</div>
 		</p>
@@ -72,6 +72,6 @@
 		</ul></div>
 	</section>
 	<div id="copyright-line">Copyright (c) 2015-2017 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/">be5invis</a>.</div>
-	<script src='js/tcupdate.js'></script>
+	<script src="js/tcupdate.js"></script>
 </body>
 </html>

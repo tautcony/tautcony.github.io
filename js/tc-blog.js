@@ -97,11 +97,33 @@ jQuery(document).ready(function ($) {
     if ($("#tag_cloud").length === 0) {
         return;
     }
+    //Sort The Tag in dictionary order
+
+    function RemoveItemsByClassName(className) {
+        var used = document.getElementsByClassName(className);
+        for (var i = 0; i < used.length; ++i) {
+            used[i].remove();
+        }
+    }
+
+    var i;
+    var unsorted = document.getElementsByClassName("tag");
+    var tags = [];
+    for (i = 0; i < unsorted.length; i++) {
+        tags.push(unsorted[i]);
+    }
+    tags.sort();
+
+    RemoveItemsByClassName("tag");
+    var tagCloud = document.getElementById("tag_cloud");
+    for (i = 0; i < tags.length; i++) {
+        tagCloud.appendChild(tags[i]);
+    }
     async("/js/tagcloud.js",
         function() {
             var config = {
                 color: { start: "#bbbbee", end: "#0085a1" },
-                size: { start: 1, end: 1, unit: "em" }
+                size: { start: 1, end: 1.1, unit: "em" }
             };
             TagCloud.tagcloud($("#tag_cloud a"), config);
         });
@@ -120,7 +142,7 @@ jQuery(document).ready(function ($) {
     });
 });
 
-jQuery(document).ready(() => {
+jQuery(document).ready(function() {
     var initalTitle = document.title;
     var gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_"   , "_(┐「ε:)_" , "_(:3」∠❀",
                        "_(:зゝ∠)_" , "_(:3」[＿]" , "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];

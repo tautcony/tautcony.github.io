@@ -63,28 +63,3 @@ header-img: "img/tag-bg.jpg"
         </div>
     </div>
 </div>
-
-<!--Sort The Tag in dictionary order-->
-<script type="text/javascript">
-function RemoveItemByClassName(className) {
-    var used = document.getElementsByClassName(className);
-    while (used.length >= 1) {
-        for (var i = 0; i < used.length; ++i) {
-            used[i].remove();
-        }
-        used = document.getElementsByClassName(className);
-    }
-}
-var unSorted = document.getElementsByClassName('tag');
-var toBeSort = [];
-for (var i = 0; i < unSorted.length; i++) {
-    toBeSort.push(unSorted[i]);
-}
-toBeSort.sort();
-
-RemoveItemByClassName('tag');
-var tagCloud = document.getElementById('tag_cloud');
-for (var i = 0; i < toBeSort.length; i++) {
-   tagCloud.appendChild(toBeSort[i]);
-}
-</script>

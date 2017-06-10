@@ -1,0 +1,66 @@
+{
+  "lintOptions": {
+    "typeCheck": true
+  },
+  "extends": "tslint:all",
+  "rules": {
+    // Don't want these
+    "newline-before-return": false,
+    "no-parameter-properties": false,
+    "no-unused-variable": false,
+    "linebreak-style": [false],
+    "no-namespace": [false],
+    "max-line-length": [false],
+    "object-literal-sort-keys": false,
+
+    // TODO: Enable stricter options for these
+    "only-arrow-functions": [true, "allow-named-functions"],
+
+    // TODO: Enable these
+    "completed-docs": [false],
+    "no-magic-numbers": false,
+    "no-null-keyword": false,
+
+    "align":  [true],
+    "arrow-return-shorthand": true,
+    "comment-format": [true],
+    "cyclomatic-complexity": [true],
+    "no-any": true,
+    "no-inferred-empty-object-type": true,
+    "no-non-null-assertion": true,
+    "no-require-imports": true,
+    "no-unbound-method": true,
+    "no-unnecessary-callback-wrapper": true,
+    "no-unnecessary-type-assertion": true,
+    "no-unnecessary-qualifier": true,
+    "no-use-before-declare": true,
+    "no-void-expression": true,
+    "prefer-function-over-method": true,
+    "strict-type-predicates": true,
+    "triple-equals": true,
+    "typedef": [true],
+
+    "ban": [true,
+      ["describe", "only"],
+      ["it", "only"]
+    ],
+
+    "interface-name": [false],
+    "file-header": [false],
+    "max-classes-per-file": [false],
+    "member-ordering": [true,
+      "public-before-private",
+      "static-before-instance",
+      "variables-before-functions"
+    ],
+    "no-console": ["log"],
+    "no-switch-case-fall-through": true,
+    "switch-default": false,
+    "variable-name": [true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ]
+  }
+}

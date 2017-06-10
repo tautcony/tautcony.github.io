@@ -10,7 +10,7 @@ image:
   creditlink: http://himawari8.nict.go.jp/
 tags:
     - 编程
-    - JavaScript
+    - TypeScript
 ---
 
 周知`TypeScript`为`JavaScript`的超集，在我看来，最为明显的区别就是增加了强类型。那么，对于使用`JavaScript`实现的各种库，就有点麻烦了。

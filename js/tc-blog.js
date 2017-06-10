@@ -102,7 +102,7 @@ jQuery(document).ready(function ($) {
     function RemoveItemsByClassName(className) {
         var used = document.getElementsByClassName(className);
         for (var i = 0; i < used.length; ++i) {
-            used[i].remove();
+            used[i].parentNode.removeChild(used[i]);
         }
     }
 

@@ -7,7 +7,7 @@
     <meta name="keyword"  content="{{ site.keyword }}">
     <meta name="theme-color" content="#000000">
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-    <title>{% if page.title %}{{ page.title }} - {{ site.SEOTitle }}{% else %}{{ site.SEOTitle }}{% endif %}</title>
+    <title>{% if page.title %}{{ page.title | strip_html }} - {{ site.SEOTitle | strip_html }}{% else %}{{ site.SEOTitle | strip_html }}{% endif %}</title>
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">

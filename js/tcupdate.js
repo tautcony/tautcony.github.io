@@ -55,6 +55,7 @@ var releases_data = {
         {version: '2.0.0.0',   site: DEFAULT, date: 'Jan 01, 1970'}  */
     ],
     releases_ati: [
+        {version: '1.0.5.1', site: DEFAULT, date: 'June 18, 2017'},
         {version: '1.0.5.0', site: DEFAULT, date: 'May 02, 2017'},
         {version: '1.0.4.4', site: DEFAULT, date: 'Apr 27, 2017'},
         {version: '1.0.4.3', site: DEFAULT, date: 'Mar 13, 2017'},

@@ -1045,7 +1045,7 @@ img::-moz-selection {
 }
 #gotop:before {
   content: "▲";
-  font-size: 22px;
+  font-size: 25px;
   color: white;
 }
 #gotop:hover {

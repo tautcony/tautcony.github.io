@@ -7,17 +7,18 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "grunt": "^1.0.0",
+    "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-htmlmin": "^2.1.0",
     "grunt-contrib-less": "^1.4.0",
     "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-jekyll": "^0.4.6"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/tautcony/tautcony.github.io"
   },
   "scripts": {
-    "preview": "cd _site; python -m SimpleHTTPServer 8020",
-    "watch": "grunt watch & npm run preview & jekyll serve -w;"
+    "watch": "grunt"
   }
 }

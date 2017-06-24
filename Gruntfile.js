@@ -57,16 +57,41 @@ module.exports = function(grunt) {
                 files: ['js/<%= pkg.name %>.js'],
                 tasks: ['uglify'],
                 options: {
-                    spawn: false,
-                },
+                    spawn: false
+                }
             },
             less: {
                 files: ['less/*.less'],
                 tasks: ['less'],
                 options: {
-                    spawn: false,
+                    spawn: false
                 }
             },
+            jekyll: {
+                files: ['**/*', '!**/node_modules/**', '!**/_site/**'],
+                tasks: ['jekyll'],
+                options: {
+                    spawn: false
+                }
+            }
+        },
+        jekyll: {
+            build: {
+                options: {
+                    serve: false,
+                    drafts: true,
+                    incremental: true,
+                    quiet: true
+                }
+            }
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 4000,
+                    base: '_site'
+                }
+            }
         }
     });
 
@@ -75,8 +100,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-jekyll');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify', 'less', 'watch']);
+    grunt.registerTask('default', ['uglify', 'less', 'jekyll', 'connect', 'watch']);
 
 };

@@ -27,6 +27,11 @@
 //    $("img").addClass("img-responsive");
 // });
 
+var STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
+var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+var STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+
 // responsive tables
 $(document).ready(function() {
     $("table").wrap("<div class='table-responsive'></div>");
@@ -64,7 +69,9 @@ jQuery(document).ready(function ($) {
             } else {
                 //if scrolling down...
                 $(".navbar-custom").removeClass("is-visible");
-                if (currentTop > headerHeight && !$(".navbar-custom").hasClass("is-fixed")) $(".navbar-custom").addClass("is-fixed");
+                if (currentTop > headerHeight && !$(".navbar-custom").hasClass("is-fixed")) {
+                    $(".navbar-custom").addClass("is-fixed");
+                }
             }
             event.data.previousTop = currentTop;
 
@@ -97,8 +104,8 @@ jQuery(document).ready(function ($) {
     if ($("#tag_cloud").length === 0) {
         return;
     }
-    //Sort The Tag in dictionary order
 
+    //Sort The Tag in dictionary order
     function RemoveItemsByClassName(className) {
         var used = document.getElementsByClassName(className);
         for (var i = 0; i < used.length; ++i) {
@@ -135,7 +142,7 @@ jQuery(document).ready(function ($) {
     });
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
-            $("#gotop").fadeIn("fast");
+            $("#gotop").stop().fadeIn("fast");
         } else {
             $("#gotop").stop().fadeOut("fast");
         }
@@ -153,4 +160,16 @@ jQuery(document).ready(function() {
             document.title = gogatsubyou[Math.floor(Math.random() * gogatsubyou.length)] + " " + initalTitle;
         }
     });
+});
+
+jQuery(document).ready(function() {
+    var post = $(".post-container");
+    if (post.length !== 0) {
+            post.children("p").each(function(index, value) {
+            var p = $(value);
+            if (p.text().startsWith("//")) {
+                p.css({color: "#339966"});
+            }
+        });
+    }
 });

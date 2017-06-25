@@ -72,37 +72,4 @@ layout: default
     resize();
 </script>
 
-{% if site.anchorjs %}
-<!-- async load function -->
-<script>
-    function async(url, func) {
-        var script = document.createElement('script'),
-            orgins = document.getElementsByTagName('script')[0];
-        script.src = url;
-        if (func) { script.addEventListener('load', function (e) { func(null, e); }, false); }
-        orgins.parentNode.insertBefore(script, orgins);
-    }
-</script>
-<!-- anchor-js, Doc: https://www.bryanbraun.com/anchorjs/ -->
-<script>
-    async("http://cdn.bootcss.com/anchor-js/3.0.0/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'always',
-          placement: 'right',
-          icon: '¶'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-    });
-</script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
-{% endif %}
+{% include anchorjs.html %}

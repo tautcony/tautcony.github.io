@@ -1,7 +1,7 @@
 /*!
  * TC Blog v1.0.0 (http://startbootstrap.com)
  * Copyright 2017 TautCony
- * Licensed under Apache 2.0 (https://github.com/IronSummitMedia/startbootstrap/blob/gh-pages/LICENSE)
+ * Licensed under Apache 2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)
  */
 
 $(document).ready(() => {
@@ -11,27 +11,13 @@ const STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-ra
 const STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
 const STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
 
-function async(url, func) {
-    const script = document.createElement("script");
-    const orgins = document.getElementsByTagName("script")[0];
-    script.src = url;
-    if (func) { script.addEventListener("load", (e) => { func(null, e); }, false); }
-    orgins.parentNode.insertBefore(script, orgins);
-}
-
 // responsive tables
-$(document).ready(() => {
-    $("table").wrap("<div class='table-responsive'></div>");
-    $("table").addClass("table");
-});
+$("table").wrap("<div class='table-responsive'></div>");
+$("table").addClass("table");
 
 // responsive embed videos
-$(document).ready(() => {
-    $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-    $('iframe[src*="youtube.com"]').addClass("embed-responsive-item");
-    $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-    $('iframe[src*="vimeo.com"]').addClass("embed-responsive-item");
-});
+$('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
+$('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
 
 // Navigation Scripts to Show Header on Scroll-Up
 (() => {
@@ -73,51 +59,16 @@ $(document).ready(() => {
     }
 })();
 
-(() => {
-    // only load tagcloud.js in tag.html
-    if ($("#tag_cloud").length === 0) {
-        return;
+$("#gotop").click(() => {
+    $("html, body").animate({ scrollTop: 0 }, 1000);
+});
+$(window).scroll(function() {
+    if ($(this).scrollTop() > 300) {
+        $("#gotop").stop().fadeIn("fast");
+    } else {
+        $("#gotop").stop().fadeOut("fast");
     }
-
-    //Sort The Tag in dictionary order
-    function RemoveItemsByClassName(className) {
-        const used = document.getElementsByClassName(className);
-        for (let i = 0; i < used.length; ++i) {
-            used[i].parentNode.removeChild(used[i]);
-        }
-    }
-
-    const unsorted = document.getElementsByClassName("tag");
-    const tags = [];
-    for (let i = 0; i < unsorted.length; i++) {
-        tags.push(unsorted[i]);
-    }
-    tags.sort();
-
-    RemoveItemsByClassName("tag");
-    const tagCloud = document.getElementById("tag_cloud");
-    for (const tag of tags) {
-        tagCloud.appendChild(tag);
-    }
-    const config = {
-        color: { start: "#bbbbee", end: "#0085a1" },
-        size: { start: 1, end: 1.1, unit: "em" },
-    };
-    TagCloud.tagcloud($("#tag_cloud a"), config);
-})();
-
-(() => {
-    $("#gotop").click(() => {
-        $("html, body").animate({ scrollTop: 0 }, 1000);
-    });
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 300) {
-            $("#gotop").stop().fadeIn("fast");
-        } else {
-            $("#gotop").stop().fadeOut("fast");
-        }
-    });
-})();
+});
 
 (() => {
     const initalTitle = document.title;

@@ -1,3 +1,63 @@
+function onLanChange(index) {
+    var lang = document.getElementsByClassName("lang");
+    var selecter = document.getElementById("langSelect");
+    for (var i = 0; i < lang.length; i++) {
+        lang[i].style.display = "none";
+    }
+    lang[index].style.display = "block";
+    selecter.selectedIndex = index;
+}
+$(document).ready(function () {
+    var cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
+    function decode_block(str, offset) {
+        var input = [0, 0, 0];
+        for (var i = offset; i < offset + 4; ++i) {
+            var c = str.charCodeAt(i);
+            var v = (c >= 43 && c <= 122) ? cd64[c - 43] === "$" ? 0 : cd64.charCodeAt(c - 43) - 61 : 0;
+            input[i - offset] = v - 1;
+        }
+        return String.fromCharCode(((0xFF & input[0] << 2) | input[1] >> 4), ((0xFF & input[1] << 4) | input[2] >> 2), ((0xC0 & input[2] << 6) | input[3] >> 0));
+    }
+    function decode(str) {
+        var ret = "";
+        for (var i = 0; i < str.length; i += 4) {
+            ret += decode_block(str, i);
+        }
+        return ret;
+    }
+    var qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
+    document.addEventListener("DOMContentLoaded", function () {
+        var qrcode = window["qrcode"];
+        var donate = window["donate"];
+        donate.addEventListener("mouseover", function () {
+            setTimeout(function () { qrcode.src = decode(qrUrl); }, 201);
+        });
+        donate.addEventListener("mouseout", function () {
+            setTimeout(function () { qrcode.src = ""; }, 201);
+        });
+    }, false);
+});
+$(document).ready(function () {
+    var lang = document.getElementsByClassName("lang");
+    var selecter = document.getElementById("langSelect");
+    if (lang.length === 0) {
+        return;
+    }
+    var currentLanguageIndex = 0;
+    var currentLanguage = window.navigator.language;
+    for (var i = 0; i < lang.length; i++) {
+        var opt = document.createElement("option");
+        opt.setAttribute("value", i.toString());
+        opt.innerHTML = lang[i].getAttribute("title");
+        if (currentLanguage.indexOf(lang[i].getAttribute("lang")) >= 0) {
+            currentLanguageIndex = i;
+            console.log(currentLanguage);
+        }
+        selecter.appendChild(opt);
+    }
+    selecter.options.selectedIndex = currentLanguageIndex;
+    onLanChange(currentLanguageIndex);
+});
 var TagCloud;
 (function (TagCloud) {
     function tagcloud(tags, options) {
@@ -75,35 +135,48 @@ var TagCloud;
         return toHex(rgb);
     }
 })(TagCloud || (TagCloud = {}));
+$(document).ready(function () {
+    if ($("#tag_cloud").length === 0) {
+        return;
+    }
+    function RemoveItemsByClassName(className) {
+        var used = document.getElementsByClassName(className);
+        for (var i = 0; i < used.length; ++i) {
+            used[i].parentNode.removeChild(used[i]);
+        }
+    }
+    var unsorted = document.getElementsByClassName("tag");
+    var tags = [];
+    for (var i = 0; i < unsorted.length; i++) {
+        tags.push(unsorted[i]);
+    }
+    tags.sort();
+    RemoveItemsByClassName("tag");
+    var tagCloud = document.getElementById("tag_cloud");
+    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+        var tag = tags_1[_i];
+        tagCloud.appendChild(tag);
+    }
+    var config = {
+        color: { start: "#bbbbee", end: "#0085a1" },
+        size: { start: 1, end: 1.1, unit: "em" },
+    };
+    TagCloud.tagcloud($("#tag_cloud a"), config);
+});
 /*!
  * TC Blog v1.0.0 (http://startbootstrap.com)
  * Copyright 2017 TautCony
- * Licensed under Apache 2.0 (https://github.com/IronSummitMedia/startbootstrap/blob/gh-pages/LICENSE)
+ * Licensed under Apache 2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)
  */
 $(document).ready(function () {
     var STYLE_TITLE = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
     var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
     var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
     var STYLE_B_ERROR = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-    function async(url, func) {
-        var script = document.createElement("script");
-        var orgins = document.getElementsByTagName("script")[0];
-        script.src = url;
-        if (func) {
-            script.addEventListener("load", function (e) { func(null, e); }, false);
-        }
-        orgins.parentNode.insertBefore(script, orgins);
-    }
-    $(document).ready(function () {
-        $("table").wrap("<div class='table-responsive'></div>");
-        $("table").addClass("table");
-    });
-    $(document).ready(function () {
-        $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-        $('iframe[src*="youtube.com"]').addClass("embed-responsive-item");
-        $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-        $('iframe[src*="vimeo.com"]').addClass("embed-responsive-item");
-    });
+    $("table").wrap("<div class='table-responsive'></div>");
+    $("table").addClass("table");
+    $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
+    $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
     (function () {
         var MQL = 1170;
         if ($(window).width() > MQL) {
@@ -137,47 +210,17 @@ $(document).ready(function () {
             });
         }
     })();
-    (function () {
-        if ($("#tag_cloud").length === 0) {
-            return;
+    $("#gotop").click(function () {
+        $("html, body").animate({ scrollTop: 0 }, 1000);
+    });
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $("#gotop").stop().fadeIn("fast");
         }
-        function RemoveItemsByClassName(className) {
-            var used = document.getElementsByClassName(className);
-            for (var i = 0; i < used.length; ++i) {
-                used[i].parentNode.removeChild(used[i]);
-            }
+        else {
+            $("#gotop").stop().fadeOut("fast");
         }
-        var unsorted = document.getElementsByClassName("tag");
-        var tags = [];
-        for (var i = 0; i < unsorted.length; i++) {
-            tags.push(unsorted[i]);
-        }
-        tags.sort();
-        RemoveItemsByClassName("tag");
-        var tagCloud = document.getElementById("tag_cloud");
-        for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
-            var tag = tags_1[_i];
-            tagCloud.appendChild(tag);
-        }
-        var config = {
-            color: { start: "#bbbbee", end: "#0085a1" },
-            size: { start: 1, end: 1.1, unit: "em" },
-        };
-        TagCloud.tagcloud($("#tag_cloud a"), config);
-    })();
-    (function () {
-        $("#gotop").click(function () {
-            $("html, body").animate({ scrollTop: 0 }, 1000);
-        });
-        $(window).scroll(function () {
-            if ($(this).scrollTop() > 300) {
-                $("#gotop").stop().fadeIn("fast");
-            }
-            else {
-                $("#gotop").stop().fadeOut("fast");
-            }
-        });
-    })();
+    });
     (function () {
         var initalTitle = document.title;
         var gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",

@@ -52,7 +52,29 @@ module.exports = function(grunt) {
                 }]
             }
         },
+        ts: {
+            base: {
+                src: ['ts/*.ts', "typings/globals/**/*.d.ts", "!ts/background-canvas.ts"],
+                //dest: 'js',
+                out: 'js/<%= pkg.name %>.js',
+                references: "typings/globals/**/*.d.ts",
+                options: {
+                    fast: "watch",
+                    target: 'es5',
+                    sourceMap: false,
+                    declaration: false,
+                    removeComments: true
+                }
+            }
+        },
         watch: {
+            ts: {
+                files: ['ts/*.ts'],
+                tasks: ['ts'],
+                options: {
+                    spawn: false
+                }
+            },
             scripts: {
                 files: ['js/<%= pkg.name %>.js'],
                 tasks: ['uglify'],
@@ -102,8 +124,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-jekyll');
+    grunt.loadNpmTasks('grunt-ts');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify', 'less', 'jekyll', 'connect', 'watch']);
+    grunt.registerTask('default', ['ts', 'uglify', 'less', 'jekyll', 'connect', 'watch']);
 
 };

@@ -12,8 +12,10 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>'
             },
             main: {
-                src: 'js/<%= pkg.name %>.js',
-                dest: 'js/<%= pkg.name %>.min.js'
+                files: {
+                    'js/<%= pkg.name %>.min.js': ['js/<%= pkg.name %>.js'],
+                    'js/tcupdate.min.js': ['js/tcupdate.js']
+                }
             }
         },
         less: {
@@ -70,14 +72,7 @@ module.exports = function(grunt) {
         watch: {
             ts: {
                 files: ['ts/*.ts'],
-                tasks: ['ts'],
-                options: {
-                    spawn: false
-                }
-            },
-            scripts: {
-                files: ['js/<%= pkg.name %>.js'],
-                tasks: ['uglify'],
+                tasks: ['ts', 'uglify'],
                 options: {
                     spawn: false
                 }
@@ -90,7 +85,7 @@ module.exports = function(grunt) {
                 }
             },
             jekyll: {
-                files: ['**/*', '!**/node_modules/**', '!**/_site/**'],
+                files: ['**/*', '!**/node_modules/**', '!**/_site/**', '!.tscache/**'],
                 tasks: ['jekyll'],
                 options: {
                     spawn: false

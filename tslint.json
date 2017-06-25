@@ -12,6 +12,8 @@
     "no-namespace": [false],
     "max-line-length": [false],
     "object-literal-sort-keys": false,
+    "no-bitwise": false,
+    "no-string-literal": false,
 
     // TODO: Enable stricter options for these
     "only-arrow-functions": [true, "allow-named-functions"],

@@ -150,6 +150,9 @@ h6 {
   line-height: 1.1;
   font-weight: bold;
 }
+h1 {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
 h4 {
   font-size: 21px;
 }

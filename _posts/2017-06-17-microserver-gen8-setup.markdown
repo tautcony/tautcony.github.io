@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "<i>HP</i> ProLiant MicroServer Gen8 入手"
+title:      "<em class='logo'>hpe</em> ProLiant MicroServer Gen8 入手"
 subtitle:   ""
 date:       2017-06-17
 author:     "TautCony"
@@ -13,7 +13,13 @@ tags:
     - 生活
     - 电子垃圾
 ---
-
+<style>
+.logo {
+  font-family: HP-Slant;
+  font-weight: 200;
+  font-size: 200%;
+}
+</style>
 自从之前的硬盘座翻车之后，我的两块硬盘就长期处于离线状态，下载东西靠着树莓派+一个2T的移动硬盘苟延残喘（不是
 
 前几日硬盘钱终于到手，想着就算不买电子辣鸡到最后就是变成吃的或者变成塑料片，那还是买吧。
@@ -67,3 +73,5 @@ hmmmm，据称正规手段是用内建的`Intelligent Provisioning`进行系统�
 仔细一想，这玩意我现在的用法纯粹是高档硬盘盒啊，`600+`一个槽。之前试用的世特力约合`400+`一个槽，这样看似乎也不是特别贵哦，还带下载功能是吧（
 
 后续可能暂时没什么时间折腾了（反正也没钱折腾了），暂时先这样吧。
+
+给logo加字体的时候突然想到现在这公司是hpe哦，分拆出来了的，往标题加个e。

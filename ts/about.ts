@@ -1,16 +1,5 @@
-function onLanChange(index) {
-    const lang = document.getElementsByClassName("lang") as HTMLCollectionOf<HTMLElement>;
-    const selecter = document.getElementById("langSelect") as HTMLSelectElement;
-    for (let i = 0; i < lang.length; i++) {//tslint:disable-line
-        lang[i].style.display = "none";
-    }
-    lang[index].style.display = "block";
-    selecter.selectedIndex = index;
-}
-
 $(document).ready(() => {
     const cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
-
     function decode_block(str, offset) {
         const input = [0, 0, 0];
         for (let i = offset; i < offset + 4; ++i) {
@@ -32,18 +21,15 @@ $(document).ready(() => {
         }
         return ret;
     }
-    const qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    document.addEventListener("DOMContentLoaded", () => {
-        const qrcode = window["qrcode"];
-        const donate = window["donate"];
-        donate.addEventListener("mouseover", () => {
-            setTimeout(() => { qrcode.src = decode(qrUrl); }, 201);
-        });
-        donate.addEventListener("mouseout", () => {
-            setTimeout(() => { qrcode.src = ""; }, 201);
-        });
-    }, false);
 
+    const qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
+    const qrcode = window["qrcode"] as HTMLImageElement;
+    const donate = window["donate"] as HTMLParagraphElement;
+    if (qrcode === undefined) {
+        return;
+    }
+    donate.addEventListener("mouseover", () => setTimeout(() => qrcode.src = decode(qrUrl), 201));
+    donate.addEventListener("mouseout",  () => setTimeout(() => qrcode.src = ""           , 201));
 });
 
 $(document).ready(() => {
@@ -52,6 +38,15 @@ $(document).ready(() => {
     if (lang.length === 0) {
         return;
     }
+    let lastSelectedLanguageIndex = -1;
+    $("#langSelect").on("change", (eventObject: Event) => {
+        if (lastSelectedLanguageIndex !== -1) {
+            $(lang[lastSelectedLanguageIndex]).fadeOut(0);
+        }
+        lastSelectedLanguageIndex = selecter.options.selectedIndex;
+        $(lang[selecter.options.selectedIndex]).fadeIn(500);
+    });
+
     let currentLanguageIndex = 0;
     const currentLanguage = window.navigator.language;
     for (let i = 0; i < lang.length; i++) {
@@ -65,6 +60,5 @@ $(document).ready(() => {
         selecter.appendChild(opt);
     }
     selecter.options.selectedIndex = currentLanguageIndex;
-
-    onLanChange(currentLanguageIndex);
+    $("#langSelect").trigger("change");
 });

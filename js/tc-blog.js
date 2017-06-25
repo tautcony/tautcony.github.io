@@ -1,12 +1,3 @@
-function onLanChange(index) {
-    var lang = document.getElementsByClassName("lang");
-    var selecter = document.getElementById("langSelect");
-    for (var i = 0; i < lang.length; i++) {
-        lang[i].style.display = "none";
-    }
-    lang[index].style.display = "block";
-    selecter.selectedIndex = index;
-}
 $(document).ready(function () {
     var cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
     function decode_block(str, offset) {
@@ -26,16 +17,13 @@ $(document).ready(function () {
         return ret;
     }
     var qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    document.addEventListener("DOMContentLoaded", function () {
-        var qrcode = window["qrcode"];
-        var donate = window["donate"];
-        donate.addEventListener("mouseover", function () {
-            setTimeout(function () { qrcode.src = decode(qrUrl); }, 201);
-        });
-        donate.addEventListener("mouseout", function () {
-            setTimeout(function () { qrcode.src = ""; }, 201);
-        });
-    }, false);
+    var qrcode = window["qrcode"];
+    var donate = window["donate"];
+    if (qrcode === undefined) {
+        return;
+    }
+    donate.addEventListener("mouseover", function () { return setTimeout(function () { return qrcode.src = decode(qrUrl); }, 201); });
+    donate.addEventListener("mouseout", function () { return setTimeout(function () { return qrcode.src = ""; }, 201); });
 });
 $(document).ready(function () {
     var lang = document.getElementsByClassName("lang");
@@ -43,6 +31,14 @@ $(document).ready(function () {
     if (lang.length === 0) {
         return;
     }
+    var lastSelectedLanguageIndex = -1;
+    $("#langSelect").on("change", function (eventObject) {
+        if (lastSelectedLanguageIndex !== -1) {
+            $(lang[lastSelectedLanguageIndex]).fadeOut(0);
+        }
+        lastSelectedLanguageIndex = selecter.options.selectedIndex;
+        $(lang[selecter.options.selectedIndex]).fadeIn(500);
+    });
     var currentLanguageIndex = 0;
     var currentLanguage = window.navigator.language;
     for (var i = 0; i < lang.length; i++) {
@@ -56,7 +52,7 @@ $(document).ready(function () {
         selecter.appendChild(opt);
     }
     selecter.options.selectedIndex = currentLanguageIndex;
-    onLanChange(currentLanguageIndex);
+    $("#langSelect").trigger("change");
 });
 var TagCloud;
 (function (TagCloud) {

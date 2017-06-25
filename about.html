@@ -6,8 +6,10 @@ description: "Hey, this is TautCony."
 header-img: "img/about-bg.jpg"
 ---
 
+<div id="player1" class="aplayer" style="float: right;"></div>
+
 <!-- Language Selector -->
-<select id = "langSelect" onchange= "onLanChange(this.options[this.options.selectedIndex].value)"></select>
+<select id = "langSelect"></select>
 
 <!-- Chinese Version -->
 <div class="lang" title="中文" lang="zh" style="display: none">
@@ -65,5 +67,25 @@ header-img: "img/about-bg.jpg"
 #donate { float: left; opacity: 0.5; margin-bottom: 10px; }
 #donate:hover + #qrcode { z-index: 1250; opacity: 1.0; width: 350px; height: 350px; }
 </style>
+
+<script src="//cdn.bootcss.com/aplayer/1.6.0/APlayer.min.js"></script>
+<script>
+    var ap = new APlayer({
+        element:  document.getElementById('player1'),
+        narrow:   false,
+        autoplay: true,
+        mutex:    true,
+        theme:    '#e6d0b2',
+        preload:  'metadata',
+        listmaxheight: '365px',
+        music: {
+            title: 'Autumn breeze with you',
+            author: '百石元',
+            url: '/attach/bgm/Autumn breeze with you.m4a',
+            pic: '/attach/bgm/Autumn breeze with you.jpg',
+        }
+    });
+    ap.volume(0.75);
+</script>
 
 {% include comment.html %}

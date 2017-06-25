@@ -1,9 +1,9 @@
 namespace TagCloud {
-    interface IConfig {
+    export interface IConfig {
         color: {
             start: string;
             end: string;
-        }
+        };
         size: {
             start: number;
             end: number;
@@ -15,12 +15,12 @@ namespace TagCloud {
         const defaults = {
             size:  { start: 14, end: 18, unit: "pt" },
             color: { start: "#bbbbee", end: "#0085a1"},
-        } as IConfig;
+        };
         const opts = {
             color: options.color !== undefined ? options.color : defaults.color,
             size:  options.size  !== undefined ? options.size  : defaults.size,
-        } as IConfig;
-        let lowest = 0x3f3f3f3f;
+        };
+        let lowest = 0x3F3F3F3F;
         let highest = 0;
         tags.each((index, elem) => {
             const curr = parseInt(elem.getAttribute("rel"), 10);
@@ -59,7 +59,7 @@ namespace TagCloud {
             const r = code[1] + code[1];
             const g = code[2] + code[2];
             const b = code[3] + code[3];
-            code = "#" + r + g + b;
+            code = `#${r + g + b}`;
         }
         const hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
         if (hex === null) {

@@ -82,3 +82,7 @@ typings
 Gemfile.lock
 
 package-lock.json
+
+## Ignore grunt-ts temp files
+.tscache
+.baseDir.ts

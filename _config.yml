@@ -47,11 +47,11 @@ SocialAccount: [
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","LICENSE","apps/material/templates/"]
-anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","LICENSE","apps/material/templates/", "typings"]
+anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
 MathJax: true
 particle404: true                       # enable a particle effect 404 page
-service-worker: false                   # need an https to enable it
+service-worker: true                    # need an https to enable it
 
 
 # Gems

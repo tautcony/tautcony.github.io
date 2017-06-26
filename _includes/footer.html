@@ -23,18 +23,33 @@
 <!-- Progress bar PACE -->
 <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
 <script>
-
+    var STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
+    var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+    var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+    var STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
 </script>
 <!-- Custom Theme JavaScript -->
 <script src="{{ "/js/tc-blog.min.js" | prepend: site.baseurl }}"></script>
 <!-- Service Worker -->
 {% if site.service-worker %}
 <script type="text/javascript">
-    if (navigator.serviceWorker) {
+    var https_or_localhost = location.protocol === "https:" || location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    if ("serviceWorker" in navigator && https_or_localhost) {
         // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)});
+        navigator.serviceWorker.register("/sw.js")
+            .then(function(registration) {
+                if (registration.installing) {
+                    console.log("%cService worker installing", STYLE_B_WARNING);
+                } else if (registration.waiting) {
+                    console.log("%cService worker installed", STYLE_TITLE);
+                } else if (registration.active) {
+                    console.log("%cService worker active", STYLE_B_SUCCESS);
+                }
+            }).catch(function(error) {
+                console.log("%cService worker registration failed: ", STYLE_B_ERROR, error);
+            });
+    } else {
+        console.log("%cService worker disabled", STYLE_B_WARNING);
     }
 </script>
 {% endif %}

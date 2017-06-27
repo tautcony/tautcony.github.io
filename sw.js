@@ -122,8 +122,12 @@ self.addEventListener("fetch", event => {
     // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
     // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
     const cached = caches.match(event.request);
+    /* well imo, while unexpected cached happed, users will force refresh the page by themselves.
     const fixedUrl = getFixedUrl(event.request);
     const fetched = fetch(fixedUrl, { cache: "no-store" });
+    const fetchedCopy = fetched.then(resp => resp.clone());
+    */
+    const fetched = fetch(event.request);
     const fetchedCopy = fetched.then(resp => resp.clone());
 
     // Call respondWith() with whatever we get first.

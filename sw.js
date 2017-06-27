@@ -1,3 +1,4 @@
+/*jslint es6*/
 /* ===========================================================
  * sw.js
  * ===========================================================
@@ -6,14 +7,14 @@
  * Licensed under Apache 2.0
  * Register service worker.
  * ========================================================== */
-var STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
-var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-var STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+const STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
+const STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+const STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+const STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
 
-var PRECACHE = "precache-v1";
-var RUNTIME = "runtime";
-var HOSTNAME_WHITELIST = [
+const PRECACHE = "precache-v1";
+const RUNTIME = "runtime";
+const HOSTNAME_WHITELIST = [
   self.location.hostname,
   "tautcony.xyz",
   "tautcony.github.io"
@@ -21,7 +22,6 @@ var HOSTNAME_WHITELIST = [
 
 // The Util Function to hack URLs of intercepted requests
 const getFixedUrl = req => {
-  const now = Date.now();
   const url = new URL(req.url);
 
   // 1. fixed http URL
@@ -35,7 +35,7 @@ const getFixedUrl = req => {
   // max-age on mutable content is error-prone, with SW life of bugs can even extend.
   // Until cache mode of Fetch API landed, we have to workaround cache-busting with query string.
   // Cache-Control-Bug: https://bugs.chromium.org/p/chromium/issues/detail?id=453190
-  url.search += `${(url.search ? "&" : "?")}cache-bust=${now}`;
+  url.search += `${(url.search ? "&" : "?")}cache-bust=${Date.now()}`;
 
   return url.href;
 };
@@ -80,9 +80,9 @@ const getRedirectUrl = req => {
  *  waitUntil() : installing ====> installed
  *  skipWaiting() : waiting(installed) ====> activating
  */
-self.addEventListener("install", e => {
-  e.waitUntil(caches.open(PRECACHE)
-    .then(cache => cache.addAll(["/offline.html", "/img/404-bg.jpg", "/css/tc-blog.min.css"])
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(PRECACHE)
+    .then(cache => cache.addAll(["/offline.html", "/img/404-bg.jpg", "/css/tc-blog.min.css", "/js/tc-blog.min.js"])
       .then(self.skipWaiting()).catch((err) => console.log("%cError: ", STYLE_B_ERROR, err))));
 });
 
@@ -93,7 +93,7 @@ self.addEventListener("install", e => {
  *  waitUntil(): activating ====> activated
  */
 self.addEventListener("activate", event => {
-  console.log("%cservice worker activated.", STYLE_TITLE);
+  console.log("%cServiceWorker activated.", STYLE_TITLE);
   event.waitUntil(self.clients.claim());
 });
 

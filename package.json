@@ -8,7 +8,6 @@
   "devDependencies": {
     "grunt": "^1.0.0",
     "grunt-contrib-connect": "^1.0.2",
-    "grunt-contrib-htmlmin": "^2.1.0",
     "grunt-contrib-less": "^1.4.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",

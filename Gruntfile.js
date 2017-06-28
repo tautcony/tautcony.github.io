@@ -40,20 +40,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        htmlmin: {
-            dist: {
-                options: {
-                    removeComments: true,
-                    collapseWhitespace: true,
-                    minifyJS: true,
-                    minifyCSS: true
-                },
-                files: [{
-                    expand: true,
-                    src: ['_site/**/*.html']
-                }]
-            }
-        },
         ts: {
             base: {
                 src: ['ts/*.ts', "typings/globals/**/*.d.ts", "!ts/background-canvas.ts"],
@@ -116,7 +102,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-jekyll');
     grunt.loadNpmTasks('grunt-ts');

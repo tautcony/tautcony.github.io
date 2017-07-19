@@ -54,6 +54,16 @@
         console.log("%cServiceWorker disabled", STYLE_B_WARNING);
     }
 </script>
+{% else %}
+<script type="text/javascript">
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+            registration.unregister();
+        }
+    });
+};
+</script>
 {% endif %}
 <!-- Google Analytics -->
 {% if site.ga_track_id %}

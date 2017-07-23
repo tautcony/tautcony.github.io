@@ -5,11 +5,10 @@
  */
 
 $(document).ready(() => {
-
-const STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
-const STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-const STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-const STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+const banner = $("header.intro-header");
+if (banner.css("background-image") === "none") {
+    banner.geopattern(document.location.href);
+}
 
 // responsive tables
 $("table").wrap("<div class='table-responsive'></div>");
@@ -73,10 +72,11 @@ $(window).scroll(function() {
 (() => {
     const initalTitle = document.title;
     const gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_"   , "_(┐「ε:)_" , "_(:3」∠❀",
-                       "_(:зゝ∠)_" , "_(:3」[＿]" , "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];
-    document.addEventListener("visibilitychange", (event) => {
+                         "_(:зゝ∠)_" , "_(:3」[＿]" , "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];
+    document.addEventListener("visibilitychange", event => {
         if (!document.hidden) {
-            document.title = initalTitle;
+            document.title = "．．．．．．";
+            setTimeout(() => document.title = initalTitle, 500);
         } else {
             document.title = `${gogatsubyou[Math.floor(Math.random() * gogatsubyou.length)]} ${initalTitle}`;
         }

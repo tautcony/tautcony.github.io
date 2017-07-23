@@ -5,10 +5,10 @@ subtitle:   "花式遍历，花式重建"
 date:       2017-07-13
 author:     "TautCony"
 catalog:    true
-header-img: "img/post-bg-default.png"
+header-img: null
 image:
-  credit: himawari-8
-  creditlink: http://himawari8.nict.go.jp/
+  credit: GeoPattern
+  creditlink: https://github.com/btmills/geopattern
 tags:
     - 数据结构
 ---

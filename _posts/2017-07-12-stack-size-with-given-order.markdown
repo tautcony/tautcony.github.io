@@ -4,10 +4,10 @@ title:      "给定输入序列与输出序列求所需的最小栈的大小"
 subtitle:   ""
 date:       2017-07-12
 author:     "TautCony"
-header-img: "img/post-bg-default.png"
+header-img: null
 image:
-  credit: himawari-8
-  creditlink: http://himawari8.nict.go.jp/
+  credit: GeoPattern
+  creditlink: https://github.com/btmills/geopattern
 tags:
     - 数据结构
 ---

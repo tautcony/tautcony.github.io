@@ -165,10 +165,10 @@ $(document).ready(function () {
  * Licensed under Apache 2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)
  */
 $(document).ready(function () {
-    var STYLE_TITLE = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
-    var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-    var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-    var STYLE_B_ERROR = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+    var banner = $("header.intro-header");
+    if (banner.css("background-image") === "none") {
+        banner.geopattern(document.location.href);
+    }
     $("table").wrap("<div class='table-responsive'></div>");
     $("table").addClass("table");
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
@@ -223,7 +223,8 @@ $(document).ready(function () {
             "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];
         document.addEventListener("visibilitychange", function (event) {
             if (!document.hidden) {
-                document.title = initalTitle;
+                document.title = "．．．．．．";
+                setTimeout(function () { return document.title = initalTitle; }, 500);
             }
             else {
                 document.title = gogatsubyou[Math.floor(Math.random() * gogatsubyou.length)] + " " + initalTitle;

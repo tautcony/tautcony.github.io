@@ -4,10 +4,10 @@ title:      "码元比特傻傻分不清"
 subtitle:   "前提能不能好好写"
 date:       2017-07-18
 author:     "TautCony"
-header-img: "img/post-bg-default.png"
+header-img: null
 image:
-  credit: himawari-8
-  creditlink: http://himawari8.nict.go.jp/
+  credit: GeoPattern
+  creditlink: https://github.com/btmills/geopattern
 tags:
     - 计算机网络
 ---

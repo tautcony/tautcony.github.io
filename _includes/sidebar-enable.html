@@ -1,9 +1,9 @@
 <!-- Sidebar Container -->
 <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container">
     <div align=right>
-        <form method="get" id="searchform" action="//www.google.com/search">
+        <form method="get" id="searchform" action="//www.google.com/search" target="_blank">
             <input type="text" class="field" name="q" id="s" placeholder="Search">
-            <input type="hidden" name="as_sitesearch" value="tautcony.github.io">
+            <input type="hidden" name="as_sitesearch" value="{{site.url}}">
         </form>
     </div>
     {% if site.featured-tags %}

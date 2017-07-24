@@ -14,6 +14,7 @@
     "object-literal-sort-keys": false,
     "no-bitwise": false,
     "no-string-literal": false,
+    "arrow-parens": false,
 
     // TODO: Enable stricter options for these
     "only-arrow-functions": [true, "allow-named-functions"],

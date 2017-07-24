@@ -9,7 +9,11 @@ module.exports = function(grunt) {
                 ' */\n',
         uglify: {
             options: {
-                banner: '<%= banner %>'
+                banner: '<%= banner %>',
+                output: {
+                    ascii_only: true,
+                    comments: false
+                }
             },
             main: {
                 files: {
@@ -43,11 +47,9 @@ module.exports = function(grunt) {
         ts: {
             base: {
                 src: ['ts/*.ts', "typings/globals/**/*.d.ts", "!ts/background-canvas.ts"],
-                //dest: 'js',
                 out: 'js/<%= pkg.name %>.js',
                 references: "typings/globals/**/*.d.ts",
                 options: {
-                    fast: "watch",
                     target: 'es5',
                     sourceMap: false,
                     declaration: false,
@@ -56,22 +58,35 @@ module.exports = function(grunt) {
             }
         },
         watch: {
+            configFiles: {
+                files: ['Gruntfile.js'],
+                options: {
+                    reload: true
+                }
+            },
             ts: {
                 files: ['ts/*.ts'],
-                tasks: ['ts', 'uglify'],
+                tasks: ['ts', 'uglify', 'jekyll'],
+                options: {
+                    spawn: false
+                }
+            },
+            uglify: {
+                files: ['js/*.js'],
+                tasks: ['uglify', 'jekyll'],
                 options: {
                     spawn: false
                 }
             },
             less: {
                 files: ['less/*.less'],
-                tasks: ['less'],
+                tasks: ['less', 'jekyll'],
                 options: {
                     spawn: false
                 }
             },
             jekyll: {
-                files: ['**/*', '!**/node_modules/**', '!**/_site/**', '!.tscache/**'],
+                files: ['./*', '_drafts/*', '_includes/*', '_layouts/*', '_posts/*', 'apps/*', 'attach/*', 'fonts/*', 'img/*'],
                 tasks: ['jekyll'],
                 options: {
                     spawn: false
@@ -108,5 +123,6 @@ module.exports = function(grunt) {
 
     // Default task(s).
     grunt.registerTask('default', ['ts', 'uglify', 'less', 'jekyll', 'connect', 'watch']);
+    grunt.registerTask('build', ['ts', 'uglify', 'less']);
 
 };

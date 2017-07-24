@@ -234,6 +234,16 @@ $(document).ready(function () {
     function startsWith(text, searchString, position) {
         return text.substr(position || 0, searchString.length) === searchString;
     }
+    function checkDomain(url) {
+        if (url.indexOf("//") === 0) {
+            url = location.protocol + url;
+        }
+        return url.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
+    }
+    function isExternal(url) {
+        return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1) &&
+            checkDomain(location.href) !== checkDomain(url);
+    }
     (function () {
         var post = $(".post-container");
         if (post.length !== 0) {
@@ -241,6 +251,11 @@ $(document).ready(function () {
                 var p = $(value);
                 if (startsWith(p.text(), "//")) {
                     p.css({ color: "#339966" });
+                }
+            });
+            post.find("a").each(function (index, value) {
+                if (isExternal(value.href)) {
+                    $(value).addClass("external");
                 }
             });
         }

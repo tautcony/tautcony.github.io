@@ -87,13 +87,30 @@ function startsWith(text: string, searchString: string, position?: number) {
     return text.substr(position || 0, searchString.length) === searchString;
 }
 
+function checkDomain(url: string) {
+    if ( url.indexOf("//") === 0 ) {
+        url = location.protocol + url;
+    }
+    return url.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
+}
+
+function isExternal(url: string) {
+    return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1 ) &&
+            checkDomain(location.href) !== checkDomain(url);
+}
+
 (() => {
     const post = $(".post-container");
     if (post.length !== 0) {
-            post.children("p").each((index, value) => {
+        post.children("p").each((index, value) => {
             const p = $(value);
             if (startsWith(p.text(), "//")) {
                 p.css({color: "#339966"});
+            }
+        });
+        post.find("a").each((index, value) => {
+            if (isExternal((value as HTMLAnchorElement).href)) {
+                $(value).addClass("external");
             }
         });
     }

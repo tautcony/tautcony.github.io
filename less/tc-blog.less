@@ -47,6 +47,18 @@ a {
     }
 }
 
+a.external::after {
+    content: "\f08e";
+    font: normal normal normal 14px/1 FontAwesome;
+    font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    word-wrap: normal;
+    font-size: 16px;
+    margin-left: 4px;
+}
+
 article {
     overflow-x : hidden;
 }

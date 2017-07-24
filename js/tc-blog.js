@@ -221,12 +221,22 @@ $(document).ready(function () {
         var initalTitle = document.title;
         var gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
             "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];
+        var restoreTitleID = 0;
         document.addEventListener("visibilitychange", function (event) {
             if (!document.hidden) {
                 document.title = "．．．．．．";
-                setTimeout(function () { return document.title = initalTitle; }, 500);
+                if (restoreTitleID !== 0) {
+                    clearTimeout(restoreTitleID);
+                }
+                restoreTitleID = setTimeout(function () {
+                    document.title = initalTitle;
+                    restoreTitleID = 0;
+                }, 500);
             }
             else {
+                if (restoreTitleID !== 0) {
+                    clearTimeout(restoreTitleID);
+                }
                 document.title = gogatsubyou[Math.floor(Math.random() * gogatsubyou.length)] + " " + initalTitle;
             }
         });

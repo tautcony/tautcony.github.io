@@ -18,10 +18,13 @@
 	<section id="tool-downloads" class="general">
 		<h2 style="font-family:Orbitron">TC Tools Downloads</h2>
 		<h4><center>Hope you could enjoy these tools.</center></h4>
-		<div id="downlinks">
-		<a class="middle" v-bind:href="'http://'+releases_ct[0].site+'/bin/ChapterTool.v'+releases_ct[0].version+'.exe'" target="_blank"><icon class="icon-cloud-download"></icon>ChapterTool<br>version {{(releases_ct[0].version)}}<span>Updated {{releases_ct[0].date}}.</span></a>
-		<a class="wide" v-bind:href="'http://'+releases_ati[0].site+'/bin/AutoTorrentInspection.v'+releases_ati[0].version+'.exe'" target="_blank"><icon class="icon-cloud-download"></icon>AutoTorrentInspection<br>version {{(releases_ati[0].version)}}<span>Updated {{releases_ati[0].date}}.</span></a>
-		<a class="middle" v-bind:href="'http://'+releases_rp[0].site+'/bin/RPChecker.v'+releases_rp[0].version+'.exe'" target="_blank"><icon class="icon-cloud-download"></icon>RPChecker<br>version {{(releases_rp[0].version)}}<span>Updated {{releases_rp[0].date}}.</span></a>
+        <div id="downlinks">
+            <download-link v-for="item in data"
+                :width="item.width"
+                :name="item.name"
+                :info=item.data[0]
+                :site="site"
+            />
 		</div>
 		<br><br>
 		<p id="ChapterTool">
@@ -30,7 +33,7 @@
 				PS₁: The MKV file support is powered by MKVToolNix, you can get the program from
 				<a href="https://mkvtoolnix.download/downloads.html#windows" target="_blank"><b>HERE</b></a>.<br>
 				PS₂: The MP4 file support is powered by libmp4v2, you can download the dll from
-				<a v-bind:href="'http://'+releases_ct[0].site+'/bin/libmp4v2.dll'" target="_blank"><b>HERE</b></a>.
+				<a :href="'http://'+site+'/bin/libmp4v2.dll'" target="_blank"><b>HERE</b></a>.
 			</div>
 		</p>
 		<p id="ATI">
@@ -41,7 +44,7 @@
 			<a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> /
 			<a href="https://en.wikipedia.org/wiki/Structural_similarity">SSIM</a> Value.
 			<div style="font-size: 13px;">
-                PS₀: From version 1.0.5.1, ffmpeg has been set as the default precessor, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank"><b>HERE</b></a>.
+                PS₀: From version 1.0.5.1, ffmpeg has been set as the default processor, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank"><b>HERE</b></a>.
                 <br/>
 				PS₁: For VapourSynth implementation, you need to make sure
 				<a href="https://www.python.org/downloads/" target="_blank"><b>Python</b></a>,
@@ -53,23 +56,35 @@
 		</p>
 		<h3>ChapterTool history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_ct">
-			<li v-for="r in (releases_ct.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" v-bind:href="'http://'+r.site+'/chaptertool/ChapterTool.v'+r.version+'.7z'" target="_blank"> ChapterTool {{r.version}} </a>({{r.date}})
-			</li>
+            <history-download-link
+                v-for="info in (data.ct.data.slice(1))"
+                :name="data.ct.name"
+                :url="data.ct.url"
+                :info="info"
+                :site="site"
+            />
 		</ul></div>
 
 		<h3>AutoTorrentInspection history releases</h3>
-		<div class="all-releases-w"><ul id="all-releases_ati">
-			<li v-for="r in (releases_ati.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" v-bind:href="'http://'+r.site+'/ati/AutoTorrentInspection.v'+r.version+'.7z'" target="_blank"> AutoTorrentInspection {{r.version}} </a>({{r.date}})
-			</li>
+        <div class="all-releases-w"><ul id="all-releases_ati">
+            <history-download-link
+                v-for="info in (data.ati.data.slice(1))"
+                :name="data.ati.name"
+                :url="data.ati.url"
+                :info="info"
+                :site="site"
+            />
 		</ul></div>
 
 		<h3>RPChecker history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_rp">
-			<li v-for="r in (releases_rp.slice(1))">
-				<icon class="icon-cloud-download"></icon><a class="link" v-bind:href="'http://'+r.site+'/rpchecker/RPChecker.v'+r.version+'.7z'" target="_blank"> RPChecker {{r.version}} </a>({{r.date}})
-			</li>
+            <history-download-link
+                v-for="info in (data.rp.data.slice(1))"
+                :name="data.rp.name"
+                :url="data.rp.url"
+                :info="info"
+                :site="site"
+            />
 		</ul></div>
 	</section>
 	<div id="copyright-line">Copyright (c) 2015-2017 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/">be5invis</a>.</div>

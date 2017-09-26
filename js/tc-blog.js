@@ -210,12 +210,7 @@ $(document).ready(function () {
         $("html, body").animate({ scrollTop: 0 }, 1000);
     });
     $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $("#gotop").stop().fadeIn("fast");
-        }
-        else {
-            $("#gotop").stop().fadeOut("fast");
-        }
+        $("#gotop").toggleClass("active", $(window).scrollTop() > 300);
     });
     (function () {
         var initalTitle = document.title;

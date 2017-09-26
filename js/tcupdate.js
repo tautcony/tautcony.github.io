@@ -110,11 +110,11 @@ var url2 = "'http://'+site+'/'+url+'/'+name+'.v'+info.version+'.7z'";
 if (typeof(Vue) !== 'undefined') {
     Vue.component('download-link', {
         props: ['name', 'info', 'site', 'width'],
-        template: '<a :class="width" :href="'+url1+'" target="_blank"><icon class="icon-cloud-download"></icon>{{name}}<br>version {{(info.version)}}<span>Updated {{info.date}}.</span></a>'
+        template: '<a :class="width" :href="'+url1+'" target="_blank" rel="noopener"><icon class="icon-cloud-download"></icon>{{name}}<br>version {{(info.version)}}<span>Updated {{info.date}}.</span></a>'
     });
     Vue.component('history-download-link', {
         props: ['name', 'url', 'info', 'site'],
-        template: '<li><icon class="icon-cloud-download"></icon><a class="link" :href="'+url2+'" target="_blank"> {{name}} {{info.version}} </a>({{info.date}})</il>'
+        template: '<li><icon class="icon-cloud-download"></icon><a class="link" :href="'+url2+'" target="_blank" rel="noopener"> {{name}} {{info.version}} </a>({{info.date}})</il>'
     });
     var tcupdate = new Vue({
         el: '#tool-downloads',

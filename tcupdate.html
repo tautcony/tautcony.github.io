@@ -28,36 +28,35 @@
 		</div>
 		<br><br>
 		<p id="ChapterTool">
-			<a href="https://github.com/tautcony/ChapterTool">ChapterTool</a> is made for extracting chapters from various type of file. The core part of ChapterTool has been separated as an independent library <a href="https://github.com/tautcony/TChapter"  target="_blank">TChapter</a>. So you can write your own frontend for any reason(<br>
+			<a href="https://github.com/tautcony/ChapterTool" target="_blank" rel="noopener">ChapterTool</a> is made for extracting chapters from various type of file. The core part of ChapterTool has been separated as an independent library <a href="https://github.com/tautcony/TChapter" target="_blank" rel="noopener">TChapter</a>. So you can write your own frontend for any reason(<br>
 			<div style="font-size: 13px;">
 				PS₁: The MKV file support is powered by MKVToolNix, you can get the program from
-				<a href="https://mkvtoolnix.download/downloads.html#windows" target="_blank"><b>HERE</b></a>.<br>
+				<a href="https://mkvtoolnix.download/downloads.html#windows" target="_blank" rel="noopener"><b>HERE</b></a>.<br>
 				PS₂: The MP4 file support is powered by libmp4v2, you can download the dll from
-				<a :href="'http://'+site+'/bin/libmp4v2.dll'" target="_blank"><b>HERE</b></a>.
+				<a :href="'http://'+site+'/bin/libmp4v2.dll'" target="_blank" rel="noopener"><b>HERE</b></a>.
 			</div>
 		</p>
 		<p id="ATI">
-			<a href="https://bitbucket.org/TautCony/auto-torrent-inspection">AutoTorrentInspection</a> is made for checking issues in such as file's naming, text file's encoding.
+			<a href="https://bitbucket.org/TautCony/auto-torrent-inspection" target="_blank"  rel="noopener">AutoTorrentInspection</a> is made for checking issues in such as file's naming, text file's encoding.
 		</p>
 		<p id="RPChecker">
-			<a href="https://bitbucket.org/TautCony/rp-checker">RPChecker</a> is made for comparing difference between two video clip by calculating the
-			<a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio">PSNR</a> /
-			<a href="https://en.wikipedia.org/wiki/Structural_similarity">SSIM</a> Value.
+			<a href="https://bitbucket.org/TautCony/rp-checker" target="_blank" rel="noopener">RPChecker</a> is made for comparing difference between two video clip by calculating the
+			<a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio" target="_blank" rel="noopener">PSNR</a> /
+			<a href="https://en.wikipedia.org/wiki/Structural_similarity" target="_blank" rel="noopener">SSIM</a> Value.
 			<div style="font-size: 13px;">
-                PS₀: From version 1.0.5.1, ffmpeg has been set as the default processor, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank"><b>HERE</b></a>.
+                PS₀: From version 1.0.5.1, ffmpeg has been set as the default processor, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank" rel="noopener"><b>HERE</b></a>.
                 <br/>
 				PS₁: For VapourSynth implementation, you need to make sure
-				<a href="https://www.python.org/downloads/" target="_blank"><b>Python</b></a>,
-				<a href="https://github.com/vapoursynth/vapoursynth/releases" target="_blank"><b>VapourSynth</b></a>,
-				<a href="https://www.dropbox.com/sh/3i81ttxf028m1eh/AAABkQn4Y5w1k-toVhYLasmwa" target="_blank"><b>L-SMASH-Works</b></a>,
-				<a href="https://github.com/HomeOfVapourSynthEvolution/mvsfunc/releases" target="_blank"><b>mvsfunc</b></a>
+				<a href="https://www.python.org/downloads/" target="_blank" rel="noopener"><b>Python</b></a>,
+				<a href="https://github.com/vapoursynth/vapoursynth/releases" target="_blank" rel="noopener"><b>VapourSynth</b></a>,
+				<a href="https://www.dropbox.com/sh/3i81ttxf028m1eh/AAABkQn4Y5w1k-toVhYLasmwa" target="_blank" rel="noopener"><b>L-SMASH-Works</b></a>,
+				<a href="https://github.com/HomeOfVapourSynthEvolution/mvsfunc/releases" target="_blank" rel="noopener"><b>mvsfunc</b></a>
 				have been installed correctly before using the RPChecker.<br>
 			</div>
 		</p>
 		<h3>ChapterTool history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_ct">
-            <history-download-link
-                v-for="info in (data.ct.data.slice(1))"
+            <history-download-link v-for="info in (data.ct.data.slice(1))"
                 :name="data.ct.name"
                 :url="data.ct.url"
                 :info="info"
@@ -67,8 +66,7 @@
 
 		<h3>AutoTorrentInspection history releases</h3>
         <div class="all-releases-w"><ul id="all-releases_ati">
-            <history-download-link
-                v-for="info in (data.ati.data.slice(1))"
+            <history-download-link v-for="info in (data.ati.data.slice(1))"
                 :name="data.ati.name"
                 :url="data.ati.url"
                 :info="info"
@@ -78,8 +76,7 @@
 
 		<h3>RPChecker history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_rp">
-            <history-download-link
-                v-for="info in (data.rp.data.slice(1))"
+            <history-download-link v-for="info in (data.rp.data.slice(1))"
                 :name="data.rp.name"
                 :url="data.rp.url"
                 :info="info"
@@ -87,7 +84,7 @@
             />
 		</ul></div>
 	</section>
-	<div id="copyright-line">Copyright (c) 2015-2017 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/">be5invis</a>.</div>
+	<div id="copyright-line">Copyright (c) 2015-2017 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/" target="_blank" rel="noopener">be5invis</a>.</div>
 	<script src="js/tcupdate.min.js"></script>
 </body>
 </html>

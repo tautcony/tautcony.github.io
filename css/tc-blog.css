@@ -1110,6 +1110,13 @@ a .heimu,
   background-color: #f9f9f9;
   width: 218px;
 }
+.visually-hidden {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}
 .image-credit {
   position: absolute;
   bottom: 0;

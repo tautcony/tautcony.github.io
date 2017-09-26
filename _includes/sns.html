@@ -13,7 +13,7 @@
     
     {% for account in site.SocialAccount %} {% if account.in_sidebar != false or center != false %}
     <li data-toggle="tooltip" title="{{ account.title }}">
-        <a target="_blank" href="{{ account.href }}">
+        <a target="_blank" rel="noopener" href="{{ account.href }}">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
                 <i class="fa {{ account.icon }} fa-stack-1x fa-inverse"> {{ account.content }} </i>

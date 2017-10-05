@@ -61,6 +61,7 @@ var releases_data = {
         url: "ati",
         width: "wide",
         data: [
+        {version: '1.0.5.3', date: 'Oct 05, 2017'},
         {version: '1.0.5.2', date: 'Jul 01, 2017'},
         {version: '1.0.5.1', date: 'Jun 18, 2017'},
         {version: '1.0.5.0', date: 'May 02, 2017'},

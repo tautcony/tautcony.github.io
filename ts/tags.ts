@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    // only load tagcloud.js in tag.html
+    // only load tags.ts in tag.html
     if ($("#tag_cloud").length === 0) {
         return;
     }

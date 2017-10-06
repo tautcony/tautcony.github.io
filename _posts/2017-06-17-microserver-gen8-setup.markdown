@@ -68,6 +68,8 @@ hmmmm，据称正规手段是用内建的`Intelligent Provisioning`进行系统�
 
 [驱动](http://h20566.www2.hpe.com/hpsc/swd/public/readIndex?sp4ts.oid=5390291&lang=en&cc=us)的话杂七杂八很多，然后完整的包含BIOS等的更新的驱动包叫做[`Service Pack for ProLiant`](https://spp.hpe.com/custom/)，只有在保修期内才能下载，贼坑。
 
+> 从四月往后，Gen8已经进入了完全过气的`Post Production`状态。hpe还于九月发布了`Service Pack for ProLiant Gen8.0`，其中仅包含Gen8所用的驱动与固件，以后也将不会有什么大的更新了，非常的稳健，建议下载备用。
+
 ### 后记
 
 仔细一想，这玩意我现在的用法纯粹是高档硬盘盒啊，`600+`一个槽。之前试用的世特力约合`400+`一个槽，这样看似乎也不是特别贵哦，还带下载功能是吧（

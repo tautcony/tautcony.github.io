@@ -53,7 +53,8 @@ module.exports = function(grunt) {
                     target: 'es5',
                     sourceMap: false,
                     declaration: false,
-                    removeComments: true
+                    removeComments: true,
+                    fast: "never",
                 }
             }
         },

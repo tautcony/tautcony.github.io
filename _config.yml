@@ -56,7 +56,7 @@ service-worker: false                   # need an https to enable it
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
-gems: [jekyll-paginate, jekyll-sitemap]
+plugins: [jekyll-paginate, jekyll-sitemap]
 #octopress-minify-html
 
 

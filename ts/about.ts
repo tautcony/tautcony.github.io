@@ -1,6 +1,6 @@
 $(document).ready(() => {
     const cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
-    function decode_block(str, offset) {
+    function decode_block(str: string, offset: number) {
         const input = [0, 0, 0];
         for (let i = offset; i < offset + 4; ++i) {
             const c = str.charCodeAt(i);
@@ -14,7 +14,7 @@ $(document).ready(() => {
         );
     }
 
-    function decode(str) {
+    function decode(str: string) {
         let ret = "";
         for (let i = 0; i < str.length; i += 4) {
             ret += decode_block(str, i);
@@ -23,9 +23,9 @@ $(document).ready(() => {
     }
 
     const qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    const qrcode = window["qrcode"] as HTMLImageElement;
-    const donate = window["donate"] as HTMLParagraphElement;
-    if (qrcode === undefined) {
+    const qrcode = document.getElementById("qrcode") as HTMLImageElement;
+    const donate = document.getElementById("donate") as HTMLParagraphElement;
+    if (qrcode === null) {
         return;
     }
     donate.addEventListener("mouseover", () => setTimeout(() => qrcode.src = decode(qrUrl), 201));

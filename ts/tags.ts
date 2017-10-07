@@ -5,7 +5,7 @@ $(document).ready(() => {
     }
 
     //Sort The Tag in dictionary order
-    function RemoveItemsByClassName(className) {
+    function RemoveItemsByClassName(className: string) {
         const used = document.getElementsByClassName(className);
         for (let i = 0; i < used.length; ++i) {//tslint:disable-line
             used[i].parentNode.removeChild(used[i]);

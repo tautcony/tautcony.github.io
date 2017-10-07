@@ -6,13 +6,6 @@
   "author": "TautCony",
   "license": "Apache-2.0",
   "devDependencies": {
-    "grunt": "^1.0.0",
-    "grunt-contrib-connect": "^1.0.2",
-    "grunt-contrib-less": "^1.4.0",
-    "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-jekyll": "^0.4.6",
-    "grunt-ts": "^6.0.0-beta.16",
     "typescript": "^2.3.4"
   },
   "repository": {
@@ -20,6 +13,5 @@
     "url": "https://github.com/tautcony/tautcony.github.io"
   },
   "scripts": {
-    "watch": "grunt"
   }
 }

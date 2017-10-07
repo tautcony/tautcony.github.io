@@ -42,7 +42,7 @@ let quotes = [
         sou: "Émile: ou De l'éducation",
     },
     {
-        org: "Rein n'est si dangereux qu'un ignorant ami ;Mieux vaudrait un sage ennemi.",
+        org: "Rein n'est si dangereux qu'un ignorant ami; Mieux vaudrait un sage ennemi.",
         jpn: "無知な友人ほど危険なものはない。\n賢い敵のほうがよっぽどましだ。",
         chi: "寧可有聰明的敵人也不要有無知的朋友。",
         aut: "Jean de La Fontaine",
@@ -92,24 +92,60 @@ interface Info {
     content: string;
 }
 
-let CreateElement = (info: Info) => {
-    const className = info.className !== undefined ? `class="${info.className}"` : "";
-    const style = info.style !== undefined ? `style="${info.style}"` : "";
-    return `<${info.tag} ${className} ${style} >${info.content}</${info.tag}>`;
-};
+class Quote {
+    private container: HTMLElement;
+    public constructor(containerSelector: string, className: string) {
+        const wrapper = this.CreateElement({
+            tag: "div",
+            className,
+            content: this.CreateQuote(),
+        });
+        $(containerSelector).append(wrapper);
+        this.container = document.querySelector(`${containerSelector} .${className}`) as HTMLElement;
+        this.UpdateQuote();
+    }
 
-$(document).ready(() => {
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
-    const text = [quote.chi, quote.jpn][Math.floor(Math.random() * 2)];
-    const quoteDiv = CreateElement({
-        tag: "div",
-        style: "margin-top:4em;margin-bottom:-2em;",
-        content: text,
-    });
-    const authorDiv = CreateElement({
-        tag: "small",
-        style: "margin-left:16em;",
-        content: quote.aut,
-    });
-    $(".copyright").append(`<br/>${quoteDiv}<br/>${authorDiv}`);
+    public UpdateQuote() {
+        const quote = this.RandomQuote();
+        this.container.querySelector(".quote-content").textContent = quote.text;
+        this.container.querySelector(".quote-author").textContent  = `——${quote.author}`;
+    }
+
+    private CreateElement = (info: Info) => {
+        const className = info.className !== undefined ? `class="${info.className}"` : "";
+        const style = info.style !== undefined ? `style="${info.style}"` : "";
+        return `<${info.tag} ${className} ${style} >${info.content}</${info.tag}>`;
+    }
+
+    private RandomQuote = () => {
+        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+        const text = [quote.org, quote.chi, quote.jpn][Math.floor(Math.random() * 3)];
+        return {
+            text,
+            author: quote.aut,
+        };
+    }
+
+    private CreateQuote = () => {
+        const quoteDiv = this.CreateElement({
+            tag: "div",
+            className: "quote-content",
+            style: "margin-top:2em;margin-bottom:-2em;",
+            content: "",
+        });
+        const authorDiv = this.CreateElement({
+            tag: "small",
+            className: "quote-author",
+            style: "margin-left:16em;",
+            content: "",
+        });
+        return `${quoteDiv}<br/>${authorDiv}`;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const quote = new Quote(".copyright", "quote");
+    setInterval(() => {
+        quote.UpdateQuote();
+    }, 10 ** 4);
 });

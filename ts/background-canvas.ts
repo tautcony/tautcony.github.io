@@ -2,7 +2,7 @@
     $(window).ready(() => {
         const $html = $("container");
         if (isCanvasSupported()) {
-            const $canvas = $(`<canvas id="canvas-background" />`).appendTo("body");
+            const $canvas = $("<canvas id=\"canvas-background\" />").appendTo("body");
             $canvas.css({
                 "position": "absolute",
                 "top": 0,

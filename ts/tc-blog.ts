@@ -94,14 +94,15 @@ function startsWith(text: string, searchString: string, position?: number) {
 }
 
 function checkDomain(url: string) {
-    if ( url.indexOf("//") === 0 ) {
-        url = location.protocol + url;
+    let ret = url;
+    if (ret.indexOf("//") === 0) {
+        ret = location.protocol + ret;
     }
-    return url.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
+    return ret.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
 }
 
 function isExternal(url: string) {
-    return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1 ) &&
+    return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1) &&
             checkDomain(location.href) !== checkDomain(url);
 }
 

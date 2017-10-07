@@ -7,7 +7,7 @@ $(document).ready(function () {
             var v = (c >= 43 && c <= 122) ? cd64[c - 43] === "$" ? 0 : cd64.charCodeAt(c - 43) - 61 : 0;
             input[i - offset] = v - 1;
         }
-        return String.fromCharCode(((0xFF & input[0] << 2) | input[1] >> 4), ((0xFF & input[1] << 4) | input[2] >> 2), ((0xC0 & input[2] << 6) | input[3] >> 0));
+        return String.fromCharCode((((input[0] << 2) & 0xFF) | (input[1] >> 4)), (((input[1] << 4) & 0xFF) | (input[2] >> 2)), (((input[2] << 6) & 0xC0) | (input[3] >> 0)));
     }
     function decode(str) {
         var ret = "";
@@ -137,7 +137,7 @@ var quotes = [
         sou: "Émile: ou De l'éducation",
     },
     {
-        org: "Rein n'est si dangereux qu'un ignorant ami ;Mieux vaudrait un sage ennemi.",
+        org: "Rein n'est si dangereux qu'un ignorant ami; Mieux vaudrait un sage ennemi.",
         jpn: "無知な友人ほど危険なものはない。\n賢い敵のほうがよっぽどましだ。",
         chi: "寧可有聰明的敵人也不要有無知的朋友。",
         aut: "Jean de La Fontaine",
@@ -179,25 +179,58 @@ var quotes = [
         sou: "Parerga und Paralipomena",
     },
 ];
-var CreateElement = function (info) {
-    var className = info.className !== undefined ? "class=\"" + info.className + "\"" : "";
-    var style = info.style !== undefined ? "style=\"" + info.style + "\"" : "";
-    return "<" + info.tag + " " + className + " " + style + " >" + info.content + "</" + info.tag + ">";
-};
-$(document).ready(function () {
-    var quote = quotes[Math.floor(Math.random() * quotes.length)];
-    var text = [quote.chi, quote.jpn][Math.floor(Math.random() * 2)];
-    var quoteDiv = CreateElement({
-        tag: "div",
-        style: "margin-top:4em;margin-bottom:-2em;",
-        content: text,
-    });
-    var authorDiv = CreateElement({
-        tag: "small",
-        style: "margin-left:16em;",
-        content: quote.aut,
-    });
-    $(".copyright").append("<br/>" + quoteDiv + "<br/>" + authorDiv);
+var Quote = (function () {
+    function Quote(containerSelector, className) {
+        var _this = this;
+        this.CreateElement = function (info) {
+            var className = info.className !== undefined ? "class=\"" + info.className + "\"" : "";
+            var style = info.style !== undefined ? "style=\"" + info.style + "\"" : "";
+            return "<" + info.tag + " " + className + " " + style + " >" + info.content + "</" + info.tag + ">";
+        };
+        this.RandomQuote = function () {
+            var quote = quotes[Math.floor(Math.random() * quotes.length)];
+            var text = [quote.org, quote.chi, quote.jpn][Math.floor(Math.random() * 3)];
+            return {
+                text: text,
+                author: quote.aut,
+            };
+        };
+        this.CreateQuote = function () {
+            var quoteDiv = _this.CreateElement({
+                tag: "div",
+                className: "quote-content",
+                style: "margin-top:2em;margin-bottom:-2em;",
+                content: "",
+            });
+            var authorDiv = _this.CreateElement({
+                tag: "small",
+                className: "quote-author",
+                style: "margin-left:16em;",
+                content: "",
+            });
+            return quoteDiv + "<br/>" + authorDiv;
+        };
+        var wrapper = this.CreateElement({
+            tag: "div",
+            className: className,
+            content: this.CreateQuote(),
+        });
+        $(containerSelector).append(wrapper);
+        this.container = document.querySelector(containerSelector + " ." + className);
+        this.UpdateQuote();
+    }
+    Quote.prototype.UpdateQuote = function () {
+        var quote = this.RandomQuote();
+        this.container.querySelector(".quote-content").textContent = quote.text;
+        this.container.querySelector(".quote-author").textContent = "\u2014\u2014" + quote.author;
+    };
+    return Quote;
+}());
+document.addEventListener("DOMContentLoaded", function () {
+    var quote = new Quote(".copyright", "quote");
+    setInterval(function () {
+        quote.UpdateQuote();
+    }, Math.pow(10, 4));
 });
 var TagCloud;
 (function (TagCloud) {
@@ -241,13 +274,14 @@ var TagCloud;
     }
     TagCloud.tagcloud = tagcloud;
     function toRGB(code) {
-        if (/#[0-9a-fA-F]{3}/.test(code)) {
-            var r = code[1] + code[1];
-            var g = code[2] + code[2];
-            var b = code[3] + code[3];
-            code = "#" + (r + g + b);
+        var ret = code;
+        if (/#[0-9a-fA-F]{3}/.test(ret)) {
+            var r = ret[1] + ret[1];
+            var g = ret[2] + ret[2];
+            var b = ret[3] + ret[3];
+            ret = "#" + (r + g + b);
         }
-        var hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
+        var hex = /(\w{2})(\w{2})(\w{2})/.exec(ret);
         if (hex === null) {
             return [0, 0, 0];
         }
@@ -385,10 +419,11 @@ $(document).ready(function () {
         return text.substr(position || 0, searchString.length) === searchString;
     }
     function checkDomain(url) {
-        if (url.indexOf("//") === 0) {
-            url = location.protocol + url;
+        var ret = url;
+        if (ret.indexOf("//") === 0) {
+            ret = location.protocol + ret;
         }
-        return url.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
+        return ret.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
     }
     function isExternal(url) {
         return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1) &&

@@ -8,9 +8,9 @@ $(document).ready(() => {
             input[i - offset] = v - 1;
         }
         return String.fromCharCode(
-            ((0xFF & input[0] << 2) | input[1] >> 4),
-            ((0xFF & input[1] << 4) | input[2] >> 2),
-            ((0xC0 & input[2] << 6) | input[3] >> 0),
+            (((input[0] << 2) & 0xFF) | (input[1] >> 4)),
+            (((input[1] << 4) & 0xFF) | (input[2] >> 2)),
+            (((input[2] << 6) & 0xC0) | (input[3] >> 0)),
         );
     }
 

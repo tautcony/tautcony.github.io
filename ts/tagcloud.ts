@@ -55,13 +55,14 @@ namespace TagCloud {
 
     // Converts hex to an RGB array
     function toRGB(code: string) {
-        if (/#[0-9a-fA-F]{3}/.test(code)) {
-            const r = code[1] + code[1];
-            const g = code[2] + code[2];
-            const b = code[3] + code[3];
-            code = `#${r + g + b}`;
+        let ret = code;
+        if (/#[0-9a-fA-F]{3}/.test(ret)) {
+            const r = ret[1] + ret[1];
+            const g = ret[2] + ret[2];
+            const b = ret[3] + ret[3];
+            ret = `#${r + g + b}`;
         }
-        const hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
+        const hex = /(\w{2})(\w{2})(\w{2})/.exec(ret);
         if (hex === null) {
             return [0, 0, 0];
         }

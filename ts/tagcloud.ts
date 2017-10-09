@@ -32,24 +32,14 @@ namespace TagCloud {
             range = 1;
         }
         // Sizes
-        let fontIncr = 0;
-        let colorIncr: number[] = [];
-        if (opts.size) {
-            fontIncr = (opts.size.end - opts.size.start) / range;
-        }
+        const fontIncr = (opts.size.end - opts.size.start) / range;
         // Colors
-        if (opts.color) {
-            colorIncr = colorIncrement(opts, range);
-        }
+        const colorIncr = colorIncrement(opts, range);
         return tags.each((index, elem) => {
             const weighting = parseInt($(elem).attr("rel"), 10) - lowest;
-            if (opts.size) {
-                $(elem).css({ "font-size": opts.size.start + (weighting * fontIncr) + opts.size.unit });
-            }
-            if (opts.color) {
-                // change color to background-color
-                $(elem).css({ backgroundColor: tagColor(opts, colorIncr, weighting) });
-            }
+            $(elem).css({ "font-size": (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit });
+            // change color to background-color
+            $(elem).css({ backgroundColor: tagColor(opts, colorIncr, weighting) });
         });
     }
 

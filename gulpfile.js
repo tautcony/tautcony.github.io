@@ -2,7 +2,8 @@ const gulp        = require("gulp");
 const lesshint    = require("gulp-lesshint");
 const less        = require("gulp-less");
 const cleanCSS    = require("gulp-clean-css");
-const tslint      = require("gulp-tslint")
+const tslint      = require("tslint");
+const gulpTslint  = require("gulp-tslint")
 const ts          = require("gulp-typescript");
 const uglify      = require("gulp-uglify");
 const banner      = require("gulp-banner");
@@ -43,17 +44,19 @@ gulp.task("minify-css", () => {
     .pipe(gulp.dest("./css"));
 });
 
-gulp.task("tslint", () =>
-  gulp.src("./ts/**/*.ts")
-    .pipe(tslint({
-      formatter: "verbose",
+gulp.task("tslint", () => {
+  const program = tslint.Linter.createProgram("./tslint.json");
+  return gulp.src("./ts/**/*.ts")
+    .pipe(gulpTslint({program}))
+    .pipe(gulpTslint.report({
+      summarizeFailureOutput: true
     }))
-    .pipe(tslint.report())
-);
+});
 
 gulp.task("ts", () =>
    gulp.src(["./ts/**/*.ts", "./typings/globals/**/*.d.ts"])
-    .pipe(tsconfig()).js.pipe(gulp.dest("./js"))
+    .pipe(tsconfig()).js
+    .pipe(gulp.dest("./js"))
 );
 
 gulp.task("compress", () =>

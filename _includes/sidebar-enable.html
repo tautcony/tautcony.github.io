@@ -8,8 +8,7 @@
         </form>
     </div>
     {% if site.featured-tags %}
-    {% assign split = false %}
-    {% include featured-tags.html %}
+    {% include_cached featured-tags.html split = false %}
     {% endif %}
 
     <!-- Short About -->
@@ -22,8 +21,7 @@
             {% if site.sidebar-about-description %}
                 <p>{{site.sidebar-about-description}}</p>
             {% endif %}
-            {% assign center = false %}
-            {% include sns.html %}
+            {% include_cached sns.html center = false %}
         </div>
     </section>
     {% if site.friends %}

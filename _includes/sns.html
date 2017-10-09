@@ -1,5 +1,5 @@
 <!-- SNS Link -->
-<ul class="list-inline{% if center != false %}{{" text-center"}}{% endif %}">
+<ul class="list-inline{% if include.center != false %}{{" text-center"}}{% endif %}">
     {% if site.RSS %}
     <li>
         <a href="{{ "/feed.xml" | prepend: site.baseurl }}">
@@ -11,7 +11,7 @@
     </li>
     {% endif %}
     
-    {% for account in site.SocialAccount %} {% if account.in_sidebar != false or center != false %}
+    {% for account in site.SocialAccount %} {% if account.in_sidebar != false or include.center != false %}
     <li data-toggle="tooltip" title="{{ account.title }}">
         <a target="_blank" rel="noopener" href="{{ account.href }}">
             <span class="fa-stack fa-lg">

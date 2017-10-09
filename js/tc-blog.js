@@ -17,9 +17,9 @@ $(document).ready(function () {
         return ret;
     }
     var qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    var qrcode = window["qrcode"];
-    var donate = window["donate"];
-    if (qrcode === undefined) {
+    var qrcode = document.getElementById("qrcode");
+    var donate = document.getElementById("donate");
+    if (qrcode === null) {
         return;
     }
     donate.addEventListener("mouseover", function () { return setTimeout(function () { return qrcode.src = decode(qrUrl); }, 201); });
@@ -254,22 +254,12 @@ var TagCloud;
         if (range === 0) {
             range = 1;
         }
-        var fontIncr = 0;
-        var colorIncr = [];
-        if (opts.size) {
-            fontIncr = (opts.size.end - opts.size.start) / range;
-        }
-        if (opts.color) {
-            colorIncr = colorIncrement(opts, range);
-        }
+        var fontIncr = (opts.size.end - opts.size.start) / range;
+        var colorIncr = colorIncrement(opts, range);
         return tags.each(function (index, elem) {
             var weighting = parseInt($(elem).attr("rel"), 10) - lowest;
-            if (opts.size) {
-                $(elem).css({ "font-size": opts.size.start + (weighting * fontIncr) + opts.size.unit });
-            }
-            if (opts.color) {
-                $(elem).css({ backgroundColor: tagColor(opts, colorIncr, weighting) });
-            }
+            $(elem).css({ "font-size": (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit });
+            $(elem).css({ backgroundColor: tagColor(opts, colorIncr, weighting) });
         });
     }
     TagCloud.tagcloud = tagcloud;
@@ -416,7 +406,7 @@ $(document).ready(function () {
         });
     })();
     function startsWith(text, searchString, position) {
-        return text.substr(position || 0, searchString.length) === searchString;
+        return text.substr(position === undefined ? 0 : position, searchString.length) === searchString;
     }
     function checkDomain(url) {
         var ret = url;

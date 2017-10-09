@@ -21,7 +21,6 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
 // Navigation Scripts to Show Header on Scroll-Up
 (() => {
     const MQL = 1170;
-
     //primary navigation slide-in effect
     if ($(window).width() > MQL) {
         const headerHeight = $(".navbar-custom").height();
@@ -30,6 +29,7 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
             const currentTop = $(window).scrollTop();
             const $catalog = $(".side-catalog");
 
+            /* tslint:disable: no-unsafe-any*/
             //check if user is scrolling up by mouse or keyborad
             if (currentTop < event.data.previousTop) {
                 //if scrolling up...
@@ -46,6 +46,7 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
                 }
             }
             event.data.previousTop = currentTop;
+            /* tslint:enable: no-unsafe-any*/
 
             //adjust the appearance of side-catalog
             $catalog.show();
@@ -90,7 +91,7 @@ $(window).scroll(() => {
 })();
 
 function startsWith(text: string, searchString: string, position?: number) {
-    return text.substr(position || 0, searchString.length) === searchString;
+    return text.substr(position === undefined ? 0 : position, searchString.length) === searchString;
 }
 
 function checkDomain(url: string) {
@@ -122,5 +123,46 @@ function isExternal(url: string) {
         });
     }
 })();
-
+/*
+(() => {
+    function typewriter(selector: string, speed = 100, range = 100, repeat = true, flashback = true) {
+        const self = $(selector);
+        self.css("border-right", "0");
+        if (self.length === 0) {
+            return;
+        }
+        const prefixArray = self.text().split("");
+        for (let i = 1; i < prefixArray.length; ++i) {
+            prefixArray[i] = prefixArray[i - 1] + prefixArray[i];
+        }
+        prefixArray.unshift("");
+        let index = 0;
+        let forward = true;
+        const init = () => {
+            self.text(prefixArray[index]);
+            if (index >= prefixArray.length - 1) {
+                if (repeat) {
+                    if (flashback) {
+                        forward = false;
+                    } else {
+                        index = 0;
+                    }
+                    setTimeout(init, 2000);
+                } else {
+                    self.css("border-right", "");
+                }
+            } else {
+                if (index < 0) {
+                    index = 0;
+                    forward = true;
+                }
+                setTimeout(init, Math.random() * range + speed);
+            }
+            index += forward ? 1 : -1;
+        };
+        init();
+    }
+    typewriter(".navbar-brand");
+})();
+*/
 });

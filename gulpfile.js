@@ -14,7 +14,7 @@ const connect     = require("gulp-connect");
 const runSequence = require("run-sequence");
 
 const pkg         = require("./package.json");
-const tsconfig    = ts.createProject("tsconfig.json", {outFile: `${pkg.name}.js`});
+const tsconfig    = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
 const comment     = `/*!
 * ${pkg.title} v${pkg.version} (${pkg.homepage})
 * Copyright ${new Date().getUTCFullYear()} ${pkg.author}
@@ -23,9 +23,9 @@ const comment     = `/*!
 `;
 
 gulp.task("lesshint", () =>
-  gulp.src("./src/*.less")
+  gulp.src("./less/*.less")
     .pipe(lesshint({
-        // Options
+      configPath: "./.lesshintrc"
     }))
     .pipe(lesshint.reporter())
     .pipe(lesshint.failOnError())

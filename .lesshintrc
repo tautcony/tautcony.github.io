@@ -1,0 +1,41 @@
+{
+  "borderZero": false,
+  "comment": false,
+  "declaration-no-important": true,
+  "duplicateProperty": {
+    "exclude": [
+      "-webkit-transition-property",
+      "background",
+      "background-image",
+      "src",
+      "transition-property",
+      "width"
+    ]
+  },
+  "emptyRule": false,
+  "finalNewline": false,
+  "hexNotation": false,
+  "hexLength": false,
+  "idSelector": false,
+  "importantRule": false,
+  "newlineAfterBlock": false,
+  "propertyOrdering": false,
+  "propertyUnits": false,
+  "qualifyingElement": false,
+  "singleLinePerProperty": false,
+  "singleLinePerSelector": false,
+  "spaceAfterPropertyColon": false,
+  "spaceAroundComma":{
+      "allowNewline": true
+  },
+  "spaceBeforeBrace": false,
+  "stringQuotes": {
+      "style": "double"
+  },
+  "trailingSemicolon": true,
+  "urlFormat": false,
+  "urlQuotes": false,
+  "zeroUnit": {
+      "style": "no_unit"
+  }
+}

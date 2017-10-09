@@ -40,6 +40,7 @@ gulp.task("less", () =>
 gulp.task("minify-css", () => {
   return gulp.src(`./css/${pkg.name}.css`)
     .pipe(cleanCSS({compatibility: "ie8"}))
+    .pipe(banner(comment))
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("./css"));
 });
@@ -139,6 +140,7 @@ gulp.task("compress-tcupdate", () =>
 gulp.task("minify-css-tcupdate", () =>
   gulp.src("./css/tcupdate.css")
     .pipe(cleanCSS({compatibility: "ie8"}))
+    .pipe(banner(comment))
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("./css"))
 );

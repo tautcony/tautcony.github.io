@@ -17,7 +17,7 @@ const pkg         = require("./package.json");
 const tsconfig    = ts.createProject("tsconfig.json", {outFile: `${pkg.name}.js`});
 const comment     = `/*!
 * ${pkg.title} v${pkg.version} (${pkg.homepage})
-* Copyright 2017 ${pkg.author}
+* Copyright ${new Date().getUTCFullYear()} ${pkg.author}
 * Licensed under ${pkg.license} (${pkg.repository.url}/blob/master/LICENSE)
 */
 `;

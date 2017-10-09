@@ -1,6 +1,7 @@
 const gulp        = require("gulp");
 const lesshint    = require("gulp-lesshint");
 const less        = require("gulp-less");
+const autoprefixer= require('gulp-autoprefixer');
 const cleanCSS    = require("gulp-clean-css");
 const tslint      = require("tslint");
 const gulpTslint  = require("gulp-tslint")
@@ -34,12 +35,16 @@ gulp.task("lesshint", () =>
 gulp.task("less", () =>
   gulp.src(`./less/${pkg.name}.less`)
     .pipe(less())
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(gulp.dest("./css"))
 );
 
 gulp.task("minify-css", () => {
   return gulp.src(`./css/${pkg.name}.css`)
-    .pipe(cleanCSS({compatibility: "ie8"}))
+    .pipe(cleanCSS({ compatibility: "ie9" }))
     .pipe(banner(comment))
     .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("./css"));
@@ -126,6 +131,10 @@ gulp.task("watch", () =>
 gulp.task("less-tcupdate", () =>
   gulp.src("./less/tcupdate.less")
     .pipe(less())
+    .pipe(autoprefixer({
+      browsers: ["last 2 versions"],
+      cascade: false
+    }))
     .pipe(gulp.dest("./css"))
 );
 

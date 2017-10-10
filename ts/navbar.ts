@@ -11,7 +11,7 @@ class Nav {
         setTimeout(() => {
             // prevent frequently toggle
             if (this.navbar.className.indexOf("in") < 0) {
-                this.collapse.style.height = "0px";
+                this.collapse.style.height = "0";
             }
         }, 400);
     }

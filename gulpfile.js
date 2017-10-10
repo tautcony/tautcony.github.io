@@ -36,7 +36,7 @@ gulp.task("less", () =>
   gulp.src(`./less/${pkg.name}.less`)
     .pipe(less())
     .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
+      browsers: ["last 2 versions"],
       cascade: false
     }))
     .pipe(gulp.dest("./css"))
@@ -65,7 +65,7 @@ gulp.task("ts", () =>
     .pipe(gulp.dest("./js"))
 );
 
-gulp.task("compress", () =>
+gulp.task("minify-js", () =>
   gulp.src(`./js/${pkg.name}.js`)
     .pipe(uglify())
     .pipe(banner(comment))
@@ -138,7 +138,7 @@ gulp.task("less-tcupdate", () =>
     .pipe(gulp.dest("./css"))
 );
 
-gulp.task("compress-tcupdate", () =>
+gulp.task("minify-js-tcupdate", () =>
   gulp.src("./js/tcupdate.js")
     .pipe(uglify())
     .pipe(banner(comment))
@@ -157,7 +157,7 @@ gulp.task("minify-css-tcupdate", () =>
 gulp.task("tcupdate", callback =>
   runSequence(
     "less-tcupdate",
-    "compress-tcupdate",
+    "minify-js-tcupdate",
     "minify-css-tcupdate",
     callback,
   )
@@ -169,7 +169,7 @@ gulp.task("build", callback =>
   runSequence(
     ["lesshint", "tslint"],
     ["less", "ts", "tcupdate"],
-    ["minify-css", "compress"],
+    ["minify-css", "minify-js"],
     "jekyll",
     callback,
   )

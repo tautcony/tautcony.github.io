@@ -1,0 +1,16 @@
+{% capture image %}{% if page.header-img != null %}{{ page.header-img | absolute_url }}{% else %}{{ "" }}{% endif %}{% endcapture %}
+{% capture description %} {% if page.description != null %}{{ page.description }}{% else %}{{ page.subtitle }}{% endif %}{% endcapture %}
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="{% if page.feature %}summary_large_image{% else %}summary{% endif %}">
+<meta name="twitter:site" content="@{{ site.author.twitter }}">
+<meta name="twitter:creator" content="@{{ site.author.twitter }}">
+<meta name="twitter:title" content="{{ page.title }}">
+<meta name="twitter:url" content="{{ page.url | absolute_url }}">
+<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:image" content="{{ image }}">
+<!-- Open Graph data -->
+<meta property="og:title" content="{{ page.title }}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="{{ page.url | absolute_url }}" />
+<meta property="og:image" content="{{ image }}">
+<meta property="og:description" content="{{ description }}" />

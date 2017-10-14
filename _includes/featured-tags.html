@@ -1,6 +1,6 @@
 <!-- Featured Tags -->
 <section>
-    {% if include.split != false %}<hr class="hidden-sm hidden-xs">{% endif %}
+    {% if include.split != false %}<hr>{% else %}<hr class="hidden-sm hidden-xs">{% endif %}
     <h5><a href="{{ site.baseurl }}/tags/">FEATURED TAGS</a></h5>
     <div class="tags">
         {% for tag in site.tags %} {% if tag[1].size > site.featured-condition-size %}

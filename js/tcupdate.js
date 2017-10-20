@@ -89,7 +89,7 @@ var releases_data = {
         url: "rpchecker",
         width: "middle",
         data: [
-        {version: '1.0.5.4', date: 'Oct 20, 2017'},
+        {version: '1.0.5.1', date: 'Oct 20, 2017'},
         {version: '1.0.5.0', date: 'Aug 12, 2017'},
         {version: '1.0.4.3', date: 'Apr 16, 2017'},
         {version: '1.0.4.2', date: 'Mar 06, 2017'},

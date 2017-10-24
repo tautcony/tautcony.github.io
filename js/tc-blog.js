@@ -365,6 +365,7 @@ var Lib;
                 return {
                     text: text,
                     author: quote.aut,
+                    source: quote.sou,
                 };
             };
             this.CreateElement = function (info) {
@@ -410,7 +411,7 @@ var Lib;
         Quote.prototype.UpdateQuote = function () {
             var quote = this.RandomQuote();
             this.container.querySelector(".quote-content").textContent = quote.text;
-            this.container.querySelector(".quote-author").textContent = "\u2014\u2014" + quote.author;
+            this.container.querySelector(".quote-author").textContent = "\u2014\u2014 " + quote.author + " \u300A" + quote.source + "\u300B";
         };
         Quote.prototype.Interval = function (timeout) {
             var _this = this;

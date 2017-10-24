@@ -109,7 +109,7 @@ export class Quote {
     public UpdateQuote() {
         const quote = this.RandomQuote();
         this.container.querySelector(".quote-content").textContent = quote.text;
-        this.container.querySelector(".quote-author").textContent  = `——${quote.author}`;
+        this.container.querySelector(".quote-author").textContent  = `—— ${quote.author} 《${quote.source}》`;
     }
 
     public Interval(timeout: number) {
@@ -124,6 +124,7 @@ export class Quote {
         return {
             text,
             author: quote.aut,
+            source: quote.sou,
         };
     }
 

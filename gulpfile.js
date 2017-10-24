@@ -95,7 +95,7 @@ gulp.task("watch-ts", () =>
     runSequence(
       "tslint",
       "ts",
-      "compress",
+      "minify-js",
       "jekyll",
     )
   )
@@ -126,7 +126,7 @@ gulp.task("watch", () =>
   )
 );
 
-/* ----------- */
+// #region tcupdate
 
 gulp.task("less-tcupdate", () =>
   gulp.src("./less/tcupdate.less")
@@ -163,7 +163,7 @@ gulp.task("tcupdate", callback =>
   )
 );
 
-/* ----------- */
+// #endregion
 
 gulp.task("build", callback =>
   runSequence(

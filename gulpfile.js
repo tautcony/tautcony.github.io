@@ -91,7 +91,7 @@ gulp.task("connect", () =>
 );
 
 gulp.task("watch-ts", () =>
-  watch("./ts/*.ts", () =>
+  watch("./ts/**/*.ts", () =>
     runSequence(
       "tslint",
       "ts",

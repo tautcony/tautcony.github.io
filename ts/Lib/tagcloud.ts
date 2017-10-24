@@ -1,4 +1,4 @@
-namespace TagCloud {
+namespace Lib {
     export interface IConfig {
         color: {
             start: string;

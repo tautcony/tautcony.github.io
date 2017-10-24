@@ -1,14 +1,4 @@
-/*!
- * TC Blog v1.0.0 (http://startbootstrap.com)
- * Copyright 2017 TautCony
- * Licensed under Apache 2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)
- */
-
 $(document).ready(() => {
-const banner = $("header.intro-header");
-if (banner.css("background-image") === "none") {
-    banner.geopattern(document.location.href);
-}
 
 // responsive tables
 $("table").wrap("<div class='table-responsive'></div>");
@@ -25,7 +15,7 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
     if ($(window).width() > MQL) {
         const headerHeight = $(".navbar-custom").height();
         const bannerHeight = $(".intro-header .container").height();
-        $(window).scroll({ previousTop: 0 }, (event) => {
+        $(window).scroll({ previousTop: 0, passive: true }, (event) => {
             const currentTop = $(window).scrollTop();
             const $catalog = $(".side-catalog");
 
@@ -59,110 +49,12 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
     }
 })();
 
-$("#gotop").click(() => {
-    $("html, body").animate({ scrollTop: 0 }, 1000);
-});
-$(window).scroll(() => {
-    $("#gotop").toggleClass("active", $(window).scrollTop() > 300);
-});
+$("#gotop").click(() => $("html, body").animate({ scrollTop: 0 }, 1000));
+$(window).scroll({ passive: true }, () => $("#gotop").toggleClass("active", $(window).scrollTop() > 300));
 
-(() => {
-    const initalTitle = document.title;
-    const gogatsubyou = ["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_"   , "_(┐「ε:)_" , "_(:3」∠❀",
-                         "_(:зゝ∠)_" , "_(:3」[＿]" , "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"];
-    let restoreTitleID = 0;
-    document.addEventListener("visibilitychange", event => {
-        if (!document.hidden) {
-            document.title = "．．．．．．";
-            if (restoreTitleID !== 0) {
-                clearTimeout(restoreTitleID);
-            }
-            restoreTitleID = setTimeout(() => {
-                document.title = initalTitle;
-                restoreTitleID = 0;
-            }, 500);
-        } else {
-            if (restoreTitleID !== 0) {
-                clearTimeout(restoreTitleID);
-            }
-            document.title = `${gogatsubyou[Math.floor(Math.random() * gogatsubyou.length)]} ${initalTitle}`;
-        }
-    });
-})();
+new Lib.Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
+               "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
 
-function startsWith(text: string, searchString: string, position?: number) {
-    return text.substr(position === undefined ? 0 : position, searchString.length) === searchString;
-}
+new Lib.Quote(".copyright", "quote").Interval(10 ** 4);
 
-function checkDomain(url: string) {
-    let ret = url;
-    if (ret.indexOf("//") === 0) {
-        ret = location.protocol + ret;
-    }
-    return ret.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
-}
-
-function isExternal(url: string) {
-    return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1) &&
-            checkDomain(location.href) !== checkDomain(url);
-}
-
-(() => {
-    const post = $(".post-container");
-    if (post.length !== 0) {
-        post.children("p").each((index, value) => {
-            const p = $(value);
-            if (startsWith(p.text(), "//")) {
-                p.css({color: "#339966"});
-            }
-        });
-        post.find("a").each((index, value) => {
-            if (isExternal((value as HTMLAnchorElement).href)) {
-                $(value).addClass("external");
-            }
-        });
-    }
-})();
-/*
-(() => {
-    function typewriter(selector: string, speed = 100, range = 100, repeat = true, flashback = true) {
-        const self = $(selector);
-        self.css("border-right", "0");
-        if (self.length === 0) {
-            return;
-        }
-        const prefixArray = self.text().split("");
-        for (let i = 1; i < prefixArray.length; ++i) {
-            prefixArray[i] = prefixArray[i - 1] + prefixArray[i];
-        }
-        prefixArray.unshift("");
-        let index = 0;
-        let forward = true;
-        const init = () => {
-            self.text(prefixArray[index]);
-            if (index >= prefixArray.length - 1) {
-                if (repeat) {
-                    if (flashback) {
-                        forward = false;
-                    } else {
-                        index = 0;
-                    }
-                    setTimeout(init, 2000);
-                } else {
-                    self.css("border-right", "");
-                }
-            } else {
-                if (index < 0) {
-                    index = 0;
-                    forward = true;
-                }
-                setTimeout(init, Math.random() * range + speed);
-            }
-            index += forward ? 1 : -1;
-        };
-        init();
-    }
-    typewriter(".navbar-brand");
-})();
-*/
 });

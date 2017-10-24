@@ -170,7 +170,6 @@ gulp.task("build", callback =>
     ["lesshint", "tslint"],
     ["less", "ts", "tcupdate"],
     ["minify-css", "minify-js"],
-    "jekyll",
     callback,
   )
 );
@@ -178,5 +177,6 @@ gulp.task("build", callback =>
 gulp.task("default", callback =>
   runSequence(
     "build",
+    "jekyll",
     ["connect", "watch"],
 ));

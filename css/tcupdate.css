@@ -83,14 +83,16 @@ section#tool-downloads h2 {
   margin-top: 0;
   text-align: center;
 }
-section#tool-downloads h2:before,
-section#tool-downloads h2:after {
-  border-bottom: 1px solid #dddddd;
-  content: "";
-  display: inline-block;
-  margin: 0 0.2em;
-  vertical-align: 0.3em;
-  width: 1em;
+@media screen and (min-width: 700px) {
+  section#tool-downloads h2:before,
+  section#tool-downloads h2:after {
+    border-bottom: 1px solid #dddddd;
+    content: "";
+    display: inline-block;
+    margin: 0 0.2em;
+    vertical-align: 0.3em;
+    width: 1em;
+  }
 }
 section#tool-downloads h3 {
   font-size: 1em;
@@ -173,7 +175,7 @@ section#tool-downloads #all-releases_rp {
   display: block;
   font-size: 60%;
 }
-@media screen and (max-device-width: 768px) {
+@media screen and (max-width: 768px) {
   #downlinks {
     display: block;
   }
@@ -188,13 +190,6 @@ section#tool-downloads #all-releases_rp {
   }
   .all-releases-w li {
     font-size: 0.8em !important;
-  }
-}
-@media all and (-ms-high-contrast: none) {
-  *::-ms-backdrop,
-  #downlinks {
-    margin-left: -5em;
-    /* IE11 */
   }
 }
 #copyright-line {

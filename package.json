@@ -19,6 +19,7 @@
     "gulp-typescript": "^3.2.2",
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.11",
+    "pump": "^1.0.2",
     "run-sequence": "^2.2.0",
     "tslint": "^5.7.0",
     "typescript": "^2.3.4"

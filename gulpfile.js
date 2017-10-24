@@ -6,6 +6,7 @@ const cleanCSS    = require("gulp-clean-css");
 const tslint      = require("tslint");
 const gulpTslint  = require("gulp-tslint")
 const ts          = require("gulp-typescript");
+const pump        = require('pump');
 const uglify      = require("gulp-uglify");
 const banner      = require("gulp-banner");
 const rename      = require("gulp-rename");
@@ -65,13 +66,24 @@ gulp.task("ts", () =>
     .pipe(gulp.dest("./js"))
 );
 
-gulp.task("minify-js", () =>
-  gulp.src(`./js/${pkg.name}.js`)
-    .pipe(uglify())
-    .pipe(banner(comment))
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(gulp.dest("./js"))
-);
+gulp.task("minify-js", (callback) => {
+  pump([
+    gulp.src(`./js/${pkg.name}.js`),
+    uglify({
+      toplevel: true,
+      warnings: true,
+      compress: {
+        passes: 2
+      },
+      output: {
+        ascii_only: true
+      },
+    }),
+    banner(comment),
+    rename({ suffix: ".min" }),
+    gulp.dest("./js")
+  ], callback);
+});
 
 gulp.task("jekyll", () =>
   run("jekyll build --drafts --incremental").exec()
@@ -138,13 +150,24 @@ gulp.task("less-tcupdate", () =>
     .pipe(gulp.dest("./css"))
 );
 
-gulp.task("minify-js-tcupdate", () =>
-  gulp.src("./js/tcupdate.js")
-    .pipe(uglify())
-    .pipe(banner(comment))
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(gulp.dest("./js"))
-);
+gulp.task("minify-js-tcupdate", (callback) => {
+  pump([
+    gulp.src("./js/tcupdate.js"),
+    uglify({
+      toplevel: true,
+      warnings: true,
+      compress: {
+        passes: 2
+      },
+      output: {
+        ascii_only: true
+      },
+    }),
+    banner(comment),
+    rename({ suffix: ".min" }),
+    gulp.dest("./js")
+  ], callback);
+});
 
 gulp.task("minify-css-tcupdate", () =>
   gulp.src("./css/tcupdate.css")
@@ -154,27 +177,25 @@ gulp.task("minify-css-tcupdate", () =>
     .pipe(gulp.dest("./css"))
 );
 
-gulp.task("tcupdate", callback =>
+gulp.task("tcupdate", () =>
   runSequence(
     "less-tcupdate",
     "minify-js-tcupdate",
-    "minify-css-tcupdate",
-    callback,
+    "minify-css-tcupdate"
   )
 );
 
 // #endregion
 
-gulp.task("build", callback =>
+gulp.task("build", () =>
   runSequence(
     ["lesshint", "tslint"],
     ["less", "ts", "tcupdate"],
-    ["minify-css", "minify-js"],
-    callback,
+    ["minify-css", "minify-js"]
   )
 );
 
-gulp.task("default", callback =>
+gulp.task("default", () =>
   runSequence(
     "build",
     "jekyll",

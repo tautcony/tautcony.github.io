@@ -8,33 +8,33 @@ permalink: /404.html
 
 <!-- Page Header -->
 <header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
-    {%if site.particle404 %}
-    <div class="CanvasContainer" id="container" style="background: url('/img/404/inner_bck.jpg')">
     <!-- canvas from http://hotdot.pro/en/404/ -->
-    {% endif %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading" id="tag-heading">
-                    <h1>404</h1>
-                    <span class="subheading">{{ page.description }}</span>
+    <div class="container" id="container">
+        <div class='fallback fillParent vAligner text-center'>
+            <div class="vItem">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="site-heading" id="tag-heading">
+                            <h1>404</h1>
+                            <span class="subheading">{{ page.description }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {%if site.particle404 %}
-    </div>
-    {% endif %}
 </header>
 
 <script>
     document.body.classList.add('page-fullscreen');
+    document.body.classList.add('page');
+    document.body.classList.add('page-404');
 </script>
 
 {%if site.particle404 %}
 <link type="text/css" rel="stylesheet" href="/css/404.css">
 <script type="text/javascript" src="/js/404/independent/modernizr.custom.js"></script>
-<script type="text/javascript" src="/js/404/404-base.js"></script>
+<script type="text/javascript" src="/js/404/base.js"></script>
 <script type="text/javascript" src="/js/404/independent/three.min_r56.js"></script>
 <script type="text/javascript" src="/js/404/404.js"></script>
 {% endif %}

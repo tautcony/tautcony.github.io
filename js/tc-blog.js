@@ -16,21 +16,79 @@ $(document).ready(function () {
         }
         return ret;
     }
-    var qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    var qrcode = document.getElementById("qrcode");
-    var donate = document.getElementById("donate");
-    if (qrcode === null) {
+    var qrContainer = document.getElementById("qr-container");
+    if (qrContainer === null) {
         return;
     }
+    var donate = document.createElement("p");
+    donate.id = "donate";
+    donate.textContent = "啊哈，不考虑资助一下贫苦的山区儿童么（雾";
+    var qrcode = document.createElement("img");
+    qrcode.id = "qrcode";
+    var qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
     donate.addEventListener("mouseover", function () { return setTimeout(function () { return qrcode.src = decode(qrUrl); }, 201); });
     donate.addEventListener("mouseout", function () { return setTimeout(function () { return qrcode.src = ""; }, 201); });
+    qrContainer.appendChild(donate);
+    qrContainer.appendChild(qrcode);
 });
+var kon = {
+    data: [
+        {
+            title: "中文",
+            lang: "zh",
+            blockquote: "夜空彼方与飞机尾云",
+            content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"],
+        }, {
+            title: "日本語",
+            lang: "jp",
+            blockquote: "夜空ノムコウとひこうき雲",
+            content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"],
+        }, {
+            title: "English",
+            lang: "en",
+            blockquote: "Translation Server Error :)",
+            content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"],
+        },
+    ],
+    class: "lang",
+    title: "K-ON!! EP12",
+    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
+};
 $(document).ready(function () {
-    var lang = document.getElementsByClassName("lang");
-    var selecter = document.getElementById("langSelect");
-    if (lang.length === 0) {
+    var konContainer = document.getElementById("kon-container");
+    if (konContainer === null) {
         return;
     }
+    function getElement(index) {
+        var div = document.createElement("div");
+        div.className = kon.class;
+        div.title = kon.data[index].title;
+        div.lang = kon.data[index].lang;
+        div.style.display = "none";
+        var blockquote = document.createElement("blockquote");
+        blockquote.textContent = kon.data[index].blockquote;
+        div.appendChild(blockquote);
+        kon.data[index].content.forEach(function (element) {
+            var p = document.createElement("p");
+            p.textContent = element;
+            div.appendChild(p);
+        });
+        var source = document.createElement("p");
+        source.style.textAlign = "right";
+        source.title = kon.title;
+        var link = document.createElement("a");
+        link.href = kon.url;
+        link.text = kon.title;
+        source.appendChild(document.createTextNode("—— "));
+        source.appendChild(link);
+        div.appendChild(source);
+        return div;
+    }
+    for (var i = 0; i < kon.data.length; ++i) {
+        konContainer.appendChild(getElement(i));
+    }
+    var lang = document.getElementsByClassName("lang");
+    var selecter = document.getElementById("langSelect");
     var lastSelectedLanguageIndex = -1;
     $("#langSelect").on("change", function (eventObject) {
         if (lastSelectedLanguageIndex !== -1) {
@@ -65,7 +123,7 @@ var Nav = (function () {
         this.navbar.className = " ";
         setTimeout(function () {
             if (_this.navbar.className.indexOf("in") < 0) {
-                _this.collapse.style.height = "0px";
+                _this.collapse.style.height = "0";
             }
         }, 400);
     };

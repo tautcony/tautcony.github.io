@@ -22,22 +22,85 @@ $(document).ready(() => {
         return ret;
     }
 
-    const qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    const qrcode = document.getElementById("qrcode") as HTMLImageElement;
-    const donate = document.getElementById("donate") as HTMLParagraphElement;
-    if (qrcode === null) {
+    const qrContainer = document.getElementById("qr-container");
+    if (qrContainer === null) {
         return;
     }
+
+    const donate = document.createElement("p");
+    donate.id = "donate";
+    donate.textContent = "啊哈，不考虑资助一下贫苦的山区儿童么（雾";
+    const qrcode = document.createElement("img");
+    qrcode.id = "qrcode";
+    const qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
     donate.addEventListener("mouseover", () => setTimeout(() => qrcode.src = decode(qrUrl), 201));
     donate.addEventListener("mouseout",  () => setTimeout(() => qrcode.src = ""           , 201));
+    qrContainer.appendChild(donate);
+    qrContainer.appendChild(qrcode);
 });
 
+const kon = {
+    data: [
+       {
+        title: "中文",
+        lang: "zh",
+        blockquote: "夜空彼方与飞机尾云",
+        content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"],
+    }, {
+        title: "日本語",
+        lang: "jp",
+        blockquote: "夜空ノムコウとひこうき雲",
+        content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"],
+    }, {
+        title: "English",
+        lang: "en",
+        blockquote: "Translation Server Error :)",
+        content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"],
+    },
+    ],
+    class: "lang",
+    title: "K-ON!! EP12",
+    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
+};
+
 $(document).ready(() => {
-    const lang = document.getElementsByClassName("lang") as HTMLCollectionOf<HTMLElement>;
-    const selecter = document.getElementById("langSelect") as HTMLSelectElement;
-    if (lang.length === 0) {
+    const konContainer = document.getElementById("kon-container");
+    if (konContainer === null) {
         return;
     }
+
+    function getElement(index: number): HTMLDivElement {
+        const div = document.createElement("div");
+        div.className = kon.class;
+        div.title = kon.data[index].title;
+        div.lang = kon.data[index].lang;
+        div.style.display = "none";
+        const blockquote = document.createElement("blockquote");
+        blockquote.textContent = kon.data[index].blockquote;
+        div.appendChild(blockquote);
+        kon.data[index].content.forEach(element => {
+            const p = document.createElement("p");
+            p.textContent = element;
+            div.appendChild(p);
+        });
+        const source = document.createElement("p");
+        source.style.textAlign = "right";
+        source.title = kon.title;
+        const link = document.createElement("a");
+        link.href = kon.url;
+        link.text = kon.title;
+        source.appendChild(document.createTextNode("—— "));
+        source.appendChild(link);
+        div.appendChild(source);
+        return div;
+    }
+
+    for (let i = 0; i < kon.data.length; ++i) {
+        konContainer.appendChild(getElement(i));
+    }
+
+    const lang = document.getElementsByClassName("lang") as HTMLCollectionOf<HTMLElement>;
+    const selecter = document.getElementById("langSelect") as HTMLSelectElement;
     let lastSelectedLanguageIndex = -1;
     $("#langSelect").on("change", (eventObject: Event) => {
         if (lastSelectedLanguageIndex !== -1) {

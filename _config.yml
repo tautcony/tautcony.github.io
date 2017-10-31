@@ -50,7 +50,7 @@ SocialAccount: [
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","ts","typings","node_modules","apps/material/templates/","gulpfile.js","package.json","README.md","LICENSE"]
+exclude: ["less","ts","typings","node_modules","apps/material/templates/","gulpfile.js","package.json","README.md","LICENSE","js/tc-blog.js"]
 anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
 MathJax: true
 particle404: true                       # enable a particle effect 404 page

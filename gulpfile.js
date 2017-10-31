@@ -108,7 +108,6 @@ gulp.task("watch-ts", () =>
       "tslint",
       "ts",
       "minify-js",
-      "jekyll",
     )
   )
 );
@@ -119,7 +118,6 @@ gulp.task("watch-less", () =>
       "lesshint",
       "less",
       "minify-css",
-      "jekyll",
     )
   )
 );
@@ -129,7 +127,7 @@ gulp.task("watch-html", () =>
 );
 
 gulp.task("watch-jekyll", () =>
-  gulp.watch(["./*", "_drafts/*", "_includes/*", "_layouts/*", "_posts/*", "apps/*", "attach/*", "fonts/*", "img/*"], ["jekyll"])
+  gulp.watch(["./*", "_drafts/*", "_includes/*", "_layouts/*", "_posts/*", "apps/*", "attach/*", "fonts/*", "img/*", "css/*", "js/*"], ["jekyll"])
 );
 
 gulp.task("watch", () =>

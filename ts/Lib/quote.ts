@@ -74,7 +74,7 @@ export class Quote {
         const style = info.cssText !== undefined ? info.cssText : "";
         const element = document.createElement(info.tagName);
         element.className = className;
-        element.style.cssText = info.cssText;
+        element.style.cssText = style;
         if (typeof info.content === "string") {
             element.textContent = info.content;
         } else {

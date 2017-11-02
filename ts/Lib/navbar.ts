@@ -8,8 +8,8 @@ export class Nav {
     private collapse: HTMLDivElement;
 
     public constructor() {
-        this.navbar    = document.querySelector("#blog_navbar")     as HTMLDivElement;
-        this.toggle    = document.querySelector(".navbar-toggle")   as HTMLDivElement;
+        this.navbar   = document.querySelector("#blog_navbar")     as HTMLDivElement;
+        this.toggle   = document.querySelector(".navbar-toggle")   as HTMLDivElement;
         this.collapse = document.querySelector(".navbar-collapse") as HTMLDivElement;
     }
 

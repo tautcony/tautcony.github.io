@@ -287,7 +287,7 @@ var Lib;
                 var style = info.cssText !== undefined ? info.cssText : "";
                 var element = document.createElement(info.tagName);
                 element.className = className;
-                element.style.cssText = info.cssText;
+                element.style.cssText = style;
                 if (typeof info.content === "string") {
                     element.textContent = info.content;
                 }

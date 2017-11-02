@@ -1,4 +1,4 @@
-$(document).ready(() => {
+$(() => {
     const cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
     function decode_block(str: string, offset: number) {
         const input = [0, 0, 0];
@@ -63,7 +63,7 @@ const kon = {
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
 };
 
-$(document).ready(() => {
+$(() => {
     const konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
         return;
@@ -102,7 +102,7 @@ $(document).ready(() => {
     const lang = document.getElementsByClassName("lang") as HTMLCollectionOf<HTMLElement>;
     const selecter = document.getElementById("langSelect") as HTMLSelectElement;
     let lastSelectedLanguageIndex = -1;
-    $("#langSelect").on("change", (eventObject: Event) => {
+    selecter.addEventListener("change", (eventObject) => {
         if (lastSelectedLanguageIndex !== -1) {
             $(lang[lastSelectedLanguageIndex]).fadeOut(0);
         }

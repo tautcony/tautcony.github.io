@@ -1,4 +1,4 @@
-$(document).ready(() => {
+$(() => {
     const banner = $("header.intro-header");
     if (banner.css("background-image") === "none") {
         banner.geopattern(document.location.href);

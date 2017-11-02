@@ -1,17 +1,17 @@
 namespace Lib {
     export interface IConfig {
-        color: {
+        color?: {
             start: string;
             end: string;
         };
-        size: {
+        size?: {
             start: number;
             end: number;
             unit: string;
         };
     }
 
-    export function tagcloud(tags: JQuery, options: IConfig) {
+    export function tagcloud(tags: JQuery, options: IConfig = {}) {
         const defaults = {
             size:  { start: 14, end: 18, unit: "pt" },
             color: { start: "#bbbbee", end: "#0085a1"},

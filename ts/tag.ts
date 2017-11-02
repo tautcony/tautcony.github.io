@@ -1,4 +1,4 @@
-$(document).ready(() => {
+$(() => {
     // only load tags.ts in tag.html
     if ($("#tag_cloud").length === 0) {
         return;

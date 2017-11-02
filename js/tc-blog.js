@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     var cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
     function decode_block(str, offset) {
         var input = [0, 0, 0];
@@ -54,7 +54,7 @@ var kon = {
     title: "K-ON!! EP12",
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
 };
-$(document).ready(function () {
+$(function () {
     var konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
         return;
@@ -90,7 +90,7 @@ $(document).ready(function () {
     var lang = document.getElementsByClassName("lang");
     var selecter = document.getElementById("langSelect");
     var lastSelectedLanguageIndex = -1;
-    $("#langSelect").on("change", function (eventObject) {
+    selecter.addEventListener("change", function (eventObject) {
         if (lastSelectedLanguageIndex !== -1) {
             $(lang[lastSelectedLanguageIndex]).fadeOut(0);
         }
@@ -112,7 +112,7 @@ $(document).ready(function () {
     selecter.options.selectedIndex = currentLanguageIndex;
     $("#langSelect").trigger("change");
 });
-$(document).ready(function () {
+$(function () {
     var banner = $("header.intro-header");
     if (banner.css("background-image") === "none") {
         banner.geopattern(document.location.href);
@@ -133,7 +133,7 @@ $(document).ready(function () {
         });
     }
 });
-$(document).ready(function () {
+$(function () {
     if ($("#tag_cloud").length === 0) {
         return;
     }
@@ -161,7 +161,7 @@ $(document).ready(function () {
     };
     Lib.tagcloud($("#tag_cloud a"), config);
 });
-$(document).ready(function () {
+$(function () {
     $("table").wrap("<div class='table-responsive'></div>");
     $("table").addClass("table");
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
@@ -426,6 +426,7 @@ var Lib;
 var Lib;
 (function (Lib) {
     function tagcloud(tags, options) {
+        if (options === void 0) { options = {}; }
         var defaults = {
             size: { start: 14, end: 18, unit: "pt" },
             color: { start: "#bbbbee", end: "#0085a1" },
@@ -497,23 +498,23 @@ var Lib;
         function Title(titles) {
             this.titles = titles;
             this.initalTitle = document.title;
-            this.restoreTitleID = 0;
+            this.restoreTitleID = null;
         }
         Title.prototype.Init = function () {
             var _this = this;
             document.addEventListener("visibilitychange", function (event) {
                 if (!document.hidden) {
                     document.title = "．．．．．．";
-                    if (_this.restoreTitleID !== 0) {
+                    if (_this.restoreTitleID !== null) {
                         clearTimeout(_this.restoreTitleID);
                     }
                     _this.restoreTitleID = setTimeout(function () {
                         document.title = _this.initalTitle;
-                        _this.restoreTitleID = 0;
+                        _this.restoreTitleID = null;
                     }, 500);
                 }
                 else {
-                    if (_this.restoreTitleID !== 0) {
+                    if (_this.restoreTitleID !== null) {
                         clearTimeout(_this.restoreTitleID);
                     }
                     document.title = _this.titles[Math.floor(Math.random() * _this.titles.length)] + " " + _this.initalTitle;

@@ -1,8 +1,0 @@
-{
-  "globalDependencies": {
-    "jquery": "registry:dt/jquery#1.10.0+20170310222111"
-  },
-  "dependencies": {
-    "geopattern": "registry:dt/geopattern#1.2.0+20161230173746"
-  }
-}

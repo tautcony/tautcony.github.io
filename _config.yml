@@ -54,7 +54,6 @@ exclude: ["less","ts","typings","node_modules","apps/material/templates/","gulpf
 anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
 MathJax: true
 particle404: true                       # enable a particle effect 404 page
-service-worker: false                   # need an https to enable it
 
 
 # Gems

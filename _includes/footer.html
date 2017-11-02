@@ -32,41 +32,6 @@
 </script>
 <!-- Custom JavaScript -->
 <script src="{{ "/js/tc-blog.min.js" | prepend: site.baseurl }}"></script>
-<!-- ServiceWorker -->
-{% if site.service-worker %}
-<script type="text/javascript">
-    if ("serviceWorker" in navigator) {
-        window.addEventListener('load', function() {
-            // For security reasons, a service worker can only control the pages that are in the same directory level or below it.
-            navigator.serviceWorker.register("/sw.js")
-                .then(function(registration) {
-                    console.log('%cServiceWorker registration successful with scope: ', STYLE_B_SUCCESS, registration.scope);
-                    if (registration.installing) {
-                        console.log("%cServiceWorker installing", STYLE_B_WARNING);
-                    } else if (registration.waiting) {
-                        console.log("%ServiceWorker installed", STYLE_TITLE);
-                    } else if (registration.active) {
-                        console.log("%cServiceWorker active", STYLE_B_SUCCESS);
-                    }
-                }).catch(function(error) {
-                    console.log("%cServiceWorker registration failed: ", STYLE_B_ERROR, error);
-                });
-        });
-    } else {
-        console.log("%cServiceWorker disabled", STYLE_B_WARNING);
-    }
-</script>
-{% else %}
-<script type="text/javascript">
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        for (let registration of registrations) {
-            registration.unregister();
-        }
-    });
-};
-</script>
-{% endif %}
 <!-- Google Analytics -->
 {% if site.ga_track_id %}
 <script type="text/javascript">

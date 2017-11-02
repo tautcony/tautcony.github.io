@@ -33,15 +33,17 @@ gulp.task("lesshint", () =>
     .pipe(lesshint.failOnError())
 );
 
-gulp.task("less", () =>
-  gulp.src(`./less/${pkg.name}.less`)
-    .pipe(less())
-    .pipe(autoprefixer({
+gulp.task("less", (callback) => {
+  pump([
+    gulp.src(`./less/${pkg.name}.less`),
+    less(),
+    autoprefixer({
       browsers: ["last 2 versions"],
       cascade: false
-    }))
-    .pipe(gulp.dest("./css"))
-);
+    }),
+    gulp.dest("./css")
+  ], callback);
+});
 
 gulp.task("minify-css", () => {
   return gulp.src(`./css/${pkg.name}.css`)
@@ -56,12 +58,13 @@ gulp.task("tslint", () => {
   return gulp.src("./ts/**/*.ts")
     .pipe(gulpTslint({program}))
     .pipe(gulpTslint.report({
+      emitError: false,
       summarizeFailureOutput: true
-    }))
+    }));
 });
 
 gulp.task("ts", () =>
-   gulp.src(["./ts/**/*.ts", "./typings/globals/**/*.d.ts"])
+   gulp.src(["./ts/**/*.ts"])
     .pipe(tsconfig()).js
     .pipe(gulp.dest("./js"))
 );
@@ -107,7 +110,7 @@ gulp.task("watch-ts", () =>
     runSequence(
       "tslint",
       "ts",
-      "minify-js",
+      "minify-js"
     )
   )
 );
@@ -117,7 +120,7 @@ gulp.task("watch-less", () =>
     runSequence(
       "lesshint",
       "less",
-      "minify-css",
+      "minify-css"
     )
   )
 );
@@ -138,15 +141,17 @@ gulp.task("watch", () =>
 
 // #region tcupdate
 
-gulp.task("less-tcupdate", () =>
-  gulp.src("./less/tcupdate.less")
-    .pipe(less())
-    .pipe(autoprefixer({
+gulp.task("less-tcupdate", (callback) => {
+  pump([
+    gulp.src("./less/tcupdate.less"),
+    less(),
+    autoprefixer({
       browsers: ["last 2 versions"],
       cascade: false
-    }))
-    .pipe(gulp.dest("./css"))
-);
+    }),
+    gulp.dest("./css")
+  ], callback);
+});
 
 gulp.task("minify-js-tcupdate", (callback) => {
   pump([
@@ -197,5 +202,5 @@ gulp.task("default", () =>
   runSequence(
     "build",
     "jekyll",
-    ["connect", "watch"],
+    ["connect", "watch"]
 ));

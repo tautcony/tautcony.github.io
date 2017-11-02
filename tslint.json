@@ -16,6 +16,7 @@
     "no-string-literal": false,
     "arrow-parens": false,
     "no-null-keyword": false,
+    "no-unnecessary-type-assertion": false,
 
     // TODO: Enable stricter options for these
     "only-arrow-functions": [true, "allow-named-functions"],
@@ -35,7 +36,6 @@
     "no-require-imports": true,
     "no-unbound-method": true,
     "no-unnecessary-callback-wrapper": true,
-    "no-unnecessary-type-assertion": true,
     "no-unnecessary-qualifier": true,
     "no-use-before-declare": true,
     "no-unsafe-any": true,

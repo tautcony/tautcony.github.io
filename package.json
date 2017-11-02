@@ -19,13 +19,13 @@
     "gulp-rename": "^1.2.2",
     "gulp-run": "^1.7.1",
     "gulp-tslint": "^8.1.2",
-    "gulp-typescript": "^3.2.2",
+    "gulp-typescript": "^3.2.3",
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.11",
     "pump": "^1.0.2",
     "run-sequence": "^2.2.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.3.4"
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
   },
   "repository": {
     "type": "git",

@@ -5,18 +5,17 @@
   "extends": "tslint:all",
   "rules": {
     // Don't want these
-    "newline-before-return": false,
-    "no-parameter-properties": false,
-    "no-unused-variable": false,
-    "linebreak-style": [false],
-    "no-namespace": [false],
-    "max-line-length": [false],
-    "object-literal-sort-keys": false,
-    "no-bitwise": false,
-    "no-string-literal": false,
     "arrow-parens": false,
+    "linebreak-style": [false],
+    "max-line-length": [false],
+    "newline-before-return": false,
+    "no-bitwise": false,
+    "no-namespace": [false],
     "no-null-keyword": false,
+    "no-parameter-properties": false,
+    "no-string-literal": false,
     "no-unnecessary-type-assertion": false,
+    "object-literal-sort-keys": false,
 
     // TODO: Enable stricter options for these
     "only-arrow-functions": [true, "allow-named-functions"],
@@ -26,7 +25,7 @@
     "no-magic-numbers": false,
     "strict-type-predicates": false,
 
-    "align":  [true],
+    "align": [true],
     "arrow-return-shorthand": true,
     "comment-format": [true],
     "cyclomatic-complexity": [true],
@@ -37,8 +36,9 @@
     "no-unbound-method": true,
     "no-unnecessary-callback-wrapper": true,
     "no-unnecessary-qualifier": true,
-    "no-use-before-declare": true,
     "no-unsafe-any": true,
+    "no-unused-variable": true,
+    "no-use-before-declare": true,
     "no-void-expression": true,
     "prefer-function-over-method": true,
     "triple-equals": true,
@@ -49,8 +49,8 @@
       ["it", "only"]
     ],
 
-    "interface-name": [false],
     "file-header": [false],
+    "interface-name": [false],
     "max-classes-per-file": [false],
     "member-ordering": [true, {
         "order": [

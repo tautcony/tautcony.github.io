@@ -2,7 +2,7 @@
   "lintOptions": {
     "typeCheck": true
   },
-  "extends": "tslint:all",
+  "extends": "tslint:latest",
   "rules": {
     // Don't want these
     "arrow-parens": false,
@@ -15,7 +15,9 @@
     "no-parameter-properties": false,
     "no-string-literal": false,
     "no-unnecessary-type-assertion": false,
+    "no-var-requires": false,
     "object-literal-sort-keys": false,
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
 
     // TODO: Enable stricter options for these
     "only-arrow-functions": [true, "allow-named-functions"],
@@ -23,6 +25,8 @@
     // TODO: Enable these
     "completed-docs": [false],
     "no-magic-numbers": false,
+    "no-require-imports": false,
+    "ordered-imports": false,
     "strict-type-predicates": false,
 
     "align": [true],
@@ -31,8 +35,8 @@
     "cyclomatic-complexity": [true],
     "no-any": true,
     "no-inferred-empty-object-type": true,
+    "no-implicit-dependencies": [true, "dev"],
     "no-non-null-assertion": true,
-    "no-require-imports": true,
     "no-unbound-method": true,
     "no-unnecessary-callback-wrapper": true,
     "no-unnecessary-qualifier": true,

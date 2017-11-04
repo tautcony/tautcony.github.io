@@ -7,6 +7,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/geopattern": "^1.2.2",
+    "@types/gulp": "^3.8.34",
     "@types/jquery": "^3.2.16",
     "@types/node": "^8.0.47",
     "gulp": "^3.9.1",
@@ -24,8 +25,12 @@
     "gulp-watch": "^4.3.11",
     "pump": "^1.0.2",
     "run-sequence": "^2.2.0",
+    "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.1",
+    "typescript-node": "^0.1.3",
+    "typescript-register": "^1.1.0",
+    "typescript-require": "^0.2.9-1"
   },
   "repository": {
     "type": "git",

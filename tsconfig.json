@@ -13,15 +13,16 @@
         "removeComments": true,
         "noLib": false,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "types": [
+            "geopattern",
+            "gulp",
+            "jquery",
+            "node"
+        ]
     },
     "exclude": [
         "node_modules",
         "_site/**/*.ts"
-    ],
-    "compileOnSave": true,
-    "buildOnSave": false,
-    "atom": {
-        "rewriteTsconfig": false
-    }
+    ]
 }

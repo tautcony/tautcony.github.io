@@ -1,19 +1,19 @@
-const gulp        = require("gulp");
-const lesshint    = require("gulp-lesshint");
-const less        = require("gulp-less");
-const autoprefixer= require('gulp-autoprefixer');
-const cleanCSS    = require("gulp-clean-css");
-const tslint      = require("tslint");
-const gulpTslint  = require("gulp-tslint")
-const ts          = require("gulp-typescript");
-const pump        = require('pump');
-const uglify      = require("gulp-uglify");
-const banner      = require("gulp-banner");
-const rename      = require("gulp-rename");
-const watch       = require("gulp-watch");
-const run         = require("gulp-run");
-const connect     = require("gulp-connect");
-const runSequence = require("run-sequence");
+const gulp         = require("gulp");
+const lesshint     = require("gulp-lesshint");
+const less         = require("gulp-less");
+const autoprefixer = require("gulp-autoprefixer");
+const cleanCSS     = require("gulp-clean-css");
+const tslint       = require("tslint");
+const gulpTslint   = require("gulp-tslint");
+const ts           = require("gulp-typescript");
+const pump         = require("pump");
+const uglify       = require("gulp-uglify");
+const banner       = require("gulp-banner");
+const rename       = require("gulp-rename");
+const watch        = require("gulp-watch");
+const run          = require("gulp-run");
+const connect      = require("gulp-connect");
+const runSequence  = require("run-sequence");
 
 const pkg         = require("./package.json");
 const tsconfig    = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
@@ -80,7 +80,7 @@ gulp.task("minify-js", (callback) => {
       },
       output: {
         ascii_only: true
-      },
+      }
     }),
     banner(comment),
     rename({ suffix: ".min" }),
@@ -101,7 +101,7 @@ gulp.task("connect", () =>
   connect.server({
     root: "_site",
     port: 4000,
-    livereload: true,
+    livereload: true
   })
 );
 
@@ -130,7 +130,7 @@ gulp.task("watch-html", () =>
 );
 
 gulp.task("watch-jekyll", () =>
-  gulp.watch(["./*", "_drafts/*", "_includes/*", "_layouts/*", "_posts/*", "apps/*", "attach/*", "fonts/*", "img/*", "css/*", "js/*"], ["jekyll"])
+  gulp.watch(["./*", "_drafts/*", "_includes/*", "_layouts/*", "_posts/*", "apps/*", "attach/*", "css/*", "fonts/*", "img/*", "js/*", "json/*"], ["jekyll"])
 );
 
 gulp.task("watch", () =>
@@ -164,7 +164,7 @@ gulp.task("minify-js-tcupdate", (callback) => {
       },
       output: {
         ascii_only: true
-      },
+      }
     }),
     banner(comment),
     rename({ suffix: ".min" }),

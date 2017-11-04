@@ -22,7 +22,7 @@ export class Quote {
             const wrapper = this.CreateElement({
                 tagName: "div",
                 className,
-                content: this.CreateQuote(),
+                content: this.CreateQuote()
             });
             document.querySelector(containerSelector).appendChild(wrapper);
             this.container = document.querySelector(`${containerSelector} .${className}`) as HTMLElement;
@@ -50,7 +50,7 @@ export class Quote {
                 this.quotes = JSON.parse(xhr.responseText) as IFormat[];
                 callBack();
             } else {
-                 console.error(xhr);
+                console.error(xhr);
             }
         };
         xhr.onerror = () => {
@@ -65,7 +65,7 @@ export class Quote {
         return {
             text,
             author: quote.aut,
-            source: quote.sou,
+            source: quote.sou
         };
     }
 
@@ -90,13 +90,13 @@ export class Quote {
             tagName:   "div",
             className: "quote-content",
             cssText:   "margin-top:2em;margin-bottom:-2em;",
-            content:   "",
+            content:   ""
         });
         const authorDiv = this.CreateElement({
             tagName:   "small",
             className: "quote-author",
             cssText:   "margin-left:16em;",
-            content:   "",
+            content:   ""
         });
         return [quoteDiv, document.createElement("br"), authorDiv];
     }

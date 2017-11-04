@@ -37,22 +37,22 @@ var kon = {
             title: "中文",
             lang: "zh",
             blockquote: "夜空彼方与飞机尾云",
-            content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"],
+            content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"]
         }, {
             title: "日本語",
             lang: "jp",
             blockquote: "夜空ノムコウとひこうき雲",
-            content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"],
+            content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"]
         }, {
             title: "English",
             lang: "en",
             blockquote: "Translation Server Error :)",
-            content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"],
-        },
+            content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"]
+        }
     ],
     class: "lang",
     title: "K-ON!! EP12",
-    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
+    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
 $(function () {
     var konContainer = document.getElementById("kon-container");
@@ -157,7 +157,7 @@ $(function () {
     }
     var config = {
         color: { start: "#bbbbee", end: "#0085a1" },
-        size: { start: 1, end: 1.1, unit: "em" },
+        size: { start: 1, end: 1.1, unit: "em" }
     };
     Lib.tagcloud($("#tag_cloud a"), config);
 });
@@ -279,7 +279,7 @@ var Lib;
                 return {
                     text: text,
                     author: quote.aut,
-                    source: quote.sou,
+                    source: quote.sou
                 };
             };
             this.CreateElement = function (info) {
@@ -303,13 +303,13 @@ var Lib;
                     tagName: "div",
                     className: "quote-content",
                     cssText: "margin-top:2em;margin-bottom:-2em;",
-                    content: "",
+                    content: ""
                 });
                 var authorDiv = _this.CreateElement({
                     tagName: "small",
                     className: "quote-author",
                     cssText: "margin-left:16em;",
-                    content: "",
+                    content: ""
                 });
                 return [quoteDiv, document.createElement("br"), authorDiv];
             };
@@ -317,7 +317,7 @@ var Lib;
                 var wrapper = _this.CreateElement({
                     tagName: "div",
                     className: className,
-                    content: _this.CreateQuote(),
+                    content: _this.CreateQuote()
                 });
                 document.querySelector(containerSelector).appendChild(wrapper);
                 _this.container = document.querySelector(containerSelector + " ." + className);
@@ -363,11 +363,11 @@ var Lib;
         if (options === void 0) { options = {}; }
         var defaults = {
             size: { start: 14, end: 18, unit: "pt" },
-            color: { start: "#bbbbee", end: "#0085a1" },
+            color: { start: "#bbbbee", end: "#0085a1" }
         };
         var opts = {
             color: options.color !== undefined ? options.color : defaults.color,
-            size: options.size !== undefined ? options.size : defaults.size,
+            size: options.size !== undefined ? options.size : defaults.size
         };
         var lowest = 0x3F3F3F3F;
         var highest = 0;

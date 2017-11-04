@@ -26,7 +26,7 @@ $(() => {
     }
     const config = {
         color: { start: "#bbbbee", end: "#0085a1" },
-        size: { start: 1, end: 1.1, unit: "em" },
+        size: { start: 1, end: 1.1, unit: "em" }
     };
     Lib.tagcloud($("#tag_cloud a"), config);
 });

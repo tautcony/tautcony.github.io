@@ -10,7 +10,7 @@ $(() => {
         return String.fromCharCode(
             (((input[0] << 2) & 0xFF) | (input[1] >> 4)),
             (((input[1] << 4) & 0xFF) | (input[2] >> 2)),
-            (((input[2] << 6) & 0xC0) | (input[3] >> 0)),
+            (((input[2] << 6) & 0xC0) | (input[3] >> 0))
         );
     }
 
@@ -45,22 +45,22 @@ const kon = {
         title: "中文",
         lang: "zh",
         blockquote: "夜空彼方与飞机尾云",
-        content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"],
+        content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"]
     }, {
         title: "日本語",
         lang: "jp",
         blockquote: "夜空ノムコウとひこうき雲",
-        content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"],
+        content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"]
     }, {
         title: "English",
         lang: "en",
         blockquote: "Translation Server Error :)",
-        content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"],
-    },
+        content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"]
+    }
     ],
     class: "lang",
     title: "K-ON!! EP12",
-    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
+    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
 
 $(() => {

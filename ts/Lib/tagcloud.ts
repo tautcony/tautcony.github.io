@@ -14,11 +14,11 @@ namespace Lib {
     export function tagcloud(tags: JQuery, options: IConfig = {}) {
         const defaults = {
             size:  { start: 14, end: 18, unit: "pt" },
-            color: { start: "#bbbbee", end: "#0085a1"},
+            color: { start: "#bbbbee", end: "#0085a1"}
         };
         const opts = {
             color: options.color !== undefined ? options.color : defaults.color,
-            size:  options.size  !== undefined ? options.size  : defaults.size,
+            size:  options.size  !== undefined ? options.size  : defaults.size
         };
         let lowest = 0x3F3F3F3F;
         let highest = 0;

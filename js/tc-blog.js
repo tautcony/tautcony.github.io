@@ -340,7 +340,7 @@ var Lib;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/json/quote.json", true);
             xhr.onload = function () {
-                if (xhr.readyState === 4 && xhr.getResponseHeader("content-type") === "application/json") {
+                if (xhr.readyState === 4 && xhr.getResponseHeader("content-type").indexOf("application/json") !== -1) {
                     _this.quotes = JSON.parse(xhr.responseText);
                     callBack();
                 }

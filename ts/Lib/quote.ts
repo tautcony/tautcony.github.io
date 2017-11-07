@@ -46,7 +46,7 @@ export class Quote {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "/json/quote.json", true);
         xhr.onload = () => {
-            if (xhr.readyState === 4 && xhr.getResponseHeader("content-type") === "application/json") {
+            if (xhr.readyState === 4 && xhr.getResponseHeader("content-type").indexOf("application/json") !== -1) {
                 this.quotes = JSON.parse(xhr.responseText) as IFormat[];
                 callBack();
             } else {

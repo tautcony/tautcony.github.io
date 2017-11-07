@@ -13,7 +13,7 @@ if (typeof(Vue) !== 'undefined') {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/json/tcupdate.json", true);
     xhr.onload = function() {
-        if (xhr.readyState === 4 && xhr.getResponseHeader("content-type") === "application/json") {
+        if (xhr.readyState === 4 && xhr.getResponseHeader("content-type").indexOf("application/json") !== -1) {
            var releases_data = JSON.parse(xhr.responseText);
             var tcupdate = new Vue({
                 el: '#tool-downloads',

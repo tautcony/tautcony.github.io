@@ -39,6 +39,13 @@ $(() => {
     qrContainer.appendChild(qrcode);
 });
 
+interface IKON {
+    title: string;
+    lang: string;
+    blockquote: string;
+    content: string[];
+}
+
 const kon = {
     data: [
        {
@@ -57,8 +64,8 @@ const kon = {
         blockquote: "Translation Server Error :)",
         content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"]
     }
-    ],
-    class: "lang",
+    ] as IKON[],
+    className: "lang",
     title: "K-ON!! EP12",
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
@@ -69,16 +76,16 @@ $(() => {
         return;
     }
 
-    function getElement(index: number): HTMLDivElement {
+    function getElement(value: IKON): HTMLDivElement {
         const div = document.createElement("div");
-        div.className = kon.class;
-        div.title = kon.data[index].title;
-        div.lang = kon.data[index].lang;
+        div.className = kon.className;
+        div.title = value.title;
+        div.lang = value.lang;
         div.style.display = "none";
         const blockquote = document.createElement("blockquote");
-        blockquote.textContent = kon.data[index].blockquote;
+        blockquote.textContent = value.blockquote;
         div.appendChild(blockquote);
-        kon.data[index].content.forEach(element => {
+        value.content.forEach(element => {
             const p = document.createElement("p");
             p.textContent = element;
             div.appendChild(p);
@@ -95,33 +102,36 @@ $(() => {
         return div;
     }
 
-    for (let i = 0; i < kon.data.length; ++i) {
-        konContainer.appendChild(getElement(i));
-    }
-
-    const lang = document.getElementsByClassName("lang") as HTMLCollectionOf<HTMLElement>;
-    const selecter = document.getElementById("langSelect") as HTMLSelectElement;
-    let lastSelectedLanguageIndex = -1;
-    selecter.addEventListener("change", (eventObject) => {
-        if (lastSelectedLanguageIndex !== -1) {
-            $(lang[lastSelectedLanguageIndex]).fadeOut(0);
-        }
-        lastSelectedLanguageIndex = selecter.options.selectedIndex;
-        $(lang[selecter.options.selectedIndex]).fadeIn(500);
+    const lang: HTMLDivElement[] = [];
+    const selector = document.getElementById("langSelect") as HTMLSelectElement;
+    kon.data.forEach((value) => {
+        const div = getElement(value);
+        lang.push(div);
+        konContainer.appendChild(div);
     });
 
     let currentLanguageIndex = 0;
     const currentLanguage = window.navigator.language;
-    for (let i = 0; i < lang.length; i++) {
+    lang.forEach((value, index) => {
         const opt = document.createElement("option");
-        opt.setAttribute("value", i.toString());
-        opt.innerHTML = lang[i].getAttribute("title");
-        if (currentLanguage.indexOf(lang[i].getAttribute("lang")) >= 0) {
-            currentLanguageIndex = i;
-            console.log(currentLanguage);
+        opt.value = index.toString();
+        opt.innerHTML = value.getAttribute("title");
+        selector.appendChild(opt);
+        if (currentLanguage.indexOf(value.getAttribute("lang")) >= 0) {
+            currentLanguageIndex = index;
         }
-        selecter.appendChild(opt);
-    }
-    selecter.options.selectedIndex = currentLanguageIndex;
-    $("#langSelect").trigger("change");
+    });
+
+    let lastSelectedLanguageIndex = -1;
+    selector.addEventListener("change", (event: Event) => {
+        const selectedIndex = parseInt((event.target as HTMLOptionElement).value, 10);
+        if (lastSelectedLanguageIndex !== -1) {
+            lang[lastSelectedLanguageIndex].style.display = "none";
+        }
+        lastSelectedLanguageIndex = selectedIndex;
+        $(lang[selectedIndex]).fadeIn(500);
+    });
+
+    selector.options.selectedIndex = currentLanguageIndex;
+    selector.dispatchEvent(new Event("change"));
 });

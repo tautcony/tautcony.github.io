@@ -50,7 +50,7 @@ var kon = {
             content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"]
         }
     ],
-    class: "lang",
+    className: "lang",
     title: "K-ON!! EP12",
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
@@ -59,16 +59,16 @@ $(function () {
     if (konContainer === null) {
         return;
     }
-    function getElement(index) {
+    function getElement(value) {
         var div = document.createElement("div");
-        div.className = kon.class;
-        div.title = kon.data[index].title;
-        div.lang = kon.data[index].lang;
+        div.className = kon.className;
+        div.title = value.title;
+        div.lang = value.lang;
         div.style.display = "none";
         var blockquote = document.createElement("blockquote");
-        blockquote.textContent = kon.data[index].blockquote;
+        blockquote.textContent = value.blockquote;
         div.appendChild(blockquote);
-        kon.data[index].content.forEach(function (element) {
+        value.content.forEach(function (element) {
             var p = document.createElement("p");
             p.textContent = element;
             div.appendChild(p);
@@ -84,33 +84,35 @@ $(function () {
         div.appendChild(source);
         return div;
     }
-    for (var i = 0; i < kon.data.length; ++i) {
-        konContainer.appendChild(getElement(i));
-    }
-    var lang = document.getElementsByClassName("lang");
-    var selecter = document.getElementById("langSelect");
-    var lastSelectedLanguageIndex = -1;
-    selecter.addEventListener("change", function (eventObject) {
-        if (lastSelectedLanguageIndex !== -1) {
-            $(lang[lastSelectedLanguageIndex]).fadeOut(0);
-        }
-        lastSelectedLanguageIndex = selecter.options.selectedIndex;
-        $(lang[selecter.options.selectedIndex]).fadeIn(500);
+    var lang = [];
+    var selector = document.getElementById("langSelect");
+    kon.data.forEach(function (value) {
+        var div = getElement(value);
+        lang.push(div);
+        konContainer.appendChild(div);
     });
     var currentLanguageIndex = 0;
     var currentLanguage = window.navigator.language;
-    for (var i = 0; i < lang.length; i++) {
+    lang.forEach(function (value, index) {
         var opt = document.createElement("option");
-        opt.setAttribute("value", i.toString());
-        opt.innerHTML = lang[i].getAttribute("title");
-        if (currentLanguage.indexOf(lang[i].getAttribute("lang")) >= 0) {
-            currentLanguageIndex = i;
-            console.log(currentLanguage);
+        opt.value = index.toString();
+        opt.innerHTML = value.getAttribute("title");
+        selector.appendChild(opt);
+        if (currentLanguage.indexOf(value.getAttribute("lang")) >= 0) {
+            currentLanguageIndex = index;
         }
-        selecter.appendChild(opt);
-    }
-    selecter.options.selectedIndex = currentLanguageIndex;
-    $("#langSelect").trigger("change");
+    });
+    var lastSelectedLanguageIndex = -1;
+    selector.addEventListener("change", function (event) {
+        var selectedIndex = parseInt(event.target.value, 10);
+        if (lastSelectedLanguageIndex !== -1) {
+            lang[lastSelectedLanguageIndex].style.display = "none";
+        }
+        lastSelectedLanguageIndex = selectedIndex;
+        $(lang[selectedIndex]).fadeIn(500);
+    });
+    selector.options.selectedIndex = currentLanguageIndex;
+    selector.dispatchEvent(new Event("change"));
 });
 $(function () {
     var banner = $("header.intro-header");
@@ -275,7 +277,8 @@ var Lib;
             var _this = this;
             this.RandomQuote = function () {
                 var quote = _this.quotes[Math.floor(Math.random() * _this.quotes.length)];
-                var text = [quote.org, quote.chi, quote.jpn][Math.floor(Math.random() * 3)];
+                var textArray = [quote.org, quote.chi, quote.jpn].filter(function (item) { return item !== undefined; }).slice(0);
+                var text = textArray[Math.floor(Math.random() * textArray.length)];
                 return {
                     text: text,
                     author: quote.aut,

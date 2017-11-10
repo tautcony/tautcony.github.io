@@ -61,7 +61,8 @@ export class Quote {
 
     private RandomQuote = () => {
         const quote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
-        const text = [quote.org, quote.chi, quote.jpn][Math.floor(Math.random() * 3)];
+        const [...textArray] = [quote.org, quote.chi, quote.jpn].filter(item => item !== undefined);
+        const text = textArray[Math.floor(Math.random() * textArray.length)];
         return {
             text,
             author: quote.aut,

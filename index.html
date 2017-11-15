@@ -15,12 +15,9 @@ description: "ようこそ　僕のページへ"
         </h3>
         {% endif %}
         <div class="post-content-preview">
-            {% assign excerpt = post.excerpt | remove: '<p>' | remove: '</p>' | strip_html %}
-            {% if excerpt != nil and excerpt != "" %}
-                {{ excerpt }}
-            {% else %}
-                {{ post.content | strip_html | truncate: 128 }}
-            {% endif %}
+            {% assign separator = site.excerpt_separator | default: '<!--break-->' %}
+            {% assign excerpt = post.content | split: separator | first | markdownify | strip_html | strip %}
+            {{ excerpt | truncate: 256 }}
         </div>
     </a>
     <p class="post-meta">

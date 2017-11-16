@@ -17,7 +17,15 @@ $(() => {
     for (let i = 0; i < unsorted.length; i++) {//tslint:disable-line
         tags.push(unsorted[i]);
     }
-    tags.sort();
+    tags.sort((lhs: HTMLAnchorElement, rhs: HTMLAnchorElement) => {
+        if (lhs.title === rhs.title) {
+            return 0;
+        }
+        if (lhs.title < rhs.title) {
+            return -1;
+        }
+        return 1;
+    });
 
     RemoveItemsByClassName("tag");
     const tagCloud = document.getElementById("tag_cloud");

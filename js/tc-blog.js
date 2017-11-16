@@ -150,7 +150,15 @@ $(function () {
     for (var i = 0; i < unsorted.length; i++) {
         tags.push(unsorted[i]);
     }
-    tags.sort();
+    tags.sort(function (lhs, rhs) {
+        if (lhs.title === rhs.title) {
+            return 0;
+        }
+        if (lhs.title < rhs.title) {
+            return -1;
+        }
+        return 1;
+    });
     RemoveItemsByClassName("tag");
     var tagCloud = document.getElementById("tag_cloud");
     for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {

@@ -1,5 +1,5 @@
 /*!
-* TC Blog v1.0.0 (http://tautcony.github.io)
+* TC Blog v1.0.0 (https://tautcony.github.io/)
 * Copyright 2017 TautCony
 * Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)
 */

@@ -4,8 +4,6 @@ $(() => {
         banner.geopattern(document.location.href);
     }
 
-    new Lib.Nav().Init();
-
     const post = $(".post-content");
     if (post.length !== 0) {
         post.children("p").each((index, value) => {

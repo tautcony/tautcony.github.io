@@ -2,7 +2,7 @@
   "name": "tc-blog",
   "title": "TC Blog",
   "version": "1.0.0",
-  "homepage": "http://tautcony.github.io",
+  "homepage": "https://tautcony.github.io/",
   "author": "TautCony",
   "license": "Apache-2.0",
   "devDependencies": {
@@ -28,7 +28,6 @@
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1",
-    "typescript-node": "^0.1.3",
     "typescript-register": "^1.1.0",
     "typescript-require": "^0.2.9-1"
   },

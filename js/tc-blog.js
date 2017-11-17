@@ -119,7 +119,6 @@ $(function () {
     if (banner.css("background-image") === "none") {
         banner.geopattern(document.location.href);
     }
-    new Lib.Nav().Init();
     var post = $(".post-content");
     if (post.length !== 0) {
         post.children("p").each(function (index, value) {
@@ -211,6 +210,7 @@ $(function () {
     })();
     $("#gotop").click(function () { return $("html, body").animate({ scrollTop: 0 }, 1000); });
     $(window).scroll({ passive: true }, function () { return $("#gotop").toggleClass("active", $(window).scrollTop() > 300); });
+    new Lib.Nav().Init();
     new Lib.Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
         "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
     new Lib.Quote(".copyright", "quote").Interval(Math.pow(10, 4));

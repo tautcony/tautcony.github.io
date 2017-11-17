@@ -52,6 +52,8 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
 $("#gotop").click(() => $("html, body").animate({ scrollTop: 0 }, 1000));
 $(window).scroll({ passive: true }, () => $("#gotop").toggleClass("active", $(window).scrollTop() > 300));
 
+new Lib.Nav().Init();
+
 new Lib.Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
                "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
 

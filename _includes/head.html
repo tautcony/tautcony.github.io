@@ -1,10 +1,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="k_t-1fgBwmMc3UsE3yUU5zGQbRN2a0cl-HljKO2odqY" />
+    {% if site.google-site-verification %} <meta name="google-site-verification" content="{{ site.google-site-verification }}">{% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="{{ site.description }}">
-    <meta name="keyword"  content="{{ site.keyword }}">
+    <meta name="keyword" content="{{ site.keyword }}">
     <meta name="theme-color" content="#000000">
     {% include meta.html %}
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">

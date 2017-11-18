@@ -13,7 +13,7 @@ tags:
     - 字体
 ---
 
-## 前缀
+# 前缀
 
 「A-OTF」「U-OTF」「G-OTF」之间的区别
 
@@ -30,20 +30,18 @@ tags:
 另外「G-OTF」是在教学上如教科书上，如在要使用使用「正确字形的汉字」的情况下使用这种（[学参フォント](http://www.morisawa.co.jp/culture/dictionary/1906)）。
 
 
-## 后缀
+# 后缀
 
-### 字集
+## 字集
 
 「Std」「Pro」「Pr5」「Pr6」之间的区别
 
 简单而言就是文字数的区别。
 
-> 
-> Std = 09,354字 [Adobe-Japan1-3]<br>
-> Pro = 15,414字 [Adobe-Japan1-4]<br>
-> Pr5 = 20,317字 [Adobe-Japan1-5]<br>
-> Pr6 = 23,058字 [Adobe-Japan1-6]<br>
-> 
+> Std = 09,354字 [Adobe-Japan1-3]  
+> Pro = 15,414字 [Adobe-Japan1-4]  
+> Pr5 = 20,317字 [Adobe-Japan1-5]  
+> Pr6 = 23,058字 [Adobe-Japan1-6]  
 
 然后，还有一组谜一样的后缀的后缀N，比如这样 「StdN」「ProN」「Pr5N」「Pr6N」，这又是什么呢？
 
@@ -59,7 +57,7 @@ tags:
 [详细对照](http://www.adobe.com/jp/support/winvista/pdfs/JIS2004_Comparison.pdf)
 [JIS官网](http://www.jisc.go.jp/newstopics/2005/040220kanjicode.pdf)
 
-### 字重
+## 字重
 
 字重的话我们能看到有些非常齐全的字体会有`W1～W9`9种字重
 
@@ -82,10 +80,10 @@ tags:
 
 以上的介绍仅仅是字体设计方作为字体名的一部分，并没有严密统一的规范或基准，比如DynaFont就存在有W1到W14字重的字体。
 
+# source
 
-### source
-> http://wp.design-studio-t.jp/?p=599 <br>
-> http://blog.karasuneko.com/design-dtp/japanese-fonts-std-pro-pr5-pr6/ <br>
-> http://fontnavi.jp/zakkuri/206-font_weight.aspx
+> http://wp.design-studio-t.jp/?p=599  
+> http://blog.karasuneko.com/design-dtp/japanese-fonts-std-pro-pr5-pr6/  
+> http://fontnavi.jp/zakkuri/206-font_weight.aspx  
 
 > 我翻译水平又差，语文又差，文不达意之类的敬请海量，更详细的信息敬请Google。

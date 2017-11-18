@@ -26,7 +26,7 @@ tags:
 
 ```
 empty tree ::= ()
-tree 	   ::= empty tree (integer tree tree)
+tree       ::= empty tree (integer tree tree)
 ```
 
 然后根据输入的数据`T`构建树并寻找树上是否存在一条从树根到叶子节点的，和为`I`的通路。

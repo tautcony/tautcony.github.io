@@ -304,7 +304,7 @@ struct State
   // represent the colours as a 2-bit value, list them in row major order.
   // all together 32 bit
   uint rep;
-  
+
   void read()
   {
     const string colours = "RGBY";
@@ -437,11 +437,11 @@ void solve()
     cout << 0 << endl;
     return;
   }
-  
+
   unordered_map<State, int> dist_f, dist_b;
   queue<State> q_f, q_b;
   int d_f, d_b;
-  
+
   q_f.push(start);   dist_f[start] = 0;
   q_b.push(goal);    dist_b[goal] = 0;
   d_f = d_b = 0;

@@ -17,7 +17,6 @@ tags:
 
 <!--more-->
 
-
 先前有在codeforces上拜读过一篇文章([link](http://codeforces.com/blog/entry/925))，从文中可以看到十分巨大的差距
 
 然后又在byvoid菊苣哪里看到了一篇([link](https://www.byvoid.com/blog/fast-readfile))，也证实了这一观点

@@ -57,7 +57,6 @@ G H
 
 然后也正因为`map`中默认的`int`值为`0`，当映射从`1`开始的话，就会无意识地避开这个坑……
 
-
 ```cpp
 #include <algorithm>
 #include <iostream>

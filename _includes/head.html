@@ -10,6 +10,15 @@
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
     <title>{% if page.title %}{{ page.title | strip_html }} - {{ site.SEOTitle | strip_html }}{% else %}{{ site.SEOTitle | strip_html }}{% endif %}</title>
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+
+    <!-- PreLoad -->
+    <link rel="preload" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="//cdn.bootcss.com/pace/1.0.2/themes/black/pace-theme-minimal.min.css" as="style">
+    <link rel="preload" href="{{ "/css/tc-blog.min.css" | prepend: site.baseurl }}" as="style">
+    <link rel="preload" href="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js" as="script">
+    <link rel="preload" href="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" as="script">
+    <link rel="preload" href="{{ "/js/tc-blog.min.js" | prepend: site.baseurl }}" as="script">
+
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Progress bar PACE -->

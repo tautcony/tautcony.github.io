@@ -1,3 +1,11 @@
+interface String {
+    format(...args: Array<number | string | object>): string;
+}
+String.prototype.format = function(...args: Array<number | string | object>) {
+    const str = this as string;
+    return str.replace(/\{(\d+)\}/g, (m: string, i: number) => args[i].toString());
+};
+
 $(() => {
     const cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
     function decode_block(str: string, offset: number) {
@@ -11,7 +19,7 @@ $(() => {
             (((input[0] << 2) & 0xFF) | (input[1] >> 4)),
             (((input[1] << 4) & 0xFF) | (input[2] >> 2)),
             (((input[2] << 6) & 0xC0) | (input[3] >> 0))
-        );
+        ).replace(/\uffff+$/g, "");
     }
 
     function decode(str: string) {
@@ -30,11 +38,13 @@ $(() => {
     const donate = document.createElement("p");
     donate.id = "donate";
     donate.textContent = "啊哈，不考虑资助一下贫苦的山区儿童么（雾";
+    const empty = "/img/empty.png";
     const qrcode = document.createElement("img");
     qrcode.id = "qrcode";
-    const qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    donate.addEventListener("mouseover", () => setTimeout(() => qrcode.src = decode(qrUrl), 201));
-    donate.addEventListener("mouseout",  () => setTimeout(() => qrcode.src = ""           , 201));
+    qrcode.src = empty;
+    const qrUrl = "L2ltZy9xcmNvZGVfezB9LnBuZw==";
+    donate.addEventListener("mouseover", () => setTimeout(() => qrcode.src = decode(qrUrl).format(Math.floor(Math.random() * 2)), 201));
+    donate.addEventListener("mouseout",  () => setTimeout(() => qrcode.src = empty, 201));
     qrContainer.appendChild(donate);
     qrContainer.appendChild(qrcode);
 });

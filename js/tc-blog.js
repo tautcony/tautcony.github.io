@@ -1,3 +1,11 @@
+String.prototype.format = function () {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var str = this;
+    return str.replace(/\{(\d+)\}/g, function (m, i) { return args[i].toString(); });
+};
 $(function () {
     var cd64 = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
     function decode_block(str, offset) {
@@ -7,7 +15,7 @@ $(function () {
             var v = (c >= 43 && c <= 122) ? cd64[c - 43] === "$" ? 0 : cd64.charCodeAt(c - 43) - 61 : 0;
             input[i - offset] = v - 1;
         }
-        return String.fromCharCode((((input[0] << 2) & 0xFF) | (input[1] >> 4)), (((input[1] << 4) & 0xFF) | (input[2] >> 2)), (((input[2] << 6) & 0xC0) | (input[3] >> 0)));
+        return String.fromCharCode((((input[0] << 2) & 0xFF) | (input[1] >> 4)), (((input[1] << 4) & 0xFF) | (input[2] >> 2)), (((input[2] << 6) & 0xC0) | (input[3] >> 0))).replace(/\uffff+$/g, "");
     }
     function decode(str) {
         var ret = "";
@@ -23,11 +31,13 @@ $(function () {
     var donate = document.createElement("p");
     donate.id = "donate";
     donate.textContent = "啊哈，不考虑资助一下贫苦的山区儿童么（雾";
+    var empty = "/img/empty.png";
     var qrcode = document.createElement("img");
     qrcode.id = "qrcode";
-    var qrUrl = "L2ltZy9hbGlwYXlfcXIucG5n";
-    donate.addEventListener("mouseover", function () { return setTimeout(function () { return qrcode.src = decode(qrUrl); }, 201); });
-    donate.addEventListener("mouseout", function () { return setTimeout(function () { return qrcode.src = ""; }, 201); });
+    qrcode.src = empty;
+    var qrUrl = "L2ltZy9xcmNvZGVfezB9LnBuZw==";
+    donate.addEventListener("mouseover", function () { return setTimeout(function () { return qrcode.src = decode(qrUrl).format(Math.floor(Math.random() * 2)); }, 201); });
+    donate.addEventListener("mouseout", function () { return setTimeout(function () { return qrcode.src = empty; }, 201); });
     qrContainer.appendChild(donate);
     qrContainer.appendChild(qrcode);
 });

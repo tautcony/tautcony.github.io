@@ -4,7 +4,7 @@ title:      "图像移除水印的实现"
 subtitle:   ""
 date:       2016-03-27
 author:     "TautCony"
-header-img: "img/post-bg-remove-watermark.png"
+header-img: "img/post-bg-remove-watermark.svg"
 image:
   credit: ゆるゆり
   creditlink: http://yuruyuri.com/

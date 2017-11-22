@@ -4,7 +4,7 @@ title:      "在自定义域名的Github Page上启用HTTPS"
 subtitle:   "以本站为例（"
 date:       2017-06-27
 author:     "TautCony"
-header-img: "img/post-bg-using-https-with-cloudflare.jpg"
+header-img: "img/post-bg-using-https-with-cloudflare.svg"
 image:
   credit: public
   creditlink: 

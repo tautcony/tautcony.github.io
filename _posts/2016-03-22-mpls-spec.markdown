@@ -4,7 +4,7 @@ title:      "解析 BluRay mpls"
 subtitle:   ""
 date:       2016-03-22
 author:     "TautCony"
-header-img: "img/post-bg-mpls.jpg"
+header-img: "img/post-bg-mpls.svg"
 tags:
     - 编程
     - BluRay

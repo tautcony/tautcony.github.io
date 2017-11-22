@@ -16,7 +16,7 @@ const connect      = require("gulp-connect");
 const runSequence  = require("run-sequence");
 
 const pkg         = require("./package.json");
-const tsconfig    = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
+const tsProject   = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
 const comment     = `/*!
 * ${pkg.title} v${pkg.version} (${pkg.homepage})
 * Copyright ${new Date().getUTCFullYear()} ${pkg.author}
@@ -64,8 +64,8 @@ gulp.task("tslint", () => {
 });
 
 gulp.task("ts", () =>
-   gulp.src(["./ts/**/*.ts"])
-    .pipe(tsconfig()).js
+  gulp.src(["./ts/**/*.ts"])
+    .pipe(tsProject(ts.reporter.longReporter())).js
     .pipe(gulp.dest("./js"))
 );
 

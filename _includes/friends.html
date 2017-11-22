@@ -1,8 +1,0 @@
-<!-- Friends Blog -->
-{% if include.split != false %}<hr>{% else %}<hr class="hidden-sm hidden-xs">{% endif %}
-<h5>FRIENDS</h5>
-<ul class="list-inline">
-    {% for friend in site.friends %}
-    <li><a href="{{friend.href}}">{{friend.title}}</a></li>
-    {% endfor %}
-</ul>

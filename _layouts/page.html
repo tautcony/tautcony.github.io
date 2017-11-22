@@ -20,20 +20,17 @@ layout: default
 <!-- Main Content -->
 <div class="container">
 	<div class="row">
-        {% if site.sidebar == false %}
         <!-- PostList Container -->
+        {% if site.sidebar == false %}
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 postlist-container">
             {{ content }}
         </div>
-        {% include sidebar-disable.html %}
-
+        {% include_cached sidebar.html enable = false %}
         {% else %}
-
-        <!-- PostList Container -->
     	<div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 postlist-container">
     		{{ content }}
     	</div>
-        {% include sidebar-enable.html %}
+        {% include_cached sidebar.html enable = true %}
         {% endif %}
 	</div>
 </div>

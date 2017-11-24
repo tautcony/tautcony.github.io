@@ -25,7 +25,7 @@ layout: default
     {% endif %}
 </style>
 <header class="intro-header" >
-    {% if page.image.credit %}<div class="image-credit">Image source: {% if page.image.creditlink %}<a target="_blank" href="{{ page.image.creditlink }}">{% endif %}{{ page.image.credit }}{% if page.image.creditlink %}</a>{% endif %}</div><!-- image-credit -->{% endif %}
+    {% if page.image.credit %}<div class="image-credit">Image source: {% if page.image.creditlink %}<a target="_blank" href="{{ page.image.creditlink | prepend: site.baseurl }}">{% endif %}{{ page.image.credit }}{% if page.image.creditlink %}</a>{% endif %}</div><!-- image-credit -->{% endif %}
     <div class="header-mask"></div>
     <div class="container">
         <div class="row">
@@ -33,7 +33,7 @@ layout: default
                 <div class="post-heading">
                     <div class="tags">
                         {% for tag in page.tags %}
-                        <a class="tag" href="{{ site.baseurl }}/tags/#{{ tag }}" title="{{ tag }}">{{ tag }}</a>
+                        <a class="tag" href="{{ "/tags/#" | prepend: site.baseurl | append: tag }}" title="{{ tag }}">{{ tag }}</a>
                         {% endfor %}
                     </div>
                     <h1>{{ page.title }}</h1>

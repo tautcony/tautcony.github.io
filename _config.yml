@@ -82,8 +82,7 @@ google-site-verification: "k_t-1fgBwmMc3UsE3yUU5zGQbRN2a0cl-HljKO2odqY"
 # Baidu Analytics
 ##ba_track_id:
 # Google Analytics
-##ga_track_id: ''            # Format: UA-xxxxxx-xx
-##ga_domain:
+ga_track_id: 'UA-110146907-1'            # Format: UA-xxxxxx-xx
 
 
 

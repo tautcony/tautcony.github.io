@@ -4,18 +4,18 @@ namespace Lib {
 // in high-perf jank-free CSS3 implementation
 export class Nav {
     private navbar: HTMLDivElement;
-    private toggle: HTMLDivElement;
+    private toggle: HTMLButtonElement;
     private collapse: HTMLDivElement;
 
     public constructor() {
         this.navbar   = document.querySelector("#blog_navbar")     as HTMLDivElement;
-        this.toggle   = document.querySelector(".navbar-toggle")   as HTMLDivElement;
+        this.toggle   = document.querySelector(".navbar-toggle")   as HTMLButtonElement;
         this.collapse = document.querySelector(".navbar-collapse") as HTMLDivElement;
     }
 
     public Init() {
         this.toggle.addEventListener("click", (e) => {
-            if (this.navbar.className.indexOf("in") > 0) {
+            if (this.navbar.classList.contains("in")) {
                 this.close();
             } else {
                 this.open();
@@ -42,7 +42,8 @@ export class Nav {
     }
 
     public close() {
-        this.navbar.className = " ";
+        this.navbar.classList.remove("in");
+        this.toggle.classList.add("is-collapsed");
         // wait until animation end.
         setTimeout(() => {
             // prevent frequently toggle
@@ -54,7 +55,8 @@ export class Nav {
 
     public open() {
         this.collapse.style.height = "auto";
-        this.navbar.className += " in";
+        this.navbar.classList.add("in");
+        this.toggle.classList.remove("is-collapsed");
     }
 }
 }

@@ -244,7 +244,7 @@ var Lib;
         Nav.prototype.Init = function () {
             var _this = this;
             this.toggle.addEventListener("click", function (e) {
-                if (_this.navbar.className.indexOf("in") > 0) {
+                if (_this.navbar.classList.contains("in")) {
                     _this.close();
                 }
                 else {
@@ -261,7 +261,8 @@ var Lib;
         };
         Nav.prototype.close = function () {
             var _this = this;
-            this.navbar.className = " ";
+            this.navbar.classList.remove("in");
+            this.toggle.classList.add("is-collapsed");
             setTimeout(function () {
                 if (_this.navbar.className.indexOf("in") < 0) {
                     _this.collapse.style.height = "0";
@@ -270,7 +271,8 @@ var Lib;
         };
         Nav.prototype.open = function () {
             this.collapse.style.height = "auto";
-            this.navbar.className += " in";
+            this.navbar.classList.add("in");
+            this.toggle.classList.remove("is-collapsed");
         };
         return Nav;
     }());

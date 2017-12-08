@@ -860,18 +860,8 @@ img::-moz-selection {
 
 /* Tags support End*/
 
-/* Hux Optimize UserExperience */
-.navbar-default .navbar-toggle {
-    &:focus, &:hover {
-        background-color: inherit;
-    }
-      &:active {
-          background-color: rgba(255, 255, 255, 0.25);
-      }
-}
 
 /* Hux customize Style for navBar button */
-
 .navbar-default .navbar-toggle {
     border-color: transparent;
     padding: 19px 16px;
@@ -879,6 +869,12 @@ img::-moz-selection {
     margin-right: 2px;
     margin-bottom: 2px;
     border-radius: 50%;
+    &:focus, &:hover {
+        background-color: inherit;
+    }
+    &:active {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
     .icon-bar {
         width: 18px;
         border-radius: 0;
@@ -887,6 +883,28 @@ img::-moz-selection {
     }
     .icon-bar+.icon-bar {
         margin-top: 3px;
+    }
+}
+
+.navbar-toggle {
+    .icon-bar {
+        transition: opacity, transform;
+        transition-duration: 300ms;
+        transition-timing-function: cubic-bezier(0.7, 0, 0, 0.7);
+    }
+    &:not(.is-collapsed) {
+        .icon-bar {
+            &:nth-child(1) {
+                transform: translateY(5px) rotate(45deg);
+            }
+            &:nth-child(2) {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            &:nth-child(3) {
+                transform: translateY(-5px) rotate(-45deg);
+            }
+        }
     }
 }
 

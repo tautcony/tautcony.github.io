@@ -1201,14 +1201,6 @@ img::-moz-selection {
   }
 }
 /* Tags support End*/
-/* Hux Optimize UserExperience */
-.navbar-default .navbar-toggle:focus,
-.navbar-default .navbar-toggle:hover {
-  background-color: inherit;
-}
-.navbar-default .navbar-toggle:active {
-  background-color: rgba(255, 255, 255, 0.25);
-}
 /* Hux customize Style for navBar button */
 .navbar-default .navbar-toggle {
   border-color: transparent;
@@ -1218,6 +1210,13 @@ img::-moz-selection {
   margin-bottom: 2px;
   border-radius: 50%;
 }
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover {
+  background-color: inherit;
+}
+.navbar-default .navbar-toggle:active {
+  background-color: rgba(255, 255, 255, 0.25);
+}
 .navbar-default .navbar-toggle .icon-bar {
   width: 18px;
   border-radius: 0;
@@ -1225,6 +1224,29 @@ img::-moz-selection {
 }
 .navbar-default .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 3px;
+}
+.navbar-toggle .icon-bar {
+  -webkit-transition: opacity, -webkit-transform;
+  transition: opacity, -webkit-transform;
+  transition: opacity, transform;
+  transition: opacity, transform, -webkit-transform;
+  -webkit-transition-duration: 300ms;
+  transition-duration: 300ms;
+  -webkit-transition-timing-function: cubic-bezier(0.7, 0, 0, 0.7);
+  transition-timing-function: cubic-bezier(0.7, 0, 0, 0.7);
+}
+.navbar-toggle:not(.is-collapsed) .icon-bar:nth-child(1) {
+  -webkit-transform: translateY(5px) rotate(45deg);
+  transform: translateY(5px) rotate(45deg);
+}
+.navbar-toggle:not(.is-collapsed) .icon-bar:nth-child(2) {
+  opacity: 0;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+.navbar-toggle:not(.is-collapsed) .icon-bar:nth-child(3) {
+  -webkit-transform: translateY(-5px) rotate(-45deg);
+  transform: translateY(-5px) rotate(-45deg);
 }
 .disqus-footer__wrapper,
 .disqus-footer {

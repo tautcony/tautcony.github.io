@@ -41,22 +41,25 @@ export class Nav {
         });
     }
 
+    public flip() {
+        this.navbar.classList.toggle("in");
+        this.toggle.classList.toggle("is-collapsed");
+    }
+
     public close() {
-        this.navbar.classList.remove("in");
-        this.toggle.classList.add("is-collapsed");
+        this.flip();
         // wait until animation end.
         setTimeout(() => {
             // prevent frequently toggle
-            if (this.navbar.className.indexOf("in") < 0) {
+            if (!this.navbar.classList.contains("in")) {
                 this.collapse.style.height = "0";
             }
         }, 400);
     }
 
     public open() {
+        this.flip();
         this.collapse.style.height = "auto";
-        this.navbar.classList.add("in");
-        this.toggle.classList.remove("is-collapsed");
     }
 }
 }

@@ -6,7 +6,7 @@ String.prototype.format = function(...args: Array<number | string | object>) {
     return str.replace(/\{(\d+)\}/g, (m: string, i: number) => args[i].toString());
 };
 
-$(() => {
+document.addEventListener("DOMContentLoaded", () => {
     const qrContainer = document.getElementById("qr-container");
     if (qrContainer === null) {
         return;
@@ -62,7 +62,7 @@ const kon = {
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
 
-$(() => {
+document.addEventListener("DOMContentLoaded", () => {
     const konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
         return;
@@ -73,7 +73,7 @@ $(() => {
         div.className = kon.className;
         div.title = value.title;
         div.lang = value.lang;
-        div.style.display = "none";
+        div.classList.add("none");
         const blockquote = document.createElement("blockquote");
         blockquote.textContent = value.blockquote;
         div.appendChild(blockquote);
@@ -118,10 +118,10 @@ $(() => {
     selector.addEventListener("change", (event: Event) => {
         const selectedIndex = parseInt((event.target as HTMLOptionElement).value, 10);
         if (lastSelectedLanguageIndex !== -1) {
-            lang[lastSelectedLanguageIndex].style.display = "none";
+            lang[lastSelectedLanguageIndex].classList.add("none");
         }
         lastSelectedLanguageIndex = selectedIndex;
-        $(lang[selectedIndex]).fadeIn(500);
+        lang[selectedIndex].classList.remove("none"); //todo: fix fadein effect
     });
 
     selector.options.selectedIndex = currentLanguageIndex;

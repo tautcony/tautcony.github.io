@@ -1340,7 +1340,15 @@ img::-moz-selection {
   content: "▲";
   color: white;
 }
-.heimu,
+#kon-container .lang {
+  -webkit-transition: opacity 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+}
+#kon-container .lang.none {
+  display: none;
+  opacity: 0;
+}
+​ .heimu,
 .heimu a,
 a .heimu,
 .heimu a.new {

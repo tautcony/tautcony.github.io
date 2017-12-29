@@ -1,4 +1,4 @@
-$(() => {
+document.addEventListener("DOMContentLoaded", () => {
     // only load tags.ts in tag.html
     if ($("#tag_cloud").length === 0) {
         return;
@@ -36,5 +36,5 @@ $(() => {
         color: { start: "#bbbbee", end: "#0085a1" },
         size: { start: 1, end: 1.1, unit: "em" }
     };
-    Lib.tagcloud($("#tag_cloud a"), config);
+    Lib.tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 });

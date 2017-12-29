@@ -1,22 +1,24 @@
-$(() => {
-    const banner = $("header.intro-header");
-    if (banner.css("background-image") === "none") {
-        banner.geopattern(document.location.href);
+window.addEventListener("load", () => {
+    const banner = document.querySelector("header.intro-header") as HTMLDivElement;
+    if (banner.style.backgroundImage === "") {
+        const pattern = GeoPattern.generate(document.location.href);
+        banner.style.backgroundImage = pattern.toDataUrl();
     }
 
-    const post = $(".post-content");
-    if (post.length !== 0) {
-        post.children("p").each((index, value) => {
-            const p = $(value);
-            if (Lib.startsWith(p.text(), "//")) {
-                p.css({color: "#339966"});
-            }
-        });
-        post.find("a").each((index, value) => {
-            if (Lib.isExternal((value as HTMLAnchorElement).href)) {
-                $(value).addClass("external");
-            }
-        });
+    /*tslint:disable: prefer-for-of*/
+    const pList = document.querySelectorAll(".post-content p");
+    for (let i = 0; i < pList.length; ++i) {
+        const p = pList[i] as HTMLParagraphElement;
+        if (Lib.startsWith(p.innerText, "//")) {
+            p.style.color = "#339966";
+        }
     }
-
+    const aList = document.querySelectorAll(".post-content a");
+    for (let i = 0; i < aList.length; ++i) {
+        const a = aList[i] as HTMLAnchorElement;
+        if (Lib.isExternal(a.href)) {
+            a.classList.add("external");
+        }
+    }
+    /*tslint:enable: prefer-for-of*/
 });

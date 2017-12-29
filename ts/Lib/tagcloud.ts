@@ -11,7 +11,7 @@ namespace Lib {
         };
     }
 
-    export function tagcloud(tags: JQuery, options: IConfig = {}) {
+    export function tagcloud(tags: NodeListOf<Element>, options: IConfig = {}) {
         const defaults = {
             size:  { start: 14, end: 18, unit: "pt" },
             color: { start: "#bbbbee", end: "#0085a1"}
@@ -22,11 +22,13 @@ namespace Lib {
         };
         let lowest = 0x3F3F3F3F;
         let highest = 0;
-        tags.each((index, elem) => {
-            const curr = parseInt(elem.getAttribute("rel"), 10);
+        /*tslint:disable: prefer-for-of*/
+        for (let i = 0; i < tags.length; ++i) {
+            const element = tags[i] as HTMLAnchorElement;
+            const curr = parseInt(element.getAttribute("rel"), 10);
             lowest = Math.min(lowest, curr);
             highest = Math.max(highest, curr);
-        });
+        }
         let range = highest - lowest;
         if (range === 0) {
             range = 1;
@@ -35,12 +37,14 @@ namespace Lib {
         const fontIncr = (opts.size.end - opts.size.start) / range;
         // Colors
         const colorIncr = colorIncrement(opts, range);
-        return tags.each((index, elem) => {
-            const weighting = parseInt($(elem).attr("rel"), 10) - lowest;
-            $(elem).css({ "font-size": (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit });
+        for (let i = 0; i < tags.length; ++i) {
+            const element = tags[i] as HTMLAnchorElement;
+            const weighting = parseInt(element.getAttribute("rel"), 10) - lowest;
+            element.style.fontSize = (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit;
             // change color to background-color
-            $(elem).css({ backgroundColor: tagColor(opts, colorIncr, weighting) });
-        });
+            element.style.backgroundColor = tagColor(opts, colorIncr, weighting);
+        }
+        /*tslint:enable: prefer-for-of*/
     }
 
     // Converts hex to an RGB array

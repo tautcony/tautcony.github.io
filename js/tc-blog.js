@@ -6,7 +6,7 @@ String.prototype.format = function () {
     var str = this;
     return str.replace(/\{(\d+)\}/g, function (m, i) { return args[i].toString(); });
 };
-$(function () {
+document.addEventListener("DOMContentLoaded", function () {
     var qrContainer = document.getElementById("qr-container");
     if (qrContainer === null) {
         return;
@@ -52,7 +52,7 @@ var kon = {
     title: "K-ON!! EP12",
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
-$(function () {
+document.addEventListener("DOMContentLoaded", function () {
     var konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
         return;
@@ -62,7 +62,7 @@ $(function () {
         div.className = kon.className;
         div.title = value.title;
         div.lang = value.lang;
-        div.style.display = "none";
+        div.classList.add("none");
         var blockquote = document.createElement("blockquote");
         blockquote.textContent = value.blockquote;
         div.appendChild(blockquote);
@@ -104,35 +104,36 @@ $(function () {
     selector.addEventListener("change", function (event) {
         var selectedIndex = parseInt(event.target.value, 10);
         if (lastSelectedLanguageIndex !== -1) {
-            lang[lastSelectedLanguageIndex].style.display = "none";
+            lang[lastSelectedLanguageIndex].classList.add("none");
         }
         lastSelectedLanguageIndex = selectedIndex;
-        $(lang[selectedIndex]).fadeIn(500);
+        lang[selectedIndex].classList.remove("none");
     });
     selector.options.selectedIndex = currentLanguageIndex;
     selector.dispatchEvent(new Event("change"));
 });
-$(function () {
-    var banner = $("header.intro-header");
-    if (banner.css("background-image") === "none") {
-        banner.geopattern(document.location.href);
+window.addEventListener("load", function () {
+    var banner = document.querySelector("header.intro-header");
+    if (banner.style.backgroundImage === "") {
+        var pattern = GeoPattern.generate(document.location.href);
+        banner.style.backgroundImage = pattern.toDataUrl();
     }
-    var post = $(".post-content");
-    if (post.length !== 0) {
-        post.children("p").each(function (index, value) {
-            var p = $(value);
-            if (Lib.startsWith(p.text(), "//")) {
-                p.css({ color: "#339966" });
-            }
-        });
-        post.find("a").each(function (index, value) {
-            if (Lib.isExternal(value.href)) {
-                $(value).addClass("external");
-            }
-        });
+    var pList = document.querySelectorAll(".post-content p");
+    for (var i = 0; i < pList.length; ++i) {
+        var p = pList[i];
+        if (Lib.startsWith(p.innerText, "//")) {
+            p.style.color = "#339966";
+        }
+    }
+    var aList = document.querySelectorAll(".post-content a");
+    for (var i = 0; i < aList.length; ++i) {
+        var a = aList[i];
+        if (Lib.isExternal(a.href)) {
+            a.classList.add("external");
+        }
     }
 });
-$(function () {
+document.addEventListener("DOMContentLoaded", function () {
     if ($("#tag_cloud").length === 0) {
         return;
     }
@@ -166,45 +167,62 @@ $(function () {
         color: { start: "#bbbbee", end: "#0085a1" },
         size: { start: 1, end: 1.1, unit: "em" }
     };
-    Lib.tagcloud($("#tag_cloud a"), config);
+    Lib.tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 });
-$(function () {
+document.addEventListener("DOMContentLoaded", function () {
     $("table").wrap("<div class='table-responsive'></div>");
     $("table").addClass("table");
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
     $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
     (function () {
         var MQL = 1170;
-        if ($(window).width() > MQL) {
-            var headerHeight_1 = $(".navbar-custom").height();
-            var bannerHeight_1 = $(".intro-header .container").height();
-            $(window).scroll({ previousTop: 0, passive: true }, function (event) {
-                var currentTop = $(window).scrollTop();
-                var $catalog = $(".side-catalog");
-                if (currentTop < event.data.previousTop) {
-                    if (currentTop > 0 && $(".navbar-custom").hasClass("is-fixed")) {
-                        $(".navbar-custom").addClass("is-visible");
+        var navbar = document.querySelector(".navbar-custom");
+        var catalog = document.querySelector(".side-catalog");
+        var headerHeight = navbar.clientHeight;
+        var bannerHeight = document.querySelector(".intro-header .container").clientHeight;
+        function updateBanner(currentTop, previousTop) {
+            if (window.innerWidth > MQL) {
+                if (currentTop < previousTop) {
+                    if (currentTop > 0 && navbar.classList.contains("is-fixed")) {
+                        navbar.classList.add("is-visible");
                     }
                     else {
-                        $(".navbar-custom").removeClass("is-visible is-fixed");
+                        navbar.classList.remove("is-visible", "is-fixed");
                     }
                 }
                 else {
-                    $(".navbar-custom").removeClass("is-visible");
-                    if (currentTop > headerHeight_1 && !$(".navbar-custom").hasClass("is-fixed")) {
-                        $(".navbar-custom").addClass("is-fixed");
+                    navbar.classList.remove("is-visible");
+                    if (currentTop > headerHeight && !navbar.classList.contains("is-fixed")) {
+                        navbar.classList.add("is-fixed");
                     }
                 }
-                event.data.previousTop = currentTop;
-                $catalog.show();
-                if (currentTop > bannerHeight_1) {
-                    $catalog.addClass("fixed");
+                if (catalog === null) {
+                    return;
+                }
+                catalog.style.display = "block";
+                if (currentTop > bannerHeight) {
+                    catalog.classList.add("fixed");
                 }
                 else {
-                    $catalog.removeClass("fixed");
+                    catalog.classList.remove("fixed");
                 }
-            });
+            }
         }
+        var lastKnownScrollPosition = 0;
+        var ticking = false;
+        var BannerAnimation = function (e) {
+            if (!ticking) {
+                var previousTop_1 = lastKnownScrollPosition;
+                window.requestAnimationFrame(function () {
+                    updateBanner(window.scrollY, previousTop_1);
+                    ticking = false;
+                });
+            }
+            ticking = true;
+            lastKnownScrollPosition = window.scrollY;
+        };
+        window.addEventListener("scroll", BannerAnimation);
+        window.addEventListener("resize", BannerAnimation);
     })();
     $("#gotop").click(function () { return $("html, body").animate({ scrollTop: 0 }, 1000); });
     $(window).scroll({ passive: true }, function () { return $("#gotop").toggleClass("active", $(window).scrollTop() > 300); });
@@ -213,26 +231,6 @@ $(function () {
         "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
     new Lib.Quote(".copyright", "quote").Interval(Math.pow(10, 4));
 });
-var Lib;
-(function (Lib) {
-    function startsWith(text, searchString, position) {
-        return text.substr(position === undefined ? 0 : position, searchString.length) === searchString;
-    }
-    Lib.startsWith = startsWith;
-    function checkDomain(url) {
-        var ret = url;
-        if (ret.indexOf("//") === 0) {
-            ret = location.protocol + ret;
-        }
-        return ret.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
-    }
-    Lib.checkDomain = checkDomain;
-    function isExternal(url) {
-        return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1) &&
-            checkDomain(location.href) !== checkDomain(url);
-    }
-    Lib.isExternal = isExternal;
-})(Lib || (Lib = {}));
 var Lib;
 (function (Lib) {
     var Nav = (function () {
@@ -259,20 +257,22 @@ var Lib;
                 _this.close();
             });
         };
+        Nav.prototype.flip = function () {
+            this.navbar.classList.toggle("in");
+            this.toggle.classList.toggle("is-collapsed");
+        };
         Nav.prototype.close = function () {
             var _this = this;
-            this.navbar.classList.remove("in");
-            this.toggle.classList.add("is-collapsed");
+            this.flip();
             setTimeout(function () {
-                if (_this.navbar.className.indexOf("in") < 0) {
+                if (!_this.navbar.classList.contains("in")) {
                     _this.collapse.style.height = "0";
                 }
             }, 400);
         };
         Nav.prototype.open = function () {
+            this.flip();
             this.collapse.style.height = "auto";
-            this.navbar.classList.add("in");
-            this.toggle.classList.remove("is-collapsed");
         };
         return Nav;
     }());
@@ -382,22 +382,24 @@ var Lib;
         };
         var lowest = 0x3F3F3F3F;
         var highest = 0;
-        tags.each(function (index, elem) {
-            var curr = parseInt(elem.getAttribute("rel"), 10);
+        for (var i = 0; i < tags.length; ++i) {
+            var element = tags[i];
+            var curr = parseInt(element.getAttribute("rel"), 10);
             lowest = Math.min(lowest, curr);
             highest = Math.max(highest, curr);
-        });
+        }
         var range = highest - lowest;
         if (range === 0) {
             range = 1;
         }
         var fontIncr = (opts.size.end - opts.size.start) / range;
         var colorIncr = colorIncrement(opts, range);
-        return tags.each(function (index, elem) {
-            var weighting = parseInt($(elem).attr("rel"), 10) - lowest;
-            $(elem).css({ "font-size": (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit });
-            $(elem).css({ backgroundColor: tagColor(opts, colorIncr, weighting) });
-        });
+        for (var i = 0; i < tags.length; ++i) {
+            var element = tags[i];
+            var weighting = parseInt(element.getAttribute("rel"), 10) - lowest;
+            element.style.fontSize = (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit;
+            element.style.backgroundColor = tagColor(opts, colorIncr, weighting);
+        }
     }
     Lib.tagcloud = tagcloud;
     function toRGB(code) {
@@ -469,4 +471,24 @@ var Lib;
         return Title;
     }());
     Lib.Title = Title;
+})(Lib || (Lib = {}));
+var Lib;
+(function (Lib) {
+    function startsWith(text, searchString, position) {
+        return text.substr(position === undefined ? 0 : position, searchString.length) === searchString;
+    }
+    Lib.startsWith = startsWith;
+    function checkDomain(url) {
+        var ret = url;
+        if (ret.indexOf("//") === 0) {
+            ret = location.protocol + ret;
+        }
+        return ret.toLowerCase().replace(/([a-z])?:\/\//, "$1").split("/")[0];
+    }
+    Lib.checkDomain = checkDomain;
+    function isExternal(url) {
+        return (url.length > 1 && url.indexOf(":") > -1 || url.indexOf("//") > -1) &&
+            checkDomain(location.href) !== checkDomain(url);
+    }
+    Lib.isExternal = isExternal;
 })(Lib || (Lib = {}));

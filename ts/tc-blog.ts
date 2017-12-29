@@ -1,4 +1,4 @@
-$(() => {
+document.addEventListener("DOMContentLoaded", () => {
 
 // responsive tables
 $("table").wrap("<div class='table-responsive'></div>");
@@ -11,42 +11,61 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
 // Navigation Scripts to Show Header on Scroll-Up
 (() => {
     const MQL = 1170;
-    //primary navigation slide-in effect
-    if ($(window).width() > MQL) {
-        const headerHeight = $(".navbar-custom").height();
-        const bannerHeight = $(".intro-header .container").height();
-        $(window).scroll({ previousTop: 0, passive: true }, (event) => {
-            const currentTop = $(window).scrollTop();
-            const $catalog = $(".side-catalog");
+    const navbar = document.querySelector(".navbar-custom");
+    const catalog = document.querySelector(".side-catalog");
 
-            /* tslint:disable: no-unsafe-any*/
+    const headerHeight = navbar.clientHeight;
+    const bannerHeight = document.querySelector(".intro-header .container").clientHeight;
+
+    function updateBanner(currentTop: number, previousTop: number) {
+        //primary navigation slide-in effect
+        if (window.innerWidth > MQL) {
             //check if user is scrolling up by mouse or keyborad
-            if (currentTop < event.data.previousTop) {
+            if (currentTop < previousTop) {
                 //if scrolling up...
-                if (currentTop > 0 && $(".navbar-custom").hasClass("is-fixed")) {
-                    $(".navbar-custom").addClass("is-visible");
+                if (currentTop > 0 && navbar.classList.contains("is-fixed")) {
+                    navbar.classList.add("is-visible");
                 } else {
-                    $(".navbar-custom").removeClass("is-visible is-fixed");
+                    navbar.classList.remove("is-visible", "is-fixed");
                 }
             } else {
                 //if scrolling down...
-                $(".navbar-custom").removeClass("is-visible");
-                if (currentTop > headerHeight && !$(".navbar-custom").hasClass("is-fixed")) {
-                    $(".navbar-custom").addClass("is-fixed");
+                navbar.classList.remove("is-visible");
+                if (currentTop > headerHeight && !navbar.classList.contains("is-fixed")) {
+                    navbar.classList.add("is-fixed");
                 }
             }
-            event.data.previousTop = currentTop;
-            /* tslint:enable: no-unsafe-any*/
 
             //adjust the appearance of side-catalog
-            $catalog.show();
-            if (currentTop > bannerHeight) {
-                $catalog.addClass("fixed");
-            } else {
-                $catalog.removeClass("fixed");
+            if (catalog === null) {
+                return;
             }
-        });
+            (catalog as HTMLDivElement).style.display = "block";
+            if (currentTop > bannerHeight) {
+                catalog.classList.add("fixed");
+            } else {
+                catalog.classList.remove("fixed");
+            }
+        }
     }
+
+    let lastKnownScrollPosition = 0;
+    let ticking = false;
+
+    const BannerAnimation = (e: UIEvent) => {
+        if (!ticking) {
+            const previousTop = lastKnownScrollPosition;
+            window.requestAnimationFrame(() => {
+                updateBanner(window.scrollY, previousTop);
+                ticking = false;
+            });
+        }
+        ticking = true;
+        lastKnownScrollPosition = window.scrollY;
+    };
+
+    window.addEventListener("scroll", BannerAnimation);
+    window.addEventListener("resize", BannerAnimation);
 })();
 
 $("#gotop").click(() => $("html, body").animate({ scrollTop: 0 }, 1000));

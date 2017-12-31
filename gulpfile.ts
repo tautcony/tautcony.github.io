@@ -7,7 +7,9 @@ const tslint       = require("tslint");
 const gulpTslint   = require("gulp-tslint");
 const ts           = require("gulp-typescript");
 const pump         = require("pump");
-const uglify       = require("gulp-uglify");
+const uglifyes     = require('uglify-es');
+const composer     = require('gulp-uglify/composer');
+const uglify       = composer(uglifyes, console);
 const banner       = require("gulp-banner");
 const rename       = require("gulp-rename");
 const watch        = require("gulp-watch");
@@ -19,7 +21,7 @@ const pkg         = require("./package.json");
 const tsProject   = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
 const comment     = `/*!
 * ${pkg.title} v${pkg.version} (${pkg.homepage})
-* Copyright ${new Date().getUTCFullYear()} ${pkg.author}
+* Copyright ${new Date().getFullYear()} ${pkg.author}
 * Licensed under ${pkg.license} (${pkg.repository.url}/blob/master/LICENSE)
 */
 `;

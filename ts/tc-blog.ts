@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
 // responsive tables
-$("table").wrap("<div class='table-responsive'></div>");
-$("table").addClass("table");
+const tables = document.querySelectorAll("table");
+for (let i = 0; i < tables.length; ++i) {
+    const table = tables[i] as HTMLTableElement;
+    table.classList.add("table");
+    $(table).wrap("<div class='table-responsive'></div>");
+}
 
 // responsive embed videos
 $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
@@ -68,8 +72,10 @@ $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsiv
     window.addEventListener("resize", BannerAnimation);
 })();
 
-$("#gotop").click(() => $("html, body").animate({ scrollTop: 0 }, 1000));
-$(window).scroll({ passive: true }, () => $("#gotop").toggleClass("active", $(window).scrollTop() > 300));
+const $gotop = $("#gotop");
+
+$gotop.click(() => $("html, body").animate({ scrollTop: 0 }, 1000));
+$(window).scroll({ passive: true }, () => $gotop.toggleClass("active", $(window).scrollTop() > 300));
 
 new Lib.Nav().Init();
 

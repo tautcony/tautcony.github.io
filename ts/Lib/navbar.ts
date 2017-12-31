@@ -41,13 +41,9 @@ export class Nav {
         });
     }
 
-    public flip() {
-        this.navbar.classList.toggle("in");
-        this.toggle.classList.toggle("is-collapsed");
-    }
-
     public close() {
-        this.flip();
+        this.toggle.classList.add("is-collapsed");
+        this.navbar.classList.remove("in");
         // wait until animation end.
         setTimeout(() => {
             // prevent frequently toggle
@@ -58,7 +54,8 @@ export class Nav {
     }
 
     public open() {
-        this.flip();
+        this.navbar.classList.add("in");
+        this.toggle.classList.remove("is-collapsed");
         this.collapse.style.height = "auto";
     }
 }

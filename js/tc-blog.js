@@ -134,7 +134,7 @@ window.addEventListener("load", function () {
     }
 });
 document.addEventListener("DOMContentLoaded", function () {
-    if ($("#tag_cloud").length === 0) {
+    if (document.querySelector("#tag_cloud") === null) {
         return;
     }
     function RemoveItemsByClassName(className) {
@@ -170,8 +170,12 @@ document.addEventListener("DOMContentLoaded", function () {
     Lib.tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 });
 document.addEventListener("DOMContentLoaded", function () {
-    $("table").wrap("<div class='table-responsive'></div>");
-    $("table").addClass("table");
+    var tables = document.querySelectorAll("table");
+    for (var i = 0; i < tables.length; ++i) {
+        var table = tables[i];
+        table.classList.add("table");
+        $(table).wrap("<div class='table-responsive'></div>");
+    }
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
     $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
     (function () {
@@ -224,8 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
         window.addEventListener("scroll", BannerAnimation);
         window.addEventListener("resize", BannerAnimation);
     })();
-    $("#gotop").click(function () { return $("html, body").animate({ scrollTop: 0 }, 1000); });
-    $(window).scroll({ passive: true }, function () { return $("#gotop").toggleClass("active", $(window).scrollTop() > 300); });
+    var $gotop = $("#gotop");
+    $gotop.click(function () { return $("html, body").animate({ scrollTop: 0 }, 1000); });
+    $(window).scroll({ passive: true }, function () { return $gotop.toggleClass("active", $(window).scrollTop() > 300); });
     new Lib.Nav().Init();
     new Lib.Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
         "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
@@ -257,13 +262,10 @@ var Lib;
                 _this.close();
             });
         };
-        Nav.prototype.flip = function () {
-            this.navbar.classList.toggle("in");
-            this.toggle.classList.toggle("is-collapsed");
-        };
         Nav.prototype.close = function () {
             var _this = this;
-            this.flip();
+            this.toggle.classList.add("is-collapsed");
+            this.navbar.classList.remove("in");
             setTimeout(function () {
                 if (!_this.navbar.classList.contains("in")) {
                     _this.collapse.style.height = "0";
@@ -271,7 +273,8 @@ var Lib;
             }, 400);
         };
         Nav.prototype.open = function () {
-            this.flip();
+            this.navbar.classList.add("in");
+            this.toggle.classList.remove("is-collapsed");
             this.collapse.style.height = "auto";
         };
         return Nav;

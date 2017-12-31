@@ -17,6 +17,12 @@
 
 <!-- Goto Top -->
 <div id="gotop" class="pos_right" aria-hidden="true"></div>
+<script type="text/javascript">
+    var STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
+    var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+    var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+    var STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
+</script>
 <!-- jQuery -->
 <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
@@ -25,17 +31,10 @@
 <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
 <!-- SVG patterns for default banner -->
 <script async src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-<script type="text/javascript">
-    var STYLE_TITLE     = "background:#03a9f4;color:#fff;padding:2px 6px;line-height:32px;border-radius:4px;";
-    var STYLE_B_WARNING = "background:#ffb300;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-    var STYLE_B_SUCCESS = "background:#4caf50;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-    var STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
-</script>
 <!-- Custom JavaScript -->
 <script src="{{ "/js/tc-blog.min.js" | prepend: site.baseurl }}"></script>
 {% if site.ga_track_id %}
 <!-- Google Analytics -->
-
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -49,23 +48,19 @@
 {% endif %}
 {% if site.ba_track_id %}
 <!-- Baidu Tongji -->
-<script type="text/javascript">
-    // dynamic User by Hux
-    var _baId = '{{ site.ba_track_id }}';
-
-    // Originial
+<script>
     var _hmt = _hmt || [];
     (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?" + _baId;
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + "{{ site.ba_track_id }}";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
     })();
 </script>
 <!-- End Baidu Tongji -->
 {% endif %}
-<!-- Side Catalog -->
 {% if page.catalog %}
+<!-- Side Catalog -->
 <script type="text/javascript">
     function generateCatalog(selector) {
         var P = $("div.post-container");
@@ -78,7 +73,6 @@
             var l = $("<li class=\"" + n + "_nav\"></li>").append(c);
             $(selector).append(l);
         });
-        return true;
     }
     generateCatalog(".catalog-body");
     // toggle side catalog

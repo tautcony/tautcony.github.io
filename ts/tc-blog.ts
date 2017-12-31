@@ -2,11 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // responsive tables
 const tables = document.querySelectorAll("table");
+/*tslint:disable: prefer-for-of*/
 for (let i = 0; i < tables.length; ++i) {
     const table = tables[i] as HTMLTableElement;
     table.classList.add("table");
     $(table).wrap("<div class='table-responsive'></div>");
 }
+/*tslint:enable: prefer-for-of*/
 
 // responsive embed videos
 $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");

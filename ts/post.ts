@@ -1,6 +1,7 @@
 window.addEventListener("load", () => {
     const banner = document.querySelector("header.intro-header") as HTMLDivElement;
-    if (banner.style.backgroundImage === "") {
+    const style = window.getComputedStyle(banner);
+    if (style.backgroundImage === "none") {
         const pattern = GeoPattern.generate(document.location.href);
         banner.style.backgroundImage = pattern.toDataUrl();
     }

@@ -114,7 +114,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 window.addEventListener("load", function () {
     var banner = document.querySelector("header.intro-header");
-    if (banner.style.backgroundImage === "") {
+    var style = window.getComputedStyle(banner);
+    if (style.backgroundImage === "none") {
         var pattern = GeoPattern.generate(document.location.href);
         banner.style.backgroundImage = pattern.toDataUrl();
     }

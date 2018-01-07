@@ -352,8 +352,13 @@ var Lib;
         };
         Quote.prototype.FetchData = function (callBack) {
             var _this = this;
+            var baseurl = document.head.querySelector("meta[name=baseurl]").content;
+            var url = "/json/quote.json";
+            if (baseurl !== undefined && baseurl !== "") {
+                url = baseurl + url;
+            }
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/json/quote.json", true);
+            xhr.open("GET", url, true);
             xhr.onload = function () {
                 if (xhr.readyState === 4 && xhr.getResponseHeader("content-type").indexOf("application/json") !== -1) {
                     _this.quotes = JSON.parse(xhr.responseText);

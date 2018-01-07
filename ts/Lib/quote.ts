@@ -43,8 +43,13 @@ export class Quote {
     }
 
     private FetchData(callBack: () => void) {
+        const baseurl = (document.head.querySelector("meta[name=baseurl]") as HTMLMetaElement).content;
+        let url = "/json/quote.json";
+        if (baseurl !== undefined && baseurl !== "") {
+            url = baseurl + url;
+        }
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "/json/quote.json", true);
+        xhr.open("GET", url, true);
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.getResponseHeader("content-type").indexOf("application/json") !== -1) {
                 this.quotes = JSON.parse(xhr.responseText) as IFormat[];

@@ -91,7 +91,7 @@ gulp.task("minify-js", (callback) => {
 });
 
 gulp.task("jekyll", () =>
-  run("jekyll build --drafts --incremental").exec()
+  run("bundle exec jekyll build --drafts --incremental").exec()
 );
 
 gulp.task("html", () =>

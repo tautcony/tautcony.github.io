@@ -72,8 +72,9 @@ kramdown:
   input: GFM                            # use Github Flavored Markdown !important
 
 
-# Disqus settings
-disqus_username: tautcony-blog
+# Comment settings
+#disqus_username: tautcony-blog
+widgetpack_id: 8982
 
 
 google-site-verification: "k_t-1fgBwmMc3UsE3yUU5zGQbRN2a0cl-HljKO2odqY"

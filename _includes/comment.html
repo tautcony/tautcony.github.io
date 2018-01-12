@@ -4,14 +4,16 @@
 
 <script type="text/javascript">
 var disqus_config = function () {
-    this.page.url = "{{site.url}}{{page.url}}";
-    this.page.identifier = "{{page.id}}";
+    this.page = this.page || {};
+    this.page.url = "{{ page.url | prepend: site.baseurl | prepend: site.url }}";
+    this.page.identifier = "{{ page.id }}";
+    this.page.title = "{{ page.title }}";
 };
 //console.log("disqus_config = %c" + disqus_config, 'background: #222; color: #bada55');
 
 (function() {
     /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "{{site.disqus_username}}";
+    var disqus_shortname = "{{ site.disqus_username }}";
 
     var d = document, s = d.createElement('script');
     s.src = '//' + disqus_shortname + '.disqus.com/embed.js';

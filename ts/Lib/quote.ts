@@ -7,26 +7,28 @@ export interface Info {
 }
 
 interface IFormat {
-    org: string;
-    jpn: string;
-    chi: string;
-    aut: string;
-    sou: string;
+    text: string[];
+    author: string;
+    source: string;
 }
 
 export class Quote {
     private container: HTMLElement;
     private quotes: IFormat[];
+    private timer: NodeJS.Timer;
     public constructor(containerSelector: string, className: string) {
+        this.container = this.CreateElement({
+            tagName: "div",
+            className,
+            content: this.CreateQuote()
+        });
+        document.querySelector(containerSelector).appendChild(this.container);
+    }
+
+    public Init(timeout: number) {
         this.FetchData(() => {
-            const wrapper = this.CreateElement({
-                tagName: "div",
-                className,
-                content: this.CreateQuote()
-            });
-            document.querySelector(containerSelector).appendChild(wrapper);
-            this.container = document.querySelector(`${containerSelector} .${className}`) as HTMLElement;
             this.UpdateQuote();
+            this.Interval(timeout);
         });
     }
 
@@ -36,8 +38,8 @@ export class Quote {
         this.container.querySelector(".quote-author").textContent  = `—— ${quote.author} 《${quote.source}》`;
     }
 
-    public Interval(timeout: number) {
-        setInterval(() => {
+    private Interval(timeout: number) {
+        this.timer = setInterval(() => {
             this.UpdateQuote();
         }, timeout);
     }
@@ -65,13 +67,16 @@ export class Quote {
     }
 
     private RandomQuote = () => {
+        if (this.quotes === undefined) {
+            clearTimeout(this.timer);
+            return;
+        }
         const quote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
-        const [...textArray] = [quote.org, quote.chi, quote.jpn].filter(item => item !== undefined);
-        const text = textArray[Math.floor(Math.random() * textArray.length)];
+        const text = quote.text[Math.floor(Math.random() * quote.text.length)];
         return {
             text,
-            author: quote.aut,
-            source: quote.sou
+            author: quote.author,
+            source: quote.source
         };
     }
 

@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
     new Lib.Nav().Init();
     new Lib.Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
         "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
-    new Lib.Quote(".copyright", "quote").Interval(Math.pow(10, 4));
+    new Lib.Quote(".copyright", "quote").Init(Math.pow(10, 4));
 });
 var Lib;
 (function (Lib) {
@@ -288,13 +288,16 @@ var Lib;
         function Quote(containerSelector, className) {
             var _this = this;
             this.RandomQuote = function () {
+                if (_this.quotes === undefined) {
+                    clearTimeout(_this.timer);
+                    return;
+                }
                 var quote = _this.quotes[Math.floor(Math.random() * _this.quotes.length)];
-                var textArray = [quote.org, quote.chi, quote.jpn].filter(function (item) { return item !== undefined; }).slice(0);
-                var text = textArray[Math.floor(Math.random() * textArray.length)];
+                var text = quote.text[Math.floor(Math.random() * quote.text.length)];
                 return {
                     text: text,
-                    author: quote.aut,
-                    source: quote.sou
+                    author: quote.author,
+                    source: quote.source
                 };
             };
             this.CreateElement = function (info) {
@@ -328,17 +331,20 @@ var Lib;
                 });
                 return [quoteDiv, document.createElement("br"), authorDiv];
             };
-            this.FetchData(function () {
-                var wrapper = _this.CreateElement({
-                    tagName: "div",
-                    className: className,
-                    content: _this.CreateQuote()
-                });
-                document.querySelector(containerSelector).appendChild(wrapper);
-                _this.container = document.querySelector(containerSelector + " ." + className);
-                _this.UpdateQuote();
+            this.container = this.CreateElement({
+                tagName: "div",
+                className: className,
+                content: this.CreateQuote()
             });
+            document.querySelector(containerSelector).appendChild(this.container);
         }
+        Quote.prototype.Init = function (timeout) {
+            var _this = this;
+            this.FetchData(function () {
+                _this.UpdateQuote();
+                _this.Interval(timeout);
+            });
+        };
         Quote.prototype.UpdateQuote = function () {
             var quote = this.RandomQuote();
             this.container.querySelector(".quote-content").textContent = quote.text;
@@ -346,7 +352,7 @@ var Lib;
         };
         Quote.prototype.Interval = function (timeout) {
             var _this = this;
-            setInterval(function () {
+            this.timer = setInterval(function () {
                 _this.UpdateQuote();
             }, timeout);
         };

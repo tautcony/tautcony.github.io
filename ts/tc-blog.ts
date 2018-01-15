@@ -84,6 +84,6 @@ new Lib.Nav().Init();
 new Lib.Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀",
                "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
 
-new Lib.Quote(".copyright", "quote").Interval(10 ** 4);
+new Lib.Quote(".copyright", "quote").Init(10 ** 4);
 
 });

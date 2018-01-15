@@ -1,91 +1,134 @@
 [
     {
-        "org": "Was ist schlecht? - Alles, was aus der Schwäche stammt.",
-        "jpn": "悪とは何か──弱さから生ずるすべてのものだ。",
-        "chi": "何謂惡──即一切源自於軟弱之物。",
-        "aut": "Friedrich Wilhelm Nietzsche",
-        "sou": "Der Antichrist"
+        "text": [
+            "Was ist schlecht? - Alles, was aus der Schwäche stammt.",
+            "悪とは何か──弱さから生ずるすべてのものだ。",
+            "何謂惡──即一切源自於軟弱之物。"
+        ],
+        "author": "Friedrich Wilhelm Nietzsche",
+        "source": "Der Antichrist"
     },
     {
-        "org": "C'est une grande habileté que de savoir cacher son habileté.",
-        "jpn": "才能を隠すのにも卓越した才能がいる。",
-        "chi": "要隱藏天分也需要卓越的天分。",
-        "aut": "François VI, duc de La Rochefoucauld",
-        "sou": "Réflexions ou sentences et maximes morales"
+        "text": [
+            "C'est une grande habileté que de savoir cacher son habileté.",
+            "才能を隠すのにも卓越した才能がいる。",
+            "要隱藏天分也需要卓越的天分。",
+            "Il ne faut pas s'offenser que les autres nous chachent la vérité.\npuisque nous nous la cachons si souvent à nous-mêmes.",
+            "他人が真実を隠蔽することに対して、我々は怒るべきでない。\nなぜなら、我々も自身から真実を隠蔽するのであるから。",
+            "他人隱瞞真相，我們不應當發怒。\n因為我們自己也會隱瞞真相。"
+        ],
+        "author": "François VI, duc de La Rochefoucauld",
+        "source": "Réflexions ou sentences et maximes morales"
     },
     {
-        "org": "Man is an only animal that makes bargains: no dog exchanges bones with another.",
-        "jpn": "人間は取引をする唯一の動物である。骨を交換する犬はいない。",
-        "chi": "人類是唯一會交易的動物。沒有狗會交換骨頭",
-        "aut": "Adam Smith",
-        "sou": "The Wealth of Nations"
+        "text": [
+            "Man is an only animal that makes bargains: no dog exchanges bones with another.",
+            "人間は取引をする唯一の動物である。骨を交換する犬はいない。",
+            "人類是唯一會交易的動物。沒有狗會交換骨頭"
+        ],
+        "author": "Adam Smith",
+        "source": "The Wealth of Nations"
     },
     {
-        "org": "Il ne faut pas s'offenser que les autres nous chachent la vérité.\npuisque nous nous la cachons si souvent à nous-mêmes.",
-        "jpn": "他人が真実を隠蔽することに対して、我々は怒るべきでない。\nなぜなら、我々も自身から真実を隠蔽するのであるから。",
-        "chi": "他人隱瞞真相，我們不應當發怒。\n因為我們自己也會隱瞞真相。",
-        "aut": "François VI, duc de La Rochefoucauld",
-        "sou": "Réflexions ou sentences et maximes morales"
+        "text": [
+            "l'enfer, c'est les autres.",
+            "地獄、それは他人である。",
+            "他人即地獄"
+        ],
+        "author": "Jean-Paul Sartre",
+        "source": "Huis clos"
     },
     {
-        "org": "l'enfer, c'est les autres.",
-        "jpn": "地獄、それは他人である。",
-        "chi": "他人即地獄",
-        "aut": "Jean-Paul Sartre",
-        "sou": "Huis clos"
+        "text": [
+            "Il y a deux sortes de mensonges: celui de fait qui regarde le passé, celui de droit qui regarde l' avenir.",
+            "嘘には二種類ある。\n過去に関する事実上の嘘と未来に関する権利上の嘘である。",
+            "謊言分為兩種。\n與過去相關的事實上的謊言與未來相關的權利上的謊言。"
+        ],
+        "author": "Jean-Jacques Rousseau",
+        "source": "Émile: ou De l'éducation"
     },
     {
-        "org": "Il y a deux sortes de mensonges: celui de fait qui regarde le passé, celui de droit qui regarde l' avenir.",
-        "jpn": "嘘には二種類ある。\n過去に関する事実上の嘘と未来に関する権利上の嘘である。",
-        "chi": "謊言分為兩種。\n與過去相關的事實上的謊言與未來相關的權利上的謊言。",
-        "aut": "Jean-Jacques Rousseau",
-        "sou": "Émile: ou De l'éducation"
+        "text": [
+            "Rein n'est si dangereux qu'un ignorant ami; Mieux vaudrait un sage ennemi.",
+            "無知な友人ほど危険なものはない。\n賢い敵のほうがよっぽどましだ。",
+            "寧可有聰明的敵人也不要有無知的朋友。"
+        ],
+        "author": "Jean de La Fontaine",
+        "source": "Fables choisies"
     },
     {
-        "org": "Rein n'est si dangereux qu'un ignorant ami; Mieux vaudrait un sage ennemi.",
-        "jpn": "無知な友人ほど危険なものはない。\n賢い敵のほうがよっぽどましだ。",
-        "chi": "寧可有聰明的敵人也不要有無知的朋友。",
-        "aut": "Jean de La Fontaine",
-        "sou": "Fables choisies"
+        "text": [
+            "Lasciate ogni speranza, voi ch'entrate.",
+            "汝等ここに入るもの、一切の望みを捨てよ。",
+            "進入此地者，當捨棄一切希望。"
+        ],
+        "author": "Dante Alighieri",
+        "source": "Divina Commedia"
     },
     {
-        "org": "Lasciate ogni speranza, voi ch'entrate.",
-        "jpn": "汝等ここに入るもの、一切の望みを捨てよ。",
-        "chi": "進入此地者，當捨棄一切希望。",
-        "aut": "Dante Alighieri",
-        "sou": "Divina Commedia"
+        "text": [
+            "L'homme est condamné à être libre.",
+            "人間は自由の刑に処されている。",
+            "人類被處以自由之刑。"
+        ],
+        "author": "Jean-Paul Sartre",
+        "source": "L'existentialisme est un humanisme"
     },
     {
-        "org": "L'homme est condamné à être libre.",
-        "jpn": "人間は自由の刑に処されている。",
-        "chi": "人類被處以自由之刑。",
-        "aut": "Jean-Paul Sartre",
-        "sou": "L'existentialisme est un humanisme"
+        "text": [
+            "Den farligste Forræder blandt alle er den, ethvert Menneske har i sig selv.",
+            "裏切者の中で最も危険なる裏切者は何かといえば、すべての人間が己れ自身の内部にかくしているところのものである。",
+            "背叛者中最危險的背叛者是將所有人藏於已身者。"
+        ],
+        "author": "Søren Aabye Kierkegaard",
+        "source": "Kjerlighedens Gjerninger"
     },
     {
-        "org": "Den farligste Forræder blandt alle er den, ethvert Menneske har i sig selv.",
-        "jpn": "裏切者の中で最も危険なる裏切者は何かといえば、すべての人間が己れ自身の内部にかくしているところのものである。",
-        "chi": "背叛者中最危險的背叛者是將所有人藏於已身者。",
-        "aut": "Søren Aabye Kierkegaard",
-        "sou": "Kjerlighedens Gjerninger"
+        "text": [
+            "Was aber die Leute gemeiniglich das Shicksal nennen sind meistens nur ihre eigenen dummen Streiche.",
+            "しかし、概して人々が運命と呼ぶものは、大半が自分の愚行にすぎない。",
+            "然而，基本上人們稱之為命運的大多只是自己的愚行。",
+            "Das Genie wohnt nur eine Etage höher als der Wahnsinn.",
+            "天才とは、狂気よりも1階層分だけ上に住んでいる者のことである。",
+            "所謂的天才，指的是比瘋狂更上一層的人。"
+        ],
+        "author": "Arthur Schopenhauer",
+        "source": "Parerga und Paralipomena"
     },
     {
-        "org": "Was aber die Leute gemeiniglich das Shicksal nennen sind meistens nur ihre eigenen dummen Streiche.",
-        "jpn": "しかし、概して人々が運命と呼ぶものは、大半が自分の愚行にすぎない。",
-        "chi": "然而，基本上人們稱之為命運的大多只是自己的愚行。",
-        "aut": "Arthur Schopenhauer",
-        "sou": "Parerga und Paralipomena"
+        "text": [
+            "以为上了书的就是对的，文化落后的中国农民至今还存着这种心理。不谓共产党内讨论问题，也还有人开口闭口“拿本本来”。",
+            "离开实际调查就要产生唯心的阶级估量和唯心的工作指导，那末，它的结果，不是机会主义，便是盲动主义"
+        ],
+        "author": "毛泽东",
+        "source": "反对本本主义"
     },
     {
-        "org": "Das Genie wohnt nur eine Etage höher als der Wahnsinn.",
-        "jpn": "天才とは、狂気よりも1階層分だけ上に住んでいる者のことである。",
-        "chi": "所謂的天才，指的是比瘋狂更上一層的人。",
-        "aut": "Arthur Schopenhauer",
-        "sou": "Parerga und Paralipomena"
+        "text": [
+            "人民喜闻乐见，你不喜欢，你算老几？上海人喜爱评弹、淮剧、越剧，要你北京人去批准干什么？",
+            "我们看了戏说好，不一定就好，我们的话靠不住，各人有各人的爱好，怎能作为标准？艺术是要人民批准的。只要人民爱好，就有价值；",
+            "不是反党、反社会主义的，就许可存在，没有权力去禁演。艺术家要面对人民，而不是只面对领导。",
+            "现在的搞法，不是从无产阶级的立场和阶级观点来看问题，而是用唯心主义观点来看问题。以政治代替文艺，就没有文艺了，还有什么看头呢！"
+        ],
+        "author": "周恩来",
+        "source": "在文艺工作座谈会和故事片创作会议上的讲话"
     },
     {
-        "org": "以为上了书的就是对的，文化落后的中国农民至今还存着这种心理。不谓共产党内讨论问题，也还有人开口闭口“拿本本来”。",
-        "aut": "毛泽东",
-        "sou": "反对本本主义"
+        "text": [
+            "一个人有问题，书就不能用了？它总有可取之处嘛！",
+            "要有点辩证法，不要一听封建主义、资本主义就气炸了，那叫形而上学、片面性。",
+            "你们文化部门的同志要好好读几本马克思列宁主义的书，知道一点根嘛！"
+        ],
+        "author": "周恩来",
+        "source": "不要因人废文"
+    },
+    {
+        "text": [
+            "群众总是比我们个人知道得多，他们是能够作出判断的。",
+            "一面说青年没书读，一面又不给他们书读，就是不相信青年人能判断。无怪现在没有书读了，这完全是思想垄断，不是社会主义民主。",
+            "你们文化部门的同志要好好读几本马克思列宁主义的书，知道一点根嘛！"
+        ],
+        "author": "周恩来",
+        "source": "讲历史，多出书"
     }
 ]

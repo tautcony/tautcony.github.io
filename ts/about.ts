@@ -1,12 +1,4 @@
-interface String {
-    format(...args: Array<number | string | object>): string;
-}
-String.prototype.format = function(...args: Array<number | string | object>) {
-    const str = this as string;
-    return str.replace(/\{(\d+)\}/g, (m: string, i: number) => args[i].toString());
-};
-
-document.addEventListener("DOMContentLoaded", () => {
+export function qrInit() {
     const qrContainer = document.getElementById("qr-container");
     if (qrContainer === null) {
         return;
@@ -29,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     donate.addEventListener("mouseout",  () => setTimeout(() => qrcode.src = empty, 201));
     qrContainer.appendChild(donate);
     qrContainer.appendChild(qrcode);
-});
+}
 
 interface IKON {
     title: string;
@@ -62,7 +54,7 @@ const kon = {
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html"
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+export function konInit() {
     const konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
         return;
@@ -126,4 +118,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selector.options.selectedIndex = currentLanguageIndex;
     selector.dispatchEvent(new Event("change"));
-});
+}

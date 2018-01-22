@@ -1,4 +1,7 @@
-window.addEventListener("load", () => {
+import * as Lib from "./Lib/utils";
+import * as GeoPattern from "geopattern";
+
+export default function init() {
     const banner = document.querySelector("header.intro-header") as HTMLDivElement;
     const style = window.getComputedStyle(banner);
     if (style.backgroundImage === "none") {
@@ -22,4 +25,4 @@ window.addEventListener("load", () => {
         }
     }
     /*tslint:enable: prefer-for-of*/
-});
+}

@@ -1,8 +1,7 @@
-namespace Lib {
 // Drop Bootstarp low-performance Navbar
 // Use customize navbar with high-quality material design animation
 // in high-perf jank-free CSS3 implementation
-export class Nav {
+export default class Nav {
     private navbar: HTMLDivElement;
     private toggle: HTMLButtonElement;
     private collapse: HTMLDivElement;
@@ -58,5 +57,4 @@ export class Nav {
         this.toggle.classList.remove("is-collapsed");
         this.collapse.style.height = "auto";
     }
-}
 }

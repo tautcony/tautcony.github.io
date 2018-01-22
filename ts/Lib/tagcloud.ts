@@ -1,91 +1,89 @@
-namespace Lib {
-    export interface IConfig {
-        color?: {
-            start: string;
-            end: string;
-        };
-        size?: {
-            start: number;
-            end: number;
-            unit: string;
-        };
-    }
+export interface IConfig {
+    color?: {
+        start: string;
+        end: string;
+    };
+    size?: {
+        start: number;
+        end: number;
+        unit: string;
+    };
+}
 
-    export function tagcloud(tags: NodeListOf<Element>, options: IConfig = {}) {
-        const defaults = {
-            size:  { start: 14, end: 18, unit: "pt" },
-            color: { start: "#bbbbee", end: "#0085a1"}
-        };
-        const opts = {
-            color: options.color !== undefined ? options.color : defaults.color,
-            size:  options.size  !== undefined ? options.size  : defaults.size
-        };
-        let lowest = 0x3F3F3F3F;
-        let highest = 0;
-        /*tslint:disable: prefer-for-of*/
-        for (let i = 0; i < tags.length; ++i) {
-            const element = tags[i] as HTMLAnchorElement;
-            const curr = parseInt(element.getAttribute("rel"), 10);
-            lowest = Math.min(lowest, curr);
-            highest = Math.max(highest, curr);
-        }
-        let range = highest - lowest;
-        if (range === 0) {
-            range = 1;
-        }
-        // Sizes
-        const fontIncr = (opts.size.end - opts.size.start) / range;
-        // Colors
-        const colorIncr = colorIncrement(opts, range);
-        for (let i = 0; i < tags.length; ++i) {
-            const element = tags[i] as HTMLAnchorElement;
-            const weighting = parseInt(element.getAttribute("rel"), 10) - lowest;
-            element.style.fontSize = (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit;
-            // change color to background-color
-            element.style.backgroundColor = tagColor(opts, colorIncr, weighting);
-        }
-        /*tslint:enable: prefer-for-of*/
+export default function tagcloud(tags: NodeListOf<Element>, options: IConfig = {}) {
+    const defaults = {
+        size:  { start: 14, end: 18, unit: "pt" },
+        color: { start: "#bbbbee", end: "#0085a1"}
+    };
+    const opts = {
+        color: options.color !== undefined ? options.color : defaults.color,
+        size:  options.size  !== undefined ? options.size  : defaults.size
+    };
+    let lowest = 0x3F3F3F3F;
+    let highest = 0;
+    /*tslint:disable: prefer-for-of*/
+    for (let i = 0; i < tags.length; ++i) {
+        const element = tags[i] as HTMLAnchorElement;
+        const curr = parseInt(element.getAttribute("rel"), 10);
+        lowest = Math.min(lowest, curr);
+        highest = Math.max(highest, curr);
     }
+    let range = highest - lowest;
+    if (range === 0) {
+        range = 1;
+    }
+    // Sizes
+    const fontIncr = (opts.size.end - opts.size.start) / range;
+    // Colors
+    const colorIncr = colorIncrement(opts, range);
+    for (let i = 0; i < tags.length; ++i) {
+        const element = tags[i] as HTMLAnchorElement;
+        const weighting = parseInt(element.getAttribute("rel"), 10) - lowest;
+        element.style.fontSize = (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit;
+        // change color to background-color
+        element.style.backgroundColor = tagColor(opts, colorIncr, weighting);
+    }
+    /*tslint:enable: prefer-for-of*/
+}
 
-    // Converts hex to an RGB array
-    function toRGB(code: string) {
-        let ret = code;
-        if (/#[0-9a-fA-F]{3}/.test(ret)) {
-            const r = ret[1] + ret[1];
-            const g = ret[2] + ret[2];
-            const b = ret[3] + ret[3];
-            ret = `#${r + g + b}`;
-        }
-        const hex = /(\w{2})(\w{2})(\w{2})/.exec(ret);
-        if (hex === null) {
-            return [0, 0, 0];
-        }
-        return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)];
+// Converts hex to an RGB array
+function toRGB(code: string) {
+    let ret = code;
+    if (/#[0-9a-fA-F]{3}/.test(ret)) {
+        const r = ret[1] + ret[1];
+        const g = ret[2] + ret[2];
+        const b = ret[3] + ret[3];
+        ret = `#${r + g + b}`;
     }
+    const hex = /(\w{2})(\w{2})(\w{2})/.exec(ret);
+    if (hex === null) {
+        return [0, 0, 0];
+    }
+    return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)];
+}
 
-    // Converts an RGB array to hex
-    function toHex(arr: number[]) {
-        const ret = arr.map((value) => {
-            let hex = value.toString(16);
-            hex = (hex.length === 1) ? `0${hex}` : hex;
-            return hex;
-        }).join("");
-        return `#${ret}`;
-    }
+// Converts an RGB array to hex
+function toHex(arr: number[]) {
+    const ret = arr.map((value) => {
+        let hex = value.toString(16);
+        hex = (hex.length === 1) ? `0${hex}` : hex;
+        return hex;
+    }).join("");
+    return `#${ret}`;
+}
 
-    function colorIncrement(opts: IConfig, range: number) {
-        const start = toRGB(opts.color.start);
-        const end   = toRGB(opts.color.end);
-        return end.map((value, index) => {
-            return (value - start[index]) / range;
-        });
-    }
+function colorIncrement(opts: IConfig, range: number) {
+    const start = toRGB(opts.color.start);
+    const end   = toRGB(opts.color.end);
+    return end.map((value, index) => {
+        return (value - start[index]) / range;
+    });
+}
 
-    function tagColor(opts: IConfig, increment: number[], weighting: number) {
-        const rgb = toRGB(opts.color.start).map((value, index) => {
-            const ref = Math.round(value + (increment[index] * weighting));
-            return ref > 255 ? 255 : ref < 0 ? 0 : ref;
-        });
-        return toHex(rgb);
-    }
+function tagColor(opts: IConfig, increment: number[], weighting: number) {
+    const rgb = toRGB(opts.color.start).map((value, index) => {
+        const ref = Math.round(value + (increment[index] * weighting));
+        return ref > 255 ? 255 : ref < 0 ? 0 : ref;
+    });
+    return toHex(rgb);
 }

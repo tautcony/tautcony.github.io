@@ -1,4 +1,3 @@
-namespace Lib {
 export interface Info {
     tagName: string;
     className?: string;
@@ -12,7 +11,7 @@ interface IFormat {
     source: string;
 }
 
-export class Quote {
+export default class Quote {
     private container: HTMLElement;
     private quotes: IFormat[];
     private timer: NodeJS.Timer;
@@ -111,5 +110,4 @@ export class Quote {
         });
         return [quoteDiv, document.createElement("br"), authorDiv];
     }
-}
 }

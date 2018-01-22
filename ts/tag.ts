@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+import tagcloud from "./Lib/tagcloud";
+
+export default function init() {
     // only load tags.ts in tag.html
     if (document.querySelector("#tag_cloud") === null) {
         return;
@@ -36,5 +38,5 @@ document.addEventListener("DOMContentLoaded", () => {
         color: { start: "#bbbbee", end: "#0085a1" },
         size: { start: 1, end: 1.1, unit: "em" }
     };
-    Lib.tagcloud(document.querySelectorAll("#tag_cloud a"), config);
-});
+    tagcloud(document.querySelectorAll("#tag_cloud a"), config);
+}

@@ -7,9 +7,9 @@ const tslint       = require("tslint");
 const gulpTslint   = require("gulp-tslint");
 const ts           = require("gulp-typescript");
 const pump         = require("pump");
-const uglifyes     = require('uglify-es');
-const composer     = require('gulp-uglify/composer');
-const uglify       = composer(uglifyes, console);
+const gulpWebpack  = require("webpack-stream");
+const webpack      = require("webpack");
+const uglifyJs     = require("uglifyjs-webpack-plugin");
 const banner       = require("gulp-banner");
 const rename       = require("gulp-rename");
 const watch        = require("gulp-watch");
@@ -17,14 +17,25 @@ const run          = require("gulp-run");
 const connect      = require("gulp-connect");
 const runSequence  = require("run-sequence");
 
-const pkg         = require("./package.json");
-const tsProject   = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
-const comment     = `/*!
+const pkg          = require("./package.json");
+const tsProject    = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
+const comment      = `/*!
 * ${pkg.title} v${pkg.version} (${pkg.homepage})
 * Copyright ${new Date().getFullYear()} ${pkg.author}
 * Licensed under ${pkg.license} (${pkg.repository.url}/blob/master/LICENSE)
 */
 `;
+
+const uglifyOptions = {
+  toplevel: true,
+  warnings: true,
+  compress: {
+    passes: 2
+  },
+  output: {
+    ascii_only: true
+  }
+};
 
 gulp.task("lesshint", () =>
   gulp.src("./less/*.less")
@@ -66,29 +77,17 @@ gulp.task("tslint", () => {
 });
 
 gulp.task("ts", () =>
-  gulp.src(["./ts/**/*.ts"])
-    .pipe(tsProject(ts.reporter.longReporter())).js
+  gulp.src("./ts/tc-blog.ts")
+    .pipe(gulpWebpack({
+      entry: `./ts/${pkg.name}.ts`,
+      output: {filename: `${pkg.name}.min.js`},
+      resolve: {extensions: [".ts", ".js"]},
+      module: {loaders: [{test: /\.ts$/, loader: "ts-loader"}]},
+      plugins: [new uglifyJs({uglifyOptions})]
+    }))
+    .pipe(banner(comment))
     .pipe(gulp.dest("./js"))
 );
-
-gulp.task("minify-js", (callback) => {
-  pump([
-    gulp.src(`./js/${pkg.name}.js`),
-    uglify({
-      toplevel: true,
-      warnings: true,
-      compress: {
-        passes: 2
-      },
-      output: {
-        ascii_only: true
-      }
-    }),
-    banner(comment),
-    rename({ suffix: ".min" }),
-    gulp.dest("./js")
-  ], callback);
-});
 
 gulp.task("jekyll", () =>
   run("bundle exec jekyll build --drafts --incremental").exec()
@@ -111,8 +110,7 @@ gulp.task("watch-ts", () =>
   watch("./ts/**/*.ts", () =>
     runSequence(
       "tslint",
-      "ts",
-      "minify-js"
+      "ts"
     )
   )
 );
@@ -155,24 +153,15 @@ gulp.task("less-tcupdate", (callback) => {
   ], callback);
 });
 
-gulp.task("minify-js-tcupdate", (callback) => {
-  pump([
-    gulp.src("./js/tcupdate.js"),
-    uglify({
-      toplevel: true,
-      warnings: true,
-      compress: {
-        passes: 2
-      },
-      output: {
-        ascii_only: true
-      }
-    }),
-    banner(comment),
-    rename({ suffix: ".min" }),
-    gulp.dest("./js")
-  ], callback);
-});
+gulp.task("minify-js-tcupdate", () =>
+  gulp.src("./js/tcupdate.js")
+  .pipe(gulpWebpack({
+    output: {filename: "tcupdate.min.js"},
+    plugins: [new uglifyJs({uglifyOptions})]
+  }))
+  .pipe(banner(comment))
+  .pipe(gulp.dest("./js"))
+);
 
 gulp.task("minify-css-tcupdate", () =>
   gulp.src("./css/tcupdate.css")
@@ -196,7 +185,7 @@ gulp.task("build", () =>
   runSequence(
     ["lesshint", "tslint"],
     ["less", "ts", "tcupdate"],
-    ["minify-css", "minify-js"]
+    ["minify-css"]
   )
 );
 

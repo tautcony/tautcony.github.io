@@ -9,7 +9,6 @@ const ts           = require("gulp-typescript");
 const pump         = require("pump");
 const gulpWebpack  = require("webpack-stream");
 const webpack      = require("webpack");
-const uglifyJs     = require("uglifyjs-webpack-plugin");
 const banner       = require("gulp-banner");
 const rename       = require("gulp-rename");
 const watch        = require("gulp-watch");
@@ -27,6 +26,8 @@ const comment      = `/*!
 `;
 
 const uglifyOptions = {
+  sourceMap: false,
+  comments: false,
   toplevel: true,
   warnings: true,
   compress: {
@@ -79,11 +80,14 @@ gulp.task("tslint", () => {
 gulp.task("ts", () =>
   gulp.src("./ts/tc-blog.ts")
     .pipe(gulpWebpack({
+      devtool: "source-map",
       entry: `./ts/${pkg.name}.ts`,
       output: {filename: `${pkg.name}.min.js`},
       resolve: {extensions: [".ts", ".js"]},
       module: {loaders: [{test: /\.ts$/, loader: "ts-loader"}]},
-      plugins: [new uglifyJs({uglifyOptions})]
+      plugins: [
+        new webpack.optimize.UglifyJsPlugin(uglifyOptions)
+      ]
     }))
     .pipe(banner(comment))
     .pipe(gulp.dest("./js"))
@@ -157,7 +161,7 @@ gulp.task("minify-js-tcupdate", () =>
   gulp.src("./js/tcupdate.js")
   .pipe(gulpWebpack({
     output: {filename: "tcupdate.min.js"},
-    plugins: [new uglifyJs({uglifyOptions})]
+    plugins: [new webpack.optimize.UglifyJsPlugin(uglifyOptions)]
   }))
   .pipe(banner(comment))
   .pipe(gulp.dest("./js"))

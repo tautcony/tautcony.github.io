@@ -1,3 +1,5 @@
+import {util_ui_element_creator as _} from "./utils";
+
 export interface Info {
     tagName: string;
     className?: string;
@@ -16,11 +18,21 @@ export default class Quote {
     private quotes: IFormat[];
     private timer: NodeJS.Timer;
     public constructor(containerSelector: string, className: string) {
-        this.container = this.CreateElement({
-            tagName: "div",
-            className,
-            content: this.CreateQuote()
-        });
+        this.container = _("div", {className}, [
+            _("div", {
+                className: "quote-content",
+                style: {
+                    "margin-top": "2em"
+                }
+            }),
+            _("div", {
+                className: "quote-author",
+                style: {
+                    "margin-left": "16em",
+                    "font-size": "85%"
+                }
+            })
+        ]);
         document.querySelector(containerSelector).appendChild(this.container);
     }
 
@@ -77,37 +89,5 @@ export default class Quote {
             author: quote.author,
             source: quote.source
         };
-    }
-
-    private CreateElement = (info: Info) => {
-        const className = info.className !== undefined ? info.className : "";
-        const style = info.cssText !== undefined ? info.cssText : "";
-        const element = document.createElement(info.tagName);
-        element.className = className;
-        element.style.cssText = style;
-        if (typeof info.content === "string") {
-            element.textContent = info.content;
-        } else {
-            info.content.forEach(item => {
-                element.appendChild(item);
-            });
-        }
-        return element;
-    }
-
-    private CreateQuote = () => {
-        const quoteDiv = this.CreateElement({
-            tagName:   "div",
-            className: "quote-content",
-            cssText:   "margin-top:2em;margin-bottom:-2em;",
-            content:   ""
-        });
-        const authorDiv = this.CreateElement({
-            tagName:   "small",
-            className: "quote-author",
-            cssText:   "margin-left:16em;",
-            content:   ""
-        });
-        return [quoteDiv, document.createElement("br"), authorDiv];
     }
 }

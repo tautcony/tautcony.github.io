@@ -1,96 +1,38 @@
 [
     {
         "text": [
-            "Was ist schlecht? - Alles, was aus der Schwäche stammt.",
-            "悪とは何か──弱さから生ずるすべてのものだ。",
-            "何謂惡──即一切源自於軟弱之物。"
-        ],
-        "author": "Friedrich Wilhelm Nietzsche",
-        "source": "Der Antichrist"
-    },
-    {
-        "text": [
-            "C'est une grande habileté que de savoir cacher son habileté.",
-            "才能を隠すのにも卓越した才能がいる。",
-            "要隱藏天分也需要卓越的天分。",
-            "Il ne faut pas s'offenser que les autres nous chachent la vérité.\npuisque nous nous la cachons si souvent à nous-mêmes.",
-            "他人が真実を隠蔽することに対して、我々は怒るべきでない。\nなぜなら、我々も自身から真実を隠蔽するのであるから。",
-            "他人隱瞞真相，我們不應當發怒。\n因為我們自己也會隱瞞真相。"
-        ],
-        "author": "François VI, duc de La Rochefoucauld",
-        "source": "Réflexions ou sentences et maximes morales"
-    },
-    {
-        "text": [
-            "Man is an only animal that makes bargains: no dog exchanges bones with another.",
-            "人間は取引をする唯一の動物である。骨を交換する犬はいない。",
-            "人類是唯一會交易的動物。沒有狗會交換骨頭"
+            "Nobody ever saw a dog make a fair and deliberate exchange of one bone for another with another dog.",
+            "Labour, therefore, is the real measure of the exchangeable value of all commodities.",
+            "Wherever there is great property, there is great inequality."
         ],
         "author": "Adam Smith",
         "source": "The Wealth of Nations"
     },
     {
         "text": [
-            "l'enfer, c'est les autres.",
-            "地獄、それは他人である。",
-            "他人即地獄"
+            "l'enfer, c'est les autres."
         ],
         "author": "Jean-Paul Sartre",
         "source": "Huis clos"
     },
     {
         "text": [
-            "Il y a deux sortes de mensonges: celui de fait qui regarde le passé, celui de droit qui regarde l' avenir.",
-            "嘘には二種類ある。\n過去に関する事実上の嘘と未来に関する権利上の嘘である。",
-            "謊言分為兩種。\n與過去相關的事實上的謊言與未來相關的權利上的謊言。"
-        ],
-        "author": "Jean-Jacques Rousseau",
-        "source": "Émile: ou De l'éducation"
-    },
-    {
-        "text": [
-            "Rein n'est si dangereux qu'un ignorant ami; Mieux vaudrait un sage ennemi.",
-            "無知な友人ほど危険なものはない。\n賢い敵のほうがよっぽどましだ。",
-            "寧可有聰明的敵人也不要有無知的朋友。"
+            "Rein n'est si dangereux qu'un ignorant ami; Mieux vaudrait un sage ennemi."
         ],
         "author": "Jean de La Fontaine",
         "source": "Fables choisies"
     },
     {
         "text": [
-            "Lasciate ogni speranza, voi ch'entrate.",
-            "汝等ここに入るもの、一切の望みを捨てよ。",
-            "進入此地者，當捨棄一切希望。"
-        ],
-        "author": "Dante Alighieri",
-        "source": "Divina Commedia"
-    },
-    {
-        "text": [
-            "L'homme est condamné à être libre.",
-            "人間は自由の刑に処されている。",
-            "人類被處以自由之刑。"
+            "L'homme est condamné à être libre."
         ],
         "author": "Jean-Paul Sartre",
         "source": "L'existentialisme est un humanisme"
     },
     {
         "text": [
-            "Den farligste Forræder blandt alle er den, ethvert Menneske har i sig selv.",
-            "裏切者の中で最も危険なる裏切者は何かといえば、すべての人間が己れ自身の内部にかくしているところのものである。",
-            "背叛者中最危險的背叛者是將所有人藏於已身者。"
-        ],
-        "author": "Søren Aabye Kierkegaard",
-        "source": "Kjerlighedens Gjerninger"
-    },
-    {
-        "text": [
             "Was aber die Leute gemeiniglich das Shicksal nennen sind meistens nur ihre eigenen dummen Streiche.",
-            "しかし、概して人々が運命と呼ぶものは、大半が自分の愚行にすぎない。",
-            "然而，基本上人們稱之為命運的大多只是自己的愚行。",
-            "Das Genie wohnt nur eine Etage höher als der Wahnsinn.",
-            "天才とは、狂気よりも1階層分だけ上に住んでいる者のことである。",
-            "所謂的天才，指的是比瘋狂更上一層的人。"
+            "Das Genie wohnt nur eine Etage höher als der Wahnsinn."
         ],
         "author": "Arthur Schopenhauer",
         "source": "Parerga und Paralipomena"
@@ -130,5 +72,37 @@
         ],
         "author": "周恩来",
         "source": "讲历史，多出书"
+    },
+    {
+        "text": [
+            "We set sail on this new sea because there is new knowledge to be gained, and new rights to be won, and they must be won and used for the progress of all people.",
+            "We choose to go to the moon.",
+            "We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard."
+        ],
+        "author": "John F. Kennedy",
+        "source": "Moon Speech - Rice Stadium"
+    },
+    {
+        "text": [
+            "Freedom has many difficulties and democracy is not perfect, but we have never had to put a wall up to keep our people in, to prevent them from leaving us."
+        ],
+        "author": "John F. Kennedy",
+        "source": "Ich bin ein Berliner"
+    },
+    {
+        "text":[
+            "天ハ人ノ上ニ人ヲ造ラズ人ノ下ニ人ヲ造ラズト云ヘリ。"
+        ],
+        "author": "福澤諭吉",
+        "source": "學問ノスヽメ"
+    },
+    {
+        "text":[
+            "If we knew what we were doing, it wouldn't be called research, would it?",
+            "Truth is what stands the test of experience.",
+            "Anyone who has never made a mistake has never tried anything new."
+        ],
+        "author": "Albert Einstein",
+        "source": ""
     }
 ]

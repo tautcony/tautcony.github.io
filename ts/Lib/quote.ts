@@ -15,6 +15,8 @@ interface IFormat {
 
 export default class Quote {
     private container: HTMLElement;
+    private content: HTMLElement;
+    private author: HTMLElement;
     private quotes: IFormat[];
     private timer: NodeJS.Timer;
     public constructor(containerSelector: string, className: string) {
@@ -33,6 +35,8 @@ export default class Quote {
                 }
             })
         ]);
+        this.content = this.container.querySelector(".quote-content");
+        this.author = this.container.querySelector(".quote-author");
         document.querySelector(containerSelector).appendChild(this.container);
     }
 
@@ -45,8 +49,24 @@ export default class Quote {
 
     public UpdateQuote() {
         const quote = this.RandomQuote();
-        this.container.querySelector(".quote-content").textContent = quote.text;
-        this.container.querySelector(".quote-author").textContent  = `—— ${quote.author} 《${quote.source}》`;
+        if (quote === undefined) {
+            return;
+        }
+        const content = quote.text[Math.floor(Math.random() * quote.text.length)];
+        let author = `—— ${quote.author}`;
+        if (quote.source !== "") {
+            author += `《${quote.source}》`;
+        }
+        this.content.textContent = content;
+        this.author.textContent  = author;
+    }
+
+    private RandomQuote = () => {
+        if (this.quotes === undefined) {
+            clearTimeout(this.timer);
+            return undefined;
+        }
+        return this.quotes[Math.floor(Math.random() * this.quotes.length)];
     }
 
     private Interval(timeout: number) {
@@ -75,19 +95,5 @@ export default class Quote {
             console.error(xhr.statusText);
         };
         xhr.send();
-    }
-
-    private RandomQuote = () => {
-        if (this.quotes === undefined) {
-            clearTimeout(this.timer);
-            return;
-        }
-        const quote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
-        const text = quote.text[Math.floor(Math.random() * quote.text.length)];
-        return {
-            text,
-            author: quote.author,
-            source: quote.source
-        };
     }
 }

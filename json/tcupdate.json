@@ -4,6 +4,7 @@
         "url": "chaptertool",
         "width": "middle",
         "data": [
+        {"version": "2.33.33.31", "date": "Feb 25, 2018"},
         {"version": "2.33.33.3",  "date": "May 07, 2017"},
         {"version": "2.33.33.2",  "date": "May 04, 2017"},
         {"version": "2.33.33.1",  "date": "Jan 22, 2017"},

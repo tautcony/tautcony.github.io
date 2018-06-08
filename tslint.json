@@ -2,7 +2,7 @@
   "lintOptions": {
     "typeCheck": true
   },
-  "extends": "tslint:latest",
+  "extends": "./node_modules/tslint/lib/configs/latest",
   "rules": {
     // Don't want these
     "arrow-parens": false,

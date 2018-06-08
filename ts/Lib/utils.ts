@@ -46,7 +46,7 @@ export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(t
                 }
             }
         } else {
-            elem.textContent = (children as Text).textContent;
+            elem.textContent = (children as Text).data;
         }
     }
     return elem;

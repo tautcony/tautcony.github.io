@@ -1,21 +1,21 @@
-const gulp         = require("gulp");
-const lesshint     = require("gulp-lesshint");
-const less         = require("gulp-less");
-const autoprefixer = require("gulp-autoprefixer");
-const cleanCSS     = require("gulp-clean-css");
-const tslint       = require("tslint");
-const gulpTslint   = require("gulp-tslint");
-const ts           = require("gulp-typescript");
-const pump         = require("pump");
-const gulpWebpack  = require("webpack-stream");
-const webpack      = require("webpack");
-const banner       = require("gulp-banner");
-const rename       = require("gulp-rename");
-const watch        = require("gulp-watch");
-const run          = require("gulp-run");
-const connect      = require("gulp-connect");
-const runSequence  = require("run-sequence");
-const UglifyJs     = require("uglifyjs-webpack-plugin");
+import * as gulp from "gulp";
+import * as lesshint from "gulp-lesshint";
+import * as less from "gulp-less";
+import * as autoprefixer from "gulp-autoprefixer";
+import * as cleanCSS from "gulp-clean-css";
+import * as banner from "gulp-banner";
+import * as rename from "gulp-rename";
+import * as watch from "gulp-watch";
+import * as run from "gulp-run";
+import * as connect from "gulp-connect";
+import * as tslint from "tslint";
+import gulpTslint from "gulp-tslint";
+import * as ts from "gulp-typescript";
+import * as runSequence from "run-sequence";
+import * as pump from "pump";
+import * as webpack from "webpack";
+import * as gulpWebpack from "webpack-stream";
+import * as UglifyJs from "uglifyjs-webpack-plugin";
 
 const pkg          = require("./package.json");
 const tsProject    = ts.createProject("./tsconfig.json", {outFile: `${pkg.name}.js`});
@@ -30,7 +30,9 @@ const uglifyOptions = {
   toplevel: true,
   warnings: true,
   compress: {
-    passes: 2
+    passes: 2,
+    toplevel: true,
+    warnings: true
   },
   output: {
     ascii_only: true,

@@ -24,9 +24,9 @@
     var STYLE_B_ERROR   = "background:#ff3333;color:#fff;padding:2px    ;border-radius:4px;line-height:32px;";
 </script>
 <!-- jQuery -->
-<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap.native/2.0.23/polyfill.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap.native/2.0.23/bootstrap-native.js"></script>
 <!-- Progress bar PACE -->
 <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
 <!-- Custom JavaScript -->
@@ -59,43 +59,5 @@
 {% endif %}
 {% if page.catalog %}
 <!-- Side Catalog -->
-<script type="text/javascript">
-    function generateCatalog(selector) {
-        var P = $("div.post-container");
-        var a = P.find("h1,h2,h3,h4,h5,h6");
-        a.each(function (index, value) {
-            var n = $(value).prop("tagName").toLowerCase();
-            var i = "#" + $(value).prop("id");
-            var t = $(value).text();
-            var c = $("<a href=\"" + i + "\" rel=\"nofollow\">" + t + "</a>");
-            var l = $("<li class=\"" + n + "_nav\"></li>").append(c);
-            $(selector).append(l);
-        });
-    }
-    generateCatalog(".catalog-body");
-    // toggle side catalog
-    $(".catalog-toggle").click(function (e) {
-        e.preventDefault();
-        $(".side-catalog").toggleClass("fold");
-    });
-    /*
-     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
-     * Fork by Hux to support padding
-     */
-    async("{{ '/js/jquery.nav.min.js' | prepend: site.baseurl }}", function () {
-        $(".catalog-body").onePageNav({
-            changeHash: false,
-            currentClass: "active",
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: 0.2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
+<!-- to be implemented -->
 {% endif %}

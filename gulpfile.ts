@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as gulp from "gulp";
 import * as lesshint from "gulp-lesshint";
 import * as less from "gulp-less";
@@ -27,6 +28,7 @@ const comment      = `/*!
 `;
 
 const uglifyOptions = {
+  sourceMap: true,
   toplevel: true,
   warnings: true,
   compress: {
@@ -80,16 +82,18 @@ gulp.task("tslint", () => {
 });
 
 gulp.task("ts", () =>
-  gulp.src("./ts/tc-blog.ts")
+  gulp.src("./ts/**/*.ts")
     .pipe(gulpWebpack({
       mode: "production",
       devtool: "source-map",
       entry: `./ts/${pkg.name}.ts`,
       output: {filename: `${pkg.name}.min.js`},
-      resolve: {extensions: [".ts", ".js"]},
+      resolve: {
+        extensions: [".ts", ".tsx", ".js", ".jsx"]
+      },
       module: {
         rules: [
-          { test: /\.ts$/, use: "ts-loader" }
+          { test: /\.tsx?$/, loader: "awesome-typescript-loader" }
         ]
       },
       optimization: {
@@ -170,6 +174,7 @@ gulp.task("minify-js-tcupdate", () =>
   gulp.src("./js/tcupdate.js")
   .pipe(gulpWebpack({
     mode: "production",
+    entry: "./js/tcupdate.js",
     output: {filename: "tcupdate.min.js"},
     optimization: {
       minimizer: [

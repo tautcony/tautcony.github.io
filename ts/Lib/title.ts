@@ -1,7 +1,7 @@
 export default class Title {
     private titles: string[];
     private initalTitle: string;
-    private restoreTitleID: NodeJS.Timer;
+    private restoreTitleID: number;
     public constructor(titles: string[]) {
         this.titles = titles;
         this.initalTitle = document.title;
@@ -15,7 +15,7 @@ export default class Title {
                 if (this.restoreTitleID !== null) {
                     clearTimeout(this.restoreTitleID);
                 }
-                this.restoreTitleID = setTimeout(() => {
+                this.restoreTitleID = window.setTimeout(() => {
                     document.title = this.initalTitle;
                     this.restoreTitleID = null;
                 }, 500);

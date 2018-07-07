@@ -18,7 +18,7 @@ export default class Quote {
     private content: HTMLElement;
     private author: HTMLElement;
     private quotes: IFormat[];
-    private timer: NodeJS.Timer;
+    private timer: number;
     public constructor(containerSelector: string, className: string) {
         this.container = _("div", {className}, [
             _("div", {
@@ -70,7 +70,7 @@ export default class Quote {
     }
 
     private Interval(timeout: number) {
-        this.timer = setInterval(() => {
+        this.timer = window.setInterval(() => {
             this.UpdateQuote();
         }, timeout);
     }

@@ -18,13 +18,13 @@
 	<section id="tool-downloads" class="general">
 		<h2 style="font-family:Orbitron">TC Tools Downloads</h2>
 		<h4><center>Hope you could enjoy these tools.</center></h4>
-        <div id="downlinks">
-            <download-link v-for="item in data"
-                :width="item.width"
-                :name="item.name"
-                :info=item.data[0]
-                :site="site"
-            />
+		<div id="downlinks">
+			<download-link v-for="item in data"
+				:width="item.width"
+				:name="item.name"
+				:info=item.data[0]
+				:site="site"
+			/>
 		</div>
 		<br><br>
 		<p id="ChapterTool">
@@ -44,8 +44,8 @@
 			<a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio" target="_blank" rel="noopener">PSNR</a> /
 			<a href="https://en.wikipedia.org/wiki/Structural_similarity" target="_blank" rel="noopener">SSIM</a> Value.
 			<div style="font-size: 13px;">
-                PS₀: From version 1.0.5.1, ffmpeg has been set as the default processor, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank" rel="noopener"><b>HERE</b></a>.
-                <br/>
+				PS₀: From version 1.0.5.1, ffmpeg has been set as the default processor, you can get the program from <a href="https://ffmpeg.org/download.html#build-windows" target="_blank" rel="noopener"><b>HERE</b></a>.
+				<br/>
 				PS₁: For VapourSynth implementation, you need to make sure
 				<a href="https://www.python.org/downloads/" target="_blank" rel="noopener"><b>Python</b></a>,
 				<a href="https://github.com/vapoursynth/vapoursynth/releases" target="_blank" rel="noopener"><b>VapourSynth</b></a>,
@@ -56,32 +56,32 @@
 		</p>
 		<h3>ChapterTool history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_ct">
-            <history-download-link v-for="info in (data.ct.data.slice(1))"
-                :name="data.ct.name"
-                :url="data.ct.url"
-                :info="info"
-                :site="site"
-            />
+			<history-download-link v-for="info in (data.ct.data.slice(1))"
+				:name="data.ct.name"
+				:url="data.ct.url"
+				:info="info"
+				:site="site"
+			/>
 		</ul></div>
 
 		<h3>AutoTorrentInspection history releases</h3>
-        <div class="all-releases-w"><ul id="all-releases_ati">
-            <history-download-link v-for="info in (data.ati.data.slice(1))"
-                :name="data.ati.name"
-                :url="data.ati.url"
-                :info="info"
-                :site="site"
-            />
+		<div class="all-releases-w"><ul id="all-releases_ati">
+			<history-download-link v-for="info in (data.ati.data.slice(1))"
+				:name="data.ati.name"
+				:url="data.ati.url"
+				:info="info"
+				:site="site"
+			/>
 		</ul></div>
 
 		<h3>RPChecker history releases</h3>
 		<div class="all-releases-w"><ul id="all-releases_rp">
-            <history-download-link v-for="info in (data.rp.data.slice(1))"
-                :name="data.rp.name"
-                :url="data.rp.url"
-                :info="info"
-                :site="site"
-            />
+			<history-download-link v-for="info in (data.rp.data.slice(1))"
+				:name="data.rp.name"
+				:url="data.rp.url"
+				:info="info"
+				:site="site"
+			/>
 		</ul></div>
 	</section>
 	<div id="copyright-line">Copyright (c) 2015-2017 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/" target="_blank" rel="noopener">be5invis</a>.</div>

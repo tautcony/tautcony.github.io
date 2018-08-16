@@ -119,7 +119,8 @@ section#tool-downloads .all-releases-w li {
   padding: 0.5em 0;
   text-align: left;
 }
-section#tool-downloads .all-releases-w li icon {
+section#tool-downloads .all-releases-w li .icon {
+  display: inline-block;
   vertical-align: -0.1em;
 }
 section#tool-downloads #all-releases_ct,
@@ -163,8 +164,8 @@ section#tool-downloads #all-releases_rp {
 #downlinks a.narrow {
   width: 4em;
 }
-#downlinks a icon {
-  display: block;
+#downlinks a .icon {
+  display: inline-block;
   font-size: 1.5em;
   left: 0.5em;
   margin-top: -0.5em;

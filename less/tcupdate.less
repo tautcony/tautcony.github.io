@@ -1,43 +1,43 @@
 @import url("fonts.css");
 
 html {
-	font-size: 1em;
+    font-size: 1em;
 }
 body {
-	font-feature-settings: "locl";
-	line-height: 1.5;
-	margin:      0;
-	padding:     0;
+    font-feature-settings: "locl";
+    line-height: 1.5;
+    margin:      0;
+    padding:     0;
 }
 
 html, body {
-	font-family: "IosevkaWEB", monospace;
+    font-family: "IosevkaWEB", monospace;
 }
 
 p {
-	margin: 1rem 0;
+    margin: 1rem 0;
 }
 
 a {
-	background-image:    linear-gradient(white 50%, #888888 50%);
-	background-position: 0 1.075em;
-	background-repeat:   repeat-x;
-	background-size:     2px 2px;
-	color: black;
-	text-decoration: none;
+    background-image:    linear-gradient(white 50%, #888888 50%);
+    background-position: 0 1.075em;
+    background-repeat:   repeat-x;
+    background-size:     2px 2px;
+    color: black;
+    text-decoration: none;
     text-shadow:     white -1px 0 0, white 1px 0 0;
-	&:hover {
-		background-image: linear-gradient(white 50%, black 50%);
-	}
+    &:hover {
+        background-image: linear-gradient(white 50%, black 50%);
+    }
 }
 
 pre, code {
-	font-family: inherit;
+    font-family: inherit;
 }
 
 section {
-	margin:    0 auto;
-	max-width: 40rem;
+    margin:    0 auto;
+    max-width: 40rem;
     padding:   4rem 1rem;
     &+section {
         &:before {
@@ -120,7 +120,8 @@ section {
             li {
                 padding:    0.5em 0;
                 text-align: left;
-                icon {
+                .icon {
+                    display: inline-block;
                     vertical-align: -0.1em;
                 }
             }
@@ -136,22 +137,22 @@ section {
 }
 
 #downlinks {
-	display:         flex;
+    display:         flex;
     justify-content: center;
-	a {
-		background:  black;
-		color:       white;
-		display:     block;
-		flex:        none;
-		line-height: 1em;
-		margin:      0.5em;
-		padding:     0.5em 0.5em 0.5em 3em;
-		position:    relative;
-		text-align:  left;
-		text-shadow: none;
+    a {
+        background:  black;
+        color:       white;
+        display:     block;
+        flex:        none;
+        line-height: 1em;
+        margin:      0.5em;
+        padding:     0.5em 0.5em 0.5em 3em;
+        position:    relative;
+        text-align:  left;
+        text-shadow: none;
         width:       10em;
-		&:hover {
-			background: #333333;
+        &:hover {
+            background: #333333;
         }
         &.wide {
             width: 12em;
@@ -159,19 +160,19 @@ section {
         &.narrow {
             width: 4em;
         }
-		icon {
-			display:    block;
-			font-size:  1.5em;
-			left:       0.5em;
-			margin-top: -0.5em;
-			position:   absolute;
-			top:        50%;
+        .icon {
+            display:    inline-block;
+            font-size:  1.5em;
+            left:       0.5em;
+            margin-top: -0.5em;
+            position:   absolute;
+            top:        50%;
         }
-		span {
-			display:   block;
-			font-size: 60%;
-		}
-	}
+        span {
+            display:   block;
+            font-size: 60%;
+        }
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -193,8 +194,8 @@ section {
 }
 
 #copyright-line {
-	font-size:     0.8rem;
-	margin-bottom: 1em;
-	opacity:       0.4;
-	text-align:    center;
+    font-size:     0.8rem;
+    margin-bottom: 1em;
+    opacity:       0.4;
+    text-align:    center;
 }

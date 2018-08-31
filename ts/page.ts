@@ -1,6 +1,10 @@
 import * as anime from "animejs";
 
-function wrap(el: HTMLElement, wrapper: HTMLElement) {
+function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTagName: K, wrapperClassList: [string]) {
+    const wrapper = document.createElement(wrapperTagName);
+    wrapperClassList.forEach(value => {
+        wrapper.classList.add(value);
+    });
     el.parentNode.insertBefore(wrapper, el);
     wrapper.appendChild(el);
 }
@@ -12,9 +16,7 @@ export default function pageInit() {
     for (let i = 0; i < tables.length; ++i) {
         const table = tables[i] as HTMLTableElement;
         table.classList.add("table");
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("table-responsive");
-        wrap(table, wrapper);
+        wrap(table, "div", ["table-responsive"]);
     }
     /*tslint:enable: prefer-for-of*/
 

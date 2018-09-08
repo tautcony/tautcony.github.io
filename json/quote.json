@@ -90,19 +90,31 @@
         "source": "Ich bin ein Berliner"
     },
     {
-        "text":[
+        "text": [
             "天ハ人ノ上ニ人ヲ造ラズ人ノ下ニ人ヲ造ラズト云ヘリ。"
         ],
         "author": "福澤諭吉",
         "source": "學問ノスヽメ"
     },
     {
-        "text":[
+        "text": [
             "If we knew what we were doing, it wouldn't be called research, would it?",
             "Truth is what stands the test of experience.",
             "Anyone who has never made a mistake has never tried anything new."
         ],
         "author": "Albert Einstein",
+        "source": ""
+    },
+    {
+        "text": [
+            "我們常常自己嚇自己，嚇到不敢做事情。",
+            "喜歡做的事是游戲，不喜歡做的事是工作，不喜歡的事還能做好才是了不起。",
+            "把所有小問題都解決了，就不會有大問題。",
+            "「人生而平等」是一個理想，但在人類社會從沒實現過，不過政府至少要努力做到「教育」和「醫療」平等，給窮人留下最後一個翻身的機會。",
+            "如果完全有完全把握才去做，那沒有幾件事情可以做。",
+            "你如果不知道以前做過什麽壞事，去選舉就知道了。"
+        ],
+        "author": "柯文哲",
         "source": ""
     }
 ]

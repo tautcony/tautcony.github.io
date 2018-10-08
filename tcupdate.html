@@ -10,22 +10,21 @@
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
 	<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
 	<style> @import url('css/tcupdate.min.css'); </style>
-	<link href="https://cdn.bootcss.com/simple-line-icons/2.2.3/css/simple-line-icons.css" rel="stylesheet"/>
-	<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js"></script>
-	<script>if (!window.Vue) document.write('<script src="https://cdn.bootcss.com/vue/2.1.8/vue.min.js">\x3C/script>');</script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"></script>
 </head>
 <body>
 	<section id="tool-downloads" class="general">
 		<h2 style="font-family:Orbitron">TC Tools Downloads</h2>
 		<h4><center>Hope you could enjoy these tools.</center></h4>
 		<div id="downlinks">
-			<download-link v-for="item in data"
-				:width="item.width"
-				:name="item.name"
-				:info=item.data[0]
-				:site="site"
-			/>
+			
+		<download-link width="middle" owner="tautcony" repo="ChapterTool"></download-link>
+		<download-link width="wide" owner="tautcony" repo="Auto-Torrent-Inspection"></download-link>
+		<download-link width="middle" owner="tautcony" repo="RP-Checker"></download-link>
 		</div>
+		
 		<br><br>
 		<p id="ChapterTool">
 			<a href="https://github.com/tautcony/ChapterTool" target="_blank" rel="noopener">ChapterTool</a> is made for extracting chapters from various type of file. The core part of ChapterTool has been separated as an independent library <a href="https://github.com/tautcony/TChapter" target="_blank" rel="noopener">TChapter</a>. So you can write your own frontend for any reason(<br>
@@ -33,7 +32,7 @@
 				PS₁: The MKV file support is powered by MKVToolNix, you can get the program from
 				<a href="https://mkvtoolnix.download/downloads.html#windows" target="_blank" rel="noopener"><b>HERE</b></a>.<br>
 				PS₂: The MP4 file support is powered by libmp4v2, you can download the dll from
-				<a :href="'http://'+site+'/bin/libmp4v2.dll'" target="_blank" rel="noopener"><b>HERE</b></a>.
+				<a href="https://mega.nz/#!sAhzgYaC!_byjrzYpI5oYdEqnExRQBt0kCco3XxXFq6nG9pxCrlw" target="_blank" rel="noopener"><b>HERE</b></a>.
 			</div>
 		</p>
 		<p id="ATI">
@@ -55,34 +54,17 @@
 			</div>
 		</p>
 		<h3>ChapterTool history releases</h3>
-		<div class="all-releases-w"><ul id="all-releases_ct">
-			<history-download-link v-for="info in (data.ct.data.slice(1))"
-				:name="data.ct.name"
-				:url="data.ct.url"
-				:info="info"
-				:site="site"
-			/>
-		</ul></div>
-
+		<div class="all-releases-w">
+			<history-download owner="tautcony" repo="ChapterTool"></history-download>
+		</div>
 		<h3>AutoTorrentInspection history releases</h3>
-		<div class="all-releases-w"><ul id="all-releases_ati">
-			<history-download-link v-for="info in (data.ati.data.slice(1))"
-				:name="data.ati.name"
-				:url="data.ati.url"
-				:info="info"
-				:site="site"
-			/>
-		</ul></div>
-
+		<div class="all-releases-w">
+			<history-download owner="tautcony" repo="auto-torrent-inspection"></history-download>
+		</div>
 		<h3>RPChecker history releases</h3>
-		<div class="all-releases-w"><ul id="all-releases_rp">
-			<history-download-link v-for="info in (data.rp.data.slice(1))"
-				:name="data.rp.name"
-				:url="data.rp.url"
-				:info="info"
-				:site="site"
-			/>
-		</ul></div>
+		<div class="all-releases-w">
+			<history-download owner="tautcony" repo="rp-checker"></history-download>
+		</div>
 	</section>
 	<div id="copyright-line">Copyright (c) 2015-2017 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/" target="_blank" rel="noopener">be5invis</a>.</div>
 	<script src="js/tcupdate.min.js"></script>

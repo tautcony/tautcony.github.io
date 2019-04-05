@@ -1,5 +1,5 @@
 import { util_ui_element_creator as _ } from "./utils";
-import * as anime from "animejs";
+import anime from "animejs/lib/anime.es.js";
 
 export default class CoreValue {
     private coreText: string[];
@@ -25,8 +25,8 @@ export default class CoreValue {
             });
             document.body.appendChild(span);
             span.textContent = this.coreText[this.coreIndex++ % this.coreText.length];
-            const timeLine = anime.timeline();
-            timeLine
+            // tslint:disable-next-line: no-unsafe-any
+            anime.timeline()
                 .add({
                     targets: span,
                     translateY: {

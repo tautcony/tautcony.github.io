@@ -9,6 +9,7 @@ const rename       = require("gulp-rename");
 const watch        = require("gulp-watch");
 const run          = require("gulp-run");
 const connect      = require("gulp-connect");
+const gutil        = require("gulp-util");
 const tslint       = require("tslint");
 import gulpTslint from "gulp-tslint";
 const runSequence  = require("gulp4-run-sequence");
@@ -91,7 +92,7 @@ gulp.task("ts", () =>
       },
       module: {
         rules: [
-          { test: /\.tsx?$/, loader: "awesome-typescript-loader" }
+          { test: /\.tsx?$/, loader: "ts-loader" }
         ]
       },
       optimization: {
@@ -100,6 +101,10 @@ gulp.task("ts", () =>
         ]
       }
     }, webpack))
+    .on("error", (err) => {
+      gutil.log(err.message);
+      this.end();
+    })
     .pipe(banner(comment))
     .pipe(gulp.dest("./js"))
 );
@@ -147,7 +152,7 @@ gulp.task("watch-html", () =>
 );
 
 gulp.task("watch-jekyll", () =>
-  gulp.watch(["./*", "_drafts/*", "_includes/*", "_layouts/*", "_posts/*", "apps/*", "attach/*", "css/*", "fonts/*", "img/*", "js/*", "json/*"], gulp.series("jekyll"))
+  gulp.watch(["./*", "_drafts/*", "_includes/*", "_layouts/*", "_posts/*", "apps/*", "attach/*", "css/*", "fonts/*", "img/*", "js/*", "json/*", "!node_modules"], gulp.series("jekyll"))
 );
 
 gulp.task("watch", (callback) =>

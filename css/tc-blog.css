@@ -969,7 +969,7 @@ footer .copyright a:focus {
   top: 2em;
   margin: 0;
   font-size: 0.85em;
-  line-height: 1.764705882em;
+  line-height: 1.76470588em;
   opacity: 0;
   -webkit-transition: top 0.3s ease, opacity 0.3s ease;
   transition: top 0.3s ease, opacity 0.3s ease;

@@ -1,4 +1,4 @@
-import * as anime from "animejs";
+import anime from "animejs/lib/anime.es.js";
 
 function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTagName: K, wrapperClassList: [string]) {
     const wrapper = document.createElement(wrapperTagName);
@@ -26,6 +26,7 @@ export default function pageInit() {
 
     const gotop = document.getElementById("gotop");
     gotop.addEventListener("click", () => {
+        // tslint:disable-next-line: no-unsafe-any
         anime({
             targets: "html, body",
             scrollTop: 0,

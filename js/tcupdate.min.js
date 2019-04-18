@@ -1,5 +1,5 @@
 /*!
-* TC Blog v1.0.0 (https://tautcony.github.io/)
+* TC Blog build at 2019-04-18T13:10:37.647Z (https://tautcony.github.io/)
 * Copyright 2019 TautCony
 * Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)
 */

@@ -6,7 +6,7 @@ import pageInit from "./page";
 import tagInit from "./tag";
 import postInit from "./post";
 import * as aboutInit from "./about";
-//require("../less/tc-blog.less");
+require("../less/tc-blog.less");
 
 document.addEventListener("DOMContentLoaded", () => {
     new Nav().Init();

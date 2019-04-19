@@ -1,3 +1,5 @@
+import "@babel/polyfill";
+
 import Nav from "./Lib/navbar";
 import Quote from "./Lib/quote";
 import Title from "./Lib/title";

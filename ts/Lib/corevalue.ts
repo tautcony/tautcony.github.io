@@ -38,7 +38,7 @@ export default class CoreValue {
                     targets: span,
                     opacity: 0,
                     complete: anim => {
-                        span.remove();
+                        span.parentNode.removeChild(span);
                     }
                 });
         });

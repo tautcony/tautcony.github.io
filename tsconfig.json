@@ -16,7 +16,6 @@
         "suppressImplicitAnyIndexErrors": true,
         "types": [
             "geopattern",
-            "gulp",
             "node"
         ]
     },

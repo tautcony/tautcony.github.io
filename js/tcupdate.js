@@ -1,3 +1,5 @@
+require("../less/tcupdate");
+
 if (typeof(Vue) !== "undefined") {
     Vue.filter("time2date", (time_string) => {
         const date = new Date(time_string);

@@ -25,6 +25,9 @@ export default function tagcloud(tags: NodeListOf<Element>, options: IConfig = {
     for (let i = 0; i < tags.length; ++i) {
         const element = tags[i] as HTMLAnchorElement;
         const curr = parseInt(element.getAttribute("rel"), 10);
+        if (Number.isNaN(curr)) {
+            continue;
+        }
         lowest = Math.min(lowest, curr);
         highest = Math.max(highest, curr);
     }
@@ -48,17 +51,10 @@ export default function tagcloud(tags: NodeListOf<Element>, options: IConfig = {
 
 // Converts hex to an RGB array
 function toRGB(code: string) {
-    let ret = code;
-    if (/#[0-9a-fA-F]{3}/.test(ret)) {
-        const r = ret[1] + ret[1];
-        const g = ret[2] + ret[2];
-        const b = ret[3] + ret[3];
-        ret = `#${r + g + b}`;
+    if (code.length === 4) {
+        code = code.replace(/(\w)(\w)(\w)/gi, "\$1\$1\$2\$2\$3\$3");
     }
-    const hex = /(\w{2})(\w{2})(\w{2})/.exec(ret);
-    if (hex === null) {
-        return [0, 0, 0];
-    }
+    const hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
     return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)];
 }
 

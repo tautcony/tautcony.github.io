@@ -12,6 +12,21 @@ export default class CoreValue {
 
     public Init() {
         document.body.addEventListener("click", ev => {
+            // tslint:disable-next-line: no-any
+            const event = ev as any;
+            // tslint:disable-next-line: no-unsafe-any
+            if (event.path) {
+                // tslint:disable-next-line: no-unsafe-any
+                for (const node of event.path) {
+                    const nodeName = (node as Element).nodeName;
+                    if (nodeName === undefined) {
+                        continue;
+                    }
+                    if (nodeName.toLowerCase() === "a") {
+                        return;
+                    }
+                }
+            }
             const span = _("span", {
                 style: {
                     "z-index": `${1 << 24}`,

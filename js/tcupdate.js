@@ -42,7 +42,7 @@ if (typeof(Vue) !== "undefined") {
         created() {
             this.$http.get(`https://api.github.com/repos/${this.owner}/${this.repo}/releases/latest`).then(response => {
                 this.info = response.data;
-                console.log(response);
+                // console.log(response);
             }).catch(exception => {
                 console.error(`[${exception.status}] Failed to load from '${this.owner}/${this.repo}/latest'`);
             });

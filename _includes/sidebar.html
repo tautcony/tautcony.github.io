@@ -8,9 +8,7 @@
             <input type="hidden" name="as_sitesearch" value="{{site.url}}">
         </form>
     </div>
-    {% if site.featured-tags %}
-    {% include_cached featured-tags.html split = false %}
-    {% endif %}
+    {% include featured-tags.html %}
 
     <!-- Short About -->
     <section class="visible-md visible-lg">
@@ -27,9 +25,7 @@
     </section>
 {% else %}
 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 sidebar-container">
-    {% if site.featured-tags %}
-    {% include_cached featured-tags.html split = false %}
-    {% endif %}
+    {% include featured-tags.html %}
 {% endif %}
 {% if site.friends %}
 <!-- Friends Blog -->

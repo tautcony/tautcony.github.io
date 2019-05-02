@@ -2,7 +2,7 @@ const path = require("path");
 
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
-const extractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const banner = `TC Blog [hash] build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
@@ -20,21 +20,27 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.less$/,
-                use: extractTextPlugin.extract({
-                    use: [
-                        'css-loader',
+                test: /\.(le|c)ss$/,
+                use: [
                     {
-                        loader: 'postcss-loader',
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: "../",
+                            hmr: process.env.NODE_ENV === "development",
+                        },
+                    },
+                    "css-loader",
+                    {
+                        loader: "postcss-loader",
                         options: {
                             plugins: (loader) => [
-                                require('autoprefixer')(),
-                                require('cssnano')()
-                              ]
+                                require("autoprefixer")(),
+                                require("cssnano")()
+                            ]
                         }
                     },
-                    'less-loader']
-                })
+                    "less-loader"
+                ]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -42,17 +48,19 @@ module.exports = {
             },
             {
                 test: /\.woff2?$/,
-                loader: 'url-loader'
+                loader: "url-loader"
             },
             {
                 test: /\.ttf$/,
-                loader: 'url-loader'
+                loader: "url-loader"
             }
         ]
     },
     plugins: [
         new WebpackBar(),
-        new extractTextPlugin('css/tcupdate.min.css'),
+        new MiniCssExtractPlugin({
+            filename: "css/tcupdate.min.css"
+        }),
         new webpack.BannerPlugin(banner)],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less"]

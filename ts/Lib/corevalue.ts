@@ -12,8 +12,13 @@ export default class CoreValue {
 
     public Init() {
         document.body.addEventListener("click", ev => {
+            const target = ev.target as Element;
+            if (target.nodeName && target.nodeName.toLowerCase() === "a") {
+                return;
+            }
             // tslint:disable-next-line: no-any
             const event = ev as any;
+            // The path attribute is only exists in Chrome
             // tslint:disable-next-line: no-unsafe-any
             if (event.path) {
                 // tslint:disable-next-line: no-unsafe-any

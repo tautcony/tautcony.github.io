@@ -24,12 +24,14 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "animejs": "^3.0.1",
-    "geopattern": "^1.2.3"
+    "geopattern": "^1.2.3",
+    "js-cookie": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@types/geopattern": "^1.2.3",
+    "@types/js-cookie": "^2.2.2",
     "@types/node": "^11.13.8",
     "@types/webpack": "^4.4.29",
     "acorn": "^6.1.1",

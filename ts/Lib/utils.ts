@@ -52,3 +52,9 @@ export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(t
     return elem;
 }
 /*tslint:enable: no-any no-unsafe-any*/
+
+export function shuffle<T>(arr: T[]) {
+    const newArr = arr.map(i => ({v: i, r: Math.random()}));
+    newArr.sort((a, b) => a.r - b.r);
+    arr.splice(0, arr.length, ...newArr.map(i => i.v));
+}

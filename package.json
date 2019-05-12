@@ -25,7 +25,8 @@
     "@babel/polyfill": "^7.4.4",
     "animejs": "^3.0.1",
     "geopattern": "^1.2.3",
-    "js-cookie": "^2.2.0"
+    "js-cookie": "^2.2.0",
+    "pixi.js": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

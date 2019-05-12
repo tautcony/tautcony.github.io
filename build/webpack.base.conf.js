@@ -16,6 +16,11 @@ module.exports = {
         path: path.resolve(__dirname, ".."),
         devtoolModuleFilenameTemplate: "[absolute-resource-path]"
     },
+    externals: {
+        "pixi.js": "PIXI",
+        "js-cookie": "Cookies",
+        "geopattern": "GeoPattern"
+    },
     module: {
         rules: [
             {

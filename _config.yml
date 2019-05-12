@@ -23,22 +23,21 @@ SocialAccount: [
         content: ""
     },
     {
-        title: "weibo",
-        href: "http://weibo.com/3268177885",
-        icon: "fa-weibo",
+        title: "twitter",
+        href: "https://twitter.com/tautcony",
+        icon: "fa-twitter",
+        content: ""
+    },
+    {
+        title: "steam",
+        href: "https://steamcommunity.com/profiles/tautcony",
+        icon: "fa-steam",
         content: ""
     },
     {
         title: "asciiflow",
         href: "/apps/asciiflow2",
         icon: "fa-terminal",
-        content: "",
-        in_sidebar: false
-    },
-    {
-        title: "List characters",
-        href: "/apps/listcharacters",
-        icon: "fa-font",
         content: "",
         in_sidebar: false
     }

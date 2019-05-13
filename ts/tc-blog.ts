@@ -13,13 +13,19 @@ import postInit from "./post";
 import * as aboutInit from "./about";
 require("../less/tc-blog.less");
 
+import * as pangu from "../js/pangu.js/browser/pangu";
+
 document.addEventListener("DOMContentLoaded", () => {
-    new Nav().Init();
-    new Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀", "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]).Init();
-    new Quote(".copyright", "quote").Init(10 ** 4);
+    const nav = new Nav();
+    const title = new Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀", "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]);
+    const quote = new Quote(".copyright", "quote");
     // new CoreValue().Init();
-    brightnessInit();
     const bubble = new bubbleBg("#bubble_bg");
+
+    brightnessInit();
+    nav.Init();
+    title.Init();
+    quote.Init(10 ** 4);
     bubble.init();
 
     // tslint:disable-next-line: no-unused-expression
@@ -34,4 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         size: { start: 1, end: 1.1, unit: "em" }
     };
     tagcloud(document.querySelectorAll("#tag_cloud a"), config);
+
+    // tslint:disable-next-line: no-unsafe-any
+    pangu.autoSpacingPage();
 });

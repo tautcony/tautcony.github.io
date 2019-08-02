@@ -1,10 +1,10 @@
 # Site settings
-title: TC Blog
-SEOTitle: TC的博客 | TC Blog
+title: 踢锡部落格
+SEOTitle: 踢锡部落格 | TC Blog | TC的博客
 header-img: img/home-bg.jpg
 email: tautcony@gmail.com
 description: "试着记录点东西 | 都是些有的没的"
-keyword: "TautCony, @tautcony, TC的博客, TC Blog, 博客, 个人网站"
+keyword: "TautCony, @tautcony, TC的博客, TC Blog, 博客, 个人网站, 踢锡部落格"
 url: "https://tautcony.xyz"                     # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 

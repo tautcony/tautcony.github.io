@@ -81,7 +81,7 @@ function bdec_dict($s) {
 此外关注变量`$ss`的相关操作，可以发现其的处理动作非常诡异，在一个解码函数中，对**解码**出结果进行了**重新编码**。通过检索，其目的是在解码`list`, `dictionary`获得其子项的长度，从而正确解析下一个元素。但是这样的思路可以说是非常诡异了，明明解析过程中是可以通过累加获取长度信息的，而作者却通过重新编码元素再计算重新编码后的元素的长度，绕了一大圈才最终达到目的，相当不明智。
 
 
-另一点可能
+另一个可能存在的问题点就是对没必要的地方也无脑使用正则？但应该问题不是特别大。
 
 
 # 客观分析
@@ -187,7 +187,7 @@ function bdec($data, &$pos = 0) {
                 throw new RuntimeException("Could not fully decode string value's length");
             }
             $len = (int) substr($data, $pos, $digits);
-            $pos += $digits + 1; // len($digits) + len(":")
+            $pos += $digits + 1; // $digits + len(":")
             if (strlen($data) < $pos + $len) {
                 throw new RuntimeException("Could not fully decode string value");
             }

@@ -28,7 +28,7 @@ tags:
 作为PT站点，最不可或缺的，那就是种子了。对于默认的`NexusPHP`程序而言，如果有一个文件数量上万时，就会发现其上传种子的操作往往会以超时告终，上传若通过手动于后台上传修改记录来进行绕行的话，依然会发现其下载动作时也可能面临同样的窘境。
 
 
-打开[文件](https://github.com/ZJUT/NexusPHP/blob/master/include/benc.php#L53)观察`bdec`函数和其相关的函数可以发现，其所有的解析结果的值，都是以形如以下的结构来存储的：
+打开[`benc.php`](https://github.com/ZJUT/NexusPHP/blob/master/include/benc.php#L53)观察`bdec`函数和其相关的函数可以发现，其所有的解析结果的值，都是以形如以下的结构来存储的：
 
 ```json
 {
@@ -149,7 +149,7 @@ function bdec($data, &$pos = 0) {
                 $dict[$key["value"]] = $value;
             }
             ++$pos;
-            ksort($dict);
+            // ksort($dict);
             $ret["type"] = "dictionary";
             $ret["value"] = $dict;
             break;
@@ -207,7 +207,7 @@ function bdec($data, &$pos = 0) {
 PHP5.6下对类型标注非常不友好，所参考的代码中的`function decode(string $data, int &$pos = 0)`会花式报错。
 
 
-经过简单测试，只需要简单替换`include/benc.php`处的`bdec`函数即可引入该高速咏唱魔法，将原本可能需要数分钟的种子内容解析缩短到不到一秒，而整体的上传动作也能在个位数的时间内完成。
+经过简单测试，只需[^errata-1]要简单替换[`benc.php`](https://github.com/ZJUT/NexusPHP/blob/master/include/benc.php#L53)处的`bdec`函数即可引入该高速咏唱魔法，将原本可能需要数分钟的种子内容解析缩短到不到一秒，而整体的上传动作也能在个位数的时间内完成。
 
 
 根据某不愿意透露姓名的废铝提供的日志，单位为秒，此处的结果使用了`file_get_contents`来读取文件并使用SQL批量插入降低数据库操作时间。总的而言，本高速咏唱魔法实际应用效果喜人，未见明显不良反应。
@@ -223,6 +223,9 @@ PHP5.6下对类型标注非常不友好，所参考的代码中的`function deco
 6 数据库结束
 8 开始写log
 8 结束
-
 ```
 
+# 勘误
+
+[^errata-1]:
+    然而并不是，在[`takeupload.php`](https://github.com/ZJUT/NexusPHP/blob/master/takeupload.php#L200)文件中还是存在了唯一一个使用了`string`字段的地方，所以还需要将`$info["string"]`替换为`benc($info)`

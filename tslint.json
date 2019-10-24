@@ -42,7 +42,6 @@
     "no-unnecessary-callback-wrapper": true,
     "no-unnecessary-qualifier": true,
     "no-unsafe-any": true,
-    "no-use-before-declare": true,
     "no-void-expression": true,
     "prefer-function-over-method": true,
     "triple-equals": true,

@@ -25,6 +25,7 @@ export default class BubbleBg {
 
     public constructor(elem: string) {
         this.elem = elem;
+        PIXI.utils.skipHello();
     }
 
     public init() {

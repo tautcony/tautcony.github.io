@@ -9,14 +9,9 @@ if (typeof(Vue) !== "undefined") {
         return date.toDateString();
     });
     Vue.filter("info2url", (info) => {
-        const assets = info.assets;
+        const assets = info.assets.filter(item => item.content_type === "application/x-msdownload");
         if (assets.length === 0) {
             return info.zipball_url;
-        }
-        for (const asset of assets) {
-            if (asset.name.endsWith(".exe")) {
-                return asset.browser_download_url;
-            }
         }
         return assets[0].browser_download_url;
     });
@@ -59,11 +54,11 @@ if (typeof(Vue) !== "undefined") {
                     </li>`,
         computed: {
             browser_download_url() {
-                const assets = this.info.assets;
+                const assets = this.info.assets.filter(item => item.content_type === "application/octet-stream");
                 if (assets.length === 0) {
                     return this.info.zipball_url;
                 }
-                return assets[0].browser_download_url
+                return assets[0].browser_download_url;
             }
         }
     });

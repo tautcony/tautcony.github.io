@@ -1,0 +1,69 @@
+﻿---
+layout:     post
+title:      "MAC地址中的厂商字段的扩展"
+subtitle:   "IEEE闷声大发财"
+date:       2020-01-07
+author:     "TautCony"
+header-img: "img/post-bg-default.png"
+image:
+  credit: himawari-8
+  creditlink: http://himawari8.nict.go.jp/
+tags:
+    - 计算机网络
+---
+
+MAC地址共48位，被分为由`IEEE`进行分配的部分和剩余的厂商自定义部分。但仔细一看却并没有那么简单。
+
+<!--more-->
+
+## 背景研究
+
+传统意义上的`IEEE`上分配的为前24位，被称为`OUI`(Organizationally Unique Identifier)，但由于MAC地址也算是一种珍惜资源了，所以被`IEEE`拆成了3种大小来卖，`MA-S`(`IAB`)、`MA-M`、`MA-L`(`OUI`)，价目表如下，不包括每年的年费，详见[IEEE SA - Registration Authority](https://standards.ieee.org/products-services/regauth/index.html)。
+
+> `MA-L`: 即`OUI`  
+> `MA-S`: 曾用名包括：`[IAB](https://standards.ieee.org/faqs/regauth.html#20)`(Individual Address Block)、`[OUI-36](https://standards.ieee.org/faqs/regauth.html#21)`
+
+| 类型 | 注册价格 | 纸质合同(可选) | 名称保密费(年缴) |
+| -- | :--: | :--: | :--: |
+| MA-S(12位自定义) | US $730 | US $200 | US $1185 |
+| MA-M(20位自定义) | US $1745 | US $200 | US $2200 |
+| MA-L(24位自定义) | US $2905 | US $200 | US $3360 |
+| CID | US $730 | / | US $1185 |
+
+你看，这样一算，维护这么一个表，光注册费都收了将将US $90,000,000，还有每年的年费，真是生财有道啊。
+
+所以说，我们传统意义上说用`MAC`地址的前24位来确定对应的厂商现在来说其实已经是不完全准确了的，根据`IEEE`公布的清单，已经有数千家组织购买了`MA-S`或`MA-M`，这两种类型的前24位均为`IEEE`注册的`OUI`，所以如果使用旧有方法，这几千家组织都会被显示为`IEEE Registration Authority`。
+
+此外还有一个异样的`CID`也被我列在了表中，它某种程度上与`OUI`很相似，`IEEE`分配了一个24位的CID(Company ID)，且据`IEEE`称，它与`OUI`在同一个分配域中，其`X-bit`被置为`1`，并不会与其它的`OUI`相重复，但是**不能**被用作生成`MAC`地址（相当于是一个减配的`OUI`）。
+
+以上种种，被`IEEE`统称为`EUI`(`Extended Unique Identifier`)，更多详细信息可参见[此PDF](https://standards.ieee.org/content/dam/ieee-standards/standards/web/documents/tutorials/eui.pdf)。
+
+## 功能实现
+
+这样一来，应该如何正确实现一个通过`MAC`地址查询厂商的接口而不是一个`OUI`查询接口？
+
+### 数据收集
+
+
+首先需要将IEEE按类型提供的列表预处理并归并至一处，IEEE提供的列表每24小时更新一次，如果以一个服务来提供，应当每日定期更新。
+
+根据`IEEE`的[分类](https://regauth.standards.ieee.org/standards-ra-web/pub/view.html#registries)，包含以下几个文件：
+
+- MAC Address Block Large (MA-L)
+- MAC Address Block Medium (MA-M)
+- MAC Address Block Small (MA-S)
+- Company ID
+- IAB
+
+这些CSV文件均包含这4个字段`Registry`, `Assignment`, `Organization Name`, `Organization Address`。
+
+- `Registry`为以下五种值中的一个: `MA-L`、`MA-M`、`MA-S`、`CID`、`IAB`
+- `Assignment`为一个6、7、9位的十六进制数
+- `Organization Name`与`Organization Address`均为一个字符串
+
+
+---
+
+咕咕咕
+
+---

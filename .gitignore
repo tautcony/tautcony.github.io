@@ -138,7 +138,5 @@ typings/
 
 ### Extra
 .idea/**/vcs.xml
-Gemfile.lock
-package-lock.json
 .tscache
 .baseDir.ts

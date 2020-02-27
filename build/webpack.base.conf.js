@@ -14,12 +14,12 @@ module.exports = {
     output: {
         filename: "js/tc-blog.min.js",
         path: path.resolve(__dirname, ".."),
-        devtoolModuleFilenameTemplate: "[absolute-resource-path]"
+        devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
     externals: {
         "pixi.js": "PIXI",
         "js-cookie": "Cookies",
-        "geopattern": "GeoPattern"
+        "geopattern": "GeoPattern",
     },
     module: {
         rules: [
@@ -30,9 +30,9 @@ module.exports = {
                 use: [
                     "source-map-loader",
                     {
-                        loader: "tslint-loader",
+                        loader: "eslint-loader",
                         options: {
-                            typeCheck: true
+                            typeCheck: true,
                         },
                     },
                 ],
@@ -43,12 +43,12 @@ module.exports = {
                     {
                         loader: "babel-loader",
                         options: {
-                            presets: ["@babel/preset-env"]
-                        }
+                            presets: ["@babel/preset-env"],
+                        },
                     },
-                    "ts-loader"
+                    "ts-loader",
                 ],
-                exclude: /node_modules/
+                exclude: /node_modules/,
             },
             {
                 test: /\.(le|c)ss$/,
@@ -66,29 +66,29 @@ module.exports = {
                         options: {
                             plugins: (loader) => [
                                 require("autoprefixer")(),
-                                require("cssnano")()
-                            ]
-                        }
+                                require("cssnano")(),
+                            ],
+                        },
                     },
-                    "less-loader"
-                ]
+                    "less-loader",
+                ],
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: "url-loader",
                 options: {
-                    limit: 10000
-                }
-            }
-        ]
+                    limit: 10000,
+                },
+            },
+        ],
     },
     plugins: [
         new WebpackBar(),
         new MiniCssExtractPlugin({
-            filename: "css/tc-blog.min.css"
+            filename: "css/tc-blog.min.css",
         }),
         new webpack.BannerPlugin(banner)],
     resolve: {
-        extensions: [".tsx", ".ts", ".js", ".less", ".css"]
+        extensions: [".tsx", ".ts", ".js", ".less", ".css"],
     },
-}
+};

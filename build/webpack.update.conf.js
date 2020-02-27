@@ -16,7 +16,7 @@ module.exports = {
     output: {
         filename: "js/tcupdate.min.js",
         path: path.resolve(__dirname, ".."),
-        devtoolModuleFilenameTemplate: "[absolute-resource-path]"
+        devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
     module: {
         rules: [
@@ -36,31 +36,31 @@ module.exports = {
                         options: {
                             plugins: (loader) => [
                                 require("autoprefixer")(),
-                                require("cssnano")()
-                            ]
-                        }
+                                require("cssnano")(),
+                            ],
+                        },
                     },
-                    "less-loader"
-                ]
+                    "less-loader",
+                ],
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: "url-loader"
+                loader: "url-loader",
             },
             {
                 test: /\.woff2?$/,
-                loader: "url-loader"
+                loader: "url-loader",
             },
             {
                 test: /\.ttf$/,
-                loader: "url-loader"
-            }
-        ]
+                loader: "url-loader",
+            },
+        ],
     },
     plugins: [
         new WebpackBar(),
         new MiniCssExtractPlugin({
-            filename: "css/tcupdate.min.css"
+            filename: "css/tcupdate.min.css",
         }),
         new webpack.BannerPlugin(banner),
         new CompressionPlugin({
@@ -70,6 +70,6 @@ module.exports = {
         }),
     ],
     resolve: {
-        extensions: [".tsx", ".ts", ".js", ".less"]
+        extensions: [".tsx", ".ts", ".js", ".less"],
     },
-}
+};

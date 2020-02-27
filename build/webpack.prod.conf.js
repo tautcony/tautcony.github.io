@@ -11,5 +11,5 @@ module.exports = merge(baseWebpackConfig, {
             include: ["js", "css"],
             cache: true,
         }),
-    ]
+    ],
 });

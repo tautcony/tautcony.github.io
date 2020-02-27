@@ -16,11 +16,11 @@ export default class BubbleBg {
         },
         scale(scale: number) {
             return scale * 0.5 + Math.random() * 0.1;
-        }
+        },
     };
 
     private state = {
-        init: false
+        init: false,
     };
 
     public constructor(elem: string) {
@@ -41,7 +41,7 @@ export default class BubbleBg {
             height: window.innerHeight,
             view: document.querySelector(this.elem),
             transparent: true,
-            forceCanvas: true
+            forceCanvas: true,
         });
         this.state.init = true;
 
@@ -50,7 +50,7 @@ export default class BubbleBg {
 
         const sprites = new PIXI.ParticleContainer(totalSprites, {
             // auto: true,
-            position: true
+            position: true,
         });
         this.instance.stage.addChild(sprites);
         const bubbles: PIXI.Sprite[] = this.source.map(img => new PIXI.Sprite(PIXI.Texture.from(img)));
@@ -69,9 +69,7 @@ export default class BubbleBg {
             this.instance.stage.addChild(bubbles[i]);
         }
         let tick = 0;
-        const height = () => {
-            return window.innerHeight + 100;
-        };
+        const height = () => window.innerHeight + 100;
         this.instance.ticker.add(() => {
             for (const [index, bubble] of bubbles.entries()) {
                 bubble.y -= bubble.scale.y * speeds[index];

@@ -1,5 +1,6 @@
 require("../less/tcupdate");
 
+/* eslint-disable camelcase */
 if (typeof(Vue) !== "undefined") {
     Vue.filter("time2date", (time_string) => {
         const date = new Date(time_string);
@@ -31,7 +32,7 @@ if (typeof(Vue) !== "undefined") {
                     name: "Loading...",
                     tag_name: "Loading...",
                     published_at: "Loading...",
-                }
+                },
             };
         },
         created() {
@@ -41,7 +42,7 @@ if (typeof(Vue) !== "undefined") {
             }).catch(exception => {
                 console.error(`[${exception.status}] Failed to load from '${this.owner}/${this.repo}/latest'`);
             });
-        }
+        },
     });
     Vue.component("history-download-link", {
         props: ["name", "published_at", "info"],
@@ -59,8 +60,8 @@ if (typeof(Vue) !== "undefined") {
                     return this.info.zipball_url;
                 }
                 return assets[0].browser_download_url;
-            }
-        }
+            },
+        },
     });
     Vue.component("history-download", {
         props: ["owner", "repo"],
@@ -80,9 +81,9 @@ if (typeof(Vue) !== "undefined") {
                         assets: [{browser_download_url: "#", name: "Loading..."}],
                         node_id: "",
                         name: "Loading...",
-                        published_at: "Loading..."
-                    }
-                ]
+                        published_at: "Loading...",
+                    },
+                ],
             };
         },
         created() {
@@ -91,9 +92,9 @@ if (typeof(Vue) !== "undefined") {
             }).catch(exception => {
                 console.error(`[${exception.status}] Failed to load from '${this.owner}/${this.repo}'`);
             });
-        }
+        },
     });
     window.tcupdate = new Vue({
-        el: "#tool-downloads"
+        el: "#tool-downloads",
     });
 }

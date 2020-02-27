@@ -19,15 +19,15 @@ class BrightnessWatcher {
                 left: 0,
                 outline: "50000px solid",
                 zIndex: "999999",
-                outlineColor: "rgba(0, 0, 0, 0)"
-            }
+                outlineColor: "rgba(0, 0, 0, 0)",
+            },
         });
         document.body.appendChild(this.maskDiv);
         this.config = Cookies.getJSON("brightness") as IConfig;
         if (this.config === undefined) {
             this.config = {
                 brightness: 0,
-                enable: false
+                enable: false,
             };
             Cookies.set("brightness", this.config);
         }
@@ -64,11 +64,9 @@ const brightness = new BrightnessWatcher();
 
 export default function init() {
     const keyMapping: {[key: string]: () => void} = {
-        // tslint:disable: no-unsafe-any
         KeyZ: brightness.toggle.bind(brightness),
         ArrowUp: brightness.increase.bind(brightness),
-        ArrowDown: brightness.decrease.bind(brightness)
-        // tslint:enable: no-unsafe-any
+        ArrowDown: brightness.decrease.bind(brightness),
     };
     window.addEventListener("keydown", (e) => {
         if (!e.altKey) {

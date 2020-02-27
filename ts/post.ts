@@ -9,7 +9,7 @@ export default function init() {
         banner.style.backgroundImage = pattern.toDataUrl();
     }
 
-    /*tslint:disable: prefer-for-of*/
+    /* eslint-disable @typescript-eslint/prefer-for-of */
     const pList = document.querySelectorAll(".post-content p");
     for (let i = 0; i < pList.length; ++i) {
         const p = pList[i] as HTMLParagraphElement;
@@ -24,5 +24,5 @@ export default function init() {
             a.classList.add("external");
         }
     }
-    /*tslint:enable: prefer-for-of*/
+    /* eslint-enable @typescript-eslint/prefer-for-of */
 }

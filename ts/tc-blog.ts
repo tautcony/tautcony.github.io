@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     quote.Init(10 ** 4);
     bubble.init();
 
-    // tslint:disable-next-line: no-unused-expression
     new Archive();
     pageInit();
     postInit();
@@ -37,10 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const config = {
         color: { start: "#bbbbee", end: "#0085a1" },
-        size: { start: 1, end: 1.1, unit: "em" }
+        size: { start: 1, end: 1.1, unit: "em" },
     };
     tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 
-    // tslint:disable-next-line: no-unsafe-any
     pangu.autoSpacingPage();
 });

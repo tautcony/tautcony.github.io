@@ -14,7 +14,6 @@ function queryString(): { [key: string]: string } {
             queryObj[pair[0]] = [queryObj[pair[0]], pair[1]];
             // If third or later entry with this name
         } else {
-            // tslint:disable-next-line: no-unsafe-any
             queryObj[pair[0]].push(pair[1]);
         }
     }
@@ -78,9 +77,9 @@ export default class Archive {
         this.sectionTopArticleIndex.push(index);
 
         const query = queryString();
-        const _tag = query["tag"];
+        const queryTag = query["tag"];
 
-        this.tagSelect(_tag);
+        this.tagSelect(queryTag);
 
         find("a", this.tags).forEach(tag => {
             (tag as HTMLAnchorElement).addEventListener("click", () => {   /* only change */
@@ -89,15 +88,15 @@ export default class Archive {
         });
     }
 
-    private searchButtonsByTag(_tag: string/*raw tag*/) {
+    private searchButtonsByTag(_tag: string/* raw tag */) {
         if (!_tag) {
             return this.tagShowAll;
         }
-        const _buttons = this.articalTags.filter(tag => tag.getAttribute("data-encode") === _tag);
-        if (_buttons.length === 0) {
+        const buttons = this.articalTags.filter(tag => tag.getAttribute("data-encode") === _tag);
+        if (buttons.length === 0) {
             return this.tagShowAll;
         }
-        return _buttons[0];
+        return buttons[0];
     }
 
     private buttonFocus(target: Element) {
@@ -110,9 +109,8 @@ export default class Archive {
         }
     }
 
-    private tagSelect(_tag: string/*raw tag*/, target?: Element) {
+    private tagSelect(_tag: string/* raw tag */, target?: Element) {
         const result: { [key: number]: { [key: number]: boolean } } = {};
-
         for (let i = 0; i < this.sectionArticles.length; i++) {
             const articles = this.sectionArticles[i];
             for (let j = 0; j < articles.length; j++) {

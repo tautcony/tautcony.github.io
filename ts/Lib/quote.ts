@@ -24,16 +24,16 @@ export default class Quote {
             _("div", {
                 className: "quote-content",
                 style: {
-                    "margin-top": "2em"
-                }
+                    "margin-top": "2em",
+                },
             }),
             _("div", {
                 className: "quote-author",
                 style: {
                     "margin-left": "16em",
-                    "font-size": "85%"
-                }
-            })
+                    "font-size": "85%",
+                },
+            }),
         ]);
         this.content = this.container.querySelector(".quote-content");
         this.author = this.container.querySelector(".quote-author");
@@ -67,7 +67,7 @@ export default class Quote {
             return undefined;
         }
         return this.quotes[Math.floor(Math.random() * this.quotes.length)];
-    }
+    };
 
     private Interval(timeout: number) {
         this.timer = window.setInterval(() => {

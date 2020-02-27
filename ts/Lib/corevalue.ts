@@ -16,12 +16,10 @@ export default class CoreValue {
             if (target.nodeName && target.nodeName.toLowerCase() === "a") {
                 return;
             }
-            // tslint:disable-next-line: no-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const event = ev as any;
             // The path attribute is only exists in Chrome
-            // tslint:disable-next-line: no-unsafe-any
             if (event.path) {
-                // tslint:disable-next-line: no-unsafe-any
                 for (const node of event.path) {
                     const nodeName = (node as Element).nodeName;
                     if (nodeName === undefined) {
@@ -40,26 +38,25 @@ export default class CoreValue {
                     "top": `${ev.pageY - 20}px`,
                     "left": `${ev.pageX}px`,
                     "color": "#ff6651",
-                    "user-select": "none"
-                }
+                    "user-select": "none",
+                },
             });
             document.body.appendChild(span);
             span.textContent = this.coreText[this.coreIndex++ % this.coreText.length];
-            // tslint:disable-next-line: no-unsafe-any
             anime.timeline()
                 .add({
                     targets: span,
                     translateY: {
                         value: -150,
-                        duration: 1000
-                    }
+                        duration: 1000,
+                    },
                 })
                 .add({
                     targets: span,
                     opacity: 0,
                     complete: anim => {
                         span.parentNode.removeChild(span);
-                    }
+                    },
                 });
         });
     }

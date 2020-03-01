@@ -3,7 +3,6 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
 
 const banner = `TC Blog [hash] build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
@@ -63,11 +62,6 @@ module.exports = {
             filename: "css/tcupdate.min.css",
         }),
         new webpack.BannerPlugin(banner),
-        new CompressionPlugin({
-            test: [/\.js(\?.*)?$/i, /\.css(\?.*)?$/i],
-            include: ["js", "css"],
-            cache: true,
-        }),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less"],

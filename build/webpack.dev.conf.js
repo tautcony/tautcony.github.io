@@ -7,5 +7,5 @@ module.exports = merge(baseWebpackConfig, {
     mode: "development",
     watch: true,
     devtool: "cheap-module-eval-source-map",
-    plugins: []
+    plugins: [],
 });

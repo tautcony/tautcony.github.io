@@ -1,15 +1,21 @@
 const merge = require("webpack-merge");
-const CompressionPlugin = require("compression-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const baseWebpackConfig = require("./webpack.base.conf");
 
 module.exports = merge(baseWebpackConfig, {
     mode: "production",
-    plugins: [
-        new CompressionPlugin({
-            test: [/\.js(\?.*)?$/i, /\.css(\?.*)?$/i],
-            include: ["js", "css"],
-            cache: true,
-        }),
-    ],
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+            terserOptions: {
+                output: {
+                    // eslint-disable-next-line camelcase
+                    ascii_only: true,
+                },
+            },
+        })],
+    },
+    plugins: [],
 });

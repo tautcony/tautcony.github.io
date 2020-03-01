@@ -2,6 +2,7 @@
 _site/
 .sass-cache/
 .jekyll-metadata
+.jekyll-cache
 
 ### JetBrains+iml ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm

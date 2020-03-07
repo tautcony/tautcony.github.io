@@ -5,7 +5,6 @@ import Quote from "./Lib/quote";
 import Title from "./Lib/title";
 // import CoreValue from "./Lib/corevalue";
 import tagcloud from "./Lib/tagcloud";
-import brightnessInit from "./Lib/brightness";
 import bubbleBg from "./Lib/bubbleBg";
 import Archive from "./archive";
 import pageInit from "./page";
@@ -22,15 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // new CoreValue().Init();
     const bubble = new bubbleBg("#bubble_bg");
 
-    brightnessInit();
     nav.Init();
-    title.Init();
-    quote.Init(10 ** 4);
-    bubble.init();
-
     new Archive();
     pageInit();
     postInit();
+
+    title.Init();
+    quote.Init(10 ** 4);
     aboutInit.qrInit();
     aboutInit.konInit();
 
@@ -41,4 +38,5 @@ document.addEventListener("DOMContentLoaded", () => {
     tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 
     pangu.autoSpacingPage();
+    bubble.init();
 });

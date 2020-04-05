@@ -29,7 +29,7 @@
     "pixi.js": "^5.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
+    "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@types/geopattern": "^1.2.3",
     "@types/js-cookie": "^2.2.5",

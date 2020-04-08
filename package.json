@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "@types/geopattern": "^1.2.3",
     "@types/js-cookie": "^2.2.5",
     "@types/node": "^13.11.0",

@@ -7,13 +7,14 @@ import Title from "./Lib/title";
 import tagcloud from "./Lib/tagcloud";
 import bubbleBg from "./Lib/bubbleBg";
 import Archive from "./archive";
-import pageInit from "./page";
+import { generateCatalog, pageInit } from "./page";
 import postInit from "./post";
 import * as aboutInit from "./about";
 require("../less/tc-blog.less");
 
 import * as pangu from "../js/pangu.js/browser/pangu";
 
+window["generateCatalog"] = generateCatalog;
 document.addEventListener("DOMContentLoaded", () => {
     const nav = new Nav();
     const title = new Title(["_(:3 」∠)_", "_(・ω・｣∠)_", "_(:з)∠)_", "_(┐「ε:)_", "_(:3」∠❀", "_(:зゝ∠)_", "_(:3」[＿]", "ヾ(:3ﾉｼヾ)ﾉｼ", "(¦3ꇤ[▓▓]", "_( -ω-` )⌒)_"]);

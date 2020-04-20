@@ -9,7 +9,25 @@ function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTag
     wrapper.appendChild(el);
 }
 
-export default function pageInit() {
+export function generateCatalog(selector: string) {
+    // init
+    const postContainer = document.querySelector("div.post-container");
+    const catalogs = postContainer.querySelectorAll("h1,h2,h3,h4,h5,h6");
+    const catalogContainer = document.querySelector(selector);
+    // clean
+    catalogContainer.innerHTML = "";
+    // appending
+    catalogs.forEach((catalog) => {
+        const tagName = catalog.tagName.toLowerCase();
+        const text = catalog.textContent;
+        const html = `<li class="${tagName}_nav">` +
+            `<a href="#${catalog.id}" rel="nofollow">${text}</a>` +
+            "</li>";
+        catalogContainer.innerHTML += html;
+    });
+};
+
+export function pageInit() {
     // responsive tables
     const tables = document.querySelectorAll("table");
     /* eslint-disable @typescript-eslint/prefer-for-of */

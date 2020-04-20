@@ -54,7 +54,19 @@
 </script>
 <!-- End Baidu Tongji -->
 {% endif %}
-{% if page.catalog %}
 <!-- Side Catalog -->
-<!-- to be implemented -->
+{% if page.catalog %}
+<script type="text/javascript">
+    generateCatalog(".catalog-body");
+    var catalogToggle = document.querySelector('.catalog-toggle');
+    if (catalogToggle) {
+        catalogToggle.addEventListener("click", function(e) {
+            e.preventDefault();
+            const sideCatalog = document.querySelector(".side-catalog");
+            if (sideCatalog) {
+                sideCatalog.classList.toggle("fold");
+            }
+        })
+    }
+</script>
 {% endif %}

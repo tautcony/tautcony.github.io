@@ -224,13 +224,15 @@ function revalidateContent(cachedResp, fetchedResp) {
     // revalidate when both promise resolved
     return Promise.all([cachedResp, fetchedResp])
         .then(([cached, fetched]) => {
-            const cachedEtag = cached.headers.get("etag");
-            const fetchedEtag = fetched.headers.get("etag");
-            if (cachedEtag !== fetchedEtag) {
-                sendMessageToClientsAsync({
-                    command: "UPDATE_FOUND",
-                    url: fetched.url,
-                });
+            if (cached !== undefined) {
+                const cachedEtag = cached.headers.get("etag");
+                const fetchedEtag = fetched.headers.get("etag");
+                if (cachedEtag !== fetchedEtag) {
+                    sendMessageToClientsAsync({
+                        command: "UPDATE_FOUND",
+                        url: fetched.url,
+                    });
+                }
             }
         })
         .catch(err => console.log(err));

@@ -35,7 +35,10 @@ if(navigator.serviceWorker) {
     // that are in the same directory level or below it. That's why we put sw.js at ROOT level.
     navigator.serviceWorker
         .register("/sw.js")
-        .then((registration) => handleRegistration(registration))
+        .then((registration) => {
+            handleRegistration(registration);
+            setInterval(() => { registration.update(); }, 30 * 60 * 1000);
+        })
         .catch((error) => {console.log("ServiceWorker registration failed: ", error);});
 
     // register message receiver

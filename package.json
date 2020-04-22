@@ -33,7 +33,7 @@
     "@babel/preset-env": "^7.9.5",
     "@types/geopattern": "^1.2.3",
     "@types/js-cookie": "^2.2.6",
-    "@types/node": "^13.13.1",
+    "@types/node": "^13.13.2",
     "@types/webpack": "^4.41.12",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",

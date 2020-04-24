@@ -26,7 +26,7 @@
     "animejs": "^3.2.0",
     "geopattern": "^1.2.3",
     "js-cookie": "^2.2.1",
-    "pixi.js": "^5.2.1"
+    "pixi.js": "^5.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

@@ -103,7 +103,7 @@ featured-condition-size: 2              # A tag will be featured if the size of 
 friends: [
     {
         title: "VCB-Studio",
-        href: "http://vcb-s.com/"
+        href: "https://vcb-s.com/"
     },
     {
         title: "Memo von EFS",
@@ -111,7 +111,7 @@ friends: [
     },
     {
         title: "小马哥",
-        href: "http://www.vigoss18.com/"
+        href: "https://vigoss18.github.io/"
     },
     {
         title: "神北小毬",
@@ -135,7 +135,11 @@ friends: [
     },
     {
         title: "spinmry's 实验室",
-        href: "http://blog.spinmry.moe/"
+        href: "https://blog.spinmry.moe/"
+    },
+    {
+        title: "沈聚聚",
+        href: "https://canjuly.github.io"
     }
 ]
 

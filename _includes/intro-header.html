@@ -7,19 +7,19 @@
 <style type="text/css">
     header.intro-header{
         position: relative;
-        {% if page.header-img != null %}
+        /*{% if page.header-img != null %}*/
         background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}');
-        {% endif %}
+        /*{% endif %}*/
     }
 
-    {% if page.header-mask %}
+    /*{% if page.header-mask %}*/
     header.intro-header .header-mask{
         width: 100%;
         height: 100%;
         position: absolute;
         background: rgba(0,0,0, {{ page.header-mask }});
     }
-    {% endif %}
+    /*{% endif %}*/
 </style>
 {% if page.header-style == 'text' %}
 <header class="intro-header style-text" >
@@ -45,6 +45,7 @@
                     {% comment %} always create a h2 for keeping the margin {% endcomment %}
                     <h2 class="subheading">{{ page.subtitle }}</h2>
                     <span class="meta">Posted by {% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %} on {{ page.date | date: "%B %-d, %Y" }}</span>
+                    <span class="meta">Update on <span id="update-date">{{ page.date | date: "%B %-d, %Y" }}</span></span>
                 </div>
             </div>
         </div>

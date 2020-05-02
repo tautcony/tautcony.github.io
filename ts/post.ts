@@ -1,5 +1,12 @@
 import * as Lib from "./Lib/utils";
 import * as GeoPattern from "geopattern";
+const packageInfo = require("../package.json");
+
+function queryParams(params: object) {
+    return Object.keys(params)
+        .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+        .join("&");
+}
 
 export default function init() {
     const banner = document.querySelector("header.intro-header") as HTMLDivElement;
@@ -25,4 +32,32 @@ export default function init() {
         }
     }
     /* eslint-enable @typescript-eslint/prefer-for-of */
+    const apiurl = `https://api.github.com/repos/${packageInfo.repository.owner}/${packageInfo.repository.name}/commits`;
+    const filename = "_posts/" + location.pathname.split("/").filter(_=>_).join("-")+".markdown";
+    const url = apiurl + "?" + queryParams({
+        path: filename,
+    });
+    const updateContainer = document.querySelector("#update-date");
+    if (updateContainer === null) {
+        return;
+    }
+    fetch(url, { method: "GET" }).then(response => response.json()
+    ).then(data => {
+        if (data.length <= 1) {
+            return;
+        }
+        const dateString = data[0].commit?.author?.date;
+        if (dateString === undefined) {
+            return;
+        }
+        const formatedDate = new Date(dateString).toLocaleString("en", { month: "long", day: "numeric", year: "numeric" });
+        const fullSha = data[0]?.sha;
+        let updateInfo = formatedDate;
+        if (fullSha !== undefined) {
+            updateInfo += ` with commit ${fullSha.substring(0, 7)}`;
+        }
+        updateContainer.innerHTML = updateInfo;
+    }).catch(reason => {
+        console.warn("Failed to fetch commit info", reason);
+    });
 }

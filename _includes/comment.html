@@ -41,4 +41,15 @@ var disqus_config = function () {
     })();
 </script>
 <!-- widgetpack end -->
+{% elsif site.utteranc.repo %}
+{% comment %}
+Please refer https://utteranc.es/ for setup configuration
+{% endcomment %}
+<script src="https://utteranc.es/client.js"
+        repo="{{ site.utteranc.repo }}"
+        issue-term="{{ site.utteranc.issue-term }}"
+        theme="{{ site.utteranc.theme }}"
+        crossorigin="anonymous"
+        async>
+</script>
 {% endif %}

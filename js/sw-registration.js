@@ -31,6 +31,13 @@ function handleRegistration(registration) {
 }
 
 if(navigator.serviceWorker) {
+    // disbale it for some bugs
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for(const registration of registrations) {
+            registration.unregister();
+        }
+    });
+    /*
     // For security reasons, a service worker can only control the pages
     // that are in the same directory level or below it. That's why we put sw.js at ROOT level.
     navigator.serviceWorker
@@ -53,4 +60,5 @@ if(navigator.serviceWorker) {
             location.reload();
         }
     };
+    */
 }

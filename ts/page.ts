@@ -1,4 +1,5 @@
 import anime from "animejs/lib/anime.es.js";
+import { util_ui_element_creator as _ } from "./Lib/utils";
 
 function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTagName: K, wrapperClassList: [string]) {
     const wrapper = document.createElement(wrapperTagName);
@@ -8,6 +9,23 @@ function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTag
     el.parentNode.insertBefore(wrapper, el);
     wrapper.appendChild(el);
 }
+
+const scrollTo = (element: string) => {
+    const elementSelector = document.querySelector(element);
+
+    return () => {
+        const elementOffset = elementSelector.getBoundingClientRect().top;
+        const scrollPosition = window.scrollY;
+        const documentTop = document.documentElement.clientTop;
+        const scrollOffset = elementOffset + scrollPosition - documentTop;
+        anime({
+            targets: [document.documentElement, document.body],
+            scrollTop: scrollOffset,
+            duration: 450,
+            easing: "easeInOutQuad",
+        });
+    };
+};
 
 export function generateCatalog(selector: string) {
     // init
@@ -20,10 +38,14 @@ export function generateCatalog(selector: string) {
     catalogs.forEach((catalog) => {
         const tagName = catalog.tagName.toLowerCase();
         const text = catalog.textContent;
-        const html = `<li class="${tagName}_nav">` +
-            `<a href="#${catalog.id}" rel="nofollow">${text}</a>` +
-            "</li>";
-        catalogContainer.innerHTML += html;
+        const element = _("li", { className: `${tagName}_nav` },
+            [_("a", {
+                event: {
+                    click: scrollTo(`#${catalog.id}`),
+                },
+            }, text)]
+        );
+        catalogContainer.append(element);
     });
 };
 

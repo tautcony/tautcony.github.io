@@ -19,7 +19,9 @@
             content: "+";
         }
         .catalog-body {
-            display: none;
+            visibility: hidden;
+            opacity: 0;
+            transform: scaleY(0);
         }
     }
     .catalog-toggle::before {
@@ -29,6 +31,8 @@
         bottom: 1px;
     }
     .catalog-body {
+        visibility: visible;
+        opacity: 1;
         position: relative;
         list-style: none;
         height: auto;
@@ -36,6 +40,8 @@
         padding-left: 0;
         padding-right: 5px;
         text-indent: 0;
+        transform-origin: top;
+        transition: all .2s cubic-bezier(.47,0,.4,.99) 0ms;
         li {
             position: relative;
             list-style: none;

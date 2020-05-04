@@ -16,7 +16,7 @@ export function isExternal(url: string) {
 }
 
 // eslint-disable-next-line camelcase, @typescript-eslint/no-explicit-any
-export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(type: K, props: any = {}, children: Element[] | Text = null): HTMLElementTagNameMap[K] {
+export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(type: K, props: any = {}, children: Element[] | Text | string = null): HTMLElementTagNameMap[K] {
     const elem = document.createElement(type);
     for (const n of Object.keys(props)) {
         switch (n) {
@@ -45,6 +45,8 @@ export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(t
                     elem.appendChild(child);
                 }
             }
+        } else if (typeof children === "string") {
+            elem.textContent = children;
         } else {
             elem.textContent = (children as Text).data;
         }

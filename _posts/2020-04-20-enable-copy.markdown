@@ -135,8 +135,8 @@ function copyEnabler(curr_window) {
         Array.from(curr_window.document.all).filter(ele => ele.nodeType === Node.ELEMENT_NODE).forEach(unbind);
         (function utanet() { 
             const img = document.querySelector('#flash_area>img');
-            if (img.style) img.style.display = 'none';
-        )();
+            if (img && img.style) img.style.display = 'none';
+        })();
     }
     runScript(curr_window);
 }

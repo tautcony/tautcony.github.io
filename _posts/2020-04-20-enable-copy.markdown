@@ -16,9 +16,19 @@ tags:
 catalog: true
 ---
 
-如何实现一个全面彻底的解除复制限制的用户脚本呢？
+<script>
+!function(t){["contextmenu","dragstart","mouseup","mousedown","mousemove","copy","cut","beforecopy","selectstart","select"].forEach(function(e){var n,a,o,r;n=t,o=function(){return function(e){var n=t.event||e;n.stopPropagation?n.stopPropagation():n.cancelBubble=!0}(e),function(e){var n=t.event||e;return n.preventDefault?n.preventDefault():n.returnValue=!1,!1}(e)},a=(a=e).replace(/^on/gi,"").toLowerCase(),n.addEventListener?n.addEventListener(a,o,r):n.attachEvent?n.attachEvent("on"+a,o):n["on"+a]=o})}(window);
+addEventListener("keydown",(e)=>{if((e.keyCode===86||e.keyCode===65)&&(e.ctrlKey||e.metaKey))e.preventDefault();});
+setInterval(function(){debugger},100);
+</script>
+
+如何实现一个全面彻底的解除复制限制的用户脚本呢？简单加了点限制，欢迎使用本页面作为实验页面。
 
 <!--more-->
+
+## TL;DR
+
+打开[这个](https://greasyfork.org/zh-CN/scripts/403673)，安装，到想用的网站，按`F12`，在Console中输入`copyEnabler()`，回车，复制吧。
 
 ## 引子
 
@@ -60,7 +70,7 @@ W3C所规定的[DOM标准](https://en.wikipedia.org/wiki/Document_Object_Model#S
 
 #### DOM
 
-DOM0标准中的事件，即内联事件`<div onclick='handler'></div>`，，它不能能有多个事件，可以通过简单的`target.onevent=null`来使之无效化。
+DOM0标准中的事件，即内联事件`<div onclick="handler"></div>`，，它不能能有多个事件，可以通过简单的`target.onevent=null`来使之无效化。
 
 DOM2标准中新增的方法，在[EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)中提供了以下几个接口：
 
@@ -76,7 +86,7 @@ DOM2标准中新增的方法，在[EventTarget](https://developer.mozilla.org/zh
 
 #### jQuery
 
-jQuery注册的事件即`$(target).on(event, handler)`，就算是`$(target).on(event, (ev) => { console.log(ev) })`这样的监听，都是能使用`$(target).off('click')`来移除的，没有什么大的阻碍。jQuery有在增加监听时对该监听函数进行了记录。
+jQuery注册的事件即`$(target).on(event, handler)`，就算是`$(target).on(event, (ev) => { console.log(ev) })`这样的监听，都是能使用`$(target).off("click")`来移除的，没有什么大的阻碍。jQuery有在增加监听时对该监听函数进行了记录。
 
 
 ## 怎么让它行
@@ -93,7 +103,7 @@ Firefox上检索了一下，它只在检查DOM的接口中提供了监听事件�
 
 ```js
 function copyEnabler(curr_window) {
-    const eventArr = ['contextmenu', 'dragstart', 'mouseup', 'mousedown', 'mousemove', 'copy', 'cut', 'beforecopy', 'selectstart', 'select', 'keydown'];
+    const eventArr = ["contextmenu", "dragstart", "mouseup", "mousedown", "mousemove", "copy", "cut", "beforecopy", "selectstart", "select", "keydown"];
     function runScript(curr_window) {
         let _jq_ = curr_window.jQuery || curr_window.$j;
         if (typeof _jq_ !== "undefined" && _jq_.toString().includes("[Command Line API]")) {
@@ -109,12 +119,12 @@ function copyEnabler(curr_window) {
                 /* if (Object.keys(listeners).length > 0) console.log(listeners); */
             }
             for (const evt of eventArr) {
-                ele['on' + evt] = null;
+                ele["on" + evt] = null;
                 if (_jq_) {
                     const jq_ele = _jq_(ele);
                     if (jq_ele.off) jq_ele.off(evt); else if (jq_ele.unbind) jq_ele.unbind(evt);
                 }
-                if (ele.style && ele.style.userSelect === 'none') ele.style.userSelect = 'text';
+                if (ele.style && ele.style.userSelect === "none") ele.style.userSelect = "text";
                 if (listeners[evt]) {
                     for (const handler of listeners[evt]) {
                         ele.removeEventListener(evt, handler.listener, handler.useCapture);
@@ -123,7 +133,7 @@ function copyEnabler(curr_window) {
                 try {
                     if (/frame/i.test(ele.tagName)) {
                         if (ele.src.startsWith(curr_window.location.origin)) {
-                            runScript(ele.contentWindow);    
+                            runScript(ele.contentWindow);
                         }
                     }
                 } catch (err) {
@@ -133,16 +143,36 @@ function copyEnabler(curr_window) {
         };
         [curr_window, curr_window.document].forEach(unbind);
         Array.from(curr_window.document.all).filter(ele => ele.nodeType === Node.ELEMENT_NODE).forEach(unbind);
-        (function utanet() { 
-            const img = document.querySelector('#flash_area>img');
-            if (img && img.style) img.style.display = 'none';
+        (function utanet() {
+            const img = document.querySelector("#flash_area>img");
+            if (img && img.style) img.style.display = "none";
         })();
     }
     runScript(curr_window);
 }
-
-copyEnabler(window);
 ```
+
+现在往往各种加限制的网站都会对反调试做一些手脚，比如暗戳戳的加一个`debugger`拉，用各种小方法检测终端是否打打开。
+
+考虑了一下，这类的检测往往为了确保时刻可用，都是使用了`setInterval`之类的进行持续检测，于是，在按F12的时候，试着吧所有的`setInterval`和`setTimeout`都给去除，应该可以规避好大一部分的问题，代码大概长这样：
+
+```js
+document.addEventListener("keydown", (e) => {
+    if (e.keyCode = 123) {
+        const max_id = setTimeout(()=>{});
+        for (let i = 0; i < max_id; ++i) {
+            try {
+                clearInterval(i);
+                clearTimeout(i);
+            } catch (ignore) {
+            }
+        }
+    }
+}, false);
+```
+
+但还有一些可能事件触发是在resize之类的里面的话，建议直接让控制台独立一个窗口，这里就暂且先不处理了。
+
 
 ## 还有什么不行
 

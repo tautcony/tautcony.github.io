@@ -1,0 +1,3 @@
+[submodule "ts/Lib/geopattern"]
+	path = ts/Lib/geopattern
+	url = https://github.com/tautcony/geopattern.git

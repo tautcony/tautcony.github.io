@@ -19,7 +19,6 @@ module.exports = {
     externals: {
         "pixi.js": "PIXI",
         "js-cookie": "Cookies",
-        "geopattern": "GeoPattern",
     },
     module: {
         rules: [

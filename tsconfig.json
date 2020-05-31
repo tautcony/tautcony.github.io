@@ -16,7 +16,6 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
         "types": [
-            "geopattern",
             "node"
         ]
     },

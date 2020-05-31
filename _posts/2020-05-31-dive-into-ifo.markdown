@@ -53,9 +53,12 @@ DVD仅支持`NTSC`和`PAL`两个帧率标准，分别为`30000/1001`fps和`25`fp
 
 然后呢来看一下我们常见工具中是怎么实现的
 
-### [MediaInfo](https://github.com/MediaArea/MediaInfoLib/blob/master/Source/MediaInfo/Multiple/File_Dvdv.cpp#L1155)
+#### [MediaInfo](https://github.com/MediaArea/MediaInfoLib/blob/master/Source/MediaInfo/Multiple/File_Dvdv.cpp#L1155)
 
 ```c++
+static const size_t IFO_PlaybackTime_FrameRate[]=
+{1, 25, 1, 30};
+
 void File_Dvdv::Get_Duration(int64u  &Duration, const Ztring &Name)
 {
     int32u FrameRate, FF;
@@ -79,7 +82,7 @@ void File_Dvdv::Get_Duration(int64u  &Duration, const Ztring &Name)
 }
 ```
 
-### [MeGUI](https://sourceforge.net/projects/megui/)
+#### [MeGUI](https://sourceforge.net/projects/megui/)
 
 ```cs
 internal static TimeSpan? ReadTimeSpan(byte[] playbackBytes, out double fps)
@@ -103,7 +106,7 @@ internal static TimeSpan? ReadTimeSpan(byte[] playbackBytes, out double fps)
 }
 ```
 
-可以看到，两者计算的思路时一致的，撇除精度误差的话，所得的值也是一样的，如下是港版K-ON剧场版的[章节数据](/attach/ifo-sample/kon.zip)：
+可以看到，两者计算的思路是一致的，撇除精度误差的话，所得的值也是一样的，如下是港版K-ON剧场版的[章节数据](/attach/ifo-sample/kon.zip)：
 
 | mediainfo | MeGUI | Exact |
 | -- | -- | -- |
@@ -113,7 +116,7 @@ internal static TimeSpan? ReadTimeSpan(byte[] playbackBytes, out double fps)
 | 00:56:24.166 | 00:56:24.170 | 00:56:23.166 |
 | 01:12:36.699 | 01:12:36.705 | 01:12:36.700 |
 | 01:32:26.265 | 01:32:26.273 | 01:32:25.266 |
-| 01:49:06.131 | 01:49:06.142 | 01:49:05.133 |
+| 01:49:06.131 | 01:49:06.142 | 01:49:06.133 |
 
 每个时间戳均指代一个区块的长度，章节为累加得出，故精度误差存在累加，准确值在第三列中列出，可自行与上述仓库中的代码进行比对。
 
@@ -131,7 +134,7 @@ internal static TimeSpan? ReadTimeSpan(byte[] playbackBytes, out double fps)
 | 00 | 16 | 39 | 26 | 196384 |
 | 00 | 00 | 00 | 15 | 196399 |
 
-经过播放器的跳转、帧数的确认，只有全程通过`30`fps进行跳转/转换，才能让帧数、时间、和章节信息匹配一致，而我们最终压制的成品，要么是24000/1001fps的，要么是30000/1001fps的，那这样，其偏差的来源大致上可以确认了。
+经过播放器的跳转、帧数的确认，只有全程通过`30`fps进行跳转/转换，才能让帧数、时间、和章节信息匹配一致，而我们最终压制的成品，要么是`24000/1001`fps的，要么是`30000/1001`fps的，那这样，其偏差的来源大致上可以确认了。
 
 以这么一个数据块为例`0x00|0x17|0x42|0x75`
 
@@ -156,7 +159,7 @@ var time = TimeSpan.FromSeconds(totalFrame / _29_97);
 
 ## 结论
 
-总的来说，IFO于其内部储存的，实质都是帧数的形式的。所以，它虽然数据上在小数位直接用帧数表示，并不意味着只要把小数部分用实际的帧率(30000/1001fps)转换回秒数加到本体上就可以了。计算的本体，首先得是帧数。必须先将它用整数的帧率(30)完整转回帧数，再根据视频实际的帧率(30000/1001fps)重新算回时间。而MediaInfo中一定程度上是忠实重现DVD中的数据，仅能指代原视频的帧数而已。
+总的来说，IFO于其内部储存的，实质都是帧数的形式的。所以，它虽然数据上在小数位直接用帧数表示，并不意味着只要把小数部分用实际的帧率(30000/1001fps)转换回秒数加到本体上就可以了。计算的本体，首先得是帧数。必须先将它用整数的帧率(30)完整转回帧数，再根据视频实际的帧率(30000/1001fps)重新算回时间。而MediaInfo中一定程度上是忠实重现DVD中的数据，仅能指代原视频的帧数而已，而MeGUI，当我没说（。
 
 但在压制中就不能直接使用那个数据了，更关注的是它实际播放到这里的时间，因为不管套上什么IVTC，VFR，帧数变得天翻地覆，时间一旦确定准了，就没有问题。最多说处理完之后，可以让原本的章节时间戳是向新的视频中最近的帧数靠近。
 

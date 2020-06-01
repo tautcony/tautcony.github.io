@@ -1,5 +1,5 @@
 import * as Lib from "./Lib/utils";
-import GeoPattern from "./Lib/geopattern";
+import * as GeoPattern from "./Lib/geopattern";
 const packageInfo = require("../package.json");
 
 function queryParams(params: object) {

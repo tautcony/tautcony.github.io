@@ -21,6 +21,7 @@
     },
     "exclude": [
         "node_modules",
-        "_site/**/*.ts"
+        "_site/**/*.ts",
+        "ts/**/*.spec.ts"
     ]
 }

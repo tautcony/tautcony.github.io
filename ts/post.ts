@@ -2,7 +2,7 @@ import * as Lib from "./Lib/utils";
 import * as GeoPattern from "./Lib/geopattern";
 const packageInfo = require("../package.json");
 
-function queryParams(params: object) {
+function queryParams(params: { [key: string]: string | number | boolean }) {
     return Object.keys(params)
         .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
         .join("&");

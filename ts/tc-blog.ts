@@ -1,4 +1,5 @@
-import "@babel/polyfill";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 import Nav from "./Lib/navbar";
 import Quote from "./Lib/quote";
@@ -40,3 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
     pangu.autoSpacingPage();
     // bubble.init();
 });
+
+if(navigator.serviceWorker) {
+    // disbale previous service worker for some bugs
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for(const registration of registrations) {
+            registration.unregister();
+        }
+    });
+}

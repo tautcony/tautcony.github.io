@@ -16,6 +16,9 @@ module.exports = {
         path: path.resolve(__dirname, ".."),
         devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
+    node: {
+        Buffer: false,
+    },
     externals: {
         "pixi.js": "PIXI",
         "js-cookie": "Cookies",
@@ -42,7 +45,25 @@ module.exports = {
                     {
                         loader: "babel-loader",
                         options: {
-                            presets: ["@babel/preset-env"],
+                            sourceType: "unambiguous",
+                            presets: [
+                                [
+                                    "@babel/preset-env",
+                                    {
+                                        corejs: 3,
+                                        useBuiltIns: "usage",
+                                    },
+                                ],
+                            ],
+                            plugins: [
+                                [
+                                    "@babel/plugin-transform-runtime",
+                                    {
+                                        corejs: 3,
+                                        useESModules: false,
+                                    },
+                                ],
+                            ],
                         },
                     },
                     "ts-loader",

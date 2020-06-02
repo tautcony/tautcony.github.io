@@ -1,6 +1,6 @@
 import * as Lib from "./Lib/utils";
 import * as GeoPattern from "./Lib/geopattern";
-const packageInfo = require("../package.json");
+const packageInfo = require("../repo.json");
 
 function queryParams(params: { [key: string]: string | number | boolean }) {
     return Object.keys(params)
@@ -30,6 +30,9 @@ export default function init() {
         if (Lib.isExternal(a.href)) {
             a.classList.add("external");
         }
+    }
+    if (!packageInfo.repository) {
+        return;
     }
     /* eslint-enable @typescript-eslint/prefer-for-of */
     const apiurl = `https://api.github.com/repos/${packageInfo.repository.owner}/${packageInfo.repository.name}/commits`;

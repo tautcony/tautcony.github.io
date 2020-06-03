@@ -3,8 +3,9 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-const banner = `TC Blog [hash] build at ${new Date().toISOString()} (https://tautcony.github.io/)
+const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
 Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)`;
 
@@ -27,7 +28,7 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                exclude: /node_modules/,
+                include: path.resolve(__dirname, "..", "ts"),
                 enforce: "pre",
                 use: [
                     "source-map-loader",
@@ -41,11 +42,12 @@ module.exports = {
             },
             {
                 test: /.tsx?$/,
+                include: path.resolve(__dirname, "..", "ts"),
                 use: [
                     {
-                        loader: "babel-loader",
+                        loader: "babel-loader?cacheDirectory",
                         options: {
-                            sourceType: "unambiguous",
+                            // sourceType: "unambiguous",
                             presets: [
                                 [
                                     "@babel/preset-env",
@@ -66,12 +68,17 @@ module.exports = {
                             ],
                         },
                     },
-                    "ts-loader",
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            transpileOnly: true,
+                        },
+                    },
                 ],
-                exclude: /node_modules/,
             },
             {
                 test: /\.(le|c)ss$/,
+                include: path.resolve(__dirname, "..", "less"),
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
@@ -95,10 +102,14 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: "url-loader",
-                options: {
-                    limit: 10000,
-                },
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            limit: 10000,
+                        },
+                    },
+                ],
             },
         ],
     },
@@ -107,7 +118,13 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/tc-blog.min.css",
         }),
-        new webpack.BannerPlugin(banner)],
+        new webpack.BannerPlugin(banner),
+        new ForkTsCheckerWebpackPlugin({
+            async: false,
+            useTypescriptIncrementalApi: true,
+            memoryLimit: 4096,
+        }),
+    ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less", ".css"],
     },

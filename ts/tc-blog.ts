@@ -13,8 +13,6 @@ import postInit from "./post";
 import * as aboutInit from "./about";
 require("../less/tc-blog.less");
 
-import * as pangu from "../js/pangu.js/browser/pangu";
-
 window["generateCatalog"] = generateCatalog;
 document.addEventListener("DOMContentLoaded", () => {
     const nav = new Nav();
@@ -38,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 
-    pangu.autoSpacingPage();
     // bubble.init();
 });
 

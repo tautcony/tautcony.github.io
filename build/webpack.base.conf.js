@@ -16,6 +16,9 @@ module.exports = {
         path: path.resolve(__dirname, ".."),
         devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
+    node: {
+        Buffer: false,
+    },
     externals: {
         "pixi.js": "PIXI",
         "js-cookie": "Cookies",
@@ -46,6 +49,18 @@ module.exports = {
                         },
                     },
                     "ts-loader",
+                ],
+                exclude: /node_modules/,
+            },
+            {
+                test: /.js$/,
+                use: [
+                    {
+                        loader: "babel-loader",
+                        options: {
+                            presets: ["@babel/preset-env"],
+                        },
+                    },
                 ],
                 exclude: /node_modules/,
             },

@@ -9,6 +9,29 @@ const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.g
 Copyright ${new Date().getFullYear()} TautCony
 Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)`;
 
+const babelConfig = {
+    sourceType: "module",
+    presets: [
+        [
+            "@babel/preset-env",
+            {
+                corejs: 3,
+                useBuiltIns: "usage",
+                modules: "commonjs",
+            },
+        ],
+    ],
+    plugins: [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                corejs: 3,
+                useESModules: false,
+            },
+        ],
+    ],
+};
+
 module.exports = {
     target: "web",
     entry: path.join(__dirname, "..", "ts", "tc-blog"),
@@ -46,27 +69,7 @@ module.exports = {
                 use: [
                     {
                         loader: "babel-loader?cacheDirectory",
-                        options: {
-                            // sourceType: "unambiguous",
-                            presets: [
-                                [
-                                    "@babel/preset-env",
-                                    {
-                                        corejs: 3,
-                                        useBuiltIns: "usage",
-                                    },
-                                ],
-                            ],
-                            plugins: [
-                                [
-                                    "@babel/plugin-transform-runtime",
-                                    {
-                                        corejs: 3,
-                                        useESModules: false,
-                                    },
-                                ],
-                            ],
-                        },
+                        options: babelConfig,
                     },
                     {
                         loader: "ts-loader",
@@ -80,10 +83,8 @@ module.exports = {
                 test: /.js$/,
                 use: [
                     {
-                        loader: "babel-loader",
-                        options: {
-                            presets: ["@babel/preset-env"],
-                        },
+                        loader: "babel-loader?cacheDirectory",
+                        options: babelConfig,
                     },
                 ],
                 exclude: /node_modules/,

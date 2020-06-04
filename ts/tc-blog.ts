@@ -1,4 +1,4 @@
-import "core-js/stable";
+import "core-js/es";
 import "regenerator-runtime/runtime";
 
 import Nav from "./Lib/navbar";

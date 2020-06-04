@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const banner = `TC Blog [hash] build at ${new Date().toISOString()} (https://tautcony.github.io/)
+const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
 Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)`;
 

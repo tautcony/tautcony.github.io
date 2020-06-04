@@ -18,7 +18,7 @@ catalog: true
 
 <script>
 !function(t){["contextmenu","dragstart","mouseup","mousedown","mousemove","copy","cut","beforecopy","selectstart","select"].forEach(function(e){var n,a,o,r;n=t,o=function(){return function(e){var n=t.event||e;n.stopPropagation?n.stopPropagation():n.cancelBubble=!0}(e),function(e){var n=t.event||e;return n.preventDefault?n.preventDefault():n.returnValue=!1,!1}(e)},a=(a=e).replace(/^on/gi,"").toLowerCase(),n.addEventListener?n.addEventListener(a,o,r):n.attachEvent?n.attachEvent("on"+a,o):n["on"+a]=o})}(window);
-addEventListener("keydown",(e)=>{if((e.keyCode===86||e.keyCode===65)&&(e.ctrlKey||e.metaKey))e.preventDefault();});
+addEventListener("keydown",function(e){if((e.keyCode===86||e.keyCode===65)&&(e.ctrlKey||e.metaKey))e.preventDefault();});
 setInterval(function(){debugger},100);
 </script>
 

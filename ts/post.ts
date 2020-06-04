@@ -44,7 +44,10 @@ export default function init() {
     if (updateContainer === null) {
         return;
     }
-    fetch(url, { method: "GET" }).then(response => response.json()
+    fetch(url, {
+        method: "GET",
+        credentials: "omit",
+    }).then(response => response.json()
     ).then(data => {
         if (data.length <= 1) {
             return;

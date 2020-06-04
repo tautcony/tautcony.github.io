@@ -29,6 +29,17 @@ const kon = {
     url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
 };
 
+function createEvent(type: string) {
+    let event: Event;
+    if(typeof(Event) === "function") {
+        event = new Event(type);
+    }else{
+        event = document.createEvent("Event");
+        event.initEvent(type, true, true);
+    }
+    return event;
+}
+
 export function konInit() {
     const konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
@@ -92,5 +103,5 @@ export function konInit() {
     });
 
     selector.options.selectedIndex = currentLanguageIndex;
-    selector.dispatchEvent(new Event("change"));
+    selector.dispatchEvent(createEvent("change"));
 }

@@ -1,5 +1,6 @@
 import "core-js/es";
 import "regenerator-runtime/runtime";
+import "whatwg-fetch";
 
 import Nav from "./Lib/navbar";
 import Quote from "./Lib/quote";
@@ -38,7 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     tagcloud(document.querySelectorAll("#tag_cloud a"), config);
 
-    pangu.autoSpacingPage();
+    if (typeof XPathResult !== "undefined") {
+        pangu.autoSpacingPage();
+    }
     // bubble.init();
 });
 

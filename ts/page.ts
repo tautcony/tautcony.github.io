@@ -12,11 +12,11 @@ function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTag
 
 const scrollTo = (element: string) => {
     const elementSelector = document.querySelector(element);
+    const elementOffset = elementSelector.getBoundingClientRect().top;
 
     return () => {
-        const elementOffset = elementSelector.getBoundingClientRect().top;
-        const scrollPosition = window.scrollY;
-        const documentTop = document.documentElement.clientTop;
+        const scrollPosition = document.documentElement.scrollTop;
+        const documentTop = window.pageYOffset;
         const scrollOffset = elementOffset + scrollPosition - documentTop;
         anime({
             targets: [document.documentElement, document.body],
@@ -45,7 +45,7 @@ export function generateCatalog(selector: string) {
                 },
             }, text)]
         );
-        catalogContainer.append(element);
+        catalogContainer.appendChild(element);
     });
 };
 
@@ -87,12 +87,14 @@ export function pageInit() {
         // primary navigation slide-in effect
         if (window.innerWidth > MQL) {
             // check if user is scrolling up by mouse or keyborad
-            if (currentTop < previousTop) {
+            // scroll with animation in ie will lead to a serial of 0
+            if (currentTop - previousTop <= 0) {
                 // if scrolling up...
                 if (currentTop > 0 && navbar.classList.contains("is-fixed")) {
                     navbar.classList.add("is-visible");
                 } else {
-                    navbar.classList.remove("is-visible", "is-fixed");
+                    navbar.classList.remove("is-visible");
+                    navbar.classList.remove("is-fixed");
                 }
             } else {
                 // if scrolling down...
@@ -122,12 +124,12 @@ export function pageInit() {
         if (!ticking) {
             const previousTop = lastKnownScrollPosition;
             window.requestAnimationFrame(() => {
-                updateBanner(window.scrollY, previousTop);
+                updateBanner(window.pageYOffset, previousTop);
                 ticking = false;
             });
         }
         ticking = true;
-        lastKnownScrollPosition = window.scrollY;
+        lastKnownScrollPosition = window.pageYOffset;
     };
 
     window.addEventListener("scroll", BannerAnimation);

@@ -37,7 +37,8 @@
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
     "pixi.js": "^5.2.4",
-    "regenerator-runtime": "^0.13.5"
+    "regenerator-runtime": "^0.13.5",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",

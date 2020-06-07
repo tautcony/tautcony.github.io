@@ -97,7 +97,6 @@ module.exports = {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             publicPath: "../",
-                            hmr: process.env.NODE_ENV === "development",
                         },
                     },
                     "css-loader",
@@ -106,7 +105,13 @@ module.exports = {
                         options: {
                             plugins: (loader) => [
                                 require("autoprefixer")(),
-                                require("cssnano")(),
+                                require("cssnano")({
+                                    preset: ["default", {
+                                        discardComments: {
+                                            removeAll: true,
+                                        },
+                                    }],
+                                }),
                             ],
                         },
                     },

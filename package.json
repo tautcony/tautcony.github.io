@@ -15,7 +15,7 @@
     "build:dev": "npx webpack --config build/webpack.dev.conf.js",
     "build:prod": "npx webpack --config build/webpack.prod.conf.js",
     "build:update": "npx webpack --config build/webpack.update.conf.js",
-    "start": "bundle exec jekyll server",
+    "start": "bundle exec jekyll server -I -l -H 0.0.0.0",
     "commit": "git-cz"
   },
   "config": {

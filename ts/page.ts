@@ -64,15 +64,17 @@ export function pageInit() {
     // $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
     // $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>').addClass("embed-responsive-item");
 
-    const gotop = document.getElementById("gotop");
-    gotop.addEventListener("click", () => {
-        anime({
-            targets: "html, body",
-            scrollTop: 0,
-            duration: 1000,
-            easing: "linear",
+    const gotop = document.getElementById("gotop") as HTMLButtonElement;
+    if (gotop) {
+        gotop.addEventListener("click", () => {
+            anime({
+                targets: "html, body",
+                scrollTop: 0,
+                duration: 1000,
+                easing: "linear",
+            });
         });
-    });
+    }
 
     // Navigation Scripts to Show Header on Scroll-Up
     const MQL = 1170;
@@ -83,7 +85,7 @@ export function pageInit() {
     const bannerHeight = document.querySelector(".intro-header .container").clientHeight;
 
     function updateBanner(currentTop: number, previousTop: number) {
-        gotop.classList.toggle("active", currentTop > 300);
+        if (gotop) { gotop.disabled = currentTop < 300; }
         // primary navigation slide-in effect
         if (window.innerWidth > MQL) {
             // check if user is scrolling up by mouse or keyborad

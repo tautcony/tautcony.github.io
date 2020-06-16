@@ -5,7 +5,7 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 {% include sns.html %}
                 <p class="copyright text-muted">
-                    Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}
+                    Copyright &copy; {{ site.title }} {{ site.github.owner.updated_at | date: '%Y' }} @ {{ site.github.build_revision }}
                     <br/>
                     Theme ©<a href="https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll" target="_blank" rel="noopener">Clean Blog</a>
                     modifyed by <a href="https://huangxuan.me" target="_blank" rel="noopener">Hux</a> | <a href="">TautCony</a>

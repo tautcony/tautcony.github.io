@@ -57,7 +57,7 @@ particle404: true                       # enable a particle effect 404 page
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
-plugins: [jekyll-paginate, jekyll-sitemap, jekyll-include-cache]
+plugins: [jekyll-paginate, jekyll-sitemap, jekyll-github-metadata]
 #octopress-minify-html
 
 

@@ -139,8 +139,9 @@ module.exports = {
         new webpack.BannerPlugin(banner),
         new ForkTsCheckerWebpackPlugin({
             async: false,
-            useTypescriptIncrementalApi: true,
-            memoryLimit: 4096,
+            typescript: {
+                memoryLimit: 4096,
+            },
         }),
     ],
     resolve: {

@@ -36,10 +36,10 @@ export default function init() {
     }
     /* eslint-enable @typescript-eslint/prefer-for-of */
     const apiurl = `https://api.github.com/repos/${packageInfo.repository.owner}/${packageInfo.repository.name}/commits`;
+    const pathFromJekyll: string = window["jekyll"]?.page?.path;
     const filename = "_posts/" + location.pathname.split("/").filter(_=>_).join("-")+".markdown";
-    const url = apiurl + "?" + queryParams({
-        path: filename,
-    });
+    const path = pathFromJekyll || filename;
+    const url = apiurl + "?" + queryParams({ path });
     const updateContainer = document.querySelector("#update-date");
     if (updateContainer === null) {
         return;

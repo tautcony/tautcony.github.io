@@ -1,5 +1,14 @@
 <!-- Post Container -->
 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+    <script>
+        window.jekyll = window.jekyll || { };
+        window.jekyll.page = {
+            title: {{ page.title | jsonify }},
+            date: {{ page.date | jsonify }},
+            path: {{ page.path | jsonify }},
+            id: {{ page.id | jsonify }}
+        }
+    </script>
     <div class="post-content">
         {{ content }}
     </div>

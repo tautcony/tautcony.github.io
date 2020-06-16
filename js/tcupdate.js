@@ -1,3 +1,6 @@
+import "core-js/es";
+import "regenerator-runtime/runtime";
+
 require("../less/tcupdate");
 
 /* eslint-disable camelcase */

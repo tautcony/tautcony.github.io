@@ -3,10 +3,34 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
 Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)`;
+
+const babelConfig = {
+    sourceType: "module",
+    presets: [
+        [
+            "@babel/preset-env",
+            {
+                corejs: 3,
+                useBuiltIns: "usage",
+                modules: "commonjs",
+            },
+        ],
+    ],
+    plugins: [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                corejs: 3,
+                useESModules: false,
+            },
+        ],
+    ],
+};
 
 module.exports = {
     target: "web",
@@ -26,7 +50,6 @@ module.exports = {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             publicPath: "../",
-                            hmr: process.env.NODE_ENV === "development",
                         },
                     },
                     "css-loader",
@@ -35,12 +58,28 @@ module.exports = {
                         options: {
                             plugins: (loader) => [
                                 require("autoprefixer")(),
-                                require("cssnano")(),
+                                require("cssnano")({
+                                    preset: ["default", {
+                                        discardComments: {
+                                            removeAll: true,
+                                        },
+                                    }],
+                                }),
                             ],
                         },
                     },
                     "less-loader",
                 ],
+            },
+            {
+                test: /.js$/,
+                use: [
+                    {
+                        loader: "babel-loader?cacheDirectory",
+                        options: babelConfig,
+                    },
+                ],
+                exclude: /node_modules/,
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -62,6 +101,7 @@ module.exports = {
             filename: "css/tcupdate.min.css",
         }),
         new webpack.BannerPlugin(banner),
+        // new BundleAnalyzerPlugin(),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less"],

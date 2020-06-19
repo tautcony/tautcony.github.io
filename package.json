@@ -37,7 +37,7 @@
     "animejs": "^3.2.0",
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
-    "pixi.js": "^5.2.4",
+    "pixi.js": "^5.3.0",
     "regenerator-runtime": "^0.13.5",
     "whatwg-fetch": "^3.0.0"
   },

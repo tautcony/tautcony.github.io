@@ -43,7 +43,7 @@ GEM
       jekyll (>= 3.7, < 5.0)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    kramdown (2.2.1)
+    kramdown (2.3.0)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
@@ -75,7 +75,6 @@ GEM
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     unicode-display_width (1.7.0)
-    wdm (0.1.1)
 
 PLATFORMS
   ruby
@@ -86,7 +85,6 @@ DEPENDENCIES
   jekyll-github-metadata (~> 2.13.0)
   jekyll-paginate (~> 1.1.0)
   jekyll-sitemap (~> 1.4.0)
-  wdm (>= 0.1.0)
 
 BUNDLED WITH
    2.0.1

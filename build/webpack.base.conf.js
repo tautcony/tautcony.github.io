@@ -50,20 +50,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                include: path.resolve(__dirname, "..", "ts"),
-                enforce: "pre",
-                use: [
-                    "source-map-loader",
-                    {
-                        loader: "eslint-loader",
-                        options: {
-                            typeCheck: true,
-                        },
-                    },
-                ],
-            },
-            {
                 test: /.tsx?$/,
                 include: path.resolve(__dirname, "..", "ts"),
                 use: [
@@ -138,7 +124,10 @@ module.exports = {
         }),
         new webpack.BannerPlugin(banner),
         new ForkTsCheckerWebpackPlugin({
-            async: false,
+            eslint: {
+                enabled: true,
+                files: ["ts/**/*.{ts,tsx,js,jsx}", "js/tcupdate.js"],
+            },
             typescript: {
                 memoryLimit: 4096,
             },

@@ -1,8 +1,12 @@
 module.exports = (ctx) => ({
-    plugins: {
-        autoprefixer: {
-            browsers: "last 5 version",
-        },
-        cssnano: ctx.env === "production" ? {} : false,
-    },
+    plugins: [
+        "postcss-preset-env",
+        "autoprefixer",
+        [
+            "cssnano",
+            {
+                preset: "default"
+            }
+        ]
+    ]
 });

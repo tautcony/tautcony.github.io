@@ -3,7 +3,6 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
@@ -41,7 +40,7 @@ module.exports = {
         devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
     node: {
-        Buffer: false,
+        // Buffer: false,
     },
     externals: {
         "pixi.js": "PIXI",
@@ -59,9 +58,7 @@ module.exports = {
                     },
                     {
                         loader: "ts-loader",
-                        options: {
-                            transpileOnly: true,
-                        },
+                        options: {},
                     },
                 ],
             },
@@ -86,21 +83,7 @@ module.exports = {
                         },
                     },
                     "css-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: (loader) => [
-                                require("autoprefixer")(),
-                                require("cssnano")({
-                                    preset: ["default", {
-                                        discardComments: {
-                                            removeAll: true,
-                                        },
-                                    }],
-                                }),
-                            ],
-                        },
-                    },
+                    "postcss-loader",
                     "less-loader",
                 ],
             },
@@ -123,15 +106,6 @@ module.exports = {
             filename: "css/tc-blog.min.css",
         }),
         new webpack.BannerPlugin(banner),
-        new ForkTsCheckerWebpackPlugin({
-            eslint: {
-                enabled: true,
-                files: ["ts/**/*.{ts,tsx,js,jsx}", "js/tcupdate.js"],
-            },
-            typescript: {
-                memoryLimit: 4096,
-            },
-        }),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less", ".css"],

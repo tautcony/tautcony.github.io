@@ -3,6 +3,8 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
@@ -41,6 +43,18 @@ module.exports = {
         path: path.resolve(__dirname, ".."),
         devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+            terserOptions: {
+                output: {
+                    // eslint-disable-next-line camelcase
+                    ascii_only: true,
+                },
+            },
+        })],
+    },
     module: {
         rules: [
             {
@@ -53,21 +67,7 @@ module.exports = {
                         },
                     },
                     "css-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: (loader) => [
-                                require("autoprefixer")(),
-                                require("cssnano")({
-                                    preset: ["default", {
-                                        discardComments: {
-                                            removeAll: true,
-                                        },
-                                    }],
-                                }),
-                            ],
-                        },
-                    },
+                    "postcss-loader",
                     "less-loader",
                 ],
             },

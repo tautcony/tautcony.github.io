@@ -13,14 +13,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x, 14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout reposistory
+      uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@master
+      with:
+        remote: true
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build:prod --if-present
-    - run: npm run build:update
+    - run: npm run build:update --if-present

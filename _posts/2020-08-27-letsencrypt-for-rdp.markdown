@@ -101,9 +101,11 @@ $certName = "certificate.pfx"
 # import cert
 certutil.exe -p $password -importPFX $certName noExport
 # get digist
-$tp = (ls Cert:\LocalMachine\my | WHERE {$_.Subject -match "$domain" } | Select -First 1).Thumbprint
+$tp = (Get-ChildItem -Path Cert:\LocalMachine\my | WHERE {$_.Subject -match "$domain" } | Sort-Object -Descending NotBefore | Select -First 1).Thumbprint
 # apply cert
 & wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSGeneralSetting Set SSLCertificateSHA1Hash="$tp"
+$info = Get-ChildItem -Path Cert:\LocalMachine\my | WHERE {$_.Thumbprint -match "$tp" } | Format-List | Out-String
+[System.Console]::WriteLine([System.String]::Concat("Current RDP certification: ", $info))
 ```
 
 建议打开一个终端后再执行脚本文件，以免出现报错都来不及看。
@@ -124,3 +126,7 @@ $tp = (ls Cert:\LocalMachine\my | WHERE {$_.Subject -match "$domain" } | Select 
 ## TODO: 完全自动化
 
 当前尚缺一个定时任务将更新与安装的操作完全自动化，现方案更新证书仅需几次鼠标双击，仍在可接受范围之内，暂且搁置计划。
+
+## Changelog
+
+`2021-01-23`: 在几次更新后发现，有时设置RDP证书时并没有成功，经过排查，是由于没有删除旧证书导致的，故对对应脚本进行了排序操作，以确保使用的为最新的证书信息。

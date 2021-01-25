@@ -3,12 +3,12 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 const baseWebpackConfig = require("./webpack.base.conf");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+/* const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const smp = new SpeedMeasurePlugin({
     granularLoaderData: true,
-});
+}); */
 
-module.exports = smp.wrap(merge(baseWebpackConfig, {
+module.exports = merge(baseWebpackConfig, {
     mode: "production",
     optimization: {
         minimize: true,
@@ -25,4 +25,4 @@ module.exports = smp.wrap(merge(baseWebpackConfig, {
     plugins: [
         // new BundleAnalyzerPlugin(),
     ],
-}));
+});

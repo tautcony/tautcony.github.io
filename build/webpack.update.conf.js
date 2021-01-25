@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 const path = require("path");
 
 const webpack = require("webpack");
@@ -22,6 +23,7 @@ const babelConfig = {
                 modules: "commonjs",
             },
         ],
+        "@vue/babel-preset-jsx",
     ],
     plugins: [
         [
@@ -31,17 +33,24 @@ const babelConfig = {
                 useESModules: false,
             },
         ],
+        "@vue/babel-plugin-jsx",
     ],
 };
 
 module.exports = {
     target: "web",
     mode: "production",
+    // mode: "development",
+    // devtool: "eval-cheap-module-source-map",
     entry: path.join(__dirname, "..", "js", "tcupdate"),
     output: {
         filename: "js/tcupdate.min.js",
         path: path.resolve(__dirname, ".."),
         devtoolModuleFilenameTemplate: "[absolute-resource-path]",
+    },
+    externals: {
+        "vue": "Vue",
+        "axios": "axios",
     },
     optimization: {
         minimize: true,
@@ -69,6 +78,20 @@ module.exports = {
                     "css-loader",
                     "postcss-loader",
                     "less-loader",
+                ],
+            },
+            {
+                test: /.tsx?$/,
+                include: path.resolve(__dirname, "..", "ts"),
+                use: [
+                    {
+                        loader: "babel-loader?cacheDirectory",
+                        options: babelConfig,
+                    },
+                    {
+                        loader: "ts-loader",
+                        options: {},
+                    },
                 ],
             },
             {

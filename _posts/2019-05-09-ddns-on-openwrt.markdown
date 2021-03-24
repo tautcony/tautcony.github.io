@@ -46,7 +46,7 @@ tags:
 
 这个界面上上半截为ddns的通用设置，`检查域名`是指用来从DNS服务商处获取当前IP地址用的，然后同实时获取的IP进行对比，看是否有更新IP的必要。而下面`域名`一个则是在向DNS服务商（在本文中即指Cloudflare）设置新的IP时使用的。
 
-那么这个到底该用什么格式填呢？我确实是用了同预先填充的默认参数格式写的，遇事不决看实现，界面上的提示显然在现阶段无法满足需求了，搜搜脚本到底[怎么写的](https://github.com/openwrt/packages/blob/openwrt-18.06/net/ddns-scripts/files/update_Cloudflare_com_v4.sh)，好嘛，在文件头的注释里就写上了，如下。
+那么这个到底该用什么格式填呢？我确实是用了同预先填充的默认参数格式写的，遇事不决看实现，界面上的提示显然在现阶段无法满足需求了，搜搜脚本到底[怎么写的](https://github.com/openwrt/packages/blob/openwrt-18.06/net/ddns-scripts/files/update_cloudflare_com_v4.sh)，好嘛，在文件头的注释里就写上了，如下。
 
 ```bash
 # using following options from /etc/config/ddns

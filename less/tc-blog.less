@@ -1179,3 +1179,191 @@ canvas {
     background: transparent;
     padding: 0;
 }
+
+.highlight pre, pre {
+    border-top-left-radius: 0;
+}
+
+.post-content div.highlighter-rouge {
+    &::before {
+        padding: 2px 7px;
+        font-size: .9em;
+        font-weight: 700;
+        color: #616161;
+        background: #ededed;
+        content: 'Code';
+        border-radius: 5px 5px 0 0;
+    }
+    & > .highlight {
+        transform: translateY(-2px);
+    }
+}
+
+.post-content div.highlighter-rouge {
+    &.language-bash::before {
+        content: "Bash"
+    }
+
+    &.language-c::before {
+        content: "C"
+    }
+
+    &.language-cs::before {
+        content: "C♯"
+    }
+
+    &.language-c\+\+::before, &.language-cpp::before {
+        content: "C++"
+    }
+
+    &.language-css::before {
+        content: "CSS"
+    }
+
+    &.language-coffeescript::before {
+        content: "CoffeeScript"
+    }
+
+    &.language-html::before {
+        content: "HTML"
+    }
+
+    &.language-xml::before {
+        content: "XML"
+    }
+
+    &.language-http::before {
+        content: "HTTP"
+    }
+
+    &.language-json::before {
+        content: "JSON"
+    }
+
+    &.language-java::before {
+        content: "Java"
+    }
+
+    &.language-js::before, &.language-javascript::before {
+        content: "JavaScript"
+    }
+
+    &.language-makefile::before {
+        content: "Makefile"
+    }
+
+    &.language-markdown::before {
+        content: "Markdown"
+    }
+
+    &.language-objectivec::before {
+        content: "Objective-C"
+    }
+
+    &.language-php::before {
+        content: "PHP"
+    }
+
+    &.language-perl::before {
+        content: "Perl"
+    }
+
+    &.language-python::before {
+        content: "Python"
+    }
+
+    &.language-ruby::before {
+        content: "Ruby"
+    }
+
+    &.language-sql::before {
+        content: "SQL"
+    }
+
+    &.language-shell::before {
+        content: "Shell"
+    }
+
+    &.language-erlang::before {
+        content: "Erlang"
+    }
+
+    &.language-go::before {
+        content: "Go"
+    }
+
+    &.language-go-html-template::before {
+        content: "Go HTML Template"
+    }
+
+    &.language-groovy::before {
+        content: "Groovy"
+    }
+
+    &.language-haskell::before {
+        content: "Haskell"
+    }
+
+    &.language-kotlin::before {
+        content: "Kotlin"
+    }
+
+    &.language-clojure::before {
+        content: "Clojure"
+    }
+
+    &.language-less::before {
+        content: "Less"
+    }
+
+    &.language-lisp::before {
+        content: "Lisp"
+    }
+
+    &.language-lua::before {
+        content: "Lua"
+    }
+
+    &.language-matlab::before {
+        content: "Matlab"
+    }
+
+    &.language-rust::before {
+        content: "Rust"
+    }
+
+    &.language-scss::before {
+        content: "Scss"
+    }
+
+    &.language-scala::before {
+        content: "Scala"
+    }
+
+    &.language-swift::before {
+        content: "Swift"
+    }
+
+    &.language-typescript::before {
+        content: "TypeScript"
+    }
+
+    &.language-yml::before {
+        content: "YAML"
+    }
+
+    &.language-yaml::before {
+        content: "YAML"
+    }
+
+    &.language-toml::before {
+        content: "TOML"
+    }
+
+    &.language-diff::before {
+        content: "Diff"
+    }
+    &.language-powershell::before {
+        content: "PowerShell";
+    }
+}

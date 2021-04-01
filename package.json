@@ -13,7 +13,7 @@
   },
   "scripts": {
     "submodule": "git submodule init && git submodule update",
-    "dev": "npx webpack --config build/webpack.dev.conf.js",
+    "build:dev": "npx webpack --config build/webpack.dev.conf.js",
     "build:prod": "npx webpack --config build/webpack.prod.conf.js",
     "build:update": "npx webpack --config build/webpack.update.conf.js",
     "start": "bundle exec jekyll server -I -H 0.0.0.0",

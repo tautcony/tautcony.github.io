@@ -9,6 +9,6 @@ module.exports = merge(baseWebpackConfig, {
         aggregateTimeout: 600,
         ignored: /node_modules/,
     },
-    devtool: "cheap-module-eval-source-map",
+    devtool: "eval-cheap-module-source-map",
     plugins: [],
 });

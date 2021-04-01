@@ -111,3 +111,4 @@ app.component("history-download", {
 });
 
 const vm = app.mount("#tool-downloads");
+window.vm = vm;

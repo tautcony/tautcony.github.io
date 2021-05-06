@@ -145,3 +145,4 @@ typings/
 .idea/**/vcs.xml
 .tscache
 .baseDir.ts
+.DS_Store

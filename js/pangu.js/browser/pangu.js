@@ -388,7 +388,7 @@ class BrowserPangu extends Pangu {
       // Text: https://developer.mozilla.org/en-US/docs/Web/API/Text
       mutations.forEach((mutation) => {
         switch (mutation.type) { /* eslint-disable indent */
-          case 'childList':
+          case 'childList': {
             mutation.addedNodes.forEach((node) => {
               if (node.nodeType === Node.ELEMENT_NODE) {
                 queue.push(node);
@@ -397,12 +397,14 @@ class BrowserPangu extends Pangu {
               }
             });
             break;
-          case 'characterData':
+          }
+          case 'characterData': {
             const { target: node } = mutation;
             if (node.nodeType === Node.TEXT_NODE) {
               queue.push(node.parentNode);
             }
             break;
+          }
           default:
             break;
         }

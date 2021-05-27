@@ -46,17 +46,17 @@
     "build": "npm run build:shared && npm run build:browser"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.16",
-    "@babel/core": "^7.14.0",
-    "@babel/preset-env": "^7.14.1",
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
     "@babel/register": "^7.13.16",
     "babel-loader": "^8.2.2",
-    "eslint": "^7.26.0",
+    "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.3",
     "terser": "^5.7.0",
-    "terser-webpack-plugin": "5.1.1",
-    "webpack": "^5.37.0",
+    "terser-webpack-plugin": "^5.1.2",
+    "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0"
   }
 }

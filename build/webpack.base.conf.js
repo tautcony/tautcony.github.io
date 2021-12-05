@@ -79,10 +79,15 @@ module.exports = {
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: "../",
+                            publicPath: path.resolve(__dirname, "..", "img", "generated"),
                         },
                     },
-                    "css-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false,
+                        },
+                    },
                     "postcss-loader",
                     "less-loader",
                 ],

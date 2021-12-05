@@ -23,7 +23,7 @@ class BrightnessWatcher {
             },
         });
         document.body.appendChild(this.maskDiv);
-        this.config = Cookies.getJSON("brightness") as IConfig;
+        this.config = JSON.parse(Cookies.get("brightness")) as IConfig;
         if (this.config === undefined) {
             this.config = {
                 brightness: 0,

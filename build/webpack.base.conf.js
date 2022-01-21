@@ -93,6 +93,25 @@ module.exports = {
                 ],
             },
             {
+                test: /\.s[ac]ss$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: path.resolve(__dirname, "..", "img", "generated"),
+                        },
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false,
+                        },
+                    },
+                    "postcss-loader",
+                    "sass-loader",
+                ],
+            },
+            {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 use: [
                     {

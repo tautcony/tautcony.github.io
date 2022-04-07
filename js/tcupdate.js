@@ -101,7 +101,11 @@ app.component("history-download", {
     mixins: [funcMixin],
     methods: {
         browser_download_url(info) {
-            const assets = info.assets.filter(item => item.content_type === "application/octet-stream");
+            const assets = info.assets.filter(item =>
+                item.content_type === "application/octet-stream" ||
+                item.content_type === "application/x-7z-compressed" ||
+                item.content_type === "application/zip"
+            );
             if (assets.length === 0) {
                 return info.zipball_url;
             }

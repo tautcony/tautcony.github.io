@@ -1,0 +1,644 @@
+---
+layout:     post
+title:      "ISTA+程序许可证校验逻辑与绕行方法"
+subtitle:   ""
+date:       2022-05-06
+author:     "TautCony"
+header-img: "img/post-bg-default.png"
+image:
+  credit: himawari-8
+  creditlink: http://himawari8.nict.go.jp/
+tags:
+    - Rheingold
+    - ISTA
+    - BMW
+    - C#
+---
+
+ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW Group车辆诊断和编程应用使用。作为经销商使用的软件，宝马为该程序添加了许可证校验无可厚非。但是它在互联网流传过程中，不但其本体获取存在一定的困难，其许可证的获取也颇有意思，与我们通常能够看到的破解软件有着一定的区别。近日在网上获取到一套完整的安装程序，故对其进行了对应的探究。
+
+<!--more-->
+
+程序安装前总计约`23.1GB`，完成安装后总计约`124GB`，蔚为壮观，主要由对应的数据库文件所组成。
+
+完成安装后打开程序，第一屏就能看到提示许可证失效，需要进行激活。点击两次下一步后就能看到输入具体激活码的页面，由于key内容中包含计算机信息，进行了一个隐去。随便输入一些字符，显然是无效的，下一步按钮始终为灰色。
+
+![许可证警告](/img/bmw-ISTAP/01-license-warning.png)
+![许可证信息填写](/img/bmw-ISTAP/02-license-info.png)
+![许可证激活](/img/bmw-ISTAP/03-license-active.png)
+
+程序本身，不论是从哪里找到下载也好，还是从什么论坛购买也好，这都是很正常的情况。但是到这个具体激活的地方，不论是国内论坛还是国外论坛，都可以见到一种，你执行到这一步，获取到key，将这个key通过私信发给某个人，由他将对应的注册码发给你的操作流程。
+
+而这一步，是免费的。这里，就是有意思的地方了。似乎是有人掌握了keygen但是并没有将其与软件一并公开，虽然不公开，也没有借此进行盈利，着实有点没有理解其背后具体的原因。
+
+扯远了，还是回归主题，那么从程序主入口入手，稍作检查，GUI部分是使用`.NETFramework 4.8`编写的，那就好办了，代码的查看、编辑等都会方便很多。
+
+---
+
+以下内容均以版本`4.34.40.26161`为基础
+
+从程序入口出发，使用`dnSpy`打开程序`ISTAGUI.exe`，检查程序组成。
+
+## 完整性校验
+
+很快，namespace `BMW.Rheingold.SecurityAndLicense`引起了注意，其中的`IntegrityManager`，是校验程序完整性的代码，对其稍作整理，可得如下代码。
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace BMW.Rheingold.SecurityAndLicense
+{
+  class IntegrityManager
+  {
+    private readonly byte[] _salt = { 0xd, 0xca, 0x32, 0xe0, 0x7f, 0xa4, 0xdf, 0xf1 };
+
+    private const int _iterations = 1100;
+
+    private const string _password = "3/3HexbKKFs4LqpiCSgKAXGUYCtqjoFchfPitAmI8wE=";
+    
+    private readonly string pk_xml = "<RSAKeyValue><Modulus>xW33nQA29jyJSYn24fVcSIU3gQmzQArcT0lrPAj94PS8wuZZBpPZsLEWo4pkq2/w9ne4V9PTOkB2frVBvA/bmGF/gyHivqkzi7znX/TwcTM6GbX/MN4isNeXqgFZzjmxOh9EYPt8pnJ/j02Djbg8LceG98grBCehBe/2wFxxYQQa+YoJ0a1ymzs/3geBTeqtwYgayZeLEWOxckoDuDu0RWF8zvVcWxUNpwqHNH/4Boo+xLqByfEv2wDS1zchGtjCL+g2qdDWlHgASEgGZ6Z8hbirrxxWYZ7zaZxjSADQM8nweKn4t4+p44uD1Aoktq3Mm+jZtTsgk8i1YjbCQN8J1Q==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+
+    internal IntegrityManager()
+    {
+      const string filePath = "..\\..\\..\\Ecu\\enc_cne_1.prg";
+      const string sigPath = "..\\..\\..\\Ecu\\sig_gis_1.prg";
+      const string directoryName = "TesterGUI";
+      const string searchPattern = "*.dll,*.exe";
+      try
+      {
+        VerifyData(filePath, sigPath);
+        var encryptedHashFiles = DecryptFile(filePath, _password, _salt, _iterations);
+        var source = from s in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.*", SearchOption.TopDirectoryOnly)
+                       where searchPattern.Contains(Path.GetExtension(s).ToLower())
+                       select s;
+        var istaHashFilesToCheck = (from path in source
+                       select new HashFileInfo(path, directoryName)).ToList();
+
+        foreach (var istaHashFile in istaHashFilesToCheck)
+        {
+          var hashFileInfo = encryptedHashFiles.FirstOrDefault(item => item.FileName.Equals(istaHashFile.FileName));
+          if (hashFileInfo != null && hashFileInfo.Hash != istaHashFile.Hash)
+          {
+            Environment.Exit(0);
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        Environment.Exit(0);
+        throw ex;
+      }
+    }
+    
+    private List<HashFileInfo> DecryptFile(string sourceFilename, string password, byte[] salt, int iterations)
+    {
+      try
+      {
+        var aesManaged = new AesManaged();
+        aesManaged.BlockSize = aesManaged.LegalBlockSizes[0].MaxSize;
+        aesManaged.KeySize = aesManaged.LegalKeySizes[0].MaxSize;
+        var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, salt, iterations);
+        aesManaged.Key = rfc2898DeriveBytes.GetBytes(aesManaged.KeySize / 8);
+        aesManaged.IV = rfc2898DeriveBytes.GetBytes(aesManaged.BlockSize / 8);
+        aesManaged.Mode = CipherMode.CBC;
+        var transform = aesManaged.CreateDecryptor(aesManaged.Key, aesManaged.IV);
+        using var memoryStream = new MemoryStream();
+        using var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write);
+        try
+        {
+          using (var fileStream = new FileStream(sourceFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
+          {
+            fileStream.CopyTo(cryptoStream);
+          }
+          var bytes = memoryStream.ToArray();
+          return (from row in Encoding.UTF8.GetString(bytes).Split(";;\r\n", StringSplitOptions.RemoveEmptyEntries)
+            select new HashFileInfo(row.Split(";;", StringSplitOptions.RemoveEmptyEntries))).ToList();
+        }
+        catch (Exception)
+        {
+          Environment.Exit(0);
+        }
+        return null;
+      }
+      catch (Exception)
+      {
+        Environment.Exit(0);
+      }
+      return null;
+    }
+    
+    private void VerifyData(string fileToVerify, string signaturePath)
+    {
+      try
+      {
+        using var rsacryptoServiceProvider = new RSACryptoServiceProvider();
+        var buffer = File.ReadAllBytes(fileToVerify);
+        var signature = File.ReadAllBytes(signaturePath);
+        try
+        {
+          rsacryptoServiceProvider.FromXmlString(pk_xml);
+          new SHA512Managed().ComputeHash(signature);
+          if (!rsacryptoServiceProvider.VerifyData(buffer, CryptoConfig.MapNameToOID("SHA1"), signature))
+          {
+            Environment.Exit(1);
+          }
+        }
+        catch (Exception ex)
+        {
+          Environment.Exit(1);
+          throw ex;
+        }
+        finally
+        {
+          rsacryptoServiceProvider.PersistKeyInCsp = false;
+        }
+      }
+      catch (Exception)
+      {
+        Environment.Exit(1);
+      }
+    }
+    
+    public class HashFileInfo
+    {
+      internal string FileName { get; private set; }
+
+      internal string FilePath { get; private set; }
+
+      internal string Hash { get; set; }
+
+      protected internal HashFileInfo(string[] fileInfos)
+      {
+        FilePath = fileInfos[0];
+        FileName = Path.GetFileName(FilePath);
+        Hash = fileInfos[1];
+      }
+
+      protected internal HashFileInfo(string path, string directoryName)
+      {
+        FileName = Path.GetFileName(path);
+        FilePath = (string.IsNullOrEmpty(directoryName) ? path : path.Remove(0, path.IndexOf(directoryName) + directoryName.Length + 1));
+        Hash = CalculateHash(path);
+      }
+
+      private string CalculateHash(string pathFile)
+      {
+        using var sha = SHA256.Create();
+        using var fileStream = File.OpenRead(pathFile);
+        return Convert.ToBase64String(sha.ComputeHash(fileStream));
+      }
+    }
+  }
+}
+```
+
+
+该部分代码，主要包含两个步骤：
+
+- 通过校验对应的`RSA`签名，以校验`enc_cne_1.prg`是否篡改，供进一步校验使用。
+- 通过读取`enc_cne_1.prg`获取需要校验的文件，逐个计算`SHA256`值以校验文件是否被篡改。
+
+上述中任意一步的校验不一致，均将导致程序退出，使程序无法使用，那么显然，本次修改所涉及的最大范围，限于如下列表。
+
+
+| FileName | Hash |
+| :--- | :--- |
+| bin\Release\AirCallServices.dll | EXUlsmBgl9KYfdXh6R2ySUKXGLXCk+2uU2omMy2SKBI= |
+| bin\Release\AirCommon.dll | kJ2mDQgJrAbpGJqPVuGDltihVN4q7Q4pc7zMlIzL1jY= |
+| bin\Release\AirForkServices.dll | JJeSLEkhxgHa21+vxffclS2IRq5kFcRG7F87/k0AMuk= |
+| bin\Release\Authoring.dll | PCN2FFr4+bq8XJJwucYboRCx9oBphUugBcKb28tCMpU= |
+| bin\Release\BMW.ISPI.Puk.Decentral.PukBasicData.dll | ywP4eOX2PVJ6AYlTEjkflTQVnB8k/zC0Ofn7nmI7OSg= |
+| bin\Release\BMW.ISPI.Puk.Decentral.PukVCLib.dll | nE6tZWXaVYeG2OYIFgj3c8hPrruQlgBaoyejRoSo2Ac= |
+| bin\Release\BMW.ISPI.Puk.Decentral.VehicleCaseData.dll | ubCZoe1JlFVwf1w/JqjlNm6WJAVVlr4KcFoFXgsW+ls= |
+| bin\Release\BMW.Rheingold.SvgViewer.dll | SfQAefjciR1twd1z4ngijuXWiaZZv93seNmMJMsWgFc= |
+| bin\Release\Castle.Core.dll | mWSlxJfcrqm8BHxxmGmhxUg/nzgzEaBF0yAUjg3xOiM= |
+| bin\Release\COAPILib.dll | w1zvRT+YUmAG1dQBsw6xv6Z27xhienRj5E7S/MUSrg8= |
+| bin\Release\COAPILib32v4.0.dll | nhmSUAw6SLyXDpY4OP9pH0d4zYxEzmnhswceIvoNL2Y= |
+| bin\Release\CommonServices.dll | S95uthnGRNkOSM+VN1ps8ae5UBv9TDRDuOr9MUQjGdY= |
+| bin\Release\CommonServiceSec.dll | J9pds4Z/H5J2/siOiXsu3jxjOJK2KAO12zscK8BnYRU= |
+| bin\Release\DiagnosticsBusinessData.dll | nXqvxmQkeBUwEzSh9vmt7fTy5aiUL++NLkJjWWoqFww= |
+| bin\Release\FscValidationClient.dll | S4ZYA2mlqjPrQ0JBwEJUFbEQx3ZVDNcLlQGtWaDTEzk= |
+| bin\Release\FscValidationContract.dll | XEb6iMUg6gsm5as2EzqXhk6othU7co9TPU2OPqbGnTs= |
+| bin\Release\HidLibrary.dll | wwyCEAKyR4+2UK+cm+SiLGvDGOZWuXV8wyMq5BiJdkk= |
+| bin\Release\IAirCallServices.dll | KfquSALWEjSCdY8csRFSb19BGM/LIl0a6uFcHE9pE2k= |
+| bin\Release\IAirForkServices.dll | 8bZYvG2WdBTkORse7OluZ/HfsWnUZcvTPzwBc894/hA= |
+| bin\Release\ICSharpCode.SharpZipLib.dll | QKmAkinbigJo8UY9cl1JmdndU2LbaDWTEgOJCZzPM2E= |
+| bin\Release\IDESKernel.dll | kyszUyt9ePlIDXclvP0xuxwWBufK+XJoFYlOzTCbflE= |
+| bin\Release\Interop.SHDocVw.dll | atgGe1jGB8DsdyKi66dKJu7I96YFzrtQAtNnYU68nWU= |
+| bin\Release\ISTAGUI.exe | 1vUvYqWyc9lzIEwqbCI1SZWXwRPucFmWqdYrHsYkOEM= |
+| bin\Release\IstaOperationContract.dll | xoxDVLeoStE38TdvnKC3rCk9DsUaDE3OKQV/b6lnoTQ= |
+| bin\Release\IstaOperationController.dll | wZCnVxz0l93iVU5OogAnSihqT25xgSt7Mre0Flh4jlk= |
+| bin\Release\IstaOperationImpl.dll | WBSXrHdTyjcDPKACIJ/m0ti7pag1Euwfuz/pyvIE0KY= |
+| bin\Release\IstaServicesClient.dll | +ItwvuZOmXNDXbRLGZ/n83YhNHrj3flYab+fX9XBu/4= |
+| bin\Release\IstaServicesContract.dll | vvsQv+QgzbOjt9RJC3rub95nS5sjV+r8rh7YXFnnZHQ= |
+| bin\Release\IstaServicesController.dll | sG8SKzA5B+H867mT/1UqJ10dy38GXGUxJOKQfiEKnTE= |
+| bin\Release\IstaServicesHost.exe | /MXJYz6zmLsMZY6gox/687wmtoTie/o5mcxy5S+MkAQ= |
+| bin\Release\IstaServicesImpl.dll | wYHvSdOB+syQXlwOc4wSzzbAajFSCPZLktCKyN3o6SA= |
+| bin\Release\log4net.dll | r1YQxRXSJE25jGYmNiZMgXfomxr+QH+I/RikHWb25+I= |
+| bin\Release\Microsoft.Bcl.AsyncInterfaces.dll | B1znnoQEETfHiIWzc4wbWgNUfQrip5kW6EQZap0Owds= |
+| bin\Release\Microsoft.mshtml.dll | tgMNMgyI1wYExBjyAq/P48KMM1se7A/lMwnx1Y9gxT4= |
+| bin\Release\Microsoft.Practices.ServiceLocation.dll | NABdaoBDRUJ4DG0ZLmq9B76kmy7rfkP7/f6QwoiZhuU= |
+| bin\Release\Microsoft.Practices.Unity.Configuration.dll | Opf9gBK+ambzNyrm9YqEdUw+Q+hrAtjGDC7JraiBxT8= |
+| bin\Release\Microsoft.Practices.Unity.dll | ncWZ3W1gy1PEosyKUy7pwqf0yR8+0f0UsAD94buVqj8= |
+| bin\Release\Microsoft.Practices.Unity.RegistrationByConvention.dll | IrsW3Zs3XWBgGrWJZUBWYwwIQu+XHYR+QwryEhENIsQ= |
+| bin\Release\Moq.dll | jNUJ41LX1ldihBXmP9s/uy3dmT/wVQQbnuEJIT+Tvbs= |
+| bin\Release\Newtonsoft.Json.dll | tiSUnfiw46YVP9+3MKfG9JkLZZLuDZIuF4hDPSdmEPM= |
+| bin\Release\Npgsql.dll | PzZjf4HMVITru0cjJ2+k6KbzuDp/XwhMp5q3/M1+ouA= |
+| bin\Release\Oracle.ManagedDataAccess.dll | igNbPAhwOgdXphJvkBtgoWRTncRX6a7yJ5AP6Lg6MV4= |
+| bin\Release\PsdzServiceClient.dll | 7LXFvOo2Fn6kzK7KTNyo/4xhgM0fxSVon5mqxXzwGq4= |
+| bin\Release\PsdzServiceContract.dll | nh7/UyliipXgcRd1SK38fL769Gbbu7Rhz8hqnco6d3c= |
+| bin\Release\RGSPC.exe | Gh4umyId3Kr7i0vzA65ibT+4HE90N2CPEU2QdSl51xM= |
+| bin\Release\RheingoldCoreBootstrap.dll | cg+9N1MhCwoG7i8ggmyRCLT7sAT27Z7sgaOomDu1DRc= |
+| bin\Release\RheingoldCoreContracts.dll | rWAHM4BQFPDj+kThEBZhQH1V8H6txGq44pSg4JPGM3U= |
+| bin\Release\RheingoldCoreFramework.dll | esWt5X/B9mlsNRUM4oPY8s0rl71BubVL7mnDgVnOhWs= |
+| bin\Release\RheingoldDatabaseOracleConnector.dll | A2C7jbo0ZYw75EGa98oMHj0hbzI5nGP/eTj9Lv9MP9Y= |
+| bin\Release\RheingoldDatabasePostgreSQLConnector.dll | N91J7WitswnkX8zQ3p1TJWd5MAxt6UXGolhqpPVGu2k= |
+| bin\Release\RheingoldDatabaseSQLiteConnector.dll | +CrIXfj5pxcgCOHflC89o0dqJUcivrHjBIuPqWUjd4c= |
+| bin\Release\RheingoldDiagnostics.dll | JSjmMQEbBl1XJ3VDFNoV8L+xeGznqq49czVU5b/cOYo= |
+| bin\Release\RheingoldFASTA.dll | QFbMOTn+hQGoYuMUCp0CLzFaJbZx5s8trc+wL5RFgNw= |
+| bin\Release\RheingoldFASTAConfigParsing.dll | SNS81Dsl0lctcL8mLgdr0WRoDBtZJaqIpdJp1ziUMvo= |
+| bin\Release\RheingoldIDES.dll | qqt9f1sfLyoVNNJtFtE1WGusymZlAQX9cG/Mc0AQ9lY= |
+| bin\Release\RheingoldInfoProvider.dll | /V6kTNbsATX4FR154BoQdfM3IAYGNs0qnJ33+jrITnE= |
+| bin\Release\RheingoldInfoProvider.XmlSerializers.dll | E043kMDUz4yAuHcCV+ppa72uqDdxGRsqqkKzfsSSv+Q= |
+| bin\Release\RheingoldISPINext.dll | MHvZs1FkvCy1ZK+Za6338Wvi/49p+qT1Mb058Hk4K4c= |
+| bin\Release\RheingoldISTACoreFramework.dll | o3LcRM1eiY6YBcYayhTZssUTWXMx5y5RpptHx5WL/+U= |
+| bin\Release\RheingoldKMM.dll | JcL/T3kEx2pHZBYivLETXUUgI7LiTPXrBRpTy2uosBA= |
+| bin\Release\RheingoldMeasurement.dll | oUqgD8xPlt7z8NnU2p3ZzV+YlFG5oKiyY6jdgKN+P+g= |
+| bin\Release\RheingoldMeasurementCommon.dll | xKt4T7oW5j+O/b7/EP3e8EsRXVuf9Zks1RM9+2lJ/6A= |
+| bin\Release\RheingoldMeasurementCommunication.dll | TuCu9Vo0d+MBLK9XNunjXwhO1D/dghKCCDxfaEknw6U= |
+| bin\Release\RheingoldOperationsReportConverter.dll | kQu/21P4fZdASS0eZKwPABBenhWjaJbDURlOomkYces= |
+| bin\Release\RheingoldPresentationFramework.dll | TBaxy2GlczSZKipUy/T1GDj4+0OVmd/jaPbh9F/Pk5U= |
+| bin\Release\RheingoldProcessCommunicationBase.dll | /9SkfSAafCnBGBqChyfQOK7ejId5anrXZ+JeanD+F5E= |
+| bin\Release\RheingoldProgramming.dll | GmbgTpTKzSQu5aWVyUWRbaGkkh+vDhsZJ+wK+VibRuw= |
+| bin\Release\RheingoldSessionController.dll | 4dfcDsWTg5ToOam7YTjlvpmWk5BhTY01TJWStvb/vto= |
+| bin\Release\RheingoldSharpVectorSvgViewer.dll | duZs/8iC5NXz9FOgkduFONWhYeu2kCsyrQRyvB/Ihqg= |
+| bin\Release\RheingoldVehicleCommunication.dll | BxyCxx3YvUUhGKoPd6udzfL7iisNzWNgBZRJ9Ue4gt4= |
+| bin\Release\RheingoldxVM.dll | zt/6DpC928RyMPSpl48Miak/xa2A3DGwAPfmIiOE79Q= |
+| bin\Release\SharpBITS.Base.dll | tS/kOSc6q7xlwud/TCFg/IX+p7s3gonfxmkukfwqqlw= |
+| bin\Release\SharpLearning.Common.Interfaces.dll | uT15ShSxuZ6GPUH519cnLvX07DLTsE2NspzG+UfFEQs= |
+| bin\Release\SharpLearning.Containers.dll | uICOeyXDJM94bZWSKZ9Tz64wInLKhV/hHBOofSJ/fVM= |
+| bin\Release\SharpLearning.DecisionTrees.dll | UU6nErx/2zqV2crMiqkxxkzAYNc6c4goepimFgaeLkM= |
+| bin\Release\SharpLearning.InputOutput.dll | EbbZjrXw3v2eEcs/mPLLDqUj3BClDM3M2lDmYIfqZnA= |
+| bin\Release\SharpLearning.RandomForest.dll | WGBvLsjM3UO8p/Nbw8DE51p2z5qpXA7VojsbHfa8r24= |
+| bin\Release\Spire.License.dll | C7sVFSKgnre3meNTUejMvo8ebcSgqoKDgaYctqjORSc= |
+| bin\Release\Spire.Pdf.dll | b9Jhu0f9fXEnHhofK2WnajjtcqLaGY9XjbbvqUHLrKY= |
+| bin\Release\SQLite.Interop.dll | sdGDGV850DVzMSymsjKGmy0Gst2a+454lvYe7j7ociQ= |
+| bin\Release\System.Buffers.dll | rMzPvkXZ8I/+7ZkW43sz6YxlvgEs//bn+ntnIQzh/vs= |
+| bin\Release\System.Data.SQLite.dll | of0RfUJ5GNIt3o/950WH9wrbgML8ByvF6/nkybafKTM= |
+| bin\Release\System.Data.SQLite.Linq.dll | IfoFRCsiieSjO3DAqlS2NmdXkMwf05yQwHGfw0LLH+A= |
+| bin\Release\System.Memory.dll | jnYxjosGaSq/fasRadJ9FVV/fwo002r2Rj7/D+ISE8c= |
+| bin\Release\System.Numerics.Vectors.dll | HT74aYKB589zcdFVSv71hys5+Wwm2nciEKM9oEG6EYM= |
+| bin\Release\System.Runtime.CompilerServices.Unsafe.dll | PK3La4pzNRQcfDV6HXevH/SbWbhy30lPUCVYAZHRwNU= |
+| bin\Release\System.Text.Encodings.Web.dll | 7fE+vy1FFS4moWuUfNlTrrekJgL6SOU/12c5NOWs6jA= |
+| bin\Release\System.Text.Json.dll | LHQ1JXaQrJXcA7RaI2AFEkCX8IUZrfMTSx0ezkGQ5kw= |
+| bin\Release\System.Threading.Channels.dll | BXGrJZt2v/i2qJW3OqJVAx4Ak7mF+OemoR+0MgkRnF0= |
+| bin\Release\System.Threading.Tasks.Extensions.dll | T4H/0NxyBNt1r8NepCkXabB8RAWS8oiUJg7qdmJqI8Y= |
+| bin\Release\System.ValueTuple.dll | 6QXRAlhbIsbfBPIZr1y9v6e8Fll56XiLYt9tzBZeEPQ= |
+| bin\Release\TestAutomation.exe | GteSq0NSrbELRWREPovLe4Ztm0Dm8qXj8Y/MEWTYmQI= |
+| bin\Release\WsiDataProvider.dll | zvzZEYnltsVtt9pmUEUzZzrAuSXAIbueilT17aG0iEY= |
+| bin\Release\xmlunit-core.dll | J6ziacQnOuQDNyKZ949Rx51xyTDBSA9KEFy7lsjLqaA= |
+
+
+考虑到程序端不存在RSA私钥，使用RSA公钥来校验完整性，看似安全，但是，通过自行生成一对密钥对文件重新进行签名。这样一来，就能够更新上述列表中任意文件而不会触发起校验的异常。
+
+以上方法属于顺着程序本身的思路来的。实际操作上，直接将这段代码移除，就会使校验不通过导致程序退出这个情况彻底不存在。
+
+---
+
+那么还有哪里有程序完整性的校验阻碍修改程序呢，进行对应的调试与查找，namespace `BMW.Rheingold.CoreFramework.WcfCommon`下的`IstaProcessStarter`中也存在相关的代码，对其稍作整理，代码如下。
+
+```csharp
+private static void CheckSignature(string pathToIstaProcessFile)
+{
+  try
+  {
+    Assembly executingAssembly = Assembly.GetExecutingAssembly();
+    if (!Assembly.ReflectionOnlyLoadFrom(pathToIstaProcessFile).GetName().GetPublicKeyToken().SequenceEqual(executingAssembly.GetName().GetPublicKeyToken())) {
+      throw new InvalidOperationException();
+    }
+  }
+  catch (Exception)
+  {
+    throw new IstaProcessStartException();
+  }
+}
+```
+
+在启动其他子程序之前，会通过校验当前程序的`publickey`与子程序的`publickey`是否一致，来校验程序的完整性。
+
+那么显然的，只要不校验，就不存在这个问题了。
+
+## 许可证校验
+
+一旦程序已经失去了完整性校验，那么程序对于许可证的校验也就完全失去了把控。
+
+通过检索，可以找到namespace `BMW.Rheingold.CoreFramework.LicenseManagement` 下的`LicenseStatusChecker`，对其稍作整理，可得如下代码。
+
+```csharp
+using System;
+using System.IO;
+using System.Linq;
+using System.Management;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+using BMW.Rheingold.CoreFramework.IndustrialCustomer;
+using BMW.Rheingold.CoreFramework.IndustrialCustomer.Manager;
+
+namespace BMW.Rheingold.CoreFramework.LicenseManagement
+{
+  public class LicenseStatusChecker
+  {
+    internal LicenseStatus Check(LicenseInfo testLicInfo)
+    {
+      if (IsToyota())
+      {
+        return IsValidToyotaLicense();
+      }
+      return IsLicenseValid(testLicInfo, false);
+    }
+    
+    private static bool IsToyota()
+    {
+      return IndustrialCustomerManager.Instance.IsIndustrialCustomerBrand("TOYOTA");
+    }
+    
+    private static LicenseStatus IsValidToyotaLicense()
+    {
+      if (IndustrialCustomerManager.Instance.Worker.LicenseStatus != IndustrialCustomerLicenseStatus.VALID)
+      {
+        return LicenseStatus.INVALID;
+      }
+      return LicenseStatus.VALID;
+    }
+    
+    internal LicenseStatus IsLicenseValid(LicenseInfo testLicInfo, bool isid)
+    {
+      try
+      {
+        if (testLicInfo == null)
+        {
+          return LicenseStatus.INVALID;
+        }
+        LicenseInfo licenseInfo = (LicenseInfo)testLicInfo.Clone();
+        GetComputerCharacteristics(isid, licenseInfo);
+        foreach (byte[] second in Licenses.RevocationList)
+        {
+          if (licenseInfo.ComputerCharacteristics.SequenceEqual(second))
+          {
+            return LicenseStatus.INVALID;
+          }
+        }
+        if (IsInvalidISIDLicense(isid, licenseInfo))
+        {
+          Log.Error(string.Empty, "ISTA Activation failed", Array.Empty<object>());
+          return LicenseStatus.INVALID;
+        }
+        byte[] licenseKey = licenseInfo.LicenseKey;
+        licenseInfo.LicenseKey = new byte[0];
+        var hashValueFrom = GetHashValueFrom(licenseInfo);
+        if (hashValueFrom == null || licenseKey == null)
+        {
+          Log.Warning(string.Empty, "ISTA Activation failed", Array.Empty<object>());
+          return LicenseStatus.INVALID;
+        }
+        if (CoreFramework.DebugLevel > 0)
+        {
+          Log.Info(string.Empty, "Start to verify...", Array.Empty<object>());
+        }
+        if (!GetRSAPKCS1SignatureDeformatter().VerifySignature(hashValueFrom, licenseKey))
+        {
+          Log.Warning(string.Empty, "ISTA Activation failed", Array.Empty<object>());
+          return LicenseStatus.INVALID;
+        }
+        ulong num = RuntimeEnvironment.GetSubversion(0);
+        ulong num2 = RuntimeEnvironment.GetSubversion(1);
+        var eax = 0U;
+        var ebx = 0U;
+        var ecx = 0U;
+        var edx = 0U;
+        RuntimeEnvironment.GetSubVersion(1, out eax, out ebx, out ecx, out edx);
+        ecx.IsBitSet(31);
+        if (CoreFramework.DebugLevel > 0)
+        {
+          Log.Info(string.Empty, "Environment found: {0:X} {1:X}", new object[]
+          {
+            num,
+            num2
+          });
+          Log.Info(string.Empty, "CPU features found: {0:X} {1:X} {2:X} {3:X}", new object[]
+          {
+            eax,
+            ebx,
+            ecx,
+            edx
+          });
+        }
+        if (EnvCheck())
+        {
+          if (licenseInfo.SubLicenses != null)
+          {
+            foreach (LicensePackage licensePackage in licenseInfo.SubLicenses)
+            {
+              if (string.Equals(licensePackage.PackageName, "SyntheticEnv") && (licensePackage.PackageExpire == DateTime.MinValue || licensePackage.PackageExpire > DateTime.Now))
+              {
+                return LicenseStatus.VALID;
+              }
+            }
+          }
+          return LicenseStatus.INVALID;
+        }
+        if (licenseInfo.Expiration > DateTime.Now)
+        {
+          Log.Debug(string.Empty, "ISTA Activation succeeded", Array.Empty<object>());
+          return LicenseStatus.VALID;
+        }
+        Log.Warning(string.Empty, "ISTA Activation failed", Array.Empty<object>());
+        return LicenseStatus.EXPIRED;
+      }
+      catch
+      {
+        Log.Warning(string.Empty, "ISTA Activation failed", Array.Empty<object>());
+      }
+      return LicenseStatus.INVALID;
+    }
+    
+    private void GetComputerCharacteristics(bool isid, LicenseInfo licenseInfo)
+    {
+      if (isid)
+      {
+        licenseInfo.ComputerCharacteristics = characteristicsGenerator.GetISIDCharacteristics();
+        return;
+      }
+      licenseInfo.ComputerCharacteristics = characteristicsGenerator.GetComputerCharacteristics();
+    }
+    
+    private byte[] GetHashValueFrom(LicenseInfo licInfo)
+    {
+      var memoryStream = new MemoryStream();
+      new XmlSerializer(typeof(LicenseInfo)).Serialize(memoryStream, licInfo);
+      var buffer = memoryStream.GetBuffer();
+      if (CoreFramework.DebugLevel > 0)
+      {
+        Log.Info(string.Empty, "licInfo stream: {0}", new object[]
+        {
+          FormatConverter.ByteArray2String(buffer, (uint)buffer.Length)
+        });
+      }
+      return SHA1.Create().ComputeHash(buffer);
+    }
+    
+    private RSAPKCS1SignatureDeformatter GetRSAPKCS1SignatureDeformatter()
+    {
+      var rsacryptoServiceProvider = new RSACryptoServiceProvider();
+      rsacryptoServiceProvider.ImportParameters(new RSAParameters
+      {
+        Modulus = Convert.FromBase64String("6HCAK5V6K6BeeSyEt2ywgS2SmoCNDD4Y+JJ3imZjQIkiL0z0TOBZ9VbuUXzLCE30bwuCcprQDlg+mkd7xYqnBmDdkOFYliv43dHwAWQN+jxwQYSohr7EAEIoAsy4J2/y8scuJTsUXJ15uyeyYafZduiriJutNny1jQDhJCNR8fiT/cO27c8oJb5vF1eH7geaG3fj3RCgg+nTRAEQUnywaYNLT5F1ULRqwO7qcVYcOtw9eVqtvkagVXtysSyKbvW7nAzgGwnbVFyXPkO86kmjraa5iqan+TWjh5oAkjR50xuKVC2O1P7lHezrKfHHTtAtaEtrDMf/WfWry8muMmKDNQ=="),
+        Exponent = Convert.FromBase64String("AQAB")
+      });
+      var rsapkcs1SignatureDeformatter = new RSAPKCS1SignatureDeformatter(rsacryptoServiceProvider);
+      rsapkcs1SignatureDeformatter.SetHashAlgorithm("SHA1");
+      return rsapkcs1SignatureDeformatter;
+    }
+    
+    private static bool IsInvalidISIDLicense(bool isid, LicenseInfo licInfo)
+    {
+      return isid && !string.IsNullOrEmpty(licInfo.ComputerName) && !Regex.Match(Environment.MachineName, licInfo.ComputerName).Success;
+    }
+
+    public static bool EnvCheck()
+    {
+      using (ManagementObjectSearcher managementObjectSearcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem"))
+      {
+        using (ManagementObjectCollection managementObjectCollection = managementObjectSearcher.Get())
+        {
+          foreach (ManagementBaseObject managementBaseObject in managementObjectCollection)
+          {
+            string text = managementBaseObject["Manufacturer"].ToString().ToLower();
+            if ((text == "microsoft corporation" && managementBaseObject["Model"].ToString().ToUpperInvariant().Contains("VIRTUAL")) || text.Contains("vmware") || text.Contains("parallels") || managementBaseObject["Model"].ToString() == "VirtualBox")
+            {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+    
+    private CharacteristicsGenerator characteristicsGenerator = new CharacteristicsGenerator();
+  }
+}
+```
+
+内容也很有意思，可以发现，换标Z4的丰田的Supra，也是使用这套程序进行车辆诊断，但是使用的是另一套激活证书，两者并不通用。
+
+同时还可以看到简单的对虚拟机的校验，这应该也就是有些地方反复强调不能在虚拟机下安装的原因吧。
+
+显然，简单地将`IsLicenseValid`的返回值，修改为`LicenseStatus.VALID`，就不再存在校验这个操作了。
+
+## 完成激活
+
+由于本文成形于完成激活之后，对于具体激活码的格式，碍于程序大小，我暂时无法进行更多的尝试，简单说明一成功案例。
+
+当对key进行`base64`解码后如下时：
+```xml
+<?xml version="1.0"?>
+<LicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/LicenseInfo.xsd">
+  <Name>Your_Name</Name>
+  <Email>your_email_here@bmw.de</Email>
+  <Expiration>0001-01-01T00:00:00</Expiration>
+  <Comment>Enter some information about you here; like department and what you are doing.</Comment>
+  <ComputerName>COMPUTER_NAME_HERE</ComputerName>
+  <UserName>USER_NAME_HERE</UserName>
+  <AvailableBrandTypes>*</AvailableBrandTypes>
+  <AvailableLanguages>*</AvailableLanguages>
+  <AvailableOperationModes>*</AvailableOperationModes>
+  <DistributionPartnerNumber>*</DistributionPartnerNumber>
+  <ComputerCharacteristics>COMPUTER_CHARACTERISTICS_HERE</ComputerCharacteristics>
+  <LicenseKey xsi:nil="true" />
+  <LicenseServerURL xsi:nil="true" />
+  <LicenseType>offline</LicenseType>
+  <SubLicenses>
+    <PackageName>SysVersion</PackageName>
+    <PackageVersion>4.34.40.26161</PackageVersion>
+    <PackageExpire>0001-01-01T00:00:00</PackageExpire>
+  </SubLicenses>
+  <SubLicenses>
+    <PackageName>OperationalMode</PackageName>
+    <PackageVersion>ISTA_PLUS</PackageVersion>
+    <PackageExpire>0001-01-01T00:00:00</PackageExpire>
+  </SubLicenses>
+</LicenseInfo>
+```
+
+对应的激活码在`base64`编码前应形如下，其中的`LicenseKey`是从程序中拷贝出来的样例中的一个，具体值无要求。
+注意调整`COMPUTER_NAME_HERE`、`USER_NAME_HERE`、`COMPUTER_CHARACTERISTICS_HERE`，这三个参数可能是会在其他地方用到的。
+
+```xml
+<?xml version="1.0"?>
+<LicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/LicenseInfo.xsd">
+  <Name>Your_Name</Name>
+  <Email>your_email_here@bmw.de</Email>
+  <Expiration>2099-05-01T00:00:00</Expiration>
+  <Comment />
+  <ComputerName>COMPUTER_NAME_HERE</ComputerName>
+  <UserName>USER_NAME_HERE</UserName>
+  <AvailableBrandTypes>*</AvailableBrandTypes>
+  <AvailableLanguages>*</AvailableLanguages>
+  <AvailableOperationModes>*</AvailableOperationModes>
+  <DistributionPartnerNumber>*</DistributionPartnerNumber>
+  <ComputerCharacteristics>COMPUTER_CHARACTERISTICS_HERE</ComputerCharacteristics>
+  <LicenseKey>cLx6S3h9q7XdEbVuTMn4qNgkG+PQk2NDwbytMFK6mMvPtm+qC5t67bMsx/lntZkyPALFlMrbhHYWnx4xCsP5G6CHUxpUCP5XLhak3ipm3Bou+229lJRwAAHz0IH91vC4QnILJEuBWlPcrUV/oZKoN47hXiLxQ19O0jHw1cuuhqs=</LicenseKey>
+  <LicenseServerURL xsi:nil="true" />
+  <LicenseType>offline</LicenseType>
+</LicenseInfo>
+```
+
+对上述激活码进行`base64`编码并粘贴到系统中，即可点击下一步进行激活，重启后即可正常使用。
+
+![完成激活](/img/bmw-ISTAP/05-actived.png)
+
+## 范围统计
+
+对于完整性校验`IntegrityManager`，共涉及3个`exe`，具体如下
+- ISTAGUI.exe
+- IstaOperation.exe
+- IstaServicesHost.exe
+
+对于完整性校验`CheckSignature`，共涉及1个`dll`，具体如下
+- RheingoldCoreFramework.dll
+
+对于激活码校验`IsLicenseValid`，共涉及1个`exe`、21个`dll`，具体如下
+- Authoring.dll
+- IstaOperationImpl.dll
+- IstaOperationController.dll
+- IstaServicesImpl.dll
+- RGSPC.exe
+- RheingoldCoreFramework.dll
+- RheingoldDatabaseOracleConnector.dll
+- RheingoldDatabasePostgreSQLConnector.dll
+- RheingoldDatabaseSQLiteConnector.dll
+- RheingoldDiagnostics.dll
+- RheingoldFASTA.dll
+- RheingoldInfoProvider.dll
+- RheingoldISPINext.dll
+- RheingoldISTACoreFramework.dll
+- RheingoldMeasurement.dll
+- RheingoldMeasurementCommunication.dll
+- RheingoldPresentationFramework.dll
+- RheingoldProgramming.dll
+- RheingoldSessionController.dll
+- RheingoldVehicleCommunication.dll
+- RheingoldxVM.dll
+- WsiDataProvider.dll
+
+## 总结
+
+由于当前仅在系统中纯安装了该软件，而未实际连接OBD测试是否具体功能上也已经可用，当前还待进一步的测试。有机会后续再进行更新。
+
+而这时候反过来翻看论坛的版本其主程序甚至使用`safengine shielden`进行了加壳。并对签名校验部分的公钥进行了调换。属实有趣。

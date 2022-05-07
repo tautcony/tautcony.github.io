@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "ISTA+程序许可证校验逻辑与绕行方法"
+title:      "ISTA+程序许可证校验与绕行"
 subtitle:   ""
 date:       2022-05-06
 author:     "TautCony"
@@ -15,9 +15,11 @@ tags:
     - C#
 ---
 
-ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW Group车辆诊断和编程应用使用。作为经销商使用的软件，宝马为该程序添加了许可证校验无可厚非。但是它在互联网流传过程中，不但其本体获取存在一定的困难，其许可证的获取也颇有意思，与我们通常能够看到的破解软件有着一定的区别。近日在网上获取到一套完整的安装程序，故对其进行了对应的探究。
+ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW Group车辆诊断和编程应用使用。近日获取到了安装程序与对应的数据库，故对其进行了相应的探究。
 
 <!--more-->
+
+作为经销商使用的软件，宝马为该程序添加了许可证校验无可厚非。但是它在互联网流传过程中，不但其本体获取存在一定的困难，其许可证的获取也颇有意思，与我们通常能够看到的破解软件有着一定的区别。
 
 程序安装前总计约`23.1GB`，完成安装后总计约`124GB`，蔚为壮观，主要由对应的数据库文件所组成。
 
@@ -541,6 +543,17 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 显然，简单地将`IsLicenseValid`的返回值，修改为`LicenseStatus.VALID`，就不再存在校验这个操作了。
 
+---
+
+但是，仅对以上部分进行修改，看似系统已经能够正常使用了，但是选择完车辆信息后，仍然无法查看维护信息，进步检索发现namespace`BMW.Rheingold.CoreFramework`下的`LicenseManager`另一个激活码校验函数`VerifyLicense`，由于校验函数本身的状态机反编译出来缺乏可读性，就不再进行粘贴了。同样进行相应的移除处理。
+
+```csharp
+internal static void VerifyLicense()
+{
+  LicenseManager.VerifyLicense(false);
+}
+```
+
 ## 完成激活
 
 由于本文成形于完成激活之后，对于具体激活码的格式，碍于程序大小，我暂时无法进行更多的尝试，简单说明一成功案例。
@@ -605,16 +618,19 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 ## 范围统计
 
-对于完整性校验`IntegrityManager`，共涉及3个`exe`，具体如下
+对于完整性校验`IntegrityManager::ctor`，共涉及3个`exe`、2个`dll`，具体如下
 - ISTAGUI.exe
 - IstaOperation.exe
+- IstaOperationImpl.dll
 - IstaServicesHost.exe
+- IstaServicesImpl.dll
 
-对于完整性校验`CheckSignature`，共涉及1个`dll`，具体如下
+对于完整性校验`IstaProcessStarter::CheckSignature`，共涉及1个`dll`，具体如下
 - RheingoldCoreFramework.dll
 
-对于激活码校验`IsLicenseValid`，共涉及1个`exe`、21个`dll`，具体如下
+对于激活码校验`LicenseStatusChecker::IsLicenseValid`，共涉及2个`exe`、21个`dll`，具体如下
 - Authoring.dll
+- ISTAGUI.exe
 - IstaOperationImpl.dll
 - IstaOperationController.dll
 - IstaServicesImpl.dll
@@ -636,6 +652,31 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 - RheingoldVehicleCommunication.dll
 - RheingoldxVM.dll
 - WsiDataProvider.dll
+
+对于激活码校验`LicenseManager::VerifyLicense`，共涉及2个`exe`、20个`dll`，具体如下
+- Authoring.dll
+- ISTAGUI.exe
+- IstaOperationController.dll
+- IstaOperationImpl.dll
+- IstaServicesImpl.dll
+- RGSPC.exe
+- RheingoldDatabaseOracleConnector.dll
+- RheingoldDatabasePostgreSQLConnector.dll
+- RheingoldDatabaseSQLiteConnector.dll
+- RheingoldDiagnostics.dll
+- RheingoldFASTA.dll
+- RheingoldInfoProvider.dll
+- RheingoldISPINext.dll
+- RheingoldISTACoreFramework.dll
+- RheingoldMeasurement.dll
+- RheingoldMeasurementCommunication.dll
+- RheingoldPresentationFramework.dll
+- RheingoldProgramming.dll
+- RheingoldSessionController.dll
+- RheingoldVehicleCommunication.dll
+- RheingoldxVM.dll
+- WsiDataProvider.dll
+
 
 ## 总结
 

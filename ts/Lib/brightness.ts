@@ -29,7 +29,7 @@ class BrightnessWatcher {
                 brightness: 0,
                 enable: false,
             };
-            Cookies.set("brightness", this.config);
+            Cookies.set("brightness", JSON.stringify(this.config));
         }
         this.update();
     }
@@ -56,7 +56,7 @@ class BrightnessWatcher {
 
     private update() {
         this.maskDiv.style.outlineColor = `rgba(0, 0, 0, ${this.config.brightness / 100})`;
-        Cookies.set("brightness", this.config);
+        Cookies.set("brightness", JSON.stringify(this.config));
     }
 }
 

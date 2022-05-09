@@ -96,8 +96,8 @@ google-site-verification: "k_t-1fgBwmMc3UsE3yUU5zGQbRN2a0cl-HljKO2odqY"
 # Analytics settings
 # Baidu Analytics
 ##ba_track_id:
-# Google Analytics
-ga_track_id: 'UA-110146907-1'            # Format: UA-xxxxxx-xx
+# Google Analytics 4
+ga_measurement_id: 'G-D7DJK0DHRY'            # Format: G-XXXXXXXXXX
 
 
 

@@ -17,8 +17,7 @@
     "build:prod": "npx webpack --config build/webpack.prod.conf.js",
     "build:update": "npx webpack --config build/webpack.update.conf.js",
     "start": "bundle exec jekyll server -I -H 0.0.0.0",
-    "start:l": "bundle exec jekyll server -I -l -H 0.0.0.0",
-    "commit": "git-cz"
+    "start:l": "bundle exec jekyll server -I -l -H 0.0.0.0"
   },
   "config": {
     "commitizen": {
@@ -61,10 +60,8 @@
     "ajv": "^8.11.0",
     "autoprefixer": "^10.4.7",
     "babel-loader": "^8.2.5",
-    "commitizen": "^4.2.4",
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.7",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.15.0",
     "eslint-loader": "^4.0.2",
     "file-loader": "^6.2.0",

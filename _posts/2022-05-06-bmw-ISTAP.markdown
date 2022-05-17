@@ -37,7 +37,7 @@ ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW 
 
 ---
 
-以下内容均以版本`4.34.40.26161`为基础
+以下内容均以版本`4.34.40.26161`为基础，在升级`4.35.18.26579`后发现该方案尚不完善，无法在新版本上直接应用，具体原因待排查。
 
 从程序入口出发，使用`dnSpy`打开程序`ISTAGUI.exe`，检查程序组成，原则上，是宁可错杀不可放过，对于相关的校验逻辑，都进行对应的处理。
 
@@ -209,6 +209,8 @@ namespace BMW.Rheingold.SecurityAndLicense
 考虑到程序端不存在RSA私钥，使用RSA公钥来校验完整性，看似安全，但是，通过自行生成一对密钥对文件重新进行签名。这样一来，就能够更新上述列表中任意文件而不会触发起校验的异常。
 
 以上方法属于顺着程序本身的思路来的。实际操作上，直接将这段代码移除，就会使校验不通过导致程序退出这个情况彻底不存在。
+
+PS: 此处有一个暗坑，`enc_cne_1.prg`中的文件列表，不包含`IstaOperation.exe`，如果以其其中的列表作为执行补丁的范围，则会导致该文件被漏掉，然而该程序中，却是包含`IntegrityManager`的，从而导致整个程序的部分功能，没法正常执行。
 
 ---
 
@@ -396,7 +398,7 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 }
 ```
 
-内容也很有意思，可以发现，换标Z4的丰田的Supra，也是使用这套程序进行车辆诊断，但是使用的是另一套激活码，两者并不通用。
+内容也很有意思，可以发现，换标Z4的丰田的Supra，也是使用这套程序进行车辆诊断，但是使用的是另一套激活码，两者并不通用。其程序本体两者也并不通用，破解方式也有所区别，暂时还未具体研究，这里不作展开了。
 
 可以发现，首先，它对收到的`LicenseInfo`序列化求SHA-1（估计不包含`licenseKey`），同时提取出其中的`licenseKey`，然后用程序预置的公钥初始化`RSAPKCS1SignatureDeformatter`验证签名是否有效。
 
@@ -412,35 +414,7 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 ## 完成激活
 
-根据对校验逻辑的了解，应该提供一个格式符合要求的`xml`激活码即可，时间上往后调，比如下面这个。
-
-```xml
-<?xml version="1.0"?>
-<LicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/LicenseInfo.xsd">
-  <Name>BMW Group MOSSR2</Name>
-  <Email>Rheingold@list.bmw.com</Email>
-  <Expiration>2099-01-01T00:00:00</Expiration>
-  <Comment />
-  <ComputerName xsi:nil="true" />
-  <UserName>*</UserName>
-  <AvailableBrandTypes>*</AvailableBrandTypes>
-  <AvailableLanguages>*</AvailableLanguages>
-  <AvailableOperationModes>*</AvailableOperationModes>
-  <DistributionPartnerNumber>*</DistributionPartnerNumber>
-  <ComputerName xsi:nil="true" />
-  <UserName xsi:nil="true" />
-  <AvailableBrandTypes xsi:nil="true" />
-  <AvailableLanguages xsi:nil="true" />
-  <AvailableOperationModes>*</AvailableOperationModes>
-  <DistributionPartnerNumber xsi:nil="true" />
-  <ComputerCharacteristics>Sbtxbiu5H2VNdR6mG4FMuXUZtKs=</ComputerCharacteristics>
-  <LicenseKey>ns2yqXF/fpFszAtyUCYRJW6ddaE5HZnmw4f9k2jVhq4kwFn9hpoDvFxlMDSklTyoDUeYJ1fNHxSOQNrgsenSRfnAaD3Wu8wKxpX2nitxFuBgPgSe1F4cYGQCRGTzB7V87zpxELeHdsGRatX/+FRIrZSPtGETZEIFtCdlZEUkj6Y=</LicenseKey>
-  <LicenseServerURL xsi:nil="true" />
-  <LicenseType>offline</LicenseType>
-</LicenseInfo>
-```
-
-对上述激活码进行`base64`编码并粘贴到系统中，即可点击下一步进行激活，重启后即可正常使用。
+对相应文件进行替换之后，理论上启动时无需输入相关信息。
 
 ![完成激活](/img/bmw-ISTAP/05-actived.png)
 
@@ -450,8 +424,11 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 ## 范围统计
 
+此处仅挑选最主要的补丁内容，其余的请参见具体程序实现。
+
 应用完整性校验`IntegrityManager::.ctor`
 - ISTAGUI.exe
+- IstaOperation.exe
 - IstaOperationImpl.dll
 - IstaServicesHost.exe
 - IstaServicesImpl.dll
@@ -481,11 +458,6 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 - RheingoldxVM.dll
 - WsiDataProvider.dll
 
-
-程序签名校验`IstaProcessStarter::CheckSignature`
-- RheingoldCoreFramework.dll
-
-
 激活码有效性校验`LicenseManager::VerifyLicense`
 - Authoring.dll
 - ISTAGUI.exe
@@ -511,63 +483,6 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 - WsiDataProvider.dll
 
 
-激活码有效性校验`LicenseAOSManager::VerifyLicense`
-- Authoring.dll
-- ISTAGUI.exe
-- IstaOperationController.dll
-- IstaOperationImpl.dll
-- IstaServicesImpl.dll
-- RGSPC.exe
-- RheingoldDatabaseOracleConnector.dll
-- RheingoldDatabasePostgreSQLConnector.dll
-- RheingoldDatabaseSQLiteConnector.dll
-- RheingoldDiagnostics.dll
-- RheingoldFASTA.dll
-- RheingoldInfoProvider.dll
-- RheingoldISPINext.dll
-- RheingoldISTACoreFramework.dll
-- RheingoldMeasurement.dll
-- RheingoldMeasurementCommunication.dll
-- RheingoldPresentationFramework.dll
-- RheingoldProgramming.dll
-- RheingoldSessionController.dll
-- RheingoldVehicleCommunication.dll
-- RheingoldxVM.dll
-- WsiDataProvider.dll
-
-
-程序签名校验`IstaIcsServiceClient::ValidateHost` 和 激活码有效性校验`IstaIcsServiceClient::VerifyLicense`
-- IstaServicesClient.dll
-
-
-激活码有效性校验`CommonServiceWrapper::VerifyLicense`
-- RheingoldISPINext.dll
-
-
-激活码有效性校验`LicenseWizardHelper::DoLicenseCheck`
-- Authoring.dll
-- ISTAGUI.exe
-- IstaOperationController.dll
-- IstaOperationImpl.dll
-- IstaServicesImpl.dll
-- RGSPC.exe
-- RheingoldDatabaseOracleConnector.dll
-- RheingoldDatabasePostgreSQLConnector.dll
-- RheingoldDatabaseSQLiteConnector.dll
-- RheingoldDiagnostics.dll
-- RheingoldFASTA.dll
-- RheingoldInfoProvider.dll
-- RheingoldISPINext.dll
-- RheingoldISTACoreFramework.dll
-- RheingoldMeasurement.dll
-- RheingoldMeasurementCommunication.dll
-- RheingoldPresentationFramework.dll
-- RheingoldProgramming.dll
-- RheingoldSessionController.dll
-- RheingoldVehicleCommunication.dll
-- RheingoldxVM.dll
-- WsiDataProvider.dll
-
 ## 总结
 
 由于当前仅在系统中纯安装了该软件，而未实际连接OBD测试是否具体功能上也已经可用，当前还待进一步的测试。有机会后续再进行更新。
@@ -578,4 +493,5 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 在编写程序化补丁程序的过程中发现了程序中额外的几个激活码校验函数，由于已经完成补丁程序的编写，就不赘述其他部分的变动了，详见[ISTA-Patcher](https://github.com/tautcony/ISTA-Patcher)
 
-剩余待办的还剩下实机验证该补丁的可用性与对源代码中的加密字符串进行解密，以提高代码的可阅读性。
+原版程序可以在[这里](https://autosvs.com/help/bmw-ista-4-27-download)下到。
+Supra程序可以在其[官网](https://www.toyota-tech.eu/DiagnosticTools/Software/ISTA)下到。

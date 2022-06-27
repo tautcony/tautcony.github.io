@@ -41,6 +41,8 @@ ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW 
 
 从程序入口出发，使用`dnSpy`打开程序`ISTAGUI.exe`，检查程序组成，原则上，是宁可错杀不可放过，对于相关的校验逻辑，都进行对应的处理。
 
+稍作检查，能发现，程序使用`dotfuscator`进行了较为轻度的混淆，主要是部分逻辑流程的打乱和字符串的不可直接识读。使用`de4dot`可较为方便得除去相关混淆逻辑。
+
 ## 完整性校验
 
 很快，类型`BMW.Rheingold.SecurityAndLicense.IntegrityManager`引起了注意，其构造函数是校验程序完整性的代码，对其稍作整理，可得如下代码。
@@ -418,6 +420,15 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 ![完成激活](/img/bmw-ISTAP/05-actived.png)
 
+保险起见，可以执行如下注册表文件，确保程序在一些情况下，能正常读取到一个非空的证书信息
+
+```reg
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold]
+"License"="<?xml version=\"1.0\"?><LicenseInfo xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://tempuri.org/LicenseInfo.xsd\"><Name>BMW Group MOSSR2</Name><Email>your_email_here@bmw.de</Email><Expiration>2099-05-01T00:00:00</Expiration><Comment /><ComputerName xsi:nil=\"true\" /><UserName>*</UserName><AvailableBrandTypes>*</AvailableBrandTypes><AvailableLanguages>*</AvailableLanguages><AvailableOperationModes>*</AvailableOperationModes><DistributionPartnerNumber>*</DistributionPartnerNumber><ComputerCharacteristics>wePC9Q9xawMjVPA2fkMVvioHNtA=</ComputerCharacteristics><LicenseKey>cLx6S3h9q7XdEbVuTMn4qNgkG+PQk2NDwbytMFK6mMvPtm+qC5t67bMsx/lntZkyPALFlMrbhHYWnx4xCsP5G6CHUxpUCP5XLhak3ipm3Bou+229lJRwAAHz0IH91vC4QnILJEuBWlPcrUV/oZKoN47hXiLxQ19O0jHw1cuuhqs=</LicenseKey><LicenseServerURL xsi:nil=\"true\" /><LicenseType>offline</LicenseType></LicenseInfo>"
+```
+
 另外的，编程功能需要修改注册表配置为`True`方可启用，路径为`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold`
 - BMW.Rheingold.Programming.Enabled
 - BMW.Rheingold.Programming.ExpertMode
@@ -433,6 +444,8 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 - IstaServicesHost.exe
 - IstaServicesImpl.dll
 
+应用完整性校验`IstaProcessStarter::CheckSignature`
+- RheingoldCoreFramework.dll
 
 激活码有效性校验`LicenseStatusChecker::IsLicenseValid`
 - Authoring.dll

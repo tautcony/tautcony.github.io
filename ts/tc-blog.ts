@@ -2,6 +2,9 @@ import "core-js/es";
 import "regenerator-runtime/runtime";
 import "whatwg-fetch";
 
+import * as Sentry from "@sentry/browser";
+import { BrowserTracing } from "@sentry/tracing";
+
 import Nav from "./Lib/navbar";
 import Quote from "./Lib/quote";
 import Title from "./Lib/title";
@@ -10,10 +13,16 @@ import Archive from "./archive";
 import { generateCatalog, pageInit } from "./page";
 import postInit from "./post";
 import * as aboutInit from "./about";
+
 require("../less/tc-blog.less");
 require("heti/lib/heti.scss");
-
 import Heti from "heti/js/heti-addon.js";
+
+Sentry.init({
+    dsn: "https://24f09a831bb64823a88e88b918b2bb4f@o955448.ingest.sentry.io/6683081",
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 0.25,
+});
 
 window["generateCatalog"] = generateCatalog;
 document.addEventListener("DOMContentLoaded", () => {

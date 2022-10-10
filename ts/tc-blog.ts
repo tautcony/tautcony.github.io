@@ -44,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
         size: { start: 1, end: 1.1, unit: "em" },
     };
     tagcloud(document.querySelectorAll("#tag_cloud a"), config);
+    if (window["$crisp"] !== undefined) {
+        window["$crisp"].push(["safe", true]);
+    }
 });
 if (typeof XPathResult !== "undefined") {
     const heti = new Heti(".heti");

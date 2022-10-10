@@ -1,4 +1,5 @@
 import {util_ui_element_creator as _} from "./utils";
+import axios from "axios";
 
 export interface Info {
     tagName: string;
@@ -41,7 +42,7 @@ export default class Quote {
     }
 
     public Init(timeout: number) {
-        this.FetchData(() => {
+        this.FetchData().then(() => {
             this.UpdateQuote();
             this.Interval(timeout);
         });
@@ -75,25 +76,17 @@ export default class Quote {
         }, timeout);
     }
 
-    private FetchData(callBack: () => void) {
+    private async FetchData() {
         const baseurl = (document.head.querySelector("meta[name=baseurl]") as HTMLMetaElement).content;
         let url = "/json/quote.json";
         if (baseurl !== undefined && baseurl !== "") {
             url = baseurl + url;
         }
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.onload = () => {
-            if (xhr.readyState === 4 && xhr.getResponseHeader("content-type").indexOf("application/json") !== -1) {
-                this.quotes = JSON.parse(xhr.responseText) as IFormat[];
-                callBack();
-            } else {
-                console.error(xhr);
-            }
-        };
-        xhr.onerror = () => {
-            console.error(xhr.statusText);
-        };
-        xhr.send();
+
+        return axios.get(url).then(response => {
+            this.quotes = response.data as IFormat[];
+        }).catch(err => {
+            console.warn("Failed to load quote.json", err);
+        });
     }
 }

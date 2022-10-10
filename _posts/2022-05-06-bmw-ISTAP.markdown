@@ -429,6 +429,8 @@ Windows Registry Editor Version 5.00
 "License"="<?xml version=\"1.0\"?><LicenseInfo xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://tempuri.org/LicenseInfo.xsd\"><Name>BMW Group MOSSR2</Name><Email>your_email_here@bmw.de</Email><Expiration>2099-05-01T00:00:00</Expiration><Comment /><ComputerName xsi:nil=\"true\" /><UserName>*</UserName><AvailableBrandTypes>*</AvailableBrandTypes><AvailableLanguages>*</AvailableLanguages><AvailableOperationModes>*</AvailableOperationModes><DistributionPartnerNumber>*</DistributionPartnerNumber><ComputerCharacteristics>wePC9Q9xawMjVPA2fkMVvioHNtA=</ComputerCharacteristics><LicenseKey>cLx6S3h9q7XdEbVuTMn4qNgkG+PQk2NDwbytMFK6mMvPtm+qC5t67bMsx/lntZkyPALFlMrbhHYWnx4xCsP5G6CHUxpUCP5XLhak3ipm3Bou+229lJRwAAHz0IH91vC4QnILJEuBWlPcrUV/oZKoN47hXiLxQ19O0jHw1cuuhqs=</LicenseKey><LicenseServerURL xsi:nil=\"true\" /><LicenseType>offline</LicenseType></LicenseInfo>"
 ```
 
+并在`EC-APPS\ISTA\TesterGUI\bin\Release`下增加`License.xml`，内容同上，注意字符串转义。
+
 另外的，编程功能需要修改注册表配置为`True`方可启用，路径为`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold`
 - BMW.Rheingold.Programming.Enabled
 - BMW.Rheingold.Programming.ExpertMode

@@ -30,16 +30,9 @@ SocialAccount: [
     },
     {
         title: "steam",
-        href: "https://steamcommunity.com/profiles/tautcony",
+        href: "https://steamcommunity.com/id/tautcony",
         icon: "fa-steam",
         content: ""
-    },
-    {
-        title: "asciiflow",
-        href: "/apps/asciiflow2",
-        icon: "fa-terminal",
-        content: "",
-        in_sidebar: false
     }
 ]
 

@@ -3,6 +3,7 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
@@ -32,7 +33,7 @@ const babelConfig = {
 };
 
 module.exports = {
-    target: "web",
+    target: "browserslist",
     entry: path.join(__dirname, "..", "ts", "tc-blog"),
     output: {
         filename: "js/tc-blog.min.js",
@@ -129,6 +130,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/tc-blog.min.css",
         }),
+        new ESLintPlugin({}),
         new webpack.BannerPlugin(banner),
     ],
     resolve: {

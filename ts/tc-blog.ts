@@ -21,7 +21,7 @@ import Heti from "heti/js/heti-addon.js";
 Sentry.init({
     dsn: "https://24f09a831bb64823a88e88b918b2bb4f@o955448.ingest.sentry.io/6683081",
     integrations: [new BrowserTracing()],
-    tracesSampleRate: 0.25,
+    tracesSampleRate: 1,
 });
 
 window["generateCatalog"] = generateCatalog;

@@ -31,7 +31,7 @@ ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW 
 
 程序本身，不论是从哪里找到下载也好，还是从什么论坛购买也好，这都是很正常的情况。但是到这个具体激活的地方，不论是国内论坛还是国外论坛，都可以见到一种，你执行到这一步，获取到`key`，将这个`key`通过私信发给某个人，由他将对应的`license`发给你的操作流程。
 
-而这一步，是免费的。这里，就是有意思的地方了。似乎是有人掌握了`keygen`但是并没有将其与软件一并公开，虽然不公开，也没有借此进行盈利，着实有点没有理解其背后具体的原因。
+而这一步，是免费的。这里，就是有意思的地方了。似乎是有人掌握了`keygen`但是并没有将其与软件一并公开，虽然不公开，也没有借此进行盈利，着实有点没有理解其背后具体的原因。同时其主程序甚至使用`safengine shielden`进行了加壳。并对签名校验部分的公钥进行了调换。属实有趣。
 
 扯远了，还是回归主题，那么从程序主入口入手，稍作检查，GUI部分是使用`.NETFramework 4.8`编写的，那就好办了，代码的查看、编辑等都会方便很多。
 
@@ -410,26 +410,26 @@ namespace BMW.Rheingold.CoreFramework.LicenseManagement
 
 ---
 
-但是，仅对以上部分进行修改，看似系统已经能够正常使用了，但是选择完车辆信息后，仍然无法查看维护信息，进步检索发现类型`BMW.Rheingold.CoreFramework.LicenseManager`中的`VerifyLicense`函数，由于校验函数本身的状态机反编译出来缺乏可读性，同时字符串进行了一定的编码，也无法直接识读，就不再进行粘贴了。同样进行相应的移除处理。
+但是，仅对以上部分进行修改，看似系统已经能够正常使用了，但是选择完车辆信息后，仍然无法查看维护信息，进步检索发现类型`BMW.Rheingold.CoreFramework.LicenseManager`中的`VerifyLicense`函数，也是大同小异，分门别类地进行了校验，或者比如不允许系统时间早于程序编译时间等等。
 
-以上就是系统能够正常查看维护手册所需要进行的补丁内容，后续还找到额外的一些检查，具体各个函数涉及到的范围尚不明确，具体详见文末的总清单。
+以上就是系统能够正常查看维护手册所需要进行的补丁内容，由于没有使用过正常激活的程序，有一些可能还是有所遗漏。
 
 ## 完成激活
 
-对相应文件进行替换之后，理论上启动时无需输入相关信息。
+对相应文件进行替换之后，理论上启动时无需输入相关信息，可直接进入。
 
 ![完成激活](/img/bmw-ISTAP/05-actived.png)
 
-保险起见，可以执行如下注册表文件，确保程序在一些情况下，能正常读取到一个非空的证书信息
+但是在使用过程中，日志里还是能看到许多提示激活失败的记录，使用却无大碍，经排查，可以在注册表或者配置文件增加一个证书，确保程序在一些情况下，能正常读取到一个非空的证书信息，以减少这类报错。
 
 ```reg
 Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold]
-"License"="<?xml version=\"1.0\"?><LicenseInfo xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://tempuri.org/LicenseInfo.xsd\"><Name>BMW Group MOSSR2</Name><Email>your_email_here@bmw.de</Email><Expiration>2099-05-01T00:00:00</Expiration><Comment /><ComputerName xsi:nil=\"true\" /><UserName>*</UserName><AvailableBrandTypes>*</AvailableBrandTypes><AvailableLanguages>*</AvailableLanguages><AvailableOperationModes>*</AvailableOperationModes><DistributionPartnerNumber>*</DistributionPartnerNumber><ComputerCharacteristics>wePC9Q9xawMjVPA2fkMVvioHNtA=</ComputerCharacteristics><LicenseKey>cLx6S3h9q7XdEbVuTMn4qNgkG+PQk2NDwbytMFK6mMvPtm+qC5t67bMsx/lntZkyPALFlMrbhHYWnx4xCsP5G6CHUxpUCP5XLhak3ipm3Bou+229lJRwAAHz0IH91vC4QnILJEuBWlPcrUV/oZKoN47hXiLxQ19O0jHw1cuuhqs=</LicenseKey><LicenseServerURL xsi:nil=\"true\" /><LicenseType>offline</LicenseType></LicenseInfo>"
+"License"="<?xml version=\"1.0\"?><LicenseInfo xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://tempuri.org/LicenseInfo.xsd\"><Name>BMW Group MOSSR2</Name><Email>your_email_here@bmw.de</Email><Expiration>2099-05-01T00:00:00</Expiration><Comment /><ComputerName xsi:nil=\"true\" /><UserName>*</UserName><AvailableBrandTypes>*</AvailableBrandTypes><AvailableLanguages>*</AvailableLanguages><AvailableOperationModes>*</AvailableOperationModes><DistributionPartnerNumber>*</DistributionPartnerNumber><ComputerCharacteristics>wePC9Q9xawMjVPA2fkMVvioHNtA=</ComputerCharacteristics><LicenseKey>dGhpcyBpcyBrZXkK</LicenseKey><LicenseServerURL xsi:nil=\"true\" /><LicenseType>offline</LicenseType></LicenseInfo>"
 ```
 
-并在`EC-APPS\ISTA\TesterGUI\bin\Release`下增加`License.xml`，内容同上，注意字符串转义。
+当然，也可以通过在`ISTAGUI.exe.config`的`appSettings`下增加`License`键值对，注意字符串转义。
 
 另外的，编程功能需要修改注册表配置为`True`方可启用，路径为`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold`
 - BMW.Rheingold.Programming.Enabled
@@ -437,76 +437,28 @@ Windows Registry Editor Version 5.00
 
 ## 范围统计
 
-此处仅挑选最主要的补丁内容，其余的请参见具体程序实现。
+具体请参见具体程序实现。
 
-应用完整性校验`IntegrityManager::.ctor`
-- ISTAGUI.exe
-- IstaOperation.exe
-- IstaOperationImpl.dll
-- IstaServicesHost.exe
-- IstaServicesImpl.dll
+应用完整性校验
+- `IntegrityManager::.ctor`
+- `IstaProcessStarter::CheckSignature`
+- `VerifyAssemblyHelper::VerifyStrongName`
 
-应用完整性校验`IstaProcessStarter::CheckSignature`
-- RheingoldCoreFramework.dll
+证书有效性校验
+- `LicenseStatusChecker::IsLicenseValid`
+- `LicenseManager::VerifyLicense`
+- `LicenseAOSManager::VerifyLicense`
+- `IstaIcsServiceClient::VerifyLicense`
+- `CommonServiceWrapper::VerifyLicense`
+- `LicenseWizardHelper::DoLicenseCheck`
+- `CertificateHelper::ValidateCertificate`
 
-激活码有效性校验`LicenseStatusChecker::IsLicenseValid`
-- Authoring.dll
-- ISTAGUI.exe
-- IstaOperationController.dll
-- IstaOperationImpl.dll
-- IstaServicesImpl.dll
-- RGSPC.exe
-- RheingoldDatabaseOracleConnector.dll
-- RheingoldDatabasePostgreSQLConnector.dll
-- RheingoldDatabaseSQLiteConnector.dll
-- RheingoldDiagnostics.dll
-- RheingoldFASTA.dll
-- RheingoldInfoProvider.dll
-- RheingoldISPINext.dll
-- RheingoldISTACoreFramework.dll
-- RheingoldMeasurement.dll
-- RheingoldMeasurementCommunication.dll
-- RheingoldPresentationFramework.dll
-- RheingoldProgramming.dll
-- RheingoldSessionController.dll
-- RheingoldVehicleCommunication.dll
-- RheingoldxVM.dll
-- WsiDataProvider.dll
+其它校验
+- `IstaIcsServiceClient::ValidateHost`
+- `SecureAccessHelper::IsCodeAccessPermitted`
+- `FscValidationClient::IsValid`
+- `MainWindowViewModel::CheckExpirationDate`
+- `ActivationCertificateHelper::IsInWhiteList`
+- `ActivationCertificateHelper::IsWhiteListSignatureValid`
+- `ConfigurationService::SetPsdzProperties`
 
-激活码有效性校验`LicenseManager::VerifyLicense`
-- Authoring.dll
-- ISTAGUI.exe
-- IstaOperationController.dll
-- IstaOperationImpl.dll
-- IstaServicesImpl.dll
-- RGSPC.exe
-- RheingoldDatabaseOracleConnector.dll
-- RheingoldDatabasePostgreSQLConnector.dll
-- RheingoldDatabaseSQLiteConnector.dll
-- RheingoldDiagnostics.dll
-- RheingoldFASTA.dll
-- RheingoldInfoProvider.dll
-- RheingoldISPINext.dll
-- RheingoldISTACoreFramework.dll
-- RheingoldMeasurement.dll
-- RheingoldMeasurementCommunication.dll
-- RheingoldPresentationFramework.dll
-- RheingoldProgramming.dll
-- RheingoldSessionController.dll
-- RheingoldVehicleCommunication.dll
-- RheingoldxVM.dll
-- WsiDataProvider.dll
-
-
-## 总结
-
-由于当前仅在系统中纯安装了该软件，而未实际连接OBD测试是否具体功能上也已经可用，当前还待进一步的测试。有机会后续再进行更新。
-
-而这时候反过来翻看论坛的版本其主程序甚至使用`safengine shielden`进行了加壳。并对签名校验部分的公钥进行了调换。属实有趣。
-
-## 追记
-
-在编写程序化补丁程序的过程中发现了程序中额外的几个激活码校验函数，由于已经完成补丁程序的编写，就不赘述其他部分的变动了，详见[ISTA-Patcher](https://github.com/tautcony/ISTA-Patcher)
-
-原版程序可以在[这里](https://autosvs.com/help/bmw-ista-4-27-download)下到。
-Supra程序可以在其[官网](https://www.toyota-tech.eu/DiagnosticTools/Software/ISTA)下到。

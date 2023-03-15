@@ -417,10 +417,17 @@ private static String generateOrganizationId(int dealerId, int plantId) {
 
 ![完成激活](/img/bmw-ISTAP/05-actived.png)
 
-但是在使用过程中，日志里还是能看到许多提示激活失败的记录，查看无大碍，部份功能受影响，经排查，可以在[注册表](https://github.com/tautcony/ISTA-Patcher/blob/master/assets/license.reg)或者配置文件增加一个证书，确保程序在一些情况下，能正常读取到一个非空的证书信息，以减少这类报错。
+但是在使用过程中，日志里还是能看到许多提示激活失败的记录，查看无大碍，部份功能受影响，经排查，可以在注册表或者配置文件增加一个证书，确保程序在一些情况下，能正常读取到一个非空的证书信息，以减少这类报错。
 
 当然，也可以通过在`ISTAGUI.exe.config`的`appSettings`下增加`License`键值对，注意字符串转义。
 
 另外的，编程功能需要修改注册表配置为`True`方可启用，路径为`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold`
 - BMW.Rheingold.Programming.Enabled
 - BMW.Rheingold.Programming.ExpertMode
+
+由于本人实际并没有具体使用经验，若出现问题，欢迎反馈并共同排查。
+
+## 相关链接
+
+- 基于本文实现的[ISTA-Patcher](https://github.com/tautcony/ISTA-Patcher)
+- 上文提到的需要添加的[注册表文件](https://github.com/tautcony/ISTA-Patcher/blob/master/assets/license.reg)

@@ -95,7 +95,7 @@ app.component("history-download", {
         axios.get(`https://api.github.com/repos/${this.owner}/${this.repo}/releases`).then(response => {
             this.all_release = response.data;
         }).catch(exception => {
-            console.error(`[${exception.status}] Failed to load from '${this.owner}/${this.repo}'`);
+            console.error(`[${exception.code}] Failed to load from '${this.owner}/${this.repo}'`);
         });
     },
     mixins: [funcMixin],

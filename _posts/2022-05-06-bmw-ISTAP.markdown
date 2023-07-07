@@ -31,17 +31,19 @@ ISTA作为宝马维修车间系统，供全世界经销商机构中使用的BMW 
 
 程序本身，不论是从哪里找到下载也好，还是从什么论坛购买也好，这都是很正常的情况。但是到这个具体激活的地方，不论是国内论坛还是国外论坛，都可以见到一种，你执行到这一步，获取到`key`，将这个`key`通过私信发给某个人，由他将对应的`license`发给你的操作流程。
 
-而这一步，是免费的。这里，就是有意思的地方了。似乎是有人掌握了`keygen`但是并没有将其与软件一并公开，虽然不公开，也没有借此进行盈利，着实有点没有理解其背后具体的原因。同时其主程序甚至使用`safengine shielden`进行了加壳。并对签名校验部分的公钥进行了调换。属实有趣。
+而这一步，是免费的。这里，就是有意思的地方了。似乎是有人掌握了`keygen`但是并没有将其与软件一并公开，虽然不公开，也没有借此进行盈利，着实有点没有理解其背后具体的原因。同时有的版本其主程序甚至使用`safengine shielden`进行了加壳。并对签名校验部分的公钥进行了调换。属实有趣。
 
 扯远了，还是回归主题，那么从程序主入口入手，稍作检查，GUI部分是使用`.NETFramework 4.8`编写的，那就好办了，代码的查看、编辑等都会方便很多。
 
 ---
 
-以下内容均以版本`4.34.40.26161`为基础，在升级`4.35.18.26579`后发现该方案尚不完善，无法在新版本上直接应用，具体原因待排查。
+以下内容均以版本`4.34.40.26161`为基础，当前已经完成在`4.41.41.25274`原版程序上的验证，整体思路没有问题。
+
+> 原版MSI安装存在对环境与调用方的校验，无法直接安装。可以使用`SuperOrca`对表`InstallExecuteSequence`中`LauncherNotFound`与`NotCalledByLauncher`两个`Action`进行删除即可正常安装，完成安装后注意调整程序配置即可。
 
 从程序入口出发，使用`dnSpy`打开程序`ISTAGUI.exe`，检查程序组成，原则上，是宁可错杀不可放过，对于相关的校验逻辑，都进行对应的处理。
 
-稍作检查，能发现，程序使用`dotfuscator`进行了较为轻度的混淆，主要是部分逻辑流程的打乱和字符串的不可直接识读。使用`de4dot`可较为方便得除去相关混淆逻辑。
+稍作检查，能发现，程序使用`dotfuscator`进行了较为轻度的混淆，主要是部分逻辑流程的打乱和字符串的不可直接识读。使用`de4dot`可较为方便得除去相关混淆逻辑。（这个并不是宝马的限制，这个是Sedoy对其发布版本进行的保护措施）
 
 ## 完整性校验
 
@@ -233,6 +235,7 @@ private static void CheckSignature(string pathToIstaProcessFile)
 
 在处理具体许可证生成前，可以先看一眼，程序的key是怎么生成的，可以在`BMW.Rheingold.CoreFramework.LicenseManagement.LicenseWizardHelper`处，找到`CalculateLicenseRequest`方法。没有什么特殊的，就是生成机器特征码，收集一些其他信息，生成`xml`并转换为`base64`编码。
 
+也可以根据这个思路顺下去，自己签发license，那就和通常网上常见的模式一样了。
 
 ## 许可证校验
 
@@ -291,13 +294,13 @@ private static void CheckSignature(string pathToIstaProcessFile)
         uint ecx = 0;
         uint edx = 0;
         RuntimeEnvironment.GetSubVersion(1U, out eax, out ebx, out ecx, out edx);
-        ecx.IsBitSet<uint>(31);
+        bool flag = ecx.IsBitSet<uint>(31);
         if (BMW.Rheingold.CoreFramework.CoreFramework.DebugLevel > 0)
         {
           Log.Info(string.Empty, "Environment found: {0:X} {1:X}", (object) subversion1, (object) subversion2);
           Log.Info(string.Empty, "CPU features found: {0:X} {1:X} {2:X} {3:X}", (object) eax, (object) ebx, (object) ecx, (object) edx);
         }
-        if (LicenseStatusChecker.EnvCheck())
+        if (subversion1 != 1970169159UL || flag)
         {
           if (licenseInfo.SubLicenses != null)
           {
@@ -356,31 +359,12 @@ private static void CheckSignature(string pathToIstaProcessFile)
     }
 
     private static bool IsInvalidISIDLicense(bool isid, LicenseInfo licInfo) => isid && !string.IsNullOrEmpty(licInfo.ComputerName) && !Regex.Match(Environment.MachineName, licInfo.ComputerName).Success;
-
-    public static bool EnvCheck()
-    {
-      using (ManagementObjectSearcher managementObjectSearcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem"))
-      {
-        using (ManagementObjectCollection objectCollection = managementObjectSearcher.Get())
-        {
-          foreach (ManagementBaseObject managementBaseObject in objectCollection)
-          {
-            string lower = managementBaseObject["Manufacturer"].ToString().ToLower();
-            if (lower == "microsoft corporation" && managementBaseObject["Model"].ToString().ToUpperInvariant().Contains("VIRTUAL") || lower.Contains("vmware") || lower.Contains("parallels") || managementBaseObject["Model"].ToString() == "VirtualBox")
-              return true;
-          }
-        }
-      }
-      return false;
-    }
   }
 ```
 
 内容也很有意思，可以发现，换标Z4的丰田的Supra，也是使用这套程序进行车辆诊断，但是使用的是另一套激活码，两者并不通用。其程序本体两者也并不通用，破解方式也有所区别，暂时还未具体研究，这里不作展开了。
 
 可以发现，首先，它对收到的`LicenseInfo`序列化求SHA-1（不包含`licenseKey`），同时提取出其中的`licenseKey`，然后用程序预置的公钥初始化`RSAPKCS1SignatureDeformatter`验证签名是否有效。所以另一种思路就更加直接了，只要我直接把你这个密钥对给替换了，并实现一下签名的操作，那我自己就能给license request签名给签上了，就不需要各种道高一尺魔高一丈的操作了，实现其实类似，主要的问题还是在如何通过程序化的方法将修改il的操作自动化。
-
-同时还可以看到简单的对虚拟机的校验，这应该也就是有些地方反复强调不能在虚拟机下安装的原因吧。
 
 显然，简单地将`IsLicenseValid`的返回值，修改为`LicenseStatus.VALID`，就不再存在校验这个操作了。
 
@@ -421,11 +405,7 @@ private static String generateOrganizationId(int dealerId, int plantId) {
 
 当然，也可以通过在`ISTAGUI.exe.config`的`appSettings`下增加`License`键值对，注意字符串转义。
 
-另外的，编程功能需要修改注册表配置为`True`方可启用，路径为`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\BMWgroup\ISPI\Rheingold`
-- BMW.Rheingold.Programming.Enabled
-- BMW.Rheingold.Programming.ExpertMode
-
-由于本人实际并没有具体使用经验，若出现问题，欢迎反馈并共同排查。
+根据issue的反馈，应该是能过正常使用没问题了的。可一个没注意，使用该补丁的`【免许可证】2022年12月下旬诊断维修指南编程瑞金 Rheingold(ISTA-D)4.39.20绿色版`已经开始传播，甚至不清楚是具体哪位用具体哪个版本的`ista-patcher`制作并传播的，连个署名都没有，着实是不大好。
 
 ## 相关链接
 

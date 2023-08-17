@@ -44,8 +44,10 @@ module.exports = {
         // Buffer: false,
     },
     externals: {
-        "pixi.js": "PIXI",
         "js-cookie": "Cookies",
+        "three": "THREE",
+        "animejs": "anime",
+        "lodash": "_",
     },
     module: {
         rules: [

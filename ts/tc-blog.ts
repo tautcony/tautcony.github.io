@@ -3,7 +3,6 @@ import "regenerator-runtime/runtime";
 import "whatwg-fetch";
 
 import * as Sentry from "@sentry/browser";
-import { BrowserTracing } from "@sentry/tracing";
 
 import Nav from "./Lib/navbar";
 import Quote from "./Lib/quote";
@@ -13,6 +12,7 @@ import Archive from "./archive";
 import { generateCatalog, pageInit } from "./page";
 import postInit from "./post";
 import * as aboutInit from "./about";
+import { init, background } from "./arknights";
 
 require("../less/tc-blog.less");
 require("heti/lib/heti.scss");
@@ -20,7 +20,7 @@ import Heti from "heti/js/heti-addon.js";
 
 Sentry.init({
     dsn: "https://24f09a831bb64823a88e88b918b2bb4f@o955448.ingest.sentry.io/6683081",
-    integrations: [new BrowserTracing()],
+    integrations: [new Sentry.BrowserTracing()],
     tracesSampleRate: 1,
 });
 
@@ -34,6 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
     new Archive();
     pageInit();
     postInit();
+    if (document.querySelector("#webgl") !== null) {
+        init();
+        background();
+    }
 
     title.Init();
     quote.Init(10 ** 4);

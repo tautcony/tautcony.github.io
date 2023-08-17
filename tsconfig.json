@@ -17,7 +17,8 @@
         "preserveConstEnums": true,
         "types": [
             "node"
-        ]
+        ],
+        "esModuleInterop": true
     },
     "exclude": [
         "node_modules",

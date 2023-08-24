@@ -12,7 +12,7 @@ export default class Nav {
         this.collapse = document.querySelector(".navbar-collapse") as HTMLDivElement;
     }
 
-    public Init() {
+    public init() {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         this.toggle.addEventListener("click", e => {
             if (this.navbar.classList.contains("in")) {

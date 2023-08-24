@@ -45,7 +45,7 @@ export default class Quote {
         document.querySelector(containerSelector).appendChild(this.container);
     }
 
-    public Init(timeout: number) {
+    public init(timeout: number) {
         this.FetchData().then(() => {
             this.UpdateQuote();
             this.Interval(timeout);

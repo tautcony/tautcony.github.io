@@ -42,6 +42,8 @@ module.exports = {
         "space-in-parens": "off",
         "arrow-parens": ["error", "as-needed"],
         "no-continue": "off",
-        "no-bitwise": "off"
+        "no-bitwise": "off",
+        "@typescript-eslint/dot-notation": "off",
+        "no-multiple-empty-lines": ["error", {"max": 2, "maxEOF": 1}],
     }
 };

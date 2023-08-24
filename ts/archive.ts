@@ -5,16 +5,16 @@ function queryString(): { [key: string]: string } {
     const queryStr = window.location.search.substring(1);
     const queryArr = queryStr.split("&");
     for (const query of queryArr) {
-        const pair = query.split("=");
+        const [key, value] = query.split("=");
         // If first entry with this name
-        if (typeof queryObj[pair[0]] === "undefined") {
-            queryObj[pair[0]] = pair[1];
+        if (typeof queryObj[key] === "undefined") {
+            queryObj[key] = value;
             // If second entry with this name
-        } else if (typeof queryObj[pair[0]] === "string") {
-            queryObj[pair[0]] = [queryObj[pair[0]], pair[1]];
+        } else if (typeof queryObj[key] === "string") {
+            queryObj[key] = [queryObj[key], value];
             // If third or later entry with this name
         } else {
-            queryObj[pair[0]].push(pair[1]);
+            queryObj[key].push(value);
         }
     }
     return queryObj;
@@ -31,8 +31,8 @@ const setUrlQuery = (() => {
     };
 })();
 
-function find(selectors: string, parent?: Element | Element[]) {
-    const queryParent = parent ? parent : document;
+function find(selectors: string, parent: Element | Element[] | Document = document) {
+    const queryParent = parent;
     if (!Array.isArray(queryParent)) {
         return Array.from(queryParent.querySelectorAll(selectors));
     }
@@ -55,13 +55,17 @@ export default class Archive {
     private sectionTopArticleIndex: number[] = [];
     private hasInit: boolean = false;
 
+    private hasTagCloud = false;
+
     public constructor() {
         if (document.querySelector("#tag_cloud") === null) {
             return;
         }
+        this.hasTagCloud = true;
         this.tags = document.querySelector(".js-tags");
         this.articalTags = find(".tag-button", this.tags);
-        this.tagShowAll = find(".tag-button--all", this.tags)[0];
+        const tagButtonAll = find(".tag-button--all", this.tags);
+        this.tagShowAll = tagButtonAll.length > 0 ? tagButtonAll[0] : undefined;
         this.result = document.querySelector(".js-result");
         this.sections = find("section", this.result);
 
@@ -75,14 +79,19 @@ export default class Archive {
             index += find(".item", section).length;
         }
         this.sectionTopArticleIndex.push(index);
+    }
 
+    public init() {
+        if (!this.hasTagCloud) {
+            return;
+        }
         const query = queryString();
         const queryTag = query["tag"];
 
         this.tagSelect(queryTag);
 
         find("a", this.tags).forEach(tag => {
-            (tag as HTMLAnchorElement).addEventListener("click", () => {   /* only change */
+            (tag as HTMLAnchorElement).addEventListener("click", () => { /* only change */
                 this.tagSelect(tag.getAttribute("data-encode"), tag);
             });
         });

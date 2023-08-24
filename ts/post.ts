@@ -1,14 +1,17 @@
-import * as Lib from "./Lib/utils";
 import * as GeoPattern from "./Lib/geopattern";
+import * as Lib from "./Lib/utils";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageInfo = require("../repo.json");
 
 function queryParams(params: { [key: string]: string | number | boolean }) {
     return Object.keys(params)
-        .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+        .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
         .join("&");
 }
 
-export default function init() {
+// eslint-disable-next-line import/prefer-default-export
+export function init() {
     const banner = document.querySelector("header.intro-header") as HTMLDivElement;
     const style = window.getComputedStyle(banner);
     if (style.backgroundImage === "none") {
@@ -37,9 +40,9 @@ export default function init() {
     /* eslint-enable @typescript-eslint/prefer-for-of */
     const apiurl = `https://api.github.com/repos/${packageInfo.repository.owner}/${packageInfo.repository.name}/commits`;
     const pathFromJekyll: string = window["jekyll"]?.page?.path;
-    const filename = "_posts/" + location.pathname.split("/").filter(_=>_).join("-")+".markdown";
+    const filename = `_posts/${window.location.pathname.split("/").filter(_ => _).join("-")}.markdown`;
     const path = pathFromJekyll || filename;
-    const url = apiurl + "?" + queryParams({ path });
+    const url = `${apiurl}?${queryParams({ path })}`;
     const updateContainer = document.querySelector("#update-date");
     if (updateContainer === null) {
         return;
@@ -47,8 +50,7 @@ export default function init() {
     fetch(url, {
         method: "GET",
         credentials: "omit",
-    }).then(response => response.json()
-    ).then(data => {
+    }).then(response => response.json()).then(data => {
         if (data.length <= 1) {
             return;
         }

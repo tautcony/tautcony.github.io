@@ -31,16 +31,17 @@ const kon = {
 
 function createEvent(type: string) {
     let event: Event;
-    if(typeof(Event) === "function") {
+    if (typeof (Event) === "function") {
         event = new Event(type);
-    }else{
+    } else {
         event = document.createEvent("Event");
         event.initEvent(type, true, true);
     }
     return event;
 }
 
-export function konInit() {
+// eslint-disable-next-line import/prefer-default-export
+export function init() {
     const konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
         return;
@@ -74,7 +75,7 @@ export function konInit() {
 
     const lang: HTMLDivElement[] = [];
     const selector = document.getElementById("langSelect") as HTMLSelectElement;
-    kon.data.forEach((value) => {
+    kon.data.forEach(value => {
         const div = getElement(value);
         lang.push(div);
         konContainer.appendChild(div);

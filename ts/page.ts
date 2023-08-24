@@ -51,7 +51,7 @@ export function generateCatalog(selector: string) {
     });
 }
 
-export function pageInit() {
+export function init() {
     // responsive tables
     const tables = document.querySelectorAll("table");
     /* eslint-disable @typescript-eslint/prefer-for-of */

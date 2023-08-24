@@ -1,5 +1,5 @@
-import {util_ui_element_creator as _} from "./utils";
 import axios from "axios";
+import { util_ui_element_creator as _ } from "./utils";
 
 export interface Info {
     tagName: string;
@@ -21,21 +21,25 @@ export default class Quote {
     private quotes: IFormat[];
     private timer: number;
     public constructor(containerSelector: string, className: string) {
-        this.container = _("div", {className}, [
-            _("div", {
-                className: "quote-content",
-                style: {
-                    "margin-top": "2em",
-                },
-            }),
-            _("div", {
-                className: "quote-author",
-                style: {
-                    "margin-left": "16em",
-                    "font-size": "85%",
-                },
-            }),
-        ]);
+        this.container = _(
+            "div",
+            { className },
+            [
+                _("div", {
+                    className: "quote-content",
+                    style: {
+                        "margin-top": "2em",
+                    },
+                }),
+                _("div", {
+                    className: "quote-author",
+                    style: {
+                        "margin-left": "16em",
+                        "font-size": "85%",
+                    },
+                }),
+            ]
+        );
         this.content = this.container.querySelector(".quote-content");
         this.author = this.container.querySelector(".quote-author");
         document.querySelector(containerSelector).appendChild(this.container);
@@ -59,7 +63,7 @@ export default class Quote {
             author += `《${quote.source}》`;
         }
         this.content.textContent = content;
-        this.author.textContent  = author;
+        this.author.textContent = author;
     }
 
     private RandomQuote = () => {
@@ -86,6 +90,7 @@ export default class Quote {
         return axios.get(url).then(response => {
             this.quotes = response.data as IFormat[];
         }).catch(err => {
+            // eslint-disable-next-line no-console
             console.warn("Failed to load quote.json", err);
         });
     }

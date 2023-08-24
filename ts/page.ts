@@ -35,10 +35,12 @@ export function generateCatalog(selector: string) {
     // clean
     catalogContainer.innerHTML = "";
     // appending
-    catalogs.forEach((catalog) => {
+    catalogs.forEach(catalog => {
         const tagName = catalog.tagName.toLowerCase();
         const text = catalog.textContent;
-        const element = _("li", { className: `${tagName}_nav` },
+        const element = _(
+            "li",
+            { className: `${tagName}_nav` },
             [_("a", {
                 event: {
                     click: scrollTo(`#${catalog.id}`),
@@ -47,7 +49,7 @@ export function generateCatalog(selector: string) {
         );
         catalogContainer.appendChild(element);
     });
-};
+}
 
 export function pageInit() {
     // responsive tables
@@ -122,6 +124,7 @@ export function pageInit() {
     let lastKnownScrollPosition = 0;
     let ticking = false;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const BannerAnimation = (e: UIEvent) => {
         if (!ticking) {
             const previousTop = lastKnownScrollPosition;

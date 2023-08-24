@@ -7,13 +7,14 @@ export default class Nav {
     private collapse: HTMLDivElement;
 
     public constructor() {
-        this.navbar   = document.querySelector("#blog_navbar")     as HTMLDivElement;
-        this.toggle   = document.querySelector(".navbar-toggle")   as HTMLButtonElement;
+        this.navbar = document.querySelector("#blog_navbar") as HTMLDivElement;
+        this.toggle = document.querySelector(".navbar-toggle") as HTMLButtonElement;
         this.collapse = document.querySelector(".navbar-collapse") as HTMLDivElement;
     }
 
     public Init() {
-        this.toggle.addEventListener("click", (e) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        this.toggle.addEventListener("click", e => {
             if (this.navbar.classList.contains("in")) {
                 this.close();
             } else {
@@ -31,9 +32,9 @@ export default class Nav {
          *
          * Also, we use "click" instead of "touchstart" as compromise
          */
-        document.addEventListener("click", (e) => {
-            if (e.target === this.toggle ||
-                (e.target as Element).className === "icon-bar") {
+        document.addEventListener("click", e => {
+            if (e.target === this.toggle
+                || (e.target as Element).className === "icon-bar") {
                 return;
             }
             this.close();

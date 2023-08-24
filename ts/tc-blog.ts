@@ -34,10 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     new Archive();
     pageInit();
     postInit();
-    if (document.querySelector("#webgl") !== null) {
-        init();
-        background();
-    }
 
     title.Init();
     quote.Init(10 ** 4);
@@ -51,11 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window["$crisp"] !== undefined) {
         window["$crisp"].push(["safe", true]);
     }
+    if (typeof XPathResult !== "undefined") {
+        const heti = new Heti(".heti");
+        heti.autoSpacing();
+    }
+    if (document.querySelector("#webgl") !== null) {
+        init();
+        background();
+    }
 });
-if (typeof XPathResult !== "undefined") {
-    const heti = new Heti(".heti");
-    heti.autoSpacing();
-}
 
 if(navigator.serviceWorker) {
     // disbale previous service worker for some bugs

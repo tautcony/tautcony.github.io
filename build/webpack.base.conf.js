@@ -47,7 +47,7 @@ module.exports = {
         "js-cookie": "Cookies",
         "three": "THREE",
         "animejs": "anime",
-        "lodash": "_",
+        // "lodash": "_",
     },
     module: {
         rules: [

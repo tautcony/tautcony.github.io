@@ -63,12 +63,12 @@ class BrightnessWatcher {
 const brightness = new BrightnessWatcher();
 
 export default function init() {
-    const keyMapping: {[key: string]: () => void} = {
+    const keyMapping: { [key: string]: () => void } = {
         KeyZ: brightness.toggle.bind(brightness),
         ArrowUp: brightness.increase.bind(brightness),
         ArrowDown: brightness.decrease.bind(brightness),
     };
-    window.addEventListener("keydown", (e) => {
+    window.addEventListener("keydown", e => {
         if (!e.altKey) {
             return;
         }

@@ -1,5 +1,5 @@
+import anime from "animejs/lib/anime.es";
 import { util_ui_element_creator as _ } from "./utils";
-import anime from "animejs/lib/anime.es.js";
 
 export default class CoreValue {
     private coreText: string[];
@@ -21,7 +21,7 @@ export default class CoreValue {
             // The path attribute is only exists in Chrome
             if (event.path) {
                 for (const node of event.path) {
-                    const nodeName = (node as Element).nodeName;
+                    const { nodeName } = (node as Element);
                     if (nodeName === undefined) {
                         continue;
                     }
@@ -33,11 +33,11 @@ export default class CoreValue {
             const span = _("span", {
                 style: {
                     "z-index": `${1 << 24}`,
-                    "position": "absolute",
+                    position: "absolute",
                     "font-weight": "bold",
-                    "top": `${ev.pageY - 20}px`,
-                    "left": `${ev.pageX}px`,
-                    "color": "#ff6651",
+                    top: `${ev.pageY - 20}px`,
+                    left: `${ev.pageX}px`,
+                    color: "#ff6651",
                     "user-select": "none",
                 },
             });
@@ -54,6 +54,7 @@ export default class CoreValue {
                 .add({
                     targets: span,
                     opacity: 0,
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     complete: anim => {
                         span.parentNode.removeChild(span);
                     },

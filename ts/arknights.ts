@@ -8,7 +8,6 @@ import {
 const particleUrl = "./arknights/static/particle.7ff7f9a6de6e31926ddb.png";
 const fireflyUrl = "./arknights/static/firefly.5ec707a0de1eca4a0765.png";
 
-
 interface FireFlyStruct {
     x: number;
     y: number;
@@ -263,7 +262,7 @@ class FireFlyLoader {
             aPosition: positionBuffer.subarray(3 * index, 3 * index + 3),
             aOpacity: opacityBuffer.subarray(index, index + 1),
         }));
-        new THREE.TextureLoader().load(fireflyUrl, (t) => {
+        new THREE.TextureLoader().load(fireflyUrl, t => {
             const shaderMaterial = new THREE.ShaderMaterial({
                 uniforms: { uTexture: new THREE.Uniform(t) },
                 vertexShader: `
@@ -352,7 +351,7 @@ class PolygonLoader {
         this.geometry = new THREE.IcosahedronGeometry(400, 1);
         this.uOpacity = new THREE.Uniform(this.globalOpacity);
         this.uOrigin = new THREE.Uniform([0, 0, 1]);
-        new THREE.TextureLoader().loadAsync(particleUrl).then((t) => {
+        new THREE.TextureLoader().loadAsync(particleUrl).then(t => {
             const color = new THREE.Uniform(new THREE.Color(0x968414));
             const texutre = new THREE.Uniform(t);
             const vertexShader = `

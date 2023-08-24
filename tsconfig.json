@@ -20,9 +20,12 @@
         ],
         "esModuleInterop": true
     },
+    "include": [
+        "ts/**/*.ts",
+    ],
     "exclude": [
         "node_modules",
         "_site/**/*.ts",
-        "ts/**/*.spec.ts"
+        "ts/**/*.spec.ts",
     ]
 }

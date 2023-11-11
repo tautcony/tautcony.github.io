@@ -38,7 +38,7 @@
     "@sentry/browser": "^7.64.0",
     "@sentry/tracing": "^7.64.0",
     "animejs": "^3.2.1",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "core-js": "^3.32.1",
     "heti": "^0.9.4",
     "js-cookie": "^3.0.5",

@@ -146,3 +146,5 @@ typings/
 .tscache
 .baseDir.ts
 .DS_Store
+js/*.min.js
+css/*.min.css

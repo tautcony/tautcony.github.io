@@ -36,10 +36,10 @@ function find(selectors: string, parent: Element | Element[] | Document = docume
     if (!Array.isArray(queryParent)) {
         return Array.from(queryParent.querySelectorAll(selectors));
     }
-    const ret: Element[] = [];
+    let ret: Element[] = [];
     for (const element of queryParent) {
         const subElements = element.querySelectorAll(selectors);
-        ret.concat(Array.from(subElements));
+        ret = ret.concat(Array.from(subElements));
     }
     return ret;
 }

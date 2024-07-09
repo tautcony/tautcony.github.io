@@ -6,7 +6,7 @@ const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony

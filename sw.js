@@ -58,7 +58,7 @@ const shouldRedirect = (req) => (isNavigationReq(req) && new URL(req.url).pathna
 // `${url}/` would mis-add "/" in the end of query, so we use URL object.
 // P.P.S. Always trust url.pathname instead of the whole url string.
 const getRedirectUrl = (req) => {
-    url = new URL(req.url);
+    const url = new URL(req.url);
     url.pathname += "/";
     return url.href;
 };

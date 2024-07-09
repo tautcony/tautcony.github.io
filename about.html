@@ -20,21 +20,22 @@ header-img: "img/about-bg.jpg"
 #donate:hover + #qrcode { z-index: 1250; opacity: 1.0; width: 350px; height: 350px; }
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.6.0/APlayer.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css" integrity="sha512-CIYsJUa3pr1eoXlZFroEI0mq0UIMUqNouNinjpCkSWo3Bx5NRlQ0OuC6DtEB/bDqUWnzXc1gs2X/g52l36N5iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js" integrity="sha512-RWosNnDNw8FxHibJqdFRySIswOUgYhFxnmYO3fp+BgCU7gfo4z0oS7mYFBvaa8qu+axY39BmQOrhW3Tp70XbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var ap = new APlayer({
         element:  document.getElementById('player1'),
-        narrow:   false,
+        mini:   false,
         autoplay: true,
         mutex:    true,
         theme:    '#e6d0b2',
         preload:  'metadata',
-        listmaxheight: '365px',
-        music: {
-            title: 'あの日の夢',
-            author: '百石元',
+        listMaxHeight: '365px',
+        audio: {
+            name: 'あの日の夢',
+            artist: '百石元',
             url: '/attach/bgm/ano-hi-no-yume.m4a',
-            pic: '/attach/bgm/ano-hi-no-yume.jpg',
+            cover: '/attach/bgm/ano-hi-no-yume.jpg',
         }
     });
     ap.volume(0.75);

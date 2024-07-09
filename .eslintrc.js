@@ -18,6 +18,7 @@ module.exports = {
         ".eslintrc.js",
         "build",
         "js",
+        "sw.js",
     ],
     "rules": {
       "no-undef": "off",

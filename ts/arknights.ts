@@ -6,8 +6,8 @@ import fill from "lodash/fill";
 import random from "lodash/random";
 import flattenDepth from "lodash/flattenDepth";
 
-const particleUrl = "./arknights/static/particle.7ff7f9a6de6e31926ddb.png";
-const fireflyUrl = "./arknights/static/firefly.5ec707a0de1eca4a0765.png";
+const particleUrl = "/arknights/static/particle.7ff7f9a6de6e31926ddb.png";
+const fireflyUrl = "/arknights/static/firefly.5ec707a0de1eca4a0765.png";
 
 interface FireFlyStruct {
     x: number;

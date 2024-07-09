@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import "core-js/es";
 import "regenerator-runtime/runtime";
 import "whatwg-fetch";
@@ -19,7 +20,7 @@ require("heti/lib/heti.scss");
 
 Sentry.init({
     dsn: "https://24f09a831bb64823a88e88b918b2bb4f@o955448.ingest.sentry.io/6683081",
-    integrations: [new Sentry.BrowserTracing()],
+    integrations: [Sentry.browserTracingIntegration()],
     tracesSampleRate: 1,
 });
 

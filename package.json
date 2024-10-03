@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "@babel/runtime-corejs3": "^7.24.7",
-    "@sentry/browser": "^8.15.0",
+    "@sentry/browser": "^8.33.0",
     "@sentry/tracing": "^7.114.0",
     "animejs": "^3.2.2",
     "axios": "^1.7.2",

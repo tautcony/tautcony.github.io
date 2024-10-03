@@ -4,4 +4,4 @@ gem 'github-pages', group: :jekyll_plugins
 
 gem 'liquid', '~> 4.0.4'
 
-gem "webrick", "~> 1.7"
+gem "webrick", "~> 1.8"

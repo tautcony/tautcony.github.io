@@ -40,7 +40,6 @@ function createEvent(type: string) {
     return event;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function init() {
     const konContainer = document.getElementById("kon-container");
     if (konContainer === null) {
@@ -86,9 +85,9 @@ export function init() {
     lang.forEach((value, index) => {
         const opt = document.createElement("option");
         opt.value = index.toString();
-        opt.innerHTML = value.getAttribute("title");
+        opt.innerHTML = value.getAttribute("title") as string;
         selector.appendChild(opt);
-        if (currentLanguage.indexOf(value.getAttribute("lang")) >= 0) {
+        if (currentLanguage.indexOf(value.getAttribute("lang") as string) >= 0) {
             currentLanguageIndex = index;
         }
     });

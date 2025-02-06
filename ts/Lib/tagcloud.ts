@@ -16,6 +16,9 @@ function toRGB(code: string) {
         code = code.replace(/(\w)(\w)(\w)/gi, "$1$1$2$2$3$3");
     }
     const hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
+    if (hex === null) {
+        return [0, 0, 0];
+    }
     return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)];
 }
 
@@ -30,6 +33,9 @@ function toHex(arr: number[]) {
 }
 
 function tagColor(opts: IConfig, increment: number[], weighting: number) {
+    if (opts.color === undefined) {
+        return "#000000";
+    }
     const rgb = toRGB(opts.color.start).map((value, index) => {
         const ref = Math.round(value + (increment[index] * weighting));
         return Math.max(0, Math.min(ref, 255));
@@ -38,6 +44,9 @@ function tagColor(opts: IConfig, increment: number[], weighting: number) {
 }
 
 function colorIncrement(opts: IConfig, range: number) {
+    if (opts.color === undefined) {
+        return [0, 0, 0];
+    }
     const start = toRGB(opts.color.start);
     const end = toRGB(opts.color.end);
     return end.map((value, index) => (value - start[index]) / range);
@@ -57,7 +66,7 @@ export default function tagcloud(tags: NodeListOf<Element>, options: IConfig = {
     /* eslint-disable @typescript-eslint/prefer-for-of */
     for (let i = 0; i < tags.length; ++i) {
         const element = tags[i] as HTMLAnchorElement;
-        const curr = parseInt(element.getAttribute("rel"), 10);
+        const curr = parseInt(element.getAttribute("rel") as string, 10);
         if (Number.isNaN(curr)) {
             continue;
         }
@@ -74,7 +83,7 @@ export default function tagcloud(tags: NodeListOf<Element>, options: IConfig = {
     const colorIncr = colorIncrement(opts, range);
     for (let i = 0; i < tags.length; ++i) {
         const element = tags[i] as HTMLAnchorElement;
-        const weighting = parseInt(element.getAttribute("rel"), 10) - lowest;
+        const weighting = parseInt(element.getAttribute("rel") ?? "", 10) - lowest;
         element.style.fontSize = (opts.size.start + (weighting * fontIncr)).toString() + opts.size.unit;
         // change color to background-color
         element.style.backgroundColor = tagColor(opts, colorIncr, weighting);

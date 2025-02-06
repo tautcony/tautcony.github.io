@@ -6,12 +6,17 @@ function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTag
     wrapperClassList.forEach(value => {
         wrapper.classList.add(value);
     });
-    el.parentNode.insertBefore(wrapper, el);
+    if (el.parentNode !== null) {
+        el.parentNode.insertBefore(wrapper, el);
+    }
     wrapper.appendChild(el);
 }
 
 const scrollTo = (element: string) => {
     const elementSelector = document.querySelector(element);
+    if (elementSelector === null) {
+        return;
+    }
     const elementOffset = elementSelector.getBoundingClientRect().top;
 
     return () => {
@@ -30,8 +35,14 @@ const scrollTo = (element: string) => {
 export function generateCatalog(selector: string) {
     // init
     const postContainer = document.querySelector("div.post-container");
+    if (postContainer === null) {
+        return;
+    }
     const catalogs = postContainer.querySelectorAll("h1,h2,h3,h4,h5,h6");
     const catalogContainer = document.querySelector(selector);
+    if (catalogContainer === null) {
+        return;
+    }
     // clean
     catalogContainer.innerHTML = "";
     // appending
@@ -82,14 +93,19 @@ export function init() {
     const MQL = 1170;
     const navbar = document.querySelector(".navbar-custom");
     const catalog = document.querySelector(".side-catalog");
+    const banner = document.querySelector(".intro-header .container");
+
+    if (navbar === null || banner == null) {
+        return;
+    }
 
     const headerHeight = navbar.clientHeight;
-    const bannerHeight = document.querySelector(".intro-header .container").clientHeight;
+    const bannerHeight = banner.clientHeight;
 
     function updateBanner(currentTop: number, previousTop: number) {
         if (gotop) { gotop.disabled = currentTop < 300; }
         // primary navigation slide-in effect
-        if (window.innerWidth > MQL) {
+        if (window.innerWidth > MQL && navbar !== null) {
             // check if user is scrolling up by mouse or keyborad
             // scroll with animation in ie will lead to a serial of 0
             if (currentTop - previousTop <= 0) {

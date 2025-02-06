@@ -11,8 +11,8 @@ export default abstract class Pattern extends Generator<Pattern> {
     public constructor(options: IPatternOption, svg?: SVG) {
         super();
         this.opts = { ...options };
-        this.hash = this.opts.hash;
-        this.color = this.opts.color;
+        this.hash = this.opts.hash || '';
+        this.color = this.opts.color || '';
         if (svg) {
             this.svg = svg;
         } else {

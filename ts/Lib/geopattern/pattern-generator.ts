@@ -58,7 +58,7 @@ export default class PatternGenerator extends Generator<Pattern> {
                 throw new Error(`The generator ${generatorName}  does not exist.`);
             }
         } else {
-            generatorName = AvailableStructure[hexVal(this.options.hash, 20)];
+            generatorName = AvailableStructure[hexVal(this.options.hash!, 20)];
         }
 
         const PatternType = PATTERNS[generatorName];

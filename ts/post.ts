@@ -1,16 +1,15 @@
 import * as GeoPattern from "./Lib/geopattern";
 import * as Lib from "./Lib/utils";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const packageInfo = require("../repo.json");
 
-function queryParams(params: { [key: string]: string | number | boolean }) {
+function queryParams(params: Record<string, string | number | boolean>) {
     return Object.keys(params)
         .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
         .join("&");
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function init() {
     const banner = document.querySelector("header.intro-header") as HTMLDivElement;
     const style = window.getComputedStyle(banner);

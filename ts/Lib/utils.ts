@@ -1,4 +1,4 @@
-export function startsWith(text: string, searchString: string, position: number = 0) {
+export function startsWith(text: string, searchString: string, position = 0) {
     return text.substring(position, searchString.length + position) === searchString;
 }
 
@@ -15,8 +15,8 @@ export function isExternal(url: string) {
         && checkDomain(window.location.href) !== checkDomain(url);
 }
 
-// eslint-disable-next-line camelcase, @typescript-eslint/no-explicit-any, @typescript-eslint/naming-convention
-export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(type: K, props: any = {}, children: Element[] | Text | string = null): HTMLElementTagNameMap[K] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function util_ui_element_creator<K extends keyof HTMLElementTagNameMap>(type: K, props: any = {}, children: Element[] | Text | string | undefined | null = null): HTMLElementTagNameMap[K] {
     const elem = document.createElement(type);
     for (const n of Object.keys(props)) {
         switch (n) {

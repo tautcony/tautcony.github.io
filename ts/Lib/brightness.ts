@@ -23,7 +23,7 @@ class BrightnessWatcher {
             },
         });
         document.body.appendChild(this.maskDiv);
-        this.config = JSON.parse(Cookies.get("brightness")) as IConfig;
+        this.config = JSON.parse(Cookies.get("brightness") as string) as IConfig;
         if (this.config === undefined) {
             this.config = {
                 brightness: 0,
@@ -63,7 +63,7 @@ class BrightnessWatcher {
 const brightness = new BrightnessWatcher();
 
 export default function init() {
-    const keyMapping: { [key: string]: () => void } = {
+    const keyMapping: Record<string, () => void> = {
         KeyZ: brightness.toggle.bind(brightness),
         ArrowUp: brightness.increase.bind(brightness),
         ArrowDown: brightness.decrease.bind(brightness),

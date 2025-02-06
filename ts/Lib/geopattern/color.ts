@@ -23,11 +23,18 @@ export function hex2rgb(hex: string) {
     hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
 
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
+    if (!result) {
+        return {
+            r: 0,
+            g: 0,
+            b: 0,
+        };
+    }
+    return {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16),
-    } : null;
+    }
 }
 
 /**
@@ -50,14 +57,12 @@ export function rgb2hex(rgb: Irgb) {
  * @return  Object          HSL as h, s, and l keys
  */
 export function rgb2hsl(rgb: Irgb): Ihsl {
-    let { r } = rgb;
-    let { g } = rgb;
-    let { b } = rgb;
+    let { r, g, b } = rgb;
     r /= 255; g /= 255; b /= 255;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h: number;
-    let s: number;
+    let h: number = 0;
+    let s: number = 0;
     const l = (max + min) / 2;
 
     if (max === min) {

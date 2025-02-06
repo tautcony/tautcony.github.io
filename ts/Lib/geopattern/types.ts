@@ -9,9 +9,7 @@ export const AvailableStructure = ["octogons", "overlappingCircles", "plusSigns"
 
 export type AvailableStructureType = typeof AvailableStructure[number];
 
-export interface Idict {
-    [key: string]: ContentType;
-}
+export type Idict = Record<string, ContentType>;
 
 export interface IPatternOption {
     hash?: string;

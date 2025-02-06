@@ -40,9 +40,12 @@ export default class Quote {
                 }),
             ]
         );
-        this.content = this.container.querySelector(".quote-content");
-        this.author = this.container.querySelector(".quote-author");
-        document.querySelector(containerSelector).appendChild(this.container);
+        this.content = this.container.querySelector(".quote-content") as HTMLElement;
+        this.author = this.container.querySelector(".quote-author") as HTMLElement;
+        const container = document.querySelector(containerSelector);
+        if (container !== null) {
+            container.appendChild(this.container);
+        }
     }
 
     public init(timeout: number) {
@@ -90,7 +93,7 @@ export default class Quote {
         return axios.get(url).then(response => {
             this.quotes = response.data as IFormat[];
         }).catch(err => {
-            // eslint-disable-next-line no-console
+             
             console.warn("Failed to load quote.json", err);
         });
     }

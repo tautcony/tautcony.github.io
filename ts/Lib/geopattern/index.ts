@@ -7,8 +7,8 @@ import PatternGenerator, { Pattern, IPatternOption } from "./pattern-generator";
  */
 function optArgs(cb: (str: string, options?: IPatternOption) => Pattern) {
     return function opt(str: string | IPatternOption, options?: IPatternOption) {
-        let strVal: string = null;
-        let optionsVal = {} as IPatternOption;
+        let strVal: string | null = null;
+        let optionsVal = {} as IPatternOption | undefined;
         if (typeof str === "string") {
             strVal = str;
             optionsVal = options;
@@ -33,7 +33,6 @@ const GeoPattern = {
     }),
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const { generate } = GeoPattern;
 
 (($ => {
@@ -49,7 +48,7 @@ export const { generate } = GeoPattern;
                     hash: titleSha,
                 }, options);
             }
-            const pattern = GeoPattern.generate(str, options);
+            const pattern = GeoPattern.generate(str as string, options);
             $(this).css("background-image", pattern.toDataUrl());
         });
         return this;

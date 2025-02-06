@@ -1,4 +1,4 @@
-/* eslint-disable dot-notation */
+/* eslint-disable @typescript-eslint/no-require-imports */
 import "core-js/es";
 import "regenerator-runtime/runtime";
 import "whatwg-fetch";
@@ -13,7 +13,6 @@ import Archive from "./archive";
 import * as page from "./page";
 import * as post from "./post";
 import * as about from "./about";
-// import * as arknights from "./arknights";
 
 require("../less/tc-blog.less");
 require("heti/lib/heti.scss");
@@ -52,12 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const heti = new Heti(".heti");
         heti.autoSpacing();
     }
-    /*
-    if (document.querySelector("#webgl") !== null) {
-        arknights.init();
-        arknights.background();
-    }
-    */
 });
 
 if (navigator.serviceWorker) {

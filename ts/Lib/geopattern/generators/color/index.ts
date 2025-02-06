@@ -12,9 +12,9 @@ export default class BaseColorGenerator extends Generator<Color.Irgb> {
 
     public constructor(options: IPatternOption) {
         super();
-        this.hash = options.hash;
+        this.hash = options.hash || '';
         this.baseColor = options.baseColor || Preset.baseColor;
-        this.color = options.color;
+        this.color = options.color || '';
     }
 
     public static transform(hash: string, baseColor: string, color?: string) {

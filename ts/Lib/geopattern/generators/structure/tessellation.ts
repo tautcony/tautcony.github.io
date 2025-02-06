@@ -15,7 +15,7 @@ export default class Tessellation extends Pattern {
         ].join(",");
     }
 
-    // eslint-disable-next-line complexity
+     
     public generate() {
         // 3.4.6.4 semi-regular tessellation
         const sideLength = map(hexVal(this.hash, 0), 0, 15, 5, 40);

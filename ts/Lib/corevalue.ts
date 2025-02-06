@@ -56,7 +56,9 @@ export default class CoreValue {
                     opacity: 0,
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     complete: anim => {
-                        span.parentNode.removeChild(span);
+                        if (span.parentNode) {
+                            span.parentNode.removeChild(span);
+                        }
                     },
                 });
         });

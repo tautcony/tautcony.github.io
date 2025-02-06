@@ -1,7 +1,7 @@
 export default class Title {
     private titles: string[];
     private initalTitle: string;
-    private restoreTitleID: number;
+    private restoreTitleID: number | null;
     public constructor(titles: string[]) {
         this.titles = titles;
         this.initalTitle = document.title;

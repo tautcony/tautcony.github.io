@@ -1,4 +1,4 @@
-function queryString(): { [key: string]: string } {
+function queryString(): Record<string, string> {
     // This function is anonymous, is executed immediately and
     // the return value is assigned to QueryString!
     const queryObj = {};
@@ -31,8 +31,11 @@ const setUrlQuery = (() => {
     };
 })();
 
-function find(selectors: string, parent: Element | Element[] | Document = document) {
+function find(selectors: string, parent: Element | Element[] | Document | null = document) {
     const queryParent = parent;
+    if (queryParent === null) {
+        return [];
+    }
     if (!Array.isArray(queryParent)) {
         return Array.from(queryParent.querySelectorAll(selectors));
     }
@@ -45,15 +48,15 @@ function find(selectors: string, parent: Element | Element[] | Document = docume
 }
 
 export default class Archive {
-    private tags: Element;
+    private tags: Element | null;
     private articalTags: Element[];
-    private tagShowAll: Element;
-    private result: Element;
+    private tagShowAll: Element | null;
+    private result: Element | null;
     private sections: Element[];
     private sectionArticles: Element[][] = [];
-    private lastFocusButton: Element = null;
+    private lastFocusButton: Element | null = null;
     private sectionTopArticleIndex: number[] = [];
-    private hasInit: boolean = false;
+    private hasInit = false;
 
     private hasTagCloud = false;
 
@@ -65,7 +68,7 @@ export default class Archive {
         this.tags = document.querySelector(".js-tags");
         this.articalTags = find(".tag-button", this.tags);
         const tagButtonAll = find(".tag-button--all", this.tags);
-        this.tagShowAll = tagButtonAll.length > 0 ? tagButtonAll[0] : undefined;
+        this.tagShowAll = tagButtonAll.length > 0 ? tagButtonAll[0] : null;
         this.result = document.querySelector(".js-result");
         this.sections = find("section", this.result);
 
@@ -97,7 +100,7 @@ export default class Archive {
         });
     }
 
-    private searchButtonsByTag(_tag: string/* raw tag */) {
+    private searchButtonsByTag(_tag: string | null/* raw tag */) {
         if (!_tag) {
             return this.tagShowAll;
         }
@@ -108,7 +111,7 @@ export default class Archive {
         return buttons[0];
     }
 
-    private buttonFocus(target: Element) {
+    private buttonFocus(target: Element | null) {
         if (target) {
             target.classList.add("focus");
             if (this.lastFocusButton && this.lastFocusButton !== target) {
@@ -118,8 +121,8 @@ export default class Archive {
         }
     }
 
-    private tagSelect(_tag: string/* raw tag */, target?: Element) {
-        const result: { [key: number]: { [key: number]: boolean } } = {};
+    private tagSelect(_tag: string | null/* raw tag */, target?: Element) {
+        const result: Record<number, Record<number, boolean>> = {};
         for (let i = 0; i < this.sectionArticles.length; i++) {
             const articles = this.sectionArticles[i];
             for (let j = 0; j < articles.length; j++) {
@@ -129,7 +132,7 @@ export default class Archive {
                     }
                     result[i][j] = true;
                 } else {
-                    const tags = articles[j].getAttribute("data-tags").split(",");
+                    const tags = articles[j].getAttribute("data-tags")?.split(",") ?? [];
                     for (const element of tags) {
                         if (element === _tag) {
                             if (result[i] === undefined) {
@@ -157,7 +160,7 @@ export default class Archive {
             }
         }
 
-        if (!this.hasInit) {
+        if (!this.hasInit && this.result !== null) {
             this.result.classList.remove("d-none");
             this.hasInit = true;
         }

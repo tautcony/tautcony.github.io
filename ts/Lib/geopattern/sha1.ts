@@ -159,7 +159,7 @@ function create() {
 }
 
 // Input chunks must be either arrays of bytes or "raw" encoded strings
-export default function sha1(buffer?: string | number[]): string {
+export default function sha1(buffer: string | number[]): string {
     /* if (buffer === undefined) {
         return create();
     } */

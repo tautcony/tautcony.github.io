@@ -1,6 +1,6 @@
 export default class XMLNode {
     private tagName: string;
-    private attributes: { [key: string]: string | number };
+    private attributes: Record<string, string | number>;
     private children: XMLNode[];
 
     public constructor(tagName: string) {

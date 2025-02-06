@@ -56,7 +56,7 @@ export default class SVG {
         this.currentNode().setAttribute(
             "transform",
             (Object.keys(transformations) as (keyof Itransformation)[]).map(transformation => {
-                const args = transformations[transformation].join(",");
+                const args = (transformations[transformation] || []).join(",");
                 return `${transformation}(${args})`;
             }).join(" ")
         );
@@ -75,12 +75,15 @@ export default class SVG {
         return this.svg.toString();
     }
 
-    public rect(x?: Coordinate | [Coordinate, Coordinate, Length, Length][], y?: Coordinate | Idict, width?: Length, height?: Length, args?: Idict) {
+    public rect(x: Coordinate | [Coordinate, Coordinate, Length, Length][], y?: Coordinate | Idict, width?: Length, height?: Length, args?: Idict) {
         // Accept array first argument
         if (Array.isArray(x)) {
             x.forEach(list => {
                 this.rect(...list, y as Idict);
             });
+            return this;
+        }
+        if (width === undefined || height === undefined) {
             return this;
         }
         const rect = this.newChild("rect");

@@ -11,6 +11,7 @@
         "emitDecoratorMetadata": true,
         "declaration": false,
         "noImplicitAny": false,
+        "strictNullChecks": true,
         "noImplicitUseStrict": false,
         "removeComments": true,
         "noLib": false,

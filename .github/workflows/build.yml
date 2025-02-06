@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
       - run: npm ci
       - run: npm run build:prod --if-present
       - run: npm run build:update --if-present
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.6
+          ruby-version: 3.3.6
       - run: bundle install
       - run: bundle exec jekyll build
 

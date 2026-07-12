@@ -3,7 +3,6 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ESLintPlugin = require("eslint-webpack-plugin");
 
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
@@ -18,6 +17,7 @@ const babelConfig = {
                 corejs: 3,
                 useBuiltIns: "usage",
                 modules: "commonjs",
+                bugfixes: true,
             },
         ],
     ],
@@ -30,59 +30,77 @@ const babelConfig = {
             },
         ],
     ],
+    cacheDirectory: true,
 };
+
+const root = path.resolve(__dirname, "..");
 
 module.exports = {
     target: "browserslist",
-    entry: path.join(__dirname, "..", "ts", "tc-blog"),
-    output: {
-        filename: "js/tc-blog.min.js",
-        path: path.resolve(__dirname, ".."),
-        devtoolModuleFilenameTemplate: "[absolute-resource-path]",
+    entry: {
+        "tc-blog": path.join(root, "ts", "entries", "blog.ts"),
+        page404: path.join(root, "ts", "entries", "page404.ts"),
     },
-    node: {
-        // Buffer: false,
+    output: {
+        filename: "js/[name].min.js",
+        path: root,
+        devtoolModuleFilenameTemplate: "[absolute-resource-path]",
+        clean: false,
     },
     externals: {
-        "js-cookie": "Cookies",
-        "three": "THREE",
-        "animejs": "anime",
-        // "lodash": "_",
+        animejs: "anime",
+        "animejs/lib/anime.es": "anime",
+        // THREE r56 is loaded as a classic script on the 404 page.
+        three: "THREE",
     },
     module: {
         rules: [
             {
-                test: /.tsx?$/,
-                include: path.resolve(__dirname, "..", "ts"),
+                test: /\.tsx?$/,
+                include: path.join(root, "ts"),
                 use: [
                     {
-                        loader: "babel-loader?cacheDirectory",
+                        loader: "babel-loader",
                         options: babelConfig,
                     },
                     {
                         loader: "ts-loader",
-                        options: {},
+                        options: {
+                            transpileOnly: true,
+                        },
                     },
                 ],
             },
+            // Legacy 404 vendor scripts: keep as-is, do not babel-minify-break them.
             {
-                test: /.js$/,
+                test: /js[\\/]404[\\/]libs[\\/].*\.js$/,
+                type: "javascript/auto",
+                sideEffects: true,
+            },
+            {
+                test: /\.js$/,
+                exclude: [
+                    /node_modules/,
+                    /js[\\/]404[\\/]/,
+                ],
                 use: [
                     {
-                        loader: "babel-loader?cacheDirectory",
+                        loader: "babel-loader",
                         options: babelConfig,
                     },
                 ],
-                exclude: /node_modules/,
             },
             {
                 test: /\.(le|c)ss$/,
-                include: path.resolve(__dirname, "..", "less"),
+                include: [
+                    path.join(root, "less"),
+                    path.join(root, "css"),
+                ],
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: path.resolve(__dirname, "..", "img", "generated"),
+                            publicPath: path.join(root, "img", "generated"),
                         },
                     },
                     {
@@ -101,7 +119,7 @@ module.exports = {
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: path.resolve(__dirname, "..", "img", "generated"),
+                            publicPath: path.join(root, "img", "generated"),
                         },
                     },
                     {
@@ -111,31 +129,51 @@ module.exports = {
                         },
                     },
                     "postcss-loader",
-                    "sass-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sassOptions: {
+                                quietDeps: true,
+                                silenceDeprecations: ["import", "mixed-decls", "global-builtin"],
+                            },
+                        },
+                    },
                 ],
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                use: [
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 10000,
-                        },
+                type: "asset",
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 10 * 1024,
                     },
-                ],
+                },
             },
         ],
     },
     plugins: [
         new WebpackBar(),
         new MiniCssExtractPlugin({
-            filename: "css/tc-blog.min.css",
+            filename: ({ chunk }) => {
+                if (chunk && chunk.name === "page404") {
+                    return "css/404.min.css";
+                }
+                return "css/[name].min.css";
+            },
         }),
-        new ESLintPlugin({}),
         new webpack.BannerPlugin(banner),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less", ".css"],
+    },
+    performance: {
+        maxAssetSize: 512 * 1024,
+        maxEntrypointSize: 600 * 1024,
+        hints: "warning",
+    },
+    optimization: {
+        // Keep entries fully independent (no shared runtime chunk) for simple static hosting.
+        runtimeChunk: false,
+        splitChunks: false,
     },
 };

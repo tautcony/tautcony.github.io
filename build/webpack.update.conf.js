@@ -6,8 +6,6 @@ const WebpackBar = require("webpackbar");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
 const banner = `TC Blog build at ${new Date().toISOString()} (https://tautcony.github.io/)
 Copyright ${new Date().getFullYear()} TautCony
 Licensed under Apache-2.0 (https://github.com/tautcony/tautcony.github.io/blob/master/LICENSE)`;
@@ -21,6 +19,7 @@ const babelConfig = {
                 corejs: 3,
                 useBuiltIns: "usage",
                 modules: "commonjs",
+                bugfixes: true,
             },
         ],
         "@vue/babel-preset-jsx",
@@ -35,13 +34,12 @@ const babelConfig = {
         ],
         "@vue/babel-plugin-jsx",
     ],
+    cacheDirectory: true,
 };
 
 module.exports = {
     target: "web",
     mode: "production",
-    // mode: "development",
-    // devtool: "eval-cheap-module-source-map",
     entry: path.join(__dirname, "..", "js", "tcupdate"),
     output: {
         filename: "js/tcupdate.min.js",
@@ -49,20 +47,22 @@ module.exports = {
         devtoolModuleFilenameTemplate: "[absolute-resource-path]",
     },
     externals: {
-        "vue": "Vue",
-        "axios": "axios",
+        vue: "Vue",
+        axios: "axios",
     },
     optimization: {
         minimize: true,
-        minimizer: [new TerserPlugin({
-            extractComments: false,
-            terserOptions: {
-                output: {
-                    // eslint-disable-next-line camelcase
-                    ascii_only: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                terserOptions: {
+                    output: {
+                        // eslint-disable-next-line camelcase
+                        ascii_only: true,
+                    },
                 },
-            },
-        })],
+            }),
+        ],
     },
     module: {
         rules: [
@@ -81,24 +81,26 @@ module.exports = {
                 ],
             },
             {
-                test: /.tsx?$/,
+                test: /\.tsx?$/,
                 include: path.resolve(__dirname, "..", "ts"),
                 use: [
                     {
-                        loader: "babel-loader?cacheDirectory",
+                        loader: "babel-loader",
                         options: babelConfig,
                     },
                     {
                         loader: "ts-loader",
-                        options: {},
+                        options: {
+                            transpileOnly: true,
+                        },
                     },
                 ],
             },
             {
-                test: /.js$/,
+                test: /\.js$/,
                 use: [
                     {
-                        loader: "babel-loader?cacheDirectory",
+                        loader: "babel-loader",
                         options: babelConfig,
                     },
                 ],
@@ -106,15 +108,20 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: "url-loader",
+                type: "asset",
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 10 * 1024,
+                    },
+                },
             },
             {
                 test: /\.woff2?$/,
-                loader: "url-loader",
+                type: "asset",
             },
             {
                 test: /\.ttf$/,
-                loader: "url-loader",
+                type: "asset",
             },
         ],
     },
@@ -124,7 +131,6 @@ module.exports = {
             filename: "css/tcupdate.min.css",
         }),
         new webpack.BannerPlugin(banner),
-        // new BundleAnalyzerPlugin(),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".less"],

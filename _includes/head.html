@@ -4,20 +4,21 @@
     <title>{% if page.title %}{{ page.title | strip_html }} - {{ site.SEOTitle | strip_html }}{% else %}{{ site.SEOTitle | strip_html }}{% endif %}</title>
 
     <script></script><!-- ga & ba script hoook -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.min.css" integrity="sha384-srUNBOxxSczbKnQaPdpJQw0ogffOMbZbMRMB0T6Qgxe3fF2GlfwZPZY/OX9QeR2r" crossorigin="anonymous" referrerpolicy="no-referrer">
     {% include vite-assets.html entry="tc-blog" only="css" %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="none" onload="if(media!='all')media='all'">
-    <link rel="stylesheet" href="{{ '/css/iosevka.css' | prepend: site.baseurl }}" media="none" onload="if(media!='all')media='all'">
-    <link rel="stylesheet" href="{{ '/css/fonts.css' | prepend: site.baseurl }}" media="none" onload="if(media!='all')media='all'">
+    <link rel="stylesheet" href="{{ '/css/iosevka.css' | prepend: site.baseurl }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ '/css/fonts.css' | prepend: site.baseurl }}" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="{{ '/css/iosevka.css' | prepend: site.baseurl }}">
+        <link rel="stylesheet" href="{{ '/css/fonts.css' | prepend: site.baseurl }}">
+    </noscript>
     {% if site.data.assets["tc-blog"].js %}
     <link rel="modulepreload" href="{{ site.data.assets['tc-blog'].js | relative_url }}">
     {% endif %}
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {% if site.google-site-verification %}<meta name="google-site-verification" content="{{ site.google-site-verification }}">{% endif %}
-    <meta name="description" content="{{ site.description }}">
-    <meta name="keyword" content="{{ site.keyword }}">
+    {% capture page_description %}{% if page.description %}{{ page.description }}{% elsif page.subtitle %}{{ page.subtitle }}{% else %}{{ site.description }}{% endif %}{% endcapture %}
+    <meta name="description" content="{{ page_description | strip_html | strip | escape }}">
     <meta name="baseurl" content="{{ site.baseurl }}">
     <meta name="theme-color" content="#000000">
     {% include meta.html %}

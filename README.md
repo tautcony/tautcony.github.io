@@ -114,3 +114,4 @@ Example: `/404.html?perf=true&gui=true`
 - PDF previews use vendored PDF.js under `js/pdfjs/`, loaded **on demand** via `{% include pdf-embed.html file="..." %}`.
 - Post math uses **KaTeX** (`site.katex`; opt out with `math: false` on a page).
 - Scroll UX uses native `window.scrollTo({ behavior: "smooth" })` (no anime.js).
+- Layout/grid utilities ship in `less/layout.less` (no Bootstrap / Font Awesome CDN).

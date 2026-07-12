@@ -148,3 +148,8 @@ typings/
 .DS_Store
 js/*.min.js
 css/*.min.css
+
+### Frontend build (Vite) ###
+assets/build/
+_data/assets.json
+

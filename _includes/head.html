@@ -6,13 +6,13 @@
     <script></script><!-- ga & ba script hoook -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.min.css">
-    <link rel="stylesheet" href="{{ '/css/tc-blog.min.css' | prepend: site.baseurl }}">
+    {% include vite-assets.html entry="tc-blog" only="css" %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="none" onload="if(media!='all')media='all'">
     <link rel="stylesheet" href="{{ '/css/iosevka.css' | prepend: site.baseurl }}" media="none" onload="if(media!='all')media='all'">
     <link rel="stylesheet" href="{{ '/css/fonts.css' | prepend: site.baseurl }}" media="none" onload="if(media!='all')media='all'">
-    
-    <!-- PreLoad -->
-    <link rel="preload" href="{{ '/js/tc-blog.min.js' | prepend: site.baseurl }}" as="script">
+    {% if site.data.assets["tc-blog"].js %}
+    <link rel="modulepreload" href="{{ site.data.assets['tc-blog'].js | relative_url }}">
+    {% endif %}
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {% if site.google-site-verification %}<meta name="google-site-verification" content="{{ site.google-site-verification }}">{% endif %}

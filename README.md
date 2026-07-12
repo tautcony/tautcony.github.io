@@ -1,6 +1,6 @@
 # TC Blog (tautcony.github.io)
 
-Personal blog powered by **Jekyll** (GitHub Pages) with a **TypeScript + Webpack** frontend.
+Personal blog powered by **Jekyll** (GitHub Pages) with a **TypeScript + Vite** frontend.
 
 Live site: <https://tautcony.xyz>
 
@@ -32,7 +32,7 @@ If `bundle install` complains about Ruby 4.0.x / `commonmarker`, your shell is s
 ## Development
 
 ```bash
-# Terminal 1 — frontend watch build
+# Terminal 1 — frontend watch build (writes assets/build + _data/assets.json)
 npm run build:dev
 
 # Terminal 2 — Jekyll (uses bin/with-ruby so Ruby 3.3 is preferred)
@@ -47,12 +47,12 @@ Open <http://127.0.0.1:4000>.
 
 | Script | Description |
 |--------|-------------|
+| `npm run eslint` | ESLint on `ts/` |
 | `npm run typecheck` | TypeScript check (`tsc --noEmit`) |
-| `npm run build:prod` | Production bundle → `js/tc-blog.min.js` + `css/tc-blog.min.css` |
-| `npm run build:update` | Update-page assets (`tcupdate`) |
-| `npm run build` | Both frontend production builds |
+| `npm run build` | Vite production build → `assets/build/` + `_data/assets.json` |
+| `npm run build:dev` | Vite development watch build |
 | `npm run jekyll:build` | Static site → `_site/` |
-| `npm run ci` | typecheck + frontend build + Jekyll build |
+| `npm run ci` | eslint + typecheck + frontend build + Jekyll build |
 
 ## Deploy
 
@@ -74,28 +74,27 @@ docker build -t tautcony/tc-blog .
 
 ```
 ts/
-  entries/          Webpack entries (blog, page404)
+  entries/          Vite entries (blog, page404, tcupdate)
   pages/            Per-page UI modules
-  Lib/              Shared utilities (navbar, geopattern, …)
+  Lib/              Shared utilities (navbar, geopattern, pdf-embed, …)
   particle404/      Particle 404 scene (TypeScript)
-    config.ts       Query flags + constants
-    tween.ts        Lightweight tween runtime
-    stats-panel.ts  FPS panel (`?perf=true`)
-    gui.ts          dat.GUI wrapper (`?gui=true`)
-    shell / scene / mask …
-less/               Styles (tc-blog.less, 404.less)
-build/              Webpack configs
+less/               Styles (tc-blog.less, 404.less, tcupdate.less)
+assets/build/       Vite output (gitignored; hashed JS/CSS)
+_data/assets.json   Liquid map of entry → asset URLs (generated)
+js/pdfjs/           Vendored PDF.js (loaded on demand via pdf-embed)
 js/404/independent/ Three.js r56 only (CanvasRenderer-era API)
 _posts/             Blog posts
+docs/               Design / modernization notes
 .github/workflows/  CI / Pages deploy
 ```
 
-Build outputs:
+Build outputs (hashed filenames; see `_data/assets.json`):
 
-| Entry | JS | CSS |
-|-------|----|-----|
-| `blog` | `js/tc-blog.min.js` | `css/tc-blog.min.css` |
-| `page404` | `js/page404.min.js` | `css/404.min.css` |
+| Entry | Role |
+|-------|------|
+| `tc-blog` | Main site JS/CSS |
+| `page404` | Particle 404 |
+| `tcupdate` | Tools download page (Vue JSX) |
 
 ### 404 debug flags
 
@@ -110,8 +109,8 @@ Example: `/404.html?perf=true&gui=true`
 ## Notes
 
 - Target browsers: modern evergreen only (IE 11 dropped).
-- Polyfills come from `babel-preset-env` (`useBuiltIns: "usage"`), not a full `core-js` dump.
-- The particle 404 page no longer depends on jQuery 1.8.
+- Frontend is ESM (`type="module"`) produced by Vite.
 - Service Worker support has been **removed** (legacy registrations are unregistered once for migration).
 - PDF previews use vendored PDF.js under `js/pdfjs/`, loaded **on demand** via `{% include pdf-embed.html file="..." %}`.
 - Post math uses **KaTeX** (`site.katex`; opt out with `math: false` on a page).
+- Scroll UX uses native `window.scrollTo({ behavior: "smooth" })` (no anime.js).

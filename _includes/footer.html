@@ -28,11 +28,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.27/polyfill.min.js" integrity="sha512-ho+BXCSd23DEeIVntSudPOkaxeedC23TfywIqILhK4c7d90jijoEit/Zkc3D4joFHkq5ozSbyftE4Tajnv+bWA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.27/bootstrap-native.min.js" integrity="sha512-2gKLp3G+4TAeygLvVLCFpQrBoMMyeaTkKuAOJkO5DjYX6drUqRMOjfA4fz745VA1vGx376r3fajs+R/SwC5y8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha512-2cbsQGdowNDPcKuoBd2bCcsJky87Mv0LEtD/nunJUgk6MOYTgVMGihS/xCEghNf04DPhNiJ4DZw5BxDd1uyOdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ '/js/tc-blog.min.js' | prepend: site.baseurl }}"></script>
+{% include vite-assets.html entry="tc-blog" only="js" %}
 {% if site.ga_measurement_id %}
 <!-- Google Analytics -->
-<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga_measurement_id }}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -40,7 +38,6 @@
   gtag('js', new Date());
   gtag('config', '{{ site.ga_measurement_id }}');
 </script>
-<!-- End Google Analytics -->
 {% endif %}
 {% if site.ba_track_id %}
 <!-- Baidu Tongji -->
@@ -52,22 +49,5 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
-</script>
-<!-- End Baidu Tongji -->
-{% endif %}
-<!-- Side Catalog -->
-{% if page.catalog %}
-<script type="text/javascript">
-    generateCatalog(".catalog-body");
-    var catalogToggle = document.querySelector('.catalog-toggle');
-    if (catalogToggle) {
-        catalogToggle.addEventListener("click", function(e) {
-            e.preventDefault();
-            const sideCatalog = document.querySelector(".side-catalog");
-            if (sideCatalog) {
-                sideCatalog.classList.toggle("fold");
-            }
-        })
-    }
 </script>
 {% endif %}

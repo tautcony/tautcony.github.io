@@ -1,0 +1,25 @@
+{% comment %}
+  Emit CSS/JS tags for a Vite multi-entry build.
+  Usage:
+    {% include vite-assets.html entry="tc-blog" %}
+    {% include vite-assets.html entry="tc-blog" only="css" %}
+    {% include vite-assets.html entry="tc-blog" only="js" %}
+  Data: _data/assets.json (npm run build → scripts/sync-asset-data.mjs)
+{% endcomment %}
+{% assign entry_name = include.entry | default: "tc-blog" %}
+{% assign asset = site.data.assets[entry_name] %}
+{% assign only = include.only | default: "all" %}
+{% if asset == nil %}
+  <!-- vite assets missing for {{ entry_name }}; run: npm run build -->
+{% else %}
+  {% if only == "all" or only == "css" %}
+    {% if asset.css %}
+  <link rel="stylesheet" href="{{ asset.css | relative_url }}">
+    {% endif %}
+  {% endif %}
+  {% if only == "all" or only == "js" %}
+    {% if asset.js %}
+  <script type="module" src="{{ asset.js | relative_url }}"></script>
+    {% endif %}
+  {% endif %}
+{% endif %}

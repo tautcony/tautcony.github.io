@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-// Polyfills are injected by babel-preset-env (useBuiltIns: "usage").
 import * as Sentry from "@sentry/browser";
 import Heti from "heti/js/heti-addon";
 
@@ -13,8 +11,8 @@ import * as page from "../pages/page";
 import * as post from "../pages/post";
 import * as about from "../pages/about";
 
-require("../../less/tc-blog.less");
-require("heti/lib/heti.scss");
+import "../../less/tc-blog.less";
+import "heti/lib/heti.scss";
 
 Sentry.init({
     dsn: "https://24f09a831bb64823a88e88b918b2bb4f@o955448.ingest.sentry.io/6683081",
@@ -22,8 +20,6 @@ Sentry.init({
     tracesSampleRate: 0.05,
     enabled: location.hostname !== "localhost" && location.hostname !== "127.0.0.1",
 });
-
-window["generateCatalog"] = page.generateCatalog;
 
 document.addEventListener("DOMContentLoaded", () => {
     const nav = new Nav();
@@ -57,8 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
         size: { start: 1, end: 1.1, unit: "em" },
     });
 
-    if (window["$crisp"] !== undefined) {
-        window["$crisp"].push(["safe", true]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const crisp = (window as any).$crisp;
+    if (crisp !== undefined) {
+        crisp.push(["safe", true]);
     }
 
     if (typeof XPathResult !== "undefined") {

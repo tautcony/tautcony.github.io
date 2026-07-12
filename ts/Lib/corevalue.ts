@@ -1,6 +1,9 @@
-import anime from "animejs/lib/anime.es";
 import { util_ui_element_creator as _ } from "./utils";
 
+/**
+ * Click easter-egg: float a short phrase at the pointer.
+ * Animation uses CSS transitions (no anime.js).
+ */
 export default class CoreValue {
     private coreText: string[];
     private coreIndex: number;
@@ -18,7 +21,6 @@ export default class CoreValue {
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const event = ev as any;
-            // The path attribute is only exists in Chrome
             if (event.path) {
                 for (const node of event.path) {
                     const { nodeName } = (node as Element);
@@ -39,28 +41,22 @@ export default class CoreValue {
                     left: `${ev.pageX}px`,
                     color: "#ff6651",
                     "user-select": "none",
+                    transition: "transform 1s ease-out, opacity 0.6s ease-out 0.4s",
+                    transform: "translateY(0)",
+                    opacity: "1",
+                    pointerEvents: "none",
                 },
             });
             document.body.appendChild(span);
             span.textContent = this.coreText[this.coreIndex++ % this.coreText.length];
-            anime.timeline()
-                .add({
-                    targets: span,
-                    translateY: {
-                        value: -150,
-                        duration: 1000,
-                    },
-                })
-                .add({
-                    targets: span,
-                    opacity: 0,
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    complete: anim => {
-                        if (span.parentNode) {
-                            span.parentNode.removeChild(span);
-                        }
-                    },
-                });
+
+            requestAnimationFrame(() => {
+                span.style.transform = "translateY(-150px)";
+                span.style.opacity = "0";
+            });
+            window.setTimeout(() => {
+                span.remove();
+            }, 1100);
         });
     }
 }

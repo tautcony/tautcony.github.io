@@ -62,6 +62,8 @@ exclude:
     - Gemfile
     - Gemfile.lock
     - bin
+    - scripts
+    - vite.config.mjs
 anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
 # Client-side KaTeX on post pages (replaces the old MathJax 2/3 mix).
 # Set page.math: false in front matter to skip on a specific post.

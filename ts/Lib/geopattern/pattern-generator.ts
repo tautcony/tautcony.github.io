@@ -68,5 +68,5 @@ export default class PatternGenerator extends Generator<Pattern> {
     }
 }
 
-export { IPatternOption } from "./types";
+export type { IPatternOption } from "./types";
 export { Pattern } from "./generators/structure";

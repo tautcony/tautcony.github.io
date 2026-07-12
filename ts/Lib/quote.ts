@@ -1,4 +1,3 @@
-import axios from "axios";
 import { util_ui_element_creator as _ } from "./utils";
 
 export interface Info {
@@ -14,12 +13,21 @@ interface IFormat {
     source: string;
 }
 
+async function getJSON<T>(url: string): Promise<T> {
+    const response = await fetch(url, { credentials: "omit" });
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status} for ${url}`);
+    }
+    return response.json() as Promise<T>;
+}
+
 export default class Quote {
     private container: HTMLElement;
     private content: HTMLElement;
     private author: HTMLElement;
-    private quotes: IFormat[];
-    private timer: number;
+    private quotes: IFormat[] = [];
+    private timer: number | undefined;
+
     public constructor(containerSelector: string, className: string) {
         this.container = _(
             "div",
@@ -70,8 +78,10 @@ export default class Quote {
     }
 
     private RandomQuote = () => {
-        if (this.quotes === undefined) {
-            clearTimeout(this.timer);
+        if (this.quotes.length === 0) {
+            if (this.timer !== undefined) {
+                clearInterval(this.timer);
+            }
             return undefined;
         }
         return this.quotes[Math.floor(Math.random() * this.quotes.length)];
@@ -84,17 +94,17 @@ export default class Quote {
     }
 
     private async FetchData() {
-        const baseurl = (document.head.querySelector("meta[name=baseurl]") as HTMLMetaElement).content;
+        const baseMeta = document.head.querySelector("meta[name=baseurl]") as HTMLMetaElement | null;
+        const baseurl = baseMeta?.content ?? "";
         let url = "/json/quote.json";
-        if (baseurl !== undefined && baseurl !== "") {
+        if (baseurl !== "") {
             url = baseurl + url;
         }
 
-        return axios.get(url).then(response => {
-            this.quotes = response.data as IFormat[];
-        }).catch(err => {
-             
+        try {
+            this.quotes = await getJSON<IFormat[]>(url);
+        } catch (err) {
             console.warn("Failed to load quote.json", err);
-        });
+        }
     }
 }

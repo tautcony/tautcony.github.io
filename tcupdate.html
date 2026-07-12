@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html><html>
+---
+layout: null
+permalink: /tcupdate.html
+---
+<!DOCTYPE html><html>
 <head>
 	<meta charset="utf-8">
 	<title>TautCony Tools Downloads</title>
@@ -9,11 +13,9 @@
 	<meta name="theme-color" content="#000000">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
 	<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
-	<style> @import url('css/fonts.css'); </style>
-	<style> @import url('css/tcupdate.min.css'); </style>
+	<link rel="stylesheet" href="{{ '/css/fonts.css' | relative_url }}">
+	{% include vite-assets.html entry="tcupdate" only="css" %}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" integrity="sha512-QKC1UZ/ZHNgFzVKSAhV5v5j73eeL9EEN289eKAEFaAjgAiobVAnVv/AGuPbXsKl1dNoel3kNr6PYnSiTzVVBCw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.31/vue.global.prod.min.js" integrity="sha512-Dg9zup8nHc50WBBvFpkEyU0H8QRVZTkiJa/U1a5Pdwf9XdbJj+hZjshorMtLKIg642bh/kb0+EvznGUwq9lQqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js" integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 	<section id="tool-downloads" class="general">
@@ -76,7 +78,7 @@
 		</div>
 	</section>
 	<div id="copyright-line">Copyright (c) 2015-2023 TautCony. Theme (c) <a href="http://be5invis.github.io/Iosevka/" target="_blank" rel="noopener">be5invis</a>.</div>
-	<script src="js/tcupdate.min.js"></script>
+	{% include vite-assets.html entry="tcupdate" only="js" %}
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-D7DJK0DHRY"></script>
 	<script>

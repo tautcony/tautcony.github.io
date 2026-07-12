@@ -1,9 +1,14 @@
 /* eslint-disable camelcase */
-// import "core-js/es";
-// import "regenerator-runtime/runtime";
-require("../less/tcupdate");
-import * as Vue from "vue";
-import axios from "axios";
+import "../../less/tcupdate.less";
+import { createApp } from "vue";
+
+async function getJSON(url) {
+    const response = await fetch(url, { credentials: "omit" });
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+    return response.json();
+}
 
 const funcMixin = {
     methods: {
@@ -17,7 +22,7 @@ const funcMixin = {
     },
 };
 
-const app = Vue.createApp({});
+const app = createApp({});
 app.component("download-link", {
     props: ["owner", "repo", "width"],
     render() {
@@ -34,7 +39,7 @@ app.component("download-link", {
     data() {
         return {
             info: {
-                assets: [{browser_download_url: "#", name: "Loading..."}],
+                assets: [{ browser_download_url: "#", name: "Loading..." }],
                 name: "Loading...",
                 tag_name: "Loading...",
                 published_at: "Loading...",
@@ -42,12 +47,13 @@ app.component("download-link", {
         };
     },
     created() {
-        axios.get(`https://api.github.com/repos/${this.owner}/${this.repo}/releases/latest`).then(response => {
-            this.info = response.data;
-            // console.log(response);
-        }).catch(exception => {
-            console.error(`[${exception.status}] Failed to load from '${this.owner}/${this.repo}/latest'`);
-        });
+        getJSON(`https://api.github.com/repos/${this.owner}/${this.repo}/releases/latest`)
+            .then(data => {
+                this.info = data;
+            })
+            .catch(exception => {
+                console.error(`[${exception.message}] Failed to load from '${this.owner}/${this.repo}/latest'`);
+            });
     },
     mixins: [funcMixin],
     methods: {
@@ -67,7 +73,7 @@ app.component("history-download", {
             <ul id={"all-releases_" + this.repo}>
                 {
                     this.all_release.map(info => (
-                        <li key={info.node_id} >
+                        <li key={info.node_id}>
                             <div class="icon icon-cloud-download"></div>
                             <a class="link" href={this.browser_download_url(info)} target="_blank" rel="noopener">
                                 {info.name}
@@ -83,7 +89,7 @@ app.component("history-download", {
         return {
             all_release: [
                 {
-                    assets: [{browser_download_url: "#", name: "Loading..."}],
+                    assets: [{ browser_download_url: "#", name: "Loading..." }],
                     node_id: "",
                     name: "Loading...",
                     published_at: "Loading...",
@@ -92,11 +98,13 @@ app.component("history-download", {
         };
     },
     created() {
-        axios.get(`https://api.github.com/repos/${this.owner}/${this.repo}/releases`).then(response => {
-            this.all_release = response.data;
-        }).catch(exception => {
-            console.error(`[${exception.code}] Failed to load from '${this.owner}/${this.repo}'`);
-        });
+        getJSON(`https://api.github.com/repos/${this.owner}/${this.repo}/releases`)
+            .then(data => {
+                this.all_release = data;
+            })
+            .catch(exception => {
+                console.error(`[${exception.message}] Failed to load from '${this.owner}/${this.repo}'`);
+            });
     },
     mixins: [funcMixin],
     methods: {
@@ -114,5 +122,4 @@ app.component("history-download", {
     },
 });
 
-const vm = app.mount("#tool-downloads");
-window.vm = vm;
+app.mount("#tool-downloads");

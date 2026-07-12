@@ -6,7 +6,7 @@
 const VIEWER_PATH = "/js/pdfjs/web/viewer.html";
 
 function viewerUrl(file: string): string {
-    const base = document.querySelector('meta[name="baseurl"]') as HTMLMetaElement | null;
+    const base = document.querySelector("meta[name=\"baseurl\"]") as HTMLMetaElement | null;
     const baseurl = (base?.content || "").replace(/\/$/, "");
     const viewer = `${baseurl}${VIEWER_PATH}`;
     // PDF.js viewer expects an absolute or root-relative file URL.

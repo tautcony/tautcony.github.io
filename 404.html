@@ -32,8 +32,8 @@ permalink: /404.html
 </script>
 
 {% if site.particle404 %}
-<link rel="stylesheet" href="{{ '/css/404.min.css' | prepend: site.baseurl }}">
+{% include vite-assets.html entry="page404" only="css" %}
 <!-- Three.js r56 (CanvasRenderer-era API required by the particle scene) -->
 <script src="{{ '/js/404/independent/three.min_r56.js' | prepend: site.baseurl }}"></script>
-<script src="{{ '/js/page404.min.js' | prepend: site.baseurl }}"></script>
+{% include vite-assets.html entry="page404" only="js" %}
 {% endif %}

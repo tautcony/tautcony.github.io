@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build:prod && npm run build:update
+RUN npm run build
 
 
 FROM ruby:3.3-bookworm AS generator

@@ -48,7 +48,7 @@ export default abstract class Pattern extends Generator<Pattern> {
                 byteArray[i] = str.charCodeAt(i);
             }
             b64 = base64.fromByteArray(byteArray); */
-            b64 = Buffer.from(str).toString("base64");
+            b64 = btoa(unescape(encodeURIComponent(str)));
         }
 
         return b64;

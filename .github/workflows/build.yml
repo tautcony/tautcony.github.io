@@ -28,13 +28,14 @@ jobs:
       - name: Install JS dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run eslint
+
       - name: Typecheck
         run: npm run typecheck
 
       - name: Build frontend assets
-        run: |
-          npm run build:prod
-          npm run build:update
+        run: npm run build
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1

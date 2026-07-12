@@ -1338,3 +1338,63 @@ pre.highlight {
         content: "PowerShell";
     }
 }
+
+// Lazy PDF.js embed placeholder (see _includes/pdf-embed.html + ts/Lib/pdf-embed.ts)
+.pdf-embed {
+    margin: 1.5em 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background: #fafafa;
+    overflow: hidden;
+
+    &__placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75em;
+        min-height: inherit;
+        padding: 2em 1em;
+        text-align: center;
+    }
+
+    &__label {
+        margin: 0;
+        color: @gray;
+        font-size: 0.95em;
+    }
+
+    &__button {
+        appearance: none;
+        border: 1px solid @brand-primary;
+        background: @brand-primary;
+        color: #fff;
+        border-radius: 3px;
+        padding: 0.5em 1.25em;
+        font-size: 0.95em;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            filter: brightness(1.05);
+            outline: 2px solid fade(@brand-primary, 40%);
+            outline-offset: 2px;
+        }
+    }
+
+    &__alt {
+        margin: 0;
+        font-size: 0.85em;
+
+        a {
+            color: @brand-primary;
+        }
+    }
+
+    &__frame {
+        display: block;
+        border: 0;
+        width: 100%;
+        background: #fff;
+    }
+}

@@ -29,7 +29,7 @@
 @font-face {
 	font-family: 'HP-Slant';
 	font-style: normal;
-	src: url('../fonts/HP-Slant.woff2') format('woff2'), url('../fonts/HP-Slant.woff') format('woff'), url('../fonts/HP-Slant.ttf') format('truetype');
+	src: url('../fonts/HP-Slant.woff2') format('woff2');
     font-display: swap;
 }
 

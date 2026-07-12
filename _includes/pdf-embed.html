@@ -1,0 +1,26 @@
+{% comment %}
+  Lazy PDF.js embed. Does not load /js/pdfjs until the reader clicks.
+
+  Usage in Markdown/HTML:
+    {% include pdf-embed.html file="/attach/foo/bar.pdf" height="500" %}
+{% endcomment %}
+{% assign pdf_file = include.file | default: include.src %}
+{% assign pdf_height = include.height | default: "500" %}
+{% assign pdf_title = include.title | default: "PDF 预览" %}
+{% if pdf_file %}
+<div
+  class="pdf-embed"
+  data-pdf-file="{{ pdf_file | relative_url }}"
+  data-pdf-height="{{ pdf_height }}"
+  data-pdf-title="{{ pdf_title | escape }}"
+  style="min-height: {{ pdf_height }}px;"
+>
+  <div class="pdf-embed__placeholder">
+    <p class="pdf-embed__label">{{ pdf_title }}（按需加载，点击后才会拉取 PDF.js）</p>
+    <button type="button" class="pdf-embed__button">加载 PDF 预览</button>
+    <p class="pdf-embed__alt">
+      <a href="{{ pdf_file | relative_url }}" target="_blank" rel="noopener">直接打开 / 下载 PDF</a>
+    </p>
+  </div>
+</div>
+{% endif %}

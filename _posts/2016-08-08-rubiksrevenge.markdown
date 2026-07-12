@@ -20,7 +20,7 @@ tags:
 
 先看题目：
 
-<iframe src="/js/pdfjs/web/viewer.html?file=/attach/rubiksrevenge/G-rubiksrevenge.pdf" frameborder="0" width="100%" height="500"></iframe>
+{% include pdf-embed.html file="/attach/rubiksrevenge/G-rubiksrevenge.pdf" height="500" title="Rubik’s Revenge problem statement" %}
 
 大意就是有一个类似于二维的魔方，可以上下左右转，转出边界的会出现在对立的那一边。
 

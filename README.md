@@ -112,3 +112,6 @@ Example: `/404.html?perf=true&gui=true`
 - Target browsers: modern evergreen only (IE 11 dropped).
 - Polyfills come from `babel-preset-env` (`useBuiltIns: "usage"`), not a full `core-js` dump.
 - The particle 404 page no longer depends on jQuery 1.8.
+- Service Worker support has been **removed** (legacy registrations are unregistered once for migration).
+- PDF previews use vendored PDF.js under `js/pdfjs/`, loaded **on demand** via `{% include pdf-embed.html file="..." %}`.
+- Post math uses **KaTeX** (`site.katex`; opt out with `math: false` on a page).

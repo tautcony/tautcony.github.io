@@ -7,6 +7,7 @@ import Nav from "../Lib/navbar";
 import Quote from "../Lib/quote";
 import Title from "../Lib/title";
 import tagcloud from "../Lib/tagcloud";
+import { initPdfEmbeds } from "../Lib/pdf-embed";
 import Archive from "../pages/archive";
 import * as page from "../pages/page";
 import * as post from "../pages/post";
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     title.init();
     quote.init(10 ** 4);
     about.init();
+    initPdfEmbeds();
 
     tagcloud(document.querySelectorAll("#tag_cloud a"), {
         color: { start: "#bbbbee", end: "#0085a1" },
@@ -65,8 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// One-shot migration: drop any legacy service workers from older deploys.
+// Safe to remove after a few months in production.
 if (navigator.serviceWorker) {
-    // Unregister legacy service workers that previously caused stale-cache bugs.
     navigator.serviceWorker.getRegistrations().then(registrations => {
         for (const registration of registrations) {
             registration.unregister();

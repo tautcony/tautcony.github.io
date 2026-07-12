@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Prefer a Ruby that works with github-pages (Ruby 3.2–3.3).
+# Homebrew's default `ruby` is often 4.x, which commonmarker (via github-pages) rejects.
+set -euo pipefail
+
+prefer_ruby() {
+  local candidates=(
+    "${RUBY_BIN:-}"
+    "/opt/homebrew/opt/ruby@3.3/bin"
+    "/usr/local/opt/ruby@3.3/bin"
+    "/opt/homebrew/opt/ruby@3.2/bin"
+    "/usr/local/opt/ruby@3.2/bin"
+  )
+  local dir
+  for dir in "${candidates[@]}"; do
+    if [[ -n "$dir" && -x "$dir/ruby" ]]; then
+      export PATH="$dir:$PATH"
+      return 0
+    fi
+  done
+}
+
+prefer_ruby
+
+ruby_version="$(ruby -e 'print RUBY_VERSION' 2>/dev/null || true)"
+major="${ruby_version%%.*}"
+
+if [[ -z "$ruby_version" ]]; then
+  echo "error: ruby not found on PATH" >&2
+  exit 1
+fi
+
+if [[ "$major" -ge 4 ]]; then
+  cat >&2 <<EOF
+error: Ruby ${ruby_version} cannot install github-pages (commonmarker requires Ruby < 4).
+
+Fix (Homebrew):
+  brew install ruby@3.3
+  export PATH="\$(brew --prefix ruby@3.3)/bin:\$PATH"
+  hash -r
+  ruby -v   # expect 3.3.x
+  bundle install
+
+Or always run Bundler/Jekyll through this helper:
+  bin/with-ruby bundle install
+  bin/with-ruby bundle exec jekyll serve
+EOF
+  exit 1
+fi
+
+if [[ $# -eq 0 ]]; then
+  echo "using ruby ${ruby_version} ($(command -v ruby))"
+  exit 0
+fi
+
+exec "$@"

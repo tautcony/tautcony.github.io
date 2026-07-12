@@ -1,23 +1,25 @@
-FROM node:13 AS builder
+# syntax=docker/dockerfile:1
+
+FROM node:22-bookworm AS builder
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
-RUN npm run build:prod
-RUN npm run build:update
+RUN npm run build:prod && npm run build:update
 
 
-FROM ruby:2.6 AS generator
+FROM ruby:3.3-bookworm AS generator
 WORKDIR /usr/src/app
-# RUN bundle config mirror.https://rubygems.org https://gems.ruby-china.com
 
-COPY Gemfile ./
-RUN bundle install
+COPY Gemfile Gemfile.lock ./
+RUN bundle config set --local path 'vendor/bundle' \
+    && bundle install --jobs 4
+
 COPY --from=builder /usr/src/app ./
-RUN jekyll build --trace
+ENV JEKYLL_ENV=production
+RUN bundle exec jekyll build --trace
 
 
-FROM nginx:1.17.8 AS server
-WORKDIR /usr/share/nginx/html
-COPY --from=generator /usr/src/app/_site ./
+FROM nginx:1.27-alpine AS server
+COPY --from=generator /usr/src/app/_site /usr/share/nginx/html

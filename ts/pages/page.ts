@@ -1,5 +1,5 @@
 import anime from "animejs/lib/anime.es";
-import { util_ui_element_creator as _ } from "./Lib/utils";
+import { util_ui_element_creator as _ } from "../Lib/utils";
 
 function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTagName: K, wrapperClassList: [string]) {
     const wrapper = document.createElement(wrapperTagName);

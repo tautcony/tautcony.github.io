@@ -1,8 +1,8 @@
-import * as GeoPattern from "./Lib/geopattern";
-import * as Lib from "./Lib/utils";
+import * as GeoPattern from "../Lib/geopattern";
+import * as Lib from "../Lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const packageInfo = require("../repo.json");
+const packageInfo = require("../../repo.json");
 
 function queryParams(params: Record<string, string | number | boolean>) {
     return Object.keys(params)

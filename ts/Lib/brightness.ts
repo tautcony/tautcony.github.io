@@ -1,10 +1,33 @@
-import * as Cookies from "js-cookie";
-
 import { util_ui_element_creator as _ } from "./utils";
 
 interface IConfig {
     enable: boolean;
     brightness: number;
+}
+
+const STORAGE_KEY = "brightness";
+
+function loadConfig(): IConfig {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            return JSON.parse(raw) as IConfig;
+        }
+    } catch {
+        // ignore corrupt storage
+    }
+    return {
+        brightness: 0,
+        enable: false,
+    };
+}
+
+function saveConfig(config: IConfig): void {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    } catch {
+        // ignore quota / private mode errors
+    }
 }
 
 class BrightnessWatcher {
@@ -23,14 +46,7 @@ class BrightnessWatcher {
             },
         });
         document.body.appendChild(this.maskDiv);
-        this.config = JSON.parse(Cookies.get("brightness") as string) as IConfig;
-        if (this.config === undefined) {
-            this.config = {
-                brightness: 0,
-                enable: false,
-            };
-            Cookies.set("brightness", JSON.stringify(this.config));
-        }
+        this.config = loadConfig();
         this.update();
     }
 
@@ -56,7 +72,7 @@ class BrightnessWatcher {
 
     private update() {
         this.maskDiv.style.outlineColor = `rgba(0, 0, 0, ${this.config.brightness / 100})`;
-        Cookies.set("brightness", JSON.stringify(this.config));
+        saveConfig(this.config);
     }
 }
 

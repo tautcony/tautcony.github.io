@@ -48,19 +48,24 @@ exclude:
     - build
     - node_modules
     - vendor
+    - docs
     - package.json
     - package-lock.json
     - tsconfig.json
     - jsconfig.json
     - eslint.config.js
+    - eslint.config.mjs
     - postcss.config.js
     - Dockerfile
     - README.md
     - LICENSE
     - Gemfile
     - Gemfile.lock
+    - bin
 anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
-MathJax: true
+# Client-side KaTeX on post pages (replaces the old MathJax 2/3 mix).
+# Set page.math: false in front matter to skip on a specific post.
+katex: true
 particle404: true                       # enable a particle effect 404 page
 
 

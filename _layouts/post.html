@@ -33,35 +33,4 @@ layout: default
 </article>
 
 {% include anchorjs.html %}
-
-{% if site.MathJax %}
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            preferredFont: "TeX",
-            availableFonts: ["STIX","TeX"],
-            linebreaks: { automatic:true },
-            EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
-        },
-        tex2jax: {
-            inlineMath: [ ["$", "$"], ["\\\\(","\\\\)"] ],
-            displayMath: [ ["$$","$$"], ["\\[", "\\]"] ],
-            processEscapes: true,
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            ignoreClass: "tex2jax_ignore|dno"
-        },
-        TeX: { 
-            noUndefined: {
-                attributes: {
-                    mathcolor: "red",
-                    mathbackground: "#FFEEEE",
-                    mathsize: "90%"
-                }
-            },
-            Macros: { href: "{}" } },
-            messageStyle: "none"
-        }
-    );
-</script>
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" integrity="sha512-6FaAxxHuKuzaGHWnV00ftWqP3luSBRSopnNAA2RvQH1fOfnF/A1wOfiUWF7cLIOFcfb1dEhXwo5VG3DAisocRw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-{% endif %}
+{% include katex.html %}

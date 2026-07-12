@@ -42,18 +42,23 @@ SocialAccount: [
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: 
+exclude:
     - less
     - ts
     - build
     - node_modules
-    - js/pangu.js/node_modules
     - vendor
-    - apps/material/templates
-    - gulpfile.ts
     - package.json
+    - package-lock.json
+    - tsconfig.json
+    - jsconfig.json
+    - eslint.config.js
+    - postcss.config.js
+    - Dockerfile
     - README.md
     - LICENSE
+    - Gemfile
+    - Gemfile.lock
 anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
 MathJax: true
 particle404: true                       # enable a particle effect 404 page

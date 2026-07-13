@@ -11,7 +11,7 @@ import * as page from "../pages/page";
 import * as post from "../pages/post";
 import * as about from "../pages/about";
 
-import "../../less/tc-blog.less";
+import "../../styles/tc-blog.scss";
 import "heti/lib/heti.scss";
 
 Sentry.init({

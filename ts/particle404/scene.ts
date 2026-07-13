@@ -191,10 +191,10 @@ function createSkyboxCube(cubeSize: number, faceUrl: string): ThreeMesh {
             overdraw: true,
         });
         const image = new Image();
-        image.onload = function onLoad(this: HTMLImageElement) {
+        image.onload = () => {
             texture.needsUpdate = true;
             if (material.map) {
-                material.map.image = this;
+                material.map.image = image;
             }
         };
         image.src = src;

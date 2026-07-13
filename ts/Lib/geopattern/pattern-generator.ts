@@ -30,7 +30,7 @@ const PATTERNS = {
 };
 
 export default class PatternGenerator extends Generator<Pattern> {
-    private pattern: Pattern;
+    private pattern!: Pattern;
     private options: IPatternOption;
 
     public constructor(str: string, options?: IPatternOption) {

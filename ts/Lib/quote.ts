@@ -1,4 +1,4 @@
-import { util_ui_element_creator as _ } from "./utils";
+import { el } from "./utils";
 
 export interface Info {
     tagName: string;
@@ -7,7 +7,7 @@ export interface Info {
     content: string | HTMLElement[];
 }
 
-interface IFormat {
+interface QuoteEntry {
     text: string[];
     author: string;
     source: string;
@@ -22,49 +22,38 @@ async function getJSON<T>(url: string): Promise<T> {
 }
 
 export default class Quote {
-    private container: HTMLElement;
-    private content: HTMLElement;
-    private author: HTMLElement;
-    private quotes: IFormat[] = [];
+    private readonly container: HTMLElement;
+    private readonly content: HTMLElement;
+    private readonly author: HTMLElement;
+    private quotes: QuoteEntry[] = [];
     private timer: number | undefined;
 
     public constructor(containerSelector: string, className: string) {
-        this.container = _(
-            "div",
-            { className },
-            [
-                _("div", {
-                    className: "quote-content",
-                    style: {
-                        "margin-top": "2em",
-                    },
-                }),
-                _("div", {
-                    className: "quote-author",
-                    style: {
-                        "margin-left": "16em",
-                        "font-size": "85%",
-                    },
-                }),
-            ]
-        );
-        this.content = this.container.querySelector(".quote-content") as HTMLElement;
-        this.author = this.container.querySelector(".quote-author") as HTMLElement;
-        const container = document.querySelector(containerSelector);
-        if (container !== null) {
-            container.appendChild(this.container);
-        }
+        this.content = el("div", {
+            class: "quote-content",
+            style: { marginTop: "2em" },
+        });
+        this.author = el("div", {
+            class: "quote-author",
+            style: {
+                marginLeft: "16em",
+                fontSize: "85%",
+            },
+        });
+        this.container = el("div", { class: className }, this.content, this.author);
+
+        document.querySelector(containerSelector)?.append(this.container);
     }
 
     public init(timeout: number) {
-        this.FetchData().then(() => {
-            this.UpdateQuote();
-            this.Interval(timeout);
+        void this.fetchData().then(() => {
+            this.updateQuote();
+            this.interval(timeout);
         });
     }
 
-    public UpdateQuote() {
-        const quote = this.RandomQuote();
+    public updateQuote() {
+        const quote = this.randomQuote();
         if (quote === undefined) {
             return;
         }
@@ -77,7 +66,12 @@ export default class Quote {
         this.author.textContent = author;
     }
 
-    private RandomQuote = () => {
+    /** @deprecated Prefer {@link updateQuote}. */
+    public UpdateQuote() {
+        this.updateQuote();
+    }
+
+    private randomQuote(): QuoteEntry | undefined {
         if (this.quotes.length === 0) {
             if (this.timer !== undefined) {
                 clearInterval(this.timer);
@@ -85,24 +79,21 @@ export default class Quote {
             return undefined;
         }
         return this.quotes[Math.floor(Math.random() * this.quotes.length)];
-    };
+    }
 
-    private Interval(timeout: number) {
+    private interval(timeout: number) {
         this.timer = window.setInterval(() => {
-            this.UpdateQuote();
+            this.updateQuote();
         }, timeout);
     }
 
-    private async FetchData() {
-        const baseMeta = document.head.querySelector("meta[name=baseurl]") as HTMLMetaElement | null;
-        const baseurl = baseMeta?.content ?? "";
-        let url = "/json/quote.json";
-        if (baseurl !== "") {
-            url = baseurl + url;
-        }
+    private async fetchData() {
+        const baseMeta = document.head.querySelector("meta[name=baseurl]");
+        const baseurl = baseMeta instanceof HTMLMetaElement ? baseMeta.content : "";
+        const url = `${baseurl}/json/quote.json`;
 
         try {
-            this.quotes = await getJSON<IFormat[]>(url);
+            this.quotes = await getJSON<QuoteEntry[]>(url);
         } catch (err) {
             console.warn("Failed to load quote.json", err);
         }

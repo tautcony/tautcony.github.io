@@ -1,21 +1,8 @@
 function queryString(): Record<string, string> {
-    // This function is anonymous, is executed immediately and
-    // the return value is assigned to QueryString!
-    const queryObj = {};
-    const queryStr = window.location.search.substring(1);
-    const queryArr = queryStr.split("&");
-    for (const query of queryArr) {
-        const [key, value] = query.split("=");
-        // If first entry with this name
-        if (typeof queryObj[key] === "undefined") {
-            queryObj[key] = value;
-            // If second entry with this name
-        } else if (typeof queryObj[key] === "string") {
-            queryObj[key] = [queryObj[key], value];
-            // If third or later entry with this name
-        } else {
-            queryObj[key].push(value);
-        }
+    const queryObj: Record<string, string> = {};
+    const params = new URLSearchParams(window.location.search);
+    for (const [key, value] of params.entries()) {
+        queryObj[key] = value;
     }
     return queryObj;
 }
@@ -48,11 +35,11 @@ function find(selectors: string, parent: Element | Element[] | Document | null =
 }
 
 export default class Archive {
-    private tags: Element | null;
-    private articalTags: Element[];
-    private tagShowAll: Element | null;
-    private result: Element | null;
-    private sections: Element[];
+    private tags: Element | null = null;
+    private articalTags: Element[] = [];
+    private tagShowAll: Element | null = null;
+    private result: Element | null = null;
+    private sections: Element[] = [];
     private sectionArticles: Element[][] = [];
     private lastFocusButton: Element | null = null;
     private sectionTopArticleIndex: number[] = [];

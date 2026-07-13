@@ -16,28 +16,28 @@
 
 // Container of Sidebar, also Friends
 .sidebar-container {
-    color: @gray-l;
+    color: $gray-l;
     font-size: 14px;
 
     h5 {
-        color: @gray;
+        color: $gray;
         padding-bottom: 1em;
         a {
-            color: @gray !important;
+            color: $gray !important;
             text-decoration: none;
         }
     }
     a {
-        color: @gray-l !important;
+        color: $gray-l !important;
         &:hover, &:active{
-            color: @brand-primary !important;
+            color: $brand-primary !important;
         }
     }
     .tags {
         a {
-            border-color: @gray-l;
+            border-color: $gray-l;
             &:hover, &:active {
-                border-color: @brand-primary;
+                border-color: $brand-primary;
             }
         }
     }

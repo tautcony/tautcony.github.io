@@ -578,10 +578,10 @@ npm run ci           # lint + typecheck + build
 
 ### Phase 0 — 止血与决策（0.5–1 天）
 
-- [ ] 确认路径 A（本文默认）  
-- [ ] 决定 SW：**删除** 或 **Workbox 重建**（二选一写进 README）  
-- [ ] 盘点 `pdfjs`、fonts、attach 是否线上必需  
-- [ ] 修复 MathJax 配置错位（小 PR，高收益）
+- [x] 确认路径 A（本文默认）  
+- [x] 决定 SW：**删除** 或 **Workbox 重建**（二选一写进 README）  
+- [x] 盘点 `pdfjs`、fonts、attach 是否线上必需（pdfjs/three 已 CDN；fonts ttf 已删）  
+- [x] 修复 MathJax 配置错位（小 PR，高收益）— 已换 KaTeX
 
 **验收**：含公式的文章渲染正确；README 写明 SW 策略。
 
@@ -590,43 +590,43 @@ npm run ci           # lint + typecheck + build
 - [x] 删除或外置 `js/pdfjs`（cdnjs + canvas 渲染）  
 
 - [ ] fonts 仅保留 woff2 子集；更新 `iosevka.css` / `fonts.css`  
-- [ ] 删除 SW 死链文件或标记迁移期 unregister  
-- [ ] 删除 `ts/tc-blog.ts` 废弃桩、无用 modernizr（若 404 未用）  
-- [ ] 统一 `repo.json` / `package.json` 元数据  
-- [ ] 修正 `_config.yml` exclude + `html lang`
+- [x] 删除 SW 死链文件或标记迁移期 unregister  
+- [x] 删除 `ts/tc-blog.ts` 废弃桩、无用 modernizr（若 404 未用）  
+- [x] 统一 `repo.json` / `package.json` 元数据  
+- [x] 修正 `_config.yml` exclude + `html lang`（`lang="en"` 按决策保留）
 
 **验收**：仓库体积显著下降；`npm run ci` 绿。
 
 ### Phase 2 — 工程化升级（3–7 天）
 
-- [ ] Webpack → Vite 多入口 + manifest  
-- [ ] Jekyll 模板改为读 manifest  
-- [ ] `tsconfig` 现代化（ESM / bundler / 逐步 strict）  
-- [ ] `ci` 加入 eslint；可选 size limit  
-- [ ] axios → fetch；去掉不必要 polyfill  
-- [ ] catalog 去全局变量  
-- [ ] `tcupdate` 去 Vue，并入统一构建  
+- [x] Webpack → Vite 多入口 + manifest  
+- [x] Jekyll 模板改为读 manifest  
+- [x] `tsconfig` 现代化（ESM / bundler / `strict: true`）  
+- [x] `ci` 加入 eslint；可选 size limit  
+- [x] axios → fetch；去掉不必要 polyfill  
+- [x] catalog 去全局变量  
+- [ ] `tcupdate` 去 Vue，并入统一构建（已并入 Vite；Vue 按决策暂保留）
 
 **验收**：本地一条 `dev` 命令；产物带 hash；主 JS 体积下降可量化。
 
 ### Phase 3 — 样式与 UI 基座（1–2 周，可拆 PR）
 
-- [ ] 梳理实际用到的 BS 类，绘制「类名 → 自有 CSS」映射表  
-- [ ] 实现布局/导航/分页/表格/blockquote 自有样式  
-- [ ] 移除 Bootstrap CSS/JS 与 FA4  
-- [ ] Less → CSS（或统一 Sass）  
-- [ ] 图标 SVG 化  
-- [ ] 基础 a11y：导航、跳过链接、对比度、焦点环  
+- [x] 梳理实际用到的 BS 类，绘制「类名 → 自有 CSS」映射表  
+- [x] 实现布局/导航/分页/表格/blockquote 自有样式  
+- [x] 移除 Bootstrap CSS/JS 与 FA4  
+- [x] Less → CSS（或统一 Sass）— 已迁 `styles/*.scss`，移除 `less` 依赖  
+- [x] 图标 SVG 化  
+- [x] 基础 a11y：导航、跳过链接、对比度、焦点环
 
 **验收**：无 BS/FA 网络请求；Lighthouse a11y 明显改善；视觉回归可接受。
 
 ### Phase 4 — 体验与内容管线（持续）
 
 - [ ] 图片：现代格式（WebP/AVIF）+ 合理尺寸；文章内图懒加载  
-- [ ] Math：按需加载 KaTeX/MathJax  
-- [ ] 文章 lastmod 构建期生成  
-- [ ] 依赖 Dependabot  
-- [ ] （可选）评估 Astro 迁移 ROI  
+- [x] Math：按需加载 KaTeX/MathJax（KaTeX；`math: false` 可关）  
+- [x] 文章 lastmod 构建期生成  
+- [x] 依赖 Dependabot  
+- [ ] （可选）评估 Astro 迁移 ROI 
 
 ### Phase 5 — （可选）路径 B 迁移决策点
 

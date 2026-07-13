@@ -20,11 +20,10 @@ export default defineConfig(({ mode }) => {
         base: "/",
         plugins: [vueJsx(), vitePluginSyncAssetData()],
         resolve: {
-            extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".less", ".scss", ".css"],
+            extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".scss", ".css"],
         },
         css: {
             preprocessorOptions: {
-                less: {},
                 scss: {
                     quietDeps: true,
                     silenceDeprecations: ["import", "mixed-decls", "global-builtin", "legacy-js-api"],

@@ -54,9 +54,10 @@ Open <http://127.0.0.1:4000>.
 | `npm run build` | Vite production build → hashed `assets/build/` + `_data/assets.json` |
 | `npm run build:dev` | Vite development watch (unhashed names + sync assets.json) |
 | `npm run sync:assets` | Manually regenerate `_data/assets.json` from the Vite manifest |
-| `npm start` | Jekyll serve (full rebuild on change; reliable with hashed assets) |
-| `npm run start:i` | Jekyll serve with `--incremental` (faster; still works via include mtime) |
-| `npm run jekyll:build` | Static site → `_site/` |
+| `npm run lastmod` | Generate `_data/lastmod.json` from git history (posts) |
+| `npm start` | lastmod + Jekyll serve (full rebuild on change; reliable with hashed assets) |
+| `npm run start:i` | lastmod + Jekyll serve with `--incremental` |
+| `npm run jekyll:build` | lastmod + static site → `_site/` |
 | `npm run ci` | eslint + typecheck + frontend build + Jekyll build |
 
 ## Deploy
@@ -83,12 +84,14 @@ ts/
   pages/            Per-page UI modules
   Lib/              Shared utilities (navbar, geopattern, pdf-embed, …)
   particle404/      Particle 404 scene (TypeScript)
-less/               Styles (tc-blog.less, 404.less, tcupdate.less)
+styles/             Site styles (Sass; unified with heti)
 assets/build/       Vite output (gitignored; hashed JS/CSS)
 _data/assets.json   Liquid map of entry → asset URLs (generated)
+_data/lastmod.json  Post last-modified from git (generated)
 _posts/             Blog posts
 docs/               Design / modernization notes
 .github/workflows/  CI / Pages deploy
+.github/dependabot.yml
 ```
 
 Build outputs (hashed filenames; see `_data/assets.json`):
@@ -118,4 +121,7 @@ Example: `/404.html?perf=true&gui=true`
 - 404 particle scene loads **Three.js r56 from cdnjs** (CanvasRenderer-era API; not bundled).
 - Post math uses **KaTeX** (`site.katex`; opt out with `math: false` on a page).
 - Scroll UX uses native `window.scrollTo({ behavior: "smooth" })` (no anime.js).
-- Layout/grid utilities ship in `less/layout.less` (no Bootstrap / Font Awesome CDN).
+- Layout/grid utilities ship in `styles/layout.scss` (no Bootstrap / Font Awesome CDN).
+- Post “Update on” dates come from **build-time** git history (`npm run lastmod`), not the GitHub API.
+- Repository metadata lives only in `package.json` (no separate `repo.json`).
+- TypeScript is compiled under `strict: true`.

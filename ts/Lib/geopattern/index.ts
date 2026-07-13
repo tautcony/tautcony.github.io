@@ -34,23 +34,3 @@ const GeoPattern = {
 };
 
 export const { generate } = GeoPattern;
-
-(($ => {
-    if (!$) {
-        return;
-    }
-    // If jQuery, add plugin
-    $.fn.geopattern = function plugin(this, str?: string, options?: IPatternOption) {
-        this.each(() => {
-            const titleSha = $(this).attr("data-title-sha");
-            if (titleSha) {
-                options = $.extend({
-                    hash: titleSha,
-                }, options);
-            }
-            const pattern = GeoPattern.generate(str as string, options);
-            $(this).css("background-image", pattern.toDataUrl());
-        });
-        return this;
-    };
-})(typeof window["jQuery"] !== "undefined" ? window["jQuery"] : null));

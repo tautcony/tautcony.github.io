@@ -31,7 +31,7 @@ export default abstract class Pattern extends Generator<Pattern> {
         return this.svg.toString();
     }
 
-    public toString() {
+    public override toString() {
         return this.toSvg();
     }
 

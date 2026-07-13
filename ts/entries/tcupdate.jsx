@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import "../../less/tcupdate.less";
+import "../../styles/tcupdate.scss";
 import { createApp } from "vue";
 
 async function getJSON(url) {

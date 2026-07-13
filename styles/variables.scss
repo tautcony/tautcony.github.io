@@ -1,0 +1,10 @@
+// Theme color tokens (plain values — no deprecated Sass color functions).
+
+$brand-primary: #0085a1;
+// lighten(black, 25% / 40% / 60%)
+$gray-dark: #404040;
+$gray: #666666;
+$gray-l: #999999;
+// fade(white, 80%)
+$white-faded: rgba(255, 255, 255, 0.8);
+$gray-light: #eee;

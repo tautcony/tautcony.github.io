@@ -1,0 +1,38 @@
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+          - "@stylistic/*"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5

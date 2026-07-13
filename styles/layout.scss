@@ -55,33 +55,33 @@ a {
 }
 
 // Generate Bootstrap-like columns for xs/sm/md/lg
-.make-cols(@prefix, @min) {
-    @media (min-width: @min) {
-        .col-@{prefix}-1  { width: 8.33333333%; }
-        .col-@{prefix}-2  { width: 16.66666667%; }
-        .col-@{prefix}-3  { width: 25%; }
-        .col-@{prefix}-4  { width: 33.33333333%; }
-        .col-@{prefix}-5  { width: 41.66666667%; }
-        .col-@{prefix}-6  { width: 50%; }
-        .col-@{prefix}-7  { width: 58.33333333%; }
-        .col-@{prefix}-8  { width: 66.66666667%; }
-        .col-@{prefix}-9  { width: 75%; }
-        .col-@{prefix}-10 { width: 83.33333333%; }
-        .col-@{prefix}-11 { width: 91.66666667%; }
-        .col-@{prefix}-12 { width: 100%; }
+@mixin make-cols($prefix, $min) {
+    @media (min-width: $min) {
+        .col-#{$prefix}-1  { width: 8.33333333%; }
+        .col-#{$prefix}-2  { width: 16.66666667%; }
+        .col-#{$prefix}-3  { width: 25%; }
+        .col-#{$prefix}-4  { width: 33.33333333%; }
+        .col-#{$prefix}-5  { width: 41.66666667%; }
+        .col-#{$prefix}-6  { width: 50%; }
+        .col-#{$prefix}-7  { width: 58.33333333%; }
+        .col-#{$prefix}-8  { width: 66.66666667%; }
+        .col-#{$prefix}-9  { width: 75%; }
+        .col-#{$prefix}-10 { width: 83.33333333%; }
+        .col-#{$prefix}-11 { width: 91.66666667%; }
+        .col-#{$prefix}-12 { width: 100%; }
 
-        .col-@{prefix}-offset-0  { margin-left: 0; }
-        .col-@{prefix}-offset-1  { margin-left: 8.33333333%; }
-        .col-@{prefix}-offset-2  { margin-left: 16.66666667%; }
-        .col-@{prefix}-offset-3  { margin-left: 25%; }
-        .col-@{prefix}-offset-4  { margin-left: 33.33333333%; }
-        .col-@{prefix}-offset-5  { margin-left: 41.66666667%; }
-        .col-@{prefix}-offset-6  { margin-left: 50%; }
-        .col-@{prefix}-offset-7  { margin-left: 58.33333333%; }
-        .col-@{prefix}-offset-8  { margin-left: 66.66666667%; }
-        .col-@{prefix}-offset-9  { margin-left: 75%; }
-        .col-@{prefix}-offset-10 { margin-left: 83.33333333%; }
-        .col-@{prefix}-offset-11 { margin-left: 91.66666667%; }
+        .col-#{$prefix}-offset-0  { margin-left: 0; }
+        .col-#{$prefix}-offset-1  { margin-left: 8.33333333%; }
+        .col-#{$prefix}-offset-2  { margin-left: 16.66666667%; }
+        .col-#{$prefix}-offset-3  { margin-left: 25%; }
+        .col-#{$prefix}-offset-4  { margin-left: 33.33333333%; }
+        .col-#{$prefix}-offset-5  { margin-left: 41.66666667%; }
+        .col-#{$prefix}-offset-6  { margin-left: 50%; }
+        .col-#{$prefix}-offset-7  { margin-left: 58.33333333%; }
+        .col-#{$prefix}-offset-8  { margin-left: 66.66666667%; }
+        .col-#{$prefix}-offset-9  { margin-left: 75%; }
+        .col-#{$prefix}-offset-10 { margin-left: 83.33333333%; }
+        .col-#{$prefix}-offset-11 { margin-left: 91.66666667%; }
     }
 }
 
@@ -99,9 +99,9 @@ a {
 .col-xs-4 { width: 33.33333333%; }
 .col-xs-3 { width: 25%; }
 
-.make-cols(sm, 768px);
-.make-cols(md, 992px);
-.make-cols(lg, 1200px);
+@include make-cols(sm, 768px);
+@include make-cols(md, 992px);
+@include make-cols(lg, 1200px);
 
 // --- Visibility ---
 .hidden,
@@ -148,7 +148,7 @@ a {
 
 // --- Typography utilities ---
 .text-center { text-align: center; }
-.text-muted { color: @gray; }
+.text-muted { color: $gray; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
@@ -384,7 +384,7 @@ a {
     top: 0;
     z-index: 2000;
     padding: 0.75em 1em;
-    background: @brand-primary;
+    background: $brand-primary;
     color: #fff;
     font-weight: 700;
 
@@ -402,7 +402,7 @@ a {
     width: 2.4em;
     height: 2.4em;
     border-radius: 50%;
-    background: @gray-dark;
+    background: $gray-dark;
     color: #fff;
     transition: background-color 0.2s ease, transform 0.2s ease;
 
@@ -415,7 +415,7 @@ a {
 
     &:hover,
     &:focus {
-        background: @brand-primary;
+        background: $brand-primary;
         transform: translateY(-1px);
         outline: none;
     }

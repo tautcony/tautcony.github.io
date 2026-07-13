@@ -1,30 +1,27 @@
-import { util_ui_element_creator as _ } from "../Lib/utils";
+import { el } from "../Lib/utils";
 
-function wrap<K extends keyof HTMLElementTagNameMap>(el: HTMLElement, wrapperTagName: K, wrapperClassList: [string]) {
-    const wrapper = document.createElement(wrapperTagName);
-    wrapperClassList.forEach(value => {
-        wrapper.classList.add(value);
-    });
-    if (el.parentNode !== null) {
-        el.parentNode.insertBefore(wrapper, el);
-    }
-    wrapper.appendChild(el);
+function wrap<K extends keyof HTMLElementTagNameMap>(
+    node: HTMLElement,
+    wrapperTagName: K,
+    wrapperClassList: string[]
+) {
+    const wrapper = el(wrapperTagName, { class: wrapperClassList.join(" ") });
+    node.replaceWith(wrapper);
+    wrapper.append(node);
 }
 
 function smoothScrollTo(top: number): void {
     window.scrollTo({ top, behavior: "smooth" });
 }
 
-const scrollToHeading = (element: string) => {
-    const elementSelector = document.querySelector(element);
-    if (elementSelector === null) {
+const scrollToHeading = (selector: string) => (event?: Event) => {
+    event?.preventDefault();
+    const target = document.querySelector(selector);
+    if (target === null) {
         return;
     }
-
-    return () => {
-        const top = elementSelector.getBoundingClientRect().top + window.scrollY;
-        smoothScrollTo(top);
-    };
+    const top = target.getBoundingClientRect().top + window.scrollY;
+    smoothScrollTo(top);
 };
 
 export function generateCatalog(selector: string) {
@@ -37,21 +34,19 @@ export function generateCatalog(selector: string) {
     if (catalogContainer === null) {
         return;
     }
-    catalogContainer.replaceChildren();
-    catalogs.forEach(catalog => {
-        const tagName = catalog.tagName.toLowerCase();
-        const text = catalog.textContent;
-        const element = _(
-            "li",
-            { className: `${tagName}_nav` },
-            [_("a", {
-                event: {
-                    click: scrollToHeading(`#${catalog.id}`),
-                },
-            }, text)]
-        );
-        catalogContainer.appendChild(element);
-    });
+    catalogContainer.replaceChildren(
+        ...Array.from(catalogs, catalog => {
+            const tagName = catalog.tagName.toLowerCase();
+            return el(
+                "li",
+                { class: `${tagName}_nav` },
+                el("a", {
+                    href: `#${catalog.id}`,
+                    on: { click: scrollToHeading(`#${catalog.id}`) },
+                }, catalog.textContent ?? "")
+            );
+        })
+    );
 }
 
 function initCatalog(): void {

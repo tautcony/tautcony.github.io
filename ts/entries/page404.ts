@@ -5,7 +5,7 @@
  * Stats / Tween are TypeScript modules; dat.GUI comes from the npm package.
  */
 
-import "../../less/404.less";
+import "../../styles/404.scss";
 import { startParticle404 } from "../particle404/bootstrap";
 
 function boot(): void {

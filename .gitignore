@@ -152,4 +152,5 @@ css/*.min.css
 ### Frontend build (Vite) ###
 assets/build/
 _data/assets.json
+_data/lastmod.json
 

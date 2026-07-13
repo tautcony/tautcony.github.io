@@ -11,6 +11,7 @@
 | `assets-jekyll.json` | 静态资源 URL、字节数、sha256 | M3 |
 | `assets-astro.json` | `dist` 静态资源 URL、字节数、sha256 | 每次 compare |
 | `content-fixtures.json` | 42 篇 front matter、摘要、排序、标题 HTML 快照 | M1 |
+| `excerpts.json` | 42 篇 raw-body 摘要（`<!--more-->` 前、strip HTML、truncate 256） | M1（`migrate-posts --write`） |
 | `visual/` | 六类页面桌面/移动 baseline/current/diff | M0/M3 |
 
 ## 生成示例

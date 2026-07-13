@@ -11,17 +11,17 @@
 
 | 字段 | 值 |
 |------|-----|
-| 当前阶段 | **M1**（M0 已完成） |
-| 当前 PR 切片 | PR1 可收尾；下一刀 PR2/M1 |
+| 当前阶段 | **M2**（M0/M1 已完成） |
+| 当前 PR 切片 | PR2 主体完成；下一刀 PR3/M2 |
 | 上次更新 | 2026-07-14 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
 | 阻塞 | 无 |
 
 | 阶段 | 名称 | 状态 | 备注 |
 |------|------|------|------|
-| M0 | 脚手架与样式接入 | **done** | PR1 主体完成 |
-| M1 | 内容集合与文章页 | **todo** | 下一阶段 |
-| M2 | 列表页与站点页 | todo | |
+| M0 | 脚手架与样式接入 | **done** | PR1 |
+| M1 | 内容集合与文章页 | **done** | PR2：42 文 URL diff=0 |
+| M2 | 列表页与站点页 | **todo** | 下一阶段 |
 | M3 | 特殊页与脚本收尾 | todo | |
 | M4 | CI / Docker / 切流 | todo | 合入 master |
 | M5 | 稳定与清理 | todo | 持续 |
@@ -37,16 +37,16 @@
 3. 从「下一步」第一条未完成项开始；完成后把本册勾选/改状态并写 changelog。
 4. 每阶段结束跑该阶段验收命令，再把阶段状态改为 `done`。
 
-### 此刻应做（M1 起手）
+### 此刻应做（M2）
 
-1. 充实 `scripts/migrate-posts.mjs`：复制 `_posts` → `src/content/posts`，front matter 规范化、`sourceFilename`/`legacyPath`、Liquid include 清零（见 `05`）。
-2. 写 `src/content.config.ts` schema（05 冻结版）。
-3. 文章路由 `src/pages/[year]/[month]/[day]/[slug]/index.astro`，**只读** `legacy-post-urls.json`。
-4. 落地 `PostLayout` / `IntroHeader` / `PostContainer` / `Sidebar` / `Comment` / `Katex` / `AnchorJS`。
-5. 冻结/校验 `src/data/lastmod.json`（42 条）；排序共用函数。
-6. 验收：`compare-routes --scope posts` diff = 0。
+1. 首页 `index.astro`：raw-body 摘要（`mig/fixtures/excerpts.json`），每页 10 篇，排序用 `src/lib/posts.ts`。
+2. 分页 `pages/[page]/index.astro`：仅 `page2+`，禁止 `/page/n`。
+3. `archive/index.astro`：`#tag_cloud` / `data-encode` / `data-tags`。
+4. `about/index.astro`：APlayer + about.ts + Comment pathname。
+5. `feed.xml.ts`、`sitemap.xml.ts`（固定 `/sitemap.xml`，非 index）。
+6. Nav 链接对齐。
 
-**M1 前勿做**：删除 `_posts`、改 `styles/**` 语义、切 CI 到仅 Astro。
+**勿做**：删除 `_posts`、改 `styles/**` 语义、切 CI 到仅 Astro。
 
 ---
 
@@ -105,21 +105,22 @@
 
 | ID | 任务 | 状态 | 备注 |
 |----|------|------|------|
-| M1-01 | 冻结/校验 legacy-post-urls 42 条 | done | fixtures + self-test 已绿 |
-| M1-02 | `migrate-posts.mjs` 生成 `src/content/posts` | todo | 禁止移动 `_posts` |
-| M1-03 | `content.config.ts` schema | todo | 见 05 |
-| M1-04 | Markdown 管线 GFM/slug/高亮/raw | todo | config 已预置 unified |
-| M1-05 | Liquid→0；PDF include；HTML title | todo | |
-| M1-06 | 文章路由 `[year]/[month]/[day]/[slug]` | todo | 仅读 legacy map |
-| M1-07 | PostLayout 与文章组件集 | todo | |
-| M1-08 | 排序 + lastmod 冻结 map | todo | |
-| M1-09 | catalog 逻辑 | todo | |
-| M1-10 | compare-routes --scope posts | todo | |
+| M1-01 | 冻结/校验 legacy-post-urls 42 条 | done | fixtures + self-test |
+| M1-02 | `migrate-posts.mjs` 生成 `src/content/posts` | done | 保留扩展名；不删 `_posts` |
+| M1-03 | `content.config.ts` schema | done | + `.markdown` entry type 集成 |
+| M1-04 | Markdown 管线 GFM/slug/高亮/raw | done | `rehype-rouge-compat` S1 |
+| M1-05 | Liquid→0；PDF include；HTML title | done | 1 处 pdf-embed 静态化 |
+| M1-06 | 文章路由 + legacy map | done | 含日期错位文 `/2017/04/24/...` |
+| M1-07 | PostLayout 与文章组件集 | done | Intro/PostContainer/Sidebar/… |
+| M1-08 | 排序 + lastmod 冻结 map | done | `src/data/lastmod.json` 42 |
+| M1-09 | catalog DOM | done | `catalog: true` 输出 side-catalog |
+| M1-10 | compare-routes --scope posts | done | 42/42 diff=0 |
 
 ### M1 交付勾选
 
-- [ ] 42 篇 200；schema/URL/lastmod 全命中
-- [ ] 文章 route diff = 0；Liquid = 0
+- [x] 42 篇生成；schema/URL/lastmod 全命中
+- [x] 文章 route diff = 0；Liquid = 0
+- [x] excerpts fixture 已写 `mig/fixtures/excerpts.json`
 
 ---
 
@@ -175,8 +176,8 @@
 
 | 日期 | 阶段 | 摘要 |
 |------|------|------|
-| 2026-07-14 | M0 | 创建造册；完成 PR1/M0：Astro 7 脚手架、site.ts、壳组件、sync-public、三验证脚本骨架、双栈 exclude；验收 build/check/jekyll 通过 |
-| 2026-07-14 | M1 | 下一刀：migrate-posts 写盘 + content collection + 文章路由 |
+| 2026-07-14 | M0 | 创建造册；完成 PR1/M0：Astro 7 脚手架、site.ts、壳组件、sync-public、三验证脚本骨架、双栈 exclude |
+| 2026-07-14 | M1 | migrate-posts 42 篇、content collection、PostLayout、legacy URL 路由、lastmod 冻结、posts route diff=0 |
 
 ---
 
@@ -199,7 +200,16 @@
 | `scripts/sync-public.mjs` | M0 | 根静态 → public |
 | `scripts/compare-routes.mjs` | M0 | 路由 diff 骨架 |
 | `scripts/compare-assets.mjs` | M0 | 资源 diff 骨架 |
-| `scripts/migrate-posts.mjs` | M0/M1 | 骨架已绿；写盘待 M1 |
+| `scripts/migrate-posts.mjs` | M1 | 写盘 + PDF/Liquid/excerpt/lastmod |
+| `src/content.config.ts` | M1 | posts collection schema |
+| `src/content/posts/*` | M1 | 迁移副本（保留 .md/.markdown） |
+| `src/data/lastmod.json` | M1 | 冻结 lastmod（sourceFilename key） |
+| `src/lib/posts.ts` | M1 | URL/排序/prev-next |
+| `src/lib/rehype-rouge-compat.mjs` | M1 | S1 高亮 DOM |
+| `src/layouts/PostLayout.astro` | M1 | 文章布局 |
+| `src/components/{IntroHeader,PostContainer,Sidebar,FeaturedTags,Comment,Katex,AnchorJS}.astro` | M1 | 文章组件 |
+| `src/pages/[year]/[month]/[day]/[slug]/index.astro` | M1 | 文章路由 |
+| `mig/fixtures/excerpts.json` | M1 | 摘要 fixture（供 M2） |
 | `public/` | M0 | 同步产物（gitignore，构建前生成） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 

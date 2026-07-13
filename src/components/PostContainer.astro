@@ -1,0 +1,73 @@
+---
+import Comment from "./Comment.astro";
+import type { PostEntry } from "../lib/posts";
+import { postUrl } from "../lib/posts";
+
+interface Props {
+    post: PostEntry;
+    previous?: PostEntry;
+    next?: PostEntry;
+    pagePath: string;
+    pageId: string;
+}
+
+const { post, previous, next, pagePath, pageId } = Astro.props;
+const title = post.data.title;
+const dateIso = `${post.data.publishedDate}T00:00:00.000Z`;
+const prevUrl = previous ? postUrl(previous) : undefined;
+const nextUrl = next ? postUrl(next) : undefined;
+const prevTitle = previous?.data.title;
+const nextTitle = next?.data.title;
+
+const pageJson = JSON.stringify({
+    title,
+    date: dateIso,
+    path: pagePath,
+    id: pageId,
+});
+---
+
+<!-- Post Container -->
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+    <script is:inline set:html={`
+        window.jekyll = window.jekyll || { };
+        window.jekyll.page = ${pageJson};
+    `} />
+    <div class="post-content heti spacing">
+        <slot />
+    </div>
+    <hr />
+    <ul class="pager">
+        {
+            prevUrl && (
+                <li class="previous">
+                    <a
+                        href={prevUrl}
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title={prevTitle}
+                    >
+                        Previous<br />
+                        <span>{prevTitle}</span>
+                    </a>
+                </li>
+            )
+        }
+        {
+            nextUrl && (
+                <li class="next">
+                    <a
+                        href={nextUrl}
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title={nextTitle}
+                    >
+                        Next<br />
+                        <span>{nextTitle}</span>
+                    </a>
+                </li>
+            )
+        }
+    </ul>
+    <Comment />
+</div>

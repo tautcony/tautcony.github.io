@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from "astro:content";
+import PostLayout from "../../../../../layouts/PostLayout.astro";
+import {
+    getLegacyUrl,
+    parseLegacyUrl,
+    type PostEntry,
+} from "../../../../../lib/posts";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("posts");
+    if (posts.length === 0) {
+        throw new Error("No posts in collection; run: node scripts/migrate-posts.mjs --write");
+    }
+
+    return posts.map((post) => {
+        const sourceFilename = post.data.sourceFilename;
+        if (!sourceFilename) {
+            throw new Error(`Missing sourceFilename for post id=${post.id}`);
+        }
+        const url = getLegacyUrl(sourceFilename);
+        const { year, month, day, slug } = parseLegacyUrl(url);
+        return {
+            params: { year, month, day, slug },
+            props: { post, allPosts: posts as PostEntry[] },
+        };
+    });
+}
+
+interface Props {
+    post: PostEntry;
+    allPosts: PostEntry[];
+}
+
+const { post, allPosts } = Astro.props;
+const { Content } = await render(post);
+---
+
+<PostLayout post={post} allPosts={allPosts}>
+    <Content />
+</PostLayout>

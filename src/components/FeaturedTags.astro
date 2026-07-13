@@ -1,0 +1,46 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+    tagCounts: Map<string, number> | Record<string, number>;
+    postTotal: number;
+    bottom?: boolean;
+}
+
+const { tagCounts, postTotal, bottom = false } = Astro.props;
+
+const entries: [string, number][] =
+    tagCounts instanceof Map
+        ? [...tagCounts.entries()]
+        : Object.entries(tagCounts);
+
+const featured = entries
+    .filter(([, n]) => n > site.featuredConditionSize)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+---
+
+{
+    site.featuredTags && (
+        <section>
+            {bottom && <hr class="hidden-sm hidden-xs" />}
+            <h5>
+                <a href={`${site.baseurl}/archive/`}>FEATURED TAGS</a>
+            </h5>
+            <div class="tags">
+                {featured.map(([tag, size]) => {
+                    const sortKey = String(postTotal - size).padStart(4, "0").slice(-4);
+                    return (
+                        <a
+                            data-sort={sortKey}
+                            href={`${site.baseurl}/archive/?tag=${encodeURIComponent(tag)}`}
+                            title={tag}
+                            rel={String(size)}
+                        >
+                            {tag}
+                        </a>
+                    );
+                })}
+            </div>
+        </section>
+    )
+}

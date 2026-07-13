@@ -32,7 +32,7 @@ If `bundle install` complains about Ruby 4.0.x / `commonmarker`, your shell is s
 ## Development
 
 ```bash
-# Terminal 1 — frontend watch build (writes assets/build + _data/assets.json)
+# Terminal 1 — frontend watch build (stable unhashed names + _data/assets.json)
 npm run build:dev
 
 # Terminal 2 — Jekyll (uses bin/with-ruby so Ruby 3.3 is preferred)
@@ -43,14 +43,19 @@ npm start
 
 Open <http://127.0.0.1:4000>.
 
+**Asset URLs:** production builds hash filenames (`tc-blog.XXXX.js`). Liquid reads paths from `_data/assets.json`, which Vite rewrites after every build. Local `build:dev` uses **stable** names (`js/tc-blog.js`) so the browser keeps working across rebuilds. Prefer `npm run build:dev` while `jekyll serve` is running; after a production `npm run build`, wait for Jekyll to regenerate (or restart `npm start`) before refreshing.
+
 ### Useful scripts
 
 | Script | Description |
 |--------|-------------|
 | `npm run eslint` | ESLint on `ts/` |
 | `npm run typecheck` | TypeScript check (`tsc --noEmit`) |
-| `npm run build` | Vite production build → `assets/build/` + `_data/assets.json` |
-| `npm run build:dev` | Vite development watch build |
+| `npm run build` | Vite production build → hashed `assets/build/` + `_data/assets.json` |
+| `npm run build:dev` | Vite development watch (unhashed names + sync assets.json) |
+| `npm run sync:assets` | Manually regenerate `_data/assets.json` from the Vite manifest |
+| `npm start` | Jekyll serve (full rebuild on change; reliable with hashed assets) |
+| `npm run start:i` | Jekyll serve with `--incremental` (faster; still works via include mtime) |
 | `npm run jekyll:build` | Static site → `_site/` |
 | `npm run ci` | eslint + typecheck + frontend build + Jekyll build |
 
@@ -81,8 +86,6 @@ ts/
 less/               Styles (tc-blog.less, 404.less, tcupdate.less)
 assets/build/       Vite output (gitignored; hashed JS/CSS)
 _data/assets.json   Liquid map of entry → asset URLs (generated)
-js/pdfjs/           Vendored PDF.js (loaded on demand via pdf-embed)
-js/404/independent/ Three.js r56 only (CanvasRenderer-era API)
 _posts/             Blog posts
 docs/               Design / modernization notes
 .github/workflows/  CI / Pages deploy
@@ -111,7 +114,8 @@ Example: `/404.html?perf=true&gui=true`
 - Target browsers: modern evergreen only (IE 11 dropped).
 - Frontend is ESM (`type="module"`) produced by Vite.
 - Service Worker support has been **removed** (legacy registrations are unregistered once for migration).
-- PDF previews use vendored PDF.js under `js/pdfjs/`, loaded **on demand** via `{% include pdf-embed.html file="..." %}`.
+- PDF previews load **PDF.js from cdnjs** on demand via `{% include pdf-embed.html file="..." %}`.
+- 404 particle scene loads **Three.js r56 from cdnjs** (CanvasRenderer-era API; not bundled).
 - Post math uses **KaTeX** (`site.katex`; opt out with `math: false` on a page).
 - Scroll UX uses native `window.scrollTo({ behavior: "smooth" })` (no anime.js).
 - Layout/grid utilities ship in `less/layout.less` (no Bootstrap / Font Awesome CDN).

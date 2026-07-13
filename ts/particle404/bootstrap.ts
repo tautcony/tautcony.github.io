@@ -42,7 +42,7 @@ function canRender(useWebGL: boolean): boolean {
  */
 export function startParticle404(): void {
     if (typeof THREE === "undefined") {
-        console.warn("[404] THREE.js (r56) is not loaded");
+        console.warn("[404] THREE.js (cdnjs r56) is not loaded");
         return;
     }
 

@@ -486,26 +486,16 @@ DSN 本身通常可公开，但环境切换不灵活。
 
 预期：fonts 目录可压到 **数 MB 级**，clone 体验质变。
 
-#### 🔴 `js/pdfjs/` 约 16MB 完整 vendoring
+#### ✅ `js/pdfjs/` 已外置（cdnjs）
 
-若线上文章并未普遍嵌入 PDF viewer，这是巨大死重。
+原 ~16MB 完整 vendoring 已删除。PDF 预览改为按需从 cdnjs 加载 `pdf.js@3.3.122` 并 canvas 渲染（见 `ts/Lib/pdf-embed.ts`）。
 
-**修复建议**：
+#### ✅ `js/404/independent/three.min_r56.js` 已外置（cdnjs）
 
-1. 全库搜索引用；无引用则 **删除**。  
-2. 有引用则改为 npm `pdfjs-dist` 按需动态 import，或链接到外部 viewer。  
-3. 不要把 369 个 bcmap/properties 放进 Pages 仓库。
+锁定 2013 年代 API 仍是功能现实（CanvasRenderer / ParticleSystem），但脚本改为 cdnjs `three.js/r56`，仓库不再 vendoring。
 
-#### 🟠 `js/404/independent/three.min_r56.js`
+**后续可选**：
 
-锁定 2013 年代 API 是功能现实，但：
-
-- 安全/维护无上游；  
-- 与现代 three 无法共存。
-
-**修复建议**：
-
-- 短期：保持，但文档标明「冻结依赖」，禁止无目标升级。  
 - 中期：用 Canvas 2D / 现代 WebGL 轻量重写粒子，去掉 three r56。  
 - 不要引入新 three 却不改场景代码。
 
@@ -597,7 +587,8 @@ npm run ci           # lint + typecheck + build
 
 ### Phase 1 — 仓库瘦身与死代码清理（1–3 天）
 
-- [ ] 删除或外置 `js/pdfjs`（若无引用）  
+- [x] 删除或外置 `js/pdfjs`（cdnjs + canvas 渲染）  
+
 - [ ] fonts 仅保留 woff2 子集；更新 `iosevka.css` / `fonts.css`  
 - [ ] 删除 SW 死链文件或标记迁移期 unregister  
 - [ ] 删除 `ts/tc-blog.ts` 废弃桩、无用 modernizr（若 404 未用）  

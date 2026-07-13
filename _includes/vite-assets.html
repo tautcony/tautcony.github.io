@@ -4,13 +4,13 @@
     {% include vite-assets.html entry="tc-blog" %}
     {% include vite-assets.html entry="tc-blog" only="css" %}
     {% include vite-assets.html entry="tc-blog" only="js" %}
-  Data: _data/assets.json (npm run build → scripts/sync-asset-data.mjs)
+  Data: _data/assets.json (written by Vite plugin after every build; see scripts/sync-asset-data.mjs)
 {% endcomment %}
 {% assign entry_name = include.entry | default: "tc-blog" %}
 {% assign asset = site.data.assets[entry_name] %}
 {% assign only = include.only | default: "all" %}
 {% if asset == nil %}
-  <!-- vite assets missing for {{ entry_name }}; run: npm run build -->
+  <!-- vite assets missing for {{ entry_name }}; run: npm run build  or  npm run build:dev -->
 {% else %}
   {% if only == "all" or only == "css" %}
     {% if asset.css %}

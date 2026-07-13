@@ -1,5 +1,5 @@
 /**
- * Ambient types for Three.js r56 (global THREE from independent/three.min_r56.js).
+ * Ambient types for Three.js r56 (global THREE from cdnjs three.js/r56).
  */
 
 interface ModernizrStatic {

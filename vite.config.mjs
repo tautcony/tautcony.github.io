@@ -2,13 +2,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { vitePluginSyncAssetData } from "./scripts/sync-asset-data.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Multi-entry frontend build for the Jekyll site.
- * Outputs hashed assets under assets/build/ and a Vite manifest used by
- * scripts/sync-asset-data.mjs → _data/assets.json for Liquid templates.
+ * Outputs assets under assets/build/ (hashed in production) and keeps
+ * `_data/assets.json` in sync for Liquid (`vite-assets.html`).
  */
 export default defineConfig(({ mode }) => {
     const isProd = mode === "production";
@@ -17,7 +18,7 @@ export default defineConfig(({ mode }) => {
         root,
         publicDir: false,
         base: "/",
-        plugins: [vueJsx()],
+        plugins: [vueJsx(), vitePluginSyncAssetData()],
         resolve: {
             extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".less", ".scss", ".css"],
         },

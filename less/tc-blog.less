@@ -1328,7 +1328,7 @@ pre.highlight {
     }
 }
 
-// Lazy PDF.js embed placeholder (see _includes/pdf-embed.html + ts/Lib/pdf-embed.ts)
+// Lazy PDF.js embed (see _includes/pdf-embed.html + ts/Lib/pdf-embed.ts; pdf.js via cdnjs)
 .pdf-embed {
     margin: 1.5em 0;
     border: 1px solid #e5e5e5;
@@ -1347,10 +1347,16 @@ pre.highlight {
         text-align: center;
     }
 
-    &__label {
+    &__label,
+    &__status {
         margin: 0;
         color: @gray;
         font-size: 0.95em;
+    }
+
+    &__status {
+        padding: 2em 1em;
+        text-align: center;
     }
 
     &__button {
@@ -1380,10 +1386,22 @@ pre.highlight {
         }
     }
 
-    &__frame {
+    &__scroll {
+        overflow: auto;
+        background: #525659;
+        padding: 8px 0;
+    }
+
+    &__page {
         display: block;
-        border: 0;
-        width: 100%;
+        margin: 0 auto 8px;
+        max-width: 100%;
+        height: auto;
         background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 }

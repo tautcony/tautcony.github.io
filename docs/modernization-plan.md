@@ -740,6 +740,8 @@ npm run ci           # lint + typecheck + build
 
 ## 附录 B — 路径 B（Astro）若启动时的最小迁移清单
 
+> **完整可执行计划已落到仓库 [`mig/`](../mig/README.md)**（模块盘点、映射表、样式冻结、分阶段 checklist、验收与风险）。
+
 1. URL 兼容：`permalink: pretty` → Astro 路由映射表，旧链接 301/同路径。  
 2. 内容：front matter 字段（`catalog`、`header-img`、`subtitle`、tags）schema 化。  
 3. 评论：utterances `issue-term: pathname` 保持路径不变。  
@@ -749,4 +751,4 @@ npm run ci           # lint + typecheck + build
 
 ---
 
-*本文为审查与方案文档，不包含代码修改。确认阶段优先级后可按 Phase 顺序开 PR 实施。*
+*本文为审查与方案文档。路径 A 实施见仓库提交历史；路径 B 实施以 `mig/` 为准。*

@@ -1,7 +1,9 @@
 # 07 — 分阶段实施步骤
 
 每阶段结束应满足 **可构建、可预览、可回滚**。
-集成分支固定为 `astro-migration`。PR1–PR4 依次合入该分支，不进入 `master`；PR5 才把完整迁移合入 `master`。阶段编号 **M0–M5**。
+集成分支：计划名 `astro-migration`；本仓实际分支 **`feat/astro-mig`**（见 [PROGRESS.md](./PROGRESS.md)）。
+PR1–PR4 依次合入该分支，不进入 `master`；PR5 才把完整迁移合入 `master`。阶段编号 **M0–M5**。
+**实施进度与接续入口以 [PROGRESS.md](./PROGRESS.md) 为准**；本文件 checklist 完成后同步勾选 PROGRESS。
 
 ---
 

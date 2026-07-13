@@ -1,11 +1,14 @@
 # TC Blog → Astro 迁移计划
 
-> 状态：计划文档（未实施）
+> 状态：**实施中**（见 [PROGRESS.md](./PROGRESS.md)）
 > 原则：**视觉样式冻结** — 现有 `styles/*.scss`、class 名与静态资源视为只读契约
 > 对应战略：现代化方案路径 B（见 `docs/modernization-plan.md`）
 > 仓库：`tautcony/tautcony.github.io`
+> 集成分支：`feat/astro-mig`
 
 > 2026-07-13 修订：已锁定 Astro 7/Node 22.12+、preserve 路由输出、双栈复制策略、Content Layer/schema、全量 route/resource compare 和可演练回滚。未满足 M0 前置门禁时，不得直接搬移 `_posts` 或根静态资源。
+>
+> 2026-07-14：开始 M0/PR1 实施；**进度与接续入口统一写在 [PROGRESS.md](./PROGRESS.md)**。
 
 ---
 
@@ -13,6 +16,7 @@
 
 | 文档 | 内容 |
 |------|------|
+| **[PROGRESS.md](./PROGRESS.md)** | **实施造册**：阶段状态、任务勾选、下一步、变更日志（先读这个） |
 | [00-overview.md](./00-overview.md) | 目标、非目标、约束、成功标准、总工期 |
 | [01-module-inventory.md](./01-module-inventory.md) | 现站模块盘点（Jekyll / 前端 / 静态 / CI） |
 | [02-astro-architecture.md](./02-astro-architecture.md) | 目标目录树、技术选型、构建图 |
@@ -24,9 +28,9 @@
 | [08-ci-deploy-docker.md](./08-ci-deploy-docker.md) | CI / Pages / Docker / 域名 |
 | [09-acceptance-and-risks.md](./09-acceptance-and-risks.md) | 验收清单、风险、回滚 |
 
-**建议阅读顺序**：`00` → `01` → `03` → `04` → `07`，实施时按 `07` 推进，其余作查阅手册。
+**建议阅读顺序**：`PROGRESS` → `00` → `01` → `03` → `04` → `07`，实施时按 `07` 推进并**同步更新 PROGRESS**，其余作查阅手册。
 
-**实施前置**：先完成 `00` 的 D1–D8 决策和 `07/M0` 的版本、fixture、compare 脚本门禁；PR1–PR4 只进入 `astro-migration`，PR5 才切换 `master`。
+**实施前置**：先完成 `00` 的 D1–D8 决策和 `07/M0` 的版本、fixture、compare 脚本门禁；PR1–PR4 只进入集成分支，PR5 才切换 `master`。
 
 ---
 

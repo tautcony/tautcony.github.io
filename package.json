@@ -12,7 +12,7 @@
     "name": "tautcony.github.io"
   },
   "engines": {
-    "node": ">=20",
+    "node": ">=22.12.0",
     "npm": ">=10"
   },
   "scripts": {
@@ -22,13 +22,22 @@
     "build": "vite build",
     "build:dev": "vite build --mode development --watch",
     "sync:assets": "node scripts/sync-asset-data.mjs",
+    "sync:public": "node scripts/sync-public.mjs",
     "lastmod": "node scripts/generate-lastmod.mjs",
     "bundle": "bin/with-ruby bundle",
     "start": "npm run lastmod && bin/with-ruby bundle exec jekyll serve -H 127.0.0.1",
     "start:l": "npm run lastmod && bin/with-ruby bundle exec jekyll serve -l -H 127.0.0.1",
     "start:i": "npm run lastmod && bin/with-ruby bundle exec jekyll serve -I -H 127.0.0.1",
     "jekyll:build": "npm run lastmod && bin/with-ruby bundle exec jekyll build",
-    "ci": "npm run eslint && npm run typecheck && npm run build && npm run jekyll:build"
+    "dev:astro": "node scripts/sync-public.mjs && astro dev",
+    "build:astro": "node scripts/sync-public.mjs && astro build",
+    "preview:astro": "astro preview",
+    "check:astro": "astro check",
+    "verify:routes:selftest": "node scripts/compare-routes.mjs --self-test",
+    "verify:assets:selftest": "node scripts/compare-assets.mjs --self-test",
+    "migrate:posts:selftest": "node scripts/migrate-posts.mjs --self-test",
+    "ci": "npm run eslint && npm run typecheck && npm run build && npm run jekyll:build",
+    "ci:astro": "npm run eslint && npm run typecheck && npm run check:astro && npm run build:astro && npm run verify:routes:selftest && npm run verify:assets:selftest && npm run migrate:posts:selftest"
   },
   "browserslist": [
     "defaults",
@@ -37,10 +46,17 @@
     "last 2 versions"
   ],
   "dependencies": {
+    "@astrojs/check": "0.9.9",
+    "@astrojs/markdown-remark": "7.2.1",
+    "@astrojs/vue": "7.0.1",
     "@sentry/browser": "^8.54.0",
+    "astro": "7.0.7",
     "dat.gui": "^0.7.9",
     "heti": "^0.9.5",
-    "vue": "^3.5.13"
+    "rehype-raw": "7.0.0",
+    "rehype-slug": "6.0.0",
+    "remark-gfm": "4.0.1",
+    "vue": "3.5.24"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

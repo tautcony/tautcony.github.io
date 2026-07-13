@@ -1,0 +1,50 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    headerImg?: string;
+    feature?: boolean;
+    pageUrl?: string;
+}
+
+const {
+    title,
+    description,
+    subtitle,
+    headerImg,
+    feature = false,
+    pageUrl = "/",
+} = Astro.props;
+
+const absolute = (path: string) => {
+    if (/^https?:\/\//i.test(path)) return path;
+    const base = site.url.replace(/\/$/, "");
+    const p = path.startsWith("/") ? path : `/${path}`;
+    return `${base}${p}`;
+};
+
+const imagePath = headerImg || site.headerImg;
+const image = absolute(imagePath);
+const desc = description ?? subtitle ?? "";
+const displayTitle = title ?? site.title;
+const url = absolute(pageUrl);
+const card = feature ? "summary_large_image" : "summary";
+---
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content={card} />
+<meta name="twitter:site" content={`@${site.author.twitter}`} />
+<meta name="twitter:creator" content={`@${site.author.twitter}`} />
+<meta name="twitter:title" content={displayTitle} />
+<meta name="twitter:url" content={url} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={image} />
+<!-- Open Graph data -->
+<meta property="og:title" content={displayTitle} />
+<meta property="og:type" content="article" />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={image} />
+<meta property="og:description" content={desc} />

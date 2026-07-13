@@ -1,0 +1,71 @@
+---
+import { site } from "../data/site";
+import Meta from "./Meta.astro";
+
+interface Props {
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    headerImg?: string;
+    feature?: boolean;
+    pageUrl?: string;
+}
+
+const props = Astro.props;
+const pageTitle = props.title
+    ? `${props.title.replace(/<[^>]+>/g, "")} - ${site.seoTitle}`
+    : site.seoTitle;
+
+const pageDescription = (
+    props.description ??
+    props.subtitle ??
+    site.description
+).replace(/<[^>]+>/g, "").trim();
+
+const canonicalPath = props.pageUrl ?? Astro.url.pathname;
+const canonical = new URL(canonicalPath, site.url).href.replace(/\/index\.html$/, "/");
+---
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <title>{pageTitle}</title>
+
+    <script is:inline></script><!-- ga & ba script hook -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.min.css"
+        integrity="sha384-srUNBOxxSczbKnQaPdpJQw0ogffOMbZbMRMB0T6Qgxe3fF2GlfwZPZY/OX9QeR2r"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <!-- Main CSS injected by BaseLayout via Vite (tc-blog.scss + heti) -->
+    <link
+        rel="stylesheet"
+        href={`${site.baseurl}/css/iosevka.css`}
+        media="print"
+        onload="this.media='all'"
+    />
+    <link
+        rel="stylesheet"
+        href={`${site.baseurl}/css/fonts.css`}
+        media="print"
+        onload="this.media='all'"
+    />
+    <noscript>
+        <link rel="stylesheet" href={`${site.baseurl}/css/iosevka.css`} />
+        <link rel="stylesheet" href={`${site.baseurl}/css/fonts.css`} />
+    </noscript>
+
+    {
+        site.googleSiteVerification && (
+            <meta name="google-site-verification" content={site.googleSiteVerification} />
+        )
+    }
+    <meta name="description" content={pageDescription} />
+    <meta name="baseurl" content={site.baseurl} />
+    <meta name="theme-color" content="#000000" />
+    <Meta {...props} pageUrl={canonicalPath} />
+    <link rel="shortcut icon" href={`${site.baseurl}/img/favicon.ico`} type="image/x-icon" />
+    <link rel="canonical" href={canonical} />
+</head>

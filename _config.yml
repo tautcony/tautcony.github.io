@@ -50,6 +50,7 @@ exclude:
     - node_modules
     - vendor
     - docs
+    - mig
     - package.json
     - package-lock.json
     - tsconfig.json
@@ -65,6 +66,11 @@ exclude:
     - bin
     - scripts
     - vite.config.mjs
+    - astro.config.mjs
+    - src
+    - public
+    - dist
+    - .astro
     - .github
 anchorjs: true                          # if you want to customize anchor. check out `anchorjs.html`
 # Client-side KaTeX on post pages (replaces the old MathJax 2/3 mix).

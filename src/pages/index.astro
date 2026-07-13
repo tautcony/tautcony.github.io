@@ -1,0 +1,41 @@
+---
+/**
+ * M0 shell homepage. Full paginated index lands in M2.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout description={site.description} pageUrl="/">
+    <!-- Page Header (minimal shell; IntroHeader component in M1/M2) -->
+    <header class="intro-header" style={`background-image: url('/${site.headerImg}')`}>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>{site.title}</h1>
+                        <span class="subheading">{site.description}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-preview">
+                    <h2 class="post-title">Astro migration — M0 shell</h2>
+                    <p class="post-content-preview">
+                        顶栏、页脚与主站样式已接入。文章列表与分页将在 M2 落地；本页仅用于 M0
+                        验收（nav / footer / fonts / CSS）。
+                    </p>
+                    <p class="post-meta">
+                        进度见 <code>mig/PROGRESS.md</code>
+                    </p>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+</BaseLayout>

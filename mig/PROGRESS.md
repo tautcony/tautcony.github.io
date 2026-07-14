@@ -11,8 +11,8 @@
 
 | 字段 | 值 |
 |------|-----|
-| 当前阶段 | **M3**（M0–M2 已完成） |
-| 当前 PR 切片 | PR3 主体完成；下一刀 PR4/M3 |
+| 当前阶段 | **M4**（M0–M3 已完成） |
+| 当前 PR 切片 | PR4 完成；下一刀 PR5/M4 切流 |
 | 上次更新 | 2026-07-14 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
 | 阻塞 | 无 |
@@ -22,8 +22,8 @@
 | M0 | 脚手架与样式接入 | **done** | PR1 |
 | M1 | 内容集合与文章页 | **done** | PR2：42 文 URL diff=0 |
 | M2 | 列表页与站点页 | **done** | 首页/分页/archive/about/feed/sitemap |
-| M3 | 特殊页与脚本收尾 | **todo** | 下一阶段 |
-| M4 | CI / Docker / 切流 | todo | 合入 master |
+| M3 | 特殊页与脚本收尾 | **done** | 404/tcupdate/pdf/quote；全站 route+asset OK |
+| M4 | CI / Docker / 切流 | **todo** | 下一阶段：合入 master |
 | M5 | 稳定与清理 | todo | 持续 |
 
 ---
@@ -37,16 +37,14 @@
 3. 从「下一步」第一条未完成项开始；完成后把本册勾选/改状态并写 changelog。
 4. 每阶段结束跑该阶段验收命令，再把阶段状态改为 `done`。
 
-### 此刻应做（M3）
+### 此刻应做（M4）
 
-1. `404.astro`：主站 CSS + `404.scss`、fullscreen/`#container .fallback`、client-only `page404` entry、Three CDN。
-2. 验证 `?webGL` `?perf` `?gui`。
-3. `tcupdate.astro`：`build.format: preserve` → `dist/tcupdate.html`（不得有 `tcupdate/index.html`）。
-4. Vue JSX client-only mount；pdf-embed 点击加载验证。
-5. quote.json / footer 语录；SW unregister 再确认。
-6. 全站 `compare-routes --scope all`、`compare-assets`、smoke。
+1. 改 `.github/workflows/build.yml`：去 Ruby → `npm run ci:astro` / artifact=`dist`。
+2. Dockerfile：node build → nginx；lastmod 用仓库内 `src/data/lastmod.json`。
+3. `package.json` 默认 `build`/`dev` 切到 Astro（保留 jekyll 脚本至稳定）。
+4. README 与部署说明；合入 `master` 前再跑全站 compare + 线上验收清单。
 
-**勿做**：删除 `_posts`、改 `styles/**` 语义、切 CI 到仅 Astro。
+**勿做**：在 M4 验收前删 `_posts`/根静态源；不改 `styles/**` 语义。
 
 ---
 
@@ -147,15 +145,25 @@
 
 ## M3 — 特殊页与脚本收尾
 
-| ID | 任务 | 状态 |
-|----|------|------|
-| M3-01 | 404 粒子页 | todo |
-| M3-02 | tcupdate.html preserve | todo |
-| M3-03 | pdf-embed 验证 | todo |
-| M3-04 | quote.json / footer 语录 | todo |
-| M3-05 | 全站 compare-routes/assets + smoke | todo |
+| ID | 任务 | 状态 | 备注 |
+|----|------|------|------|
+| M3-01 | 404 粒子页 | done | `404.astro`：主站 CSS+`404.scss`、Three r56 CDN、page404 entry；body `page-fullscreen page page-404` |
+| M3-02 | tcupdate.html preserve | done | `dist/tcupdate.html` 存在；无 `dist/tcupdate/index.html`；Vue JSX client mount |
+| M3-03 | pdf-embed 验证 | done | rubiksrevenge 静态 HTML+`attach` PDF；`PdfEmbed.astro` 可复用 |
+| M3-04 | quote.json / footer 语录 | done | `public/json/quote.json`（15 条）；Footer `.copyright` + blog.ts Quote/SW unregister |
+| M3-05 | 全站 compare-routes/assets + smoke | done | routes 53/53；assets 111/111；preview HTTP 200 |
+
+### M3 交付勾选
+
+- [x] `/404.html`：`#container .fallback` + Three + page404 module
+- [x] `/tcupdate.html` 下载卡片 DOM + Vue entry
+- [x] PDF 文静态占位 + PDF 文件可达
+- [x] 全站 HTML/XML route diff = 0
+- [x] 静态资源 URL+size/hash diff = 0
+- [x] quote.json 在 dist；blog entry 含 Quote + SW unregister
 
 ---
+
 
 ## M4 — CI / Docker / 切流
 
@@ -186,8 +194,10 @@
 | 2026-07-14 | M0 | 创建造册；完成 PR1/M0：Astro 7 脚手架、site.ts、壳组件、sync-public、三验证脚本骨架、双栈 exclude |
 | 2026-07-14 | M1 | migrate-posts 42 篇、content collection、PostLayout、legacy URL 路由、lastmod 冻结、posts route diff=0 |
 | 2026-07-14 | M2 | 首页分页、archive、about、feed.xml、sitemap.xml、PageLayout/PostList |
+| 2026-07-14 | M3 | 404 粒子页、tcupdate preserve、PdfEmbed、assets fixture、全站 route+asset compare、HTTP smoke |
 
 ---
+
 
 ## 文件登记（实施中维护）
 
@@ -228,6 +238,10 @@
 | `src/pages/about/index.astro` | M2 | About |
 | `src/pages/feed.xml.ts` | M2 | RSS |
 | `src/pages/sitemap.xml.ts` | M2 | 固定 `/sitemap.xml` |
+| `src/pages/404.astro` | M3 | `/404.html` 粒子页 |
+| `src/pages/tcupdate.astro` | M3 | `/tcupdate.html` Vue 工具页 |
+| `src/components/PdfEmbed.astro` | M3 | PDF 占位组件（帖文已静态化） |
+| `mig/fixtures/assets-jekyll.json` | M3 | 静态资源 baseline（111） |
 | `public/` | M0 | 同步产物（gitignore，构建前生成） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 
@@ -255,4 +269,9 @@ node scripts/migrate-posts.mjs --self-test
 node scripts/migrate-posts.mjs --dry-run
 node scripts/migrate-posts.mjs --write
 node scripts/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
+
+# M3 起（全站门禁）
+npm run verify:routes
+npm run verify:assets
 ```
+

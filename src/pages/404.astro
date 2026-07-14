@@ -1,0 +1,58 @@
+---
+/**
+ * ← `404.html` (Jekyll default layout + particle overlay)
+ * Main site CSS via BaseLayout; 404.scss here for SSR; page404 client entry.
+ * Output: dist/404.html (build.format: preserve)
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../../styles/404.scss";
+import { site } from "../data/site";
+import { pageMeta } from "../data/pages";
+
+const meta = pageMeta.notFound;
+const bg = meta.headerImg.startsWith("/") ? meta.headerImg : `/${meta.headerImg}`;
+---
+
+<BaseLayout
+    description={meta.description}
+    headerImg={meta.headerImg}
+    pageUrl={meta.path}
+    bodyClass="page-fullscreen page page-404"
+>
+    <!-- Page Header — particle canvas originally inspired by http://hotdot.pro/en/404/ -->
+    <header class="intro-header" style={`background-image: url('${bg}')`}>
+        <div class="container" id="container">
+            <div class="fallback fillParent vAligner text-center">
+                <div class="vItem">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="site-heading" id="tag-heading">
+                                <h1>404</h1>
+                                <span class="subheading">{meta.description}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {
+        site.particle404 && (
+            <>
+                <!-- Three.js r56 via cdnjs (CanvasRenderer-era API required by the particle scene) -->
+                <script
+                    src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r56/three.min.js"
+                    integrity="sha512-KxG7ID/l1iHzcnYGb80EtdDWbl9v4F0BF7WBG3ME8Y1LSkzxkde/xr3AnBeBqqkesVoubcWmB+eX5kTm8qvL3Q=="
+                    crossorigin="anonymous"
+                    referrerpolicy="no-referrer"
+                    is:inline
+                />
+                <!-- Client-only: particle404 entry (do not import in frontmatter) -->
+                <script>
+                    import "../../ts/entries/page404.ts";
+                </script>
+            </>
+        )
+    }
+</BaseLayout>

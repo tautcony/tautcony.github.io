@@ -25,6 +25,12 @@ export const pageMeta = {
         path: "/archive/",
         shortHeader: true,
     },
+    notFound: {
+        title: undefined as string | undefined,
+        description: "何を探すんの？ここは何もいないよ",
+        headerImg: "img/404-bg.jpg",
+        path: "/404.html",
+    },
 } as const;
 
 export type PageKey = keyof typeof pageMeta;

@@ -39,8 +39,10 @@
     "migrate:posts": "node scripts/migrate-posts.mjs --write --freeze-lastmod",
     "migrate:posts:dry": "node scripts/migrate-posts.mjs --dry-run",
     "verify:routes:posts": "node scripts/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist",
+    "verify:routes": "node scripts/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist",
+    "verify:assets": "node scripts/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist",
     "ci": "npm run eslint && npm run typecheck && npm run build && npm run jekyll:build",
-    "ci:astro": "npm run eslint && npm run typecheck && npm run check:astro && npm run build:astro && npm run verify:routes:posts && npm run verify:routes:selftest && npm run verify:assets:selftest && npm run migrate:posts:selftest"
+    "ci:astro": "npm run eslint && npm run typecheck && npm run check:astro && npm run build:astro && npm run verify:routes && npm run verify:assets && npm run verify:routes:selftest && npm run verify:assets:selftest && npm run migrate:posts:selftest"
   },
   "browserslist": [
     "defaults",

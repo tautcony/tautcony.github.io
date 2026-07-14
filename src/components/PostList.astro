@@ -1,0 +1,63 @@
+---
+import type { PostEntry } from "../lib/posts";
+import { formatPostDate, postUrl } from "../lib/posts";
+import { getExcerpt } from "../lib/excerpts";
+import { site } from "../data/site";
+
+interface Props {
+    posts: PostEntry[];
+    previousHref?: string;
+    nextHref?: string;
+}
+
+const { posts, previousHref, nextHref } = Astro.props;
+const showPager = Boolean(previousHref || nextHref);
+---
+
+{
+    posts.map((post) => {
+        const url = postUrl(post);
+        const author = post.data.author || site.title;
+        const date = formatPostDate(post.data.publishedDate);
+        const excerpt = getExcerpt(post);
+        const titleHtml = post.data.titleHtml;
+        return (
+            <>
+                <div class="post-preview">
+                    <a href={url}>
+                        {titleHtml ? (
+                            <h2 class="post-title" set:html={titleHtml} />
+                        ) : (
+                            <h2 class="post-title">{post.data.title}</h2>
+                        )}
+                        {post.data.subtitle ? (
+                            <h3 class="post-subtitle">{post.data.subtitle}</h3>
+                        ) : null}
+                        <div class="post-content-preview">{excerpt}</div>
+                    </a>
+                    <p class="post-meta">
+                        Posted by {author} on {date}
+                    </p>
+                </div>
+                <hr />
+            </>
+        );
+    })
+}
+
+{
+    showPager && (
+        <ul class="pager">
+            {previousHref && (
+                <li class="previous">
+                    <a href={previousHref}>&larr; Newer Posts</a>
+                </li>
+            )}
+            {nextHref && (
+                <li class="next">
+                    <a href={nextHref}>Older Posts &rarr;</a>
+                </li>
+            )}
+        </ul>
+    )
+}

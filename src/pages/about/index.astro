@@ -1,0 +1,83 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import Comment from "../../components/Comment.astro";
+import { pageMeta } from "../../data/pages";
+import type { PostEntry } from "../../lib/posts";
+
+const allPosts = (await getCollection("posts")) as PostEntry[];
+const meta = pageMeta.about;
+---
+
+<PageLayout
+    title={meta.title}
+    description={meta.description}
+    headerImg={meta.headerImg}
+    pageUrl={meta.path}
+    allPosts={allPosts}
+>
+    <div id="player1" class="aplayer" style="float: right;"></div>
+
+    <!-- Language Selector -->
+    <select id="langSelect"></select>
+    <div id="kon-container"></div>
+    <div id="qr-container"></div>
+
+    <!-- Handle QrCode Hover -->
+    <style is:global>
+        #qrcode {
+            width: 350px;
+            height: 0;
+            opacity: 0;
+            float: left;
+            padding-top: 25px;
+            z-index: -1993;
+            transition: all 200ms ease-in-out;
+        }
+        #donate {
+            float: left;
+            opacity: 0.5;
+            margin-bottom: 10px;
+        }
+        #donate:hover + #qrcode {
+            z-index: 1250;
+            opacity: 1;
+            width: 350px;
+            height: 350px;
+        }
+    </style>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css"
+        integrity="sha512-CIYsJUa3pr1eoXlZFroEI0mq0UIMUqNouNinjpCkSWo3Bx5NRlQ0OuC6DtEB/bDqUWnzXc1gs2X/g52l36N5iw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"
+        integrity="sha512-RWosNnDNw8FxHibJqdFRySIswOUgYhFxnmYO3fp+BgCU7gfo4z0oS7mYFBvaa8qu+axY39BmQOrhW3Tp70XbaQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        is:inline></script>
+    <script is:inline>
+        var ap = new APlayer({
+            element: document.getElementById("player1"),
+            mini: false,
+            autoplay: true,
+            mutex: true,
+            theme: "#e6d0b2",
+            preload: "metadata",
+            listMaxHeight: "365px",
+            audio: {
+                name: "あの日の夢",
+                artist: "百石元",
+                url: "/attach/bgm/ano-hi-no-yume.m4a",
+                cover: "/attach/bgm/ano-hi-no-yume.jpg",
+            },
+        });
+        ap.volume(0.75);
+    </script>
+
+    <Comment />
+</PageLayout>

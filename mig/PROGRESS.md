@@ -11,8 +11,8 @@
 
 | 字段 | 值 |
 |------|-----|
-| 当前阶段 | **M2**（M0/M1 已完成） |
-| 当前 PR 切片 | PR2 主体完成；下一刀 PR3/M2 |
+| 当前阶段 | **M3**（M0–M2 已完成） |
+| 当前 PR 切片 | PR3 主体完成；下一刀 PR4/M3 |
 | 上次更新 | 2026-07-14 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
 | 阻塞 | 无 |
@@ -21,8 +21,8 @@
 |------|------|------|------|
 | M0 | 脚手架与样式接入 | **done** | PR1 |
 | M1 | 内容集合与文章页 | **done** | PR2：42 文 URL diff=0 |
-| M2 | 列表页与站点页 | **todo** | 下一阶段 |
-| M3 | 特殊页与脚本收尾 | todo | |
+| M2 | 列表页与站点页 | **done** | 首页/分页/archive/about/feed/sitemap |
+| M3 | 特殊页与脚本收尾 | **todo** | 下一阶段 |
 | M4 | CI / Docker / 切流 | todo | 合入 master |
 | M5 | 稳定与清理 | todo | 持续 |
 
@@ -37,14 +37,14 @@
 3. 从「下一步」第一条未完成项开始；完成后把本册勾选/改状态并写 changelog。
 4. 每阶段结束跑该阶段验收命令，再把阶段状态改为 `done`。
 
-### 此刻应做（M2）
+### 此刻应做（M3）
 
-1. 首页 `index.astro`：raw-body 摘要（`mig/fixtures/excerpts.json`），每页 10 篇，排序用 `src/lib/posts.ts`。
-2. 分页 `pages/[page]/index.astro`：仅 `page2+`，禁止 `/page/n`。
-3. `archive/index.astro`：`#tag_cloud` / `data-encode` / `data-tags`。
-4. `about/index.astro`：APlayer + about.ts + Comment pathname。
-5. `feed.xml.ts`、`sitemap.xml.ts`（固定 `/sitemap.xml`，非 index）。
-6. Nav 链接对齐。
+1. `404.astro`：主站 CSS + `404.scss`、fullscreen/`#container .fallback`、client-only `page404` entry、Three CDN。
+2. 验证 `?webGL` `?perf` `?gui`。
+3. `tcupdate.astro`：`build.format: preserve` → `dist/tcupdate.html`（不得有 `tcupdate/index.html`）。
+4. Vue JSX client-only mount；pdf-embed 点击加载验证。
+5. quote.json / footer 语录；SW unregister 再确认。
+6. 全站 `compare-routes --scope all`、`compare-assets`、smoke。
 
 **勿做**：删除 `_posts`、改 `styles/**` 语义、切 CI 到仅 Astro。
 
@@ -97,7 +97,7 @@
 
 - `styles` 内 `::not` 触发 lightningcss minify 警告：属既有 SCSS，**迁移期不改**。
 - `blog.ts` 仍 import scss（Jekyll 需要）；Astro layout 也 import → 产物可能双链同一 CSS hash，切流前可再收敛（方案 A：样式归 layout）。
-- `migrate-posts --write` 故意未实现，留给 M1。
+- （历史）M0 时 `migrate-posts --write` 尚未实现；M1 已落地。
 
 ---
 
@@ -126,15 +126,22 @@
 
 ## M2 — 列表页与站点页
 
-| ID | 任务 | 状态 |
-|----|------|------|
-| M2-01 | 首页 + 摘要 | todo |
-| M2-02 | 分页 `page2+` | todo |
-| M2-03 | archive 标签筛选 DOM | todo |
-| M2-04 | about + APlayer + Comment | todo |
-| M2-05 | feed.xml.ts | todo |
-| M2-06 | sitemap.xml.ts（非 index） | todo |
-| M2-07 | Nav 链接对齐 | todo |
+| ID | 任务 | 状态 | 备注 |
+|----|------|------|------|
+| M2-01 | 首页 + 摘要 | done | `excerpts.json`；首/末帖序对齐 Jekyll |
+| M2-02 | 分页 `page2+` | done | `/page2/`…`/page5/`；无 `/page/n` |
+| M2-03 | archive 标签筛选 DOM | done | 41 tags + Show All；encode 与 Jekyll 一致 |
+| M2-04 | about + APlayer + Comment | done | utterances + kon/qr 容器 |
+| M2-05 | feed.xml.ts | done | 10 items、RFC822、categories |
+| M2-06 | sitemap.xml.ts（非 index） | done | 54 loc；无 sitemap-index |
+| M2-07 | Nav / page meta | done | `src/data/pages.ts` 头图/description |
+
+### M2 交付勾选
+
+- [x] `/`、`/page2/`… 帖序与 Jekyll 一致（10+10+10+10+2）
+- [x] `/archive/` tag_cloud / data-encode / data-tags
+- [x] `/about/` APlayer + utterances
+- [x] `/feed.xml`、`/sitemap.xml` 可解析；无 sitemap index
 
 ---
 
@@ -178,6 +185,7 @@
 |------|------|------|
 | 2026-07-14 | M0 | 创建造册；完成 PR1/M0：Astro 7 脚手架、site.ts、壳组件、sync-public、三验证脚本骨架、双栈 exclude |
 | 2026-07-14 | M1 | migrate-posts 42 篇、content collection、PostLayout、legacy URL 路由、lastmod 冻结、posts route diff=0 |
+| 2026-07-14 | M2 | 首页分页、archive、about、feed.xml、sitemap.xml、PageLayout/PostList |
 
 ---
 
@@ -210,6 +218,16 @@
 | `src/components/{IntroHeader,PostContainer,Sidebar,FeaturedTags,Comment,Katex,AnchorJS}.astro` | M1 | 文章组件 |
 | `src/pages/[year]/[month]/[day]/[slug]/index.astro` | M1 | 文章路由 |
 | `mig/fixtures/excerpts.json` | M1 | 摘要 fixture（供 M2） |
+| `src/data/pages.ts` | M2 | 非文章页 title/description/header |
+| `src/lib/pagination.ts` / `excerpts.ts` | M2 | 分页与摘要 |
+| `src/layouts/PageLayout.astro` | M2 | page 布局 + sidebar |
+| `src/components/PostList.astro` | M2 | 首页列表 + pager |
+| `src/pages/index.astro` | M2 | 首页第 1 页 |
+| `src/pages/[page]/index.astro` | M2 | page2+ |
+| `src/pages/archive/index.astro` | M2 | 归档筛选 |
+| `src/pages/about/index.astro` | M2 | About |
+| `src/pages/feed.xml.ts` | M2 | RSS |
+| `src/pages/sitemap.xml.ts` | M2 | 固定 `/sitemap.xml` |
 | `public/` | M0 | 同步产物（gitignore，构建前生成） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 

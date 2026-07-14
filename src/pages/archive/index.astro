@@ -1,0 +1,117 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import IntroHeader from "../../components/IntroHeader.astro";
+import { pageMeta } from "../../data/pages";
+import type { PostEntry } from "../../lib/posts";
+import { postUrl, sortPostsDesc } from "../../lib/posts";
+
+const allPosts = (await getCollection("posts")) as PostEntry[];
+const ordered = sortPostsDesc(allPosts);
+const meta = pageMeta.archive;
+
+// Tag list: unique tags with counts (order: by count desc then name, matching featured style)
+const tagMap = new Map<string, number>();
+for (const p of allPosts) {
+    for (const t of p.data.tags ?? []) {
+        tagMap.set(t, (tagMap.get(t) ?? 0) + 1);
+    }
+}
+const tags = [...tagMap.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const postTotal = allPosts.length;
+
+function encodeTag(tag: string) {
+    return encodeURIComponent(tag.trim());
+}
+
+// Group by calendar year of publishedDate
+type YearGroup = { year: string; posts: PostEntry[] };
+const groups: YearGroup[] = [];
+for (const post of ordered) {
+    const year = post.data.publishedDate.slice(0, 4);
+    const last = groups[groups.length - 1];
+    if (!last || last.year !== year) {
+        groups.push({ year, posts: [post] });
+    } else {
+        last.posts.push(post);
+    }
+}
+---
+
+<BaseLayout
+    title={meta.title}
+    description={meta.description}
+    headerImg={meta.headerImg}
+    pageUrl={meta.path}
+>
+    <IntroHeader
+        type="page"
+        title={meta.title}
+        description={meta.description}
+        headerImg={meta.headerImg}
+        short={true}
+    />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div id="tag_cloud" class="tags tags-sup js-tags">
+                    <a class="tag-button--all" data-encode="">
+                        Show All
+                        <sup>{postTotal}</sup>
+                    </a>
+                    {
+                        tags.map(([tag, size]) => {
+                            const sortKey = String(postTotal - size).padStart(4, "0").slice(-4);
+                            return (
+                                <a
+                                    data-sort={sortKey}
+                                    data-encode={encodeTag(tag)}
+                                    class="tag-button"
+                                    title={tag}
+                                    rel={String(size)}
+                                >
+                                    {tag}
+                                    <sup>{size}</sup>
+                                </a>
+                            );
+                        })
+                    }
+                </div>
+
+                <div class="mini-post-list js-result d-none">
+                    {
+                        groups.map((group) => (
+                            <section>
+                                <span class="fa listing-seperator">
+                                    <span class="tag-text">{group.year}</span>
+                                </span>
+                                {group.posts.map((post) => {
+                                    const tagEnc = (post.data.tags ?? [])
+                                        .map((t) => encodeTag(t))
+                                        .join(",");
+                                    const url = postUrl(post);
+                                    return (
+                                        <div class="post-preview item" data-tags={tagEnc}>
+                                            <a href={url}>
+                                                {post.data.titleHtml ? (
+                                                    <h2 class="post-title" set:html={post.data.titleHtml} />
+                                                ) : (
+                                                    <h2 class="post-title">{post.data.title}</h2>
+                                                )}
+                                                {post.data.subtitle ? (
+                                                    <h3 class="post-subtitle">{post.data.subtitle}</h3>
+                                                ) : null}
+                                            </a>
+                                            <hr />
+                                        </div>
+                                    );
+                                })}
+                            </section>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</BaseLayout>

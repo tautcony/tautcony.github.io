@@ -1,0 +1,54 @@
+---
+/**
+ * Paginated list pages: only `page2`, `page3`, … (never `page1` or `/page/n`).
+ */
+import { getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import PostList from "../../components/PostList.astro";
+import { pageMeta } from "../../data/pages";
+import { listPageHref, paginatePosts } from "../../lib/pagination";
+import type { PostEntry } from "../../lib/posts";
+
+export async function getStaticPaths() {
+    const allPosts = (await getCollection("posts")) as PostEntry[];
+    const slices = paginatePosts(allPosts);
+    // Only page 2+
+    return slices
+        .filter((s) => s.page >= 2)
+        .map((s) => ({
+            params: { page: `page${s.page}` },
+            props: {
+                slice: s,
+                allPosts,
+            },
+        }));
+}
+
+interface Props {
+    slice: ReturnType<typeof paginatePosts>[number];
+    allPosts: PostEntry[];
+}
+
+const { slice, allPosts } = Astro.props;
+const meta = pageMeta.home;
+const pageUrl = listPageHref(slice.page);
+
+// Reject non-allowlist params (static paths already filter, defense-in-depth)
+if (!/^page\d+$/.test(Astro.params.page || "") || Astro.params.page === "page1") {
+    throw new Error(`Invalid pagination param: ${Astro.params.page}`);
+}
+---
+
+<PageLayout
+    title={meta.title}
+    description={meta.description}
+    headerImg={meta.headerImg}
+    pageUrl={pageUrl}
+    allPosts={allPosts}
+>
+    <PostList
+        posts={slice.posts}
+        previousHref={slice.previousHref}
+        nextHref={slice.nextHref}
+    />
+</PageLayout>

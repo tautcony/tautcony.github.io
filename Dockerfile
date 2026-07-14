@@ -1,25 +1,16 @@
 # syntax=docker/dockerfile:1
+# Astro SSG → nginx. Does NOT regenerate lastmod (uses committed src/data/lastmod.json).
 
-FROM node:22-bookworm AS builder
+FROM node:22.12-bookworm AS builder
 WORKDIR /usr/src/app
 
 COPY package.json package-lock.json ./
 RUN npm ci
+
+# Copy sources (see .dockerignore). No .git required for production build.
 COPY . .
-RUN npm run build
-
-
-FROM ruby:3.3-bookworm AS generator
-WORKDIR /usr/src/app
-
-COPY Gemfile Gemfile.lock ./
-RUN bundle config set --local path 'vendor/bundle' \
-    && bundle install --jobs 4
-
-COPY --from=builder /usr/src/app ./
-ENV JEKYLL_ENV=production
-RUN bundle exec jekyll build --trace
-
+RUN npm run lastmod:check \
+    && npm run build
 
 FROM nginx:1.27-alpine AS server
-COPY --from=generator /usr/src/app/_site /usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html

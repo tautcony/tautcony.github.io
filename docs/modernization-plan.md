@@ -114,12 +114,22 @@ ts/ + less/ ── Webpack ──► js/*.min.js, css/*.min.css  (gitignore)
 | 维护面最小 | 失去现有视觉与互动个性 |
 | 构建极快 | 与「有特色的个人站」定位可能冲突 |
 
-**建议结论**：  
-- **短期（0–3 个月）走路径 A**，把债清干净、把基座升上去。  
-- **中期再评估路径 B**：若发现 `github-pages` / Ruby 版本继续拖后腿，再迁 Astro。  
-- 路径 C 仅当明确要「归档站」时考虑。
+**建议结论（历史）**：  
+- 文档起草时默认路径 A；后续已改为执行路径 B。
 
-下文默认以 **路径 A** 为实施主线，并标注可复用到 B 的改动。
+### 路径 B 落地状态（2026-07 更新）
+
+| 项 | 状态 |
+|----|------|
+| Astro 7 SSG + Content Layer | **done**（`feat/astro-mig` → M0–M3） |
+| URL / route / asset freeze fixtures | **done** |
+| CI / Docker / Pages → `dist` | **done**（M4） |
+| 删除 Ruby/Jekyll 运行时 | **done**（Gemfile、layouts、includes；`_posts` 暂留至 M5） |
+| 线上合入 `master` | 待 PR 合并与验收 |
+
+实施造册与接续：见 [`mig/PROGRESS.md`](../mig/PROGRESS.md)。
+
+下文 Phase 清单仍以路径 A 为历史记录；路径 B 以 `mig/` 为准。
 
 ---
 

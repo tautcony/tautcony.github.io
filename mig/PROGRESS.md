@@ -11,11 +11,11 @@
 
 | 字段 | 值 |
 |------|-----|
-| 当前阶段 | **M4**（M0–M3 已完成） |
-| 当前 PR 切片 | PR4 完成；下一刀 PR5/M4 切流 |
+| 当前阶段 | **M5**（M0–M4 代码已完成；**待合入 master**） |
+| 当前 PR 切片 | M4 切流配置就绪；**M4-05 合 master 需人工 PR** |
 | 上次更新 | 2026-07-14 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
-| 阻塞 | 无 |
+| 阻塞 | 无（合入 master 为人工门禁，非技术阻塞） |
 
 | 阶段 | 名称 | 状态 | 备注 |
 |------|------|------|------|
@@ -23,8 +23,8 @@
 | M1 | 内容集合与文章页 | **done** | PR2：42 文 URL diff=0 |
 | M2 | 列表页与站点页 | **done** | 首页/分页/archive/about/feed/sitemap |
 | M3 | 特殊页与脚本收尾 | **done** | 404/tcupdate/pdf/quote；全站 route+asset OK |
-| M4 | CI / Docker / 切流 | **todo** | 下一阶段：合入 master |
-| M5 | 稳定与清理 | todo | 持续 |
+| M4 | CI / Docker / 切流 | **done*** | *除合 master；workflow/Docker/scripts/Jekyll 清理已完成 |
+| M5 | 稳定与清理 | **todo** | 删 `_posts` 等重复源；Sentry 观察 |
 
 ---
 
@@ -37,14 +37,14 @@
 3. 从「下一步」第一条未完成项开始；完成后把本册勾选/改状态并写 changelog。
 4. 每阶段结束跑该阶段验收命令，再把阶段状态改为 `done`。
 
-### 此刻应做（M4）
+### 此刻应做（合入 + M5）
 
-1. 改 `.github/workflows/build.yml`：去 Ruby → `npm run ci:astro` / artifact=`dist`。
-2. Dockerfile：node build → nginx；lastmod 用仓库内 `src/data/lastmod.json`。
-3. `package.json` 默认 `build`/`dev` 切到 Astro（保留 jekyll 脚本至稳定）。
-4. README 与部署说明；合入 `master` 前再跑全站 compare + 线上验收清单。
+1. **切流前**：打保护 tag `pre-astro-YYYYMMDD`，保存最后一次 Jekyll Pages artifact。
+2. **开 PR** `feat/astro-mig` → `master`；确认 CI 绿（Astro `dist` + route/asset verify）。
+3. **合并后**线上验收：`/`、`/page2/`、`/page5/`、`/archive/`、`/about/`、2016/2023 文、`/tcupdate.html`、`/404.html`、`/feed.xml`、`/sitemap.xml`、`/robots.txt`。
+4. **M5**：删除 `_posts` 等运行时重复源（保留 mig fixtures）；Sentry 观察 7 天。
 
-**勿做**：在 M4 验收前删 `_posts`/根静态源；不改 `styles/**` 语义。
+**勿做**：改 `styles/**` 语义；无回滚计划时强推 master；Docker 内再跑 lastmod 生成器。
 
 ---
 
@@ -167,15 +167,30 @@
 
 ## M4 — CI / Docker / 切流
 
-| ID | 任务 | 状态 |
-|----|------|------|
-| M4-01 | workflow 去 Ruby → Astro dist | todo |
-| M4-02 | Dockerfile node→nginx | todo |
-| M4-03 | package scripts 切换默认 build | todo |
-| M4-04 | 删 Jekyll 遗留 + README | todo |
-| M4-05 | 合 master + 线上验收 | todo |
+| ID | 任务 | 状态 | 备注 |
+|----|------|------|------|
+| M4-01 | workflow 去 Ruby → Astro dist | done | `.github/workflows/build.yml`：Node `.nvmrc`、lastmod:check、build、verify、artifact=`dist` |
+| M4-02 | Dockerfile node→nginx | done | `node:22.12-bookworm` → `nginx:1.27-alpine`；无 Ruby stage |
+| M4-03 | package scripts 切换默认 build | done | `dev`/`build`/`preview`/`ci` 均 Astro；别名 `*:astro` 保留 |
+| M4-04 | 删 Jekyll 遗留 + README | done | 去 Gemfile/layouts/includes/根页/vite.config；`_config.yml`→`mig/legacy/`；README Astro |
+| M4-05 | 合 master + 线上验收 | **todo** | **人工**：开 PR 合入 + 线上清单（本 agent 不自动 merge） |
+
+### M4 交付勾选
+
+- [x] CI 配置改为 Astro `dist`（待 PR 上跑绿）
+- [x] Dockerfile 仅 node→nginx + frozen lastmod
+- [x] `npm run ci` 本地：build + route/asset OK
+- [x] Dependabot 去 bundler；CodeQL 去 ruby
+- [ ] 合并 `master` 后线上验收（M4-05）
+
+### 回滚要点
+
+- tag `pre-astro-YYYYMMDD` + 旧 Pages artifact
+- revert 合入 commit 到 master 触发旧 workflow 不可用（旧 workflow 已改）；回滚需 revert 本 PR **或** 从 tag 恢复 Jekyll 树后 redeploy
+- 切流前务必保存 pre-astro tag
 
 ---
+
 
 ## M5 — 稳定与清理
 
@@ -195,8 +210,10 @@
 | 2026-07-14 | M1 | migrate-posts 42 篇、content collection、PostLayout、legacy URL 路由、lastmod 冻结、posts route diff=0 |
 | 2026-07-14 | M2 | 首页分页、archive、about、feed.xml、sitemap.xml、PageLayout/PostList |
 | 2026-07-14 | M3 | 404 粒子页、tcupdate preserve、PdfEmbed、assets fixture、全站 route+asset compare、HTTP smoke |
+| 2026-07-14 | M4 | CI/Docker/README 切 Astro；删 Jekyll 运行时；lastmod:check；待合 master |
 
 ---
+
 
 
 ## 文件登记（实施中维护）
@@ -242,6 +259,10 @@
 | `src/pages/tcupdate.astro` | M3 | `/tcupdate.html` Vue 工具页 |
 | `src/components/PdfEmbed.astro` | M3 | PDF 占位组件（帖文已静态化） |
 | `mig/fixtures/assets-jekyll.json` | M3 | 静态资源 baseline（111） |
+| `.github/workflows/build.yml` | M4 | Astro Pages：dist + verify |
+| `Dockerfile` / `.dockerignore` | M4 | node build → nginx |
+| `scripts/generate-lastmod.mjs` | M4 | `--check` 校验 frozen map |
+| `mig/legacy/_config.yml` | M4 | 归档的 Jekyll 配置 |
 | `public/` | M0 | 同步产物（gitignore，构建前生成） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 
@@ -250,28 +271,19 @@
 ## 常用命令
 
 ```bash
-# 双栈：Jekyll（现生产路径）
+# 生产路径（Astro）
+npm run dev
+npm run build
+npm run preview
 npm run ci
 
-# Astro（迁移路径）
-npm run sync:public
-npm run dev:astro
-npm run check:astro
-npm run build:astro
-npm run ci:astro
-
 # 校验脚本
+npm run lastmod:check
+npm run verify:routes
+npm run verify:assets
 node scripts/compare-routes.mjs --self-test
 node scripts/compare-assets.mjs --self-test
 node scripts/migrate-posts.mjs --self-test
-
-# M1 起
-node scripts/migrate-posts.mjs --dry-run
-node scripts/migrate-posts.mjs --write
-node scripts/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
-
-# M3 起（全站门禁）
-npm run verify:routes
-npm run verify:assets
 ```
+
 

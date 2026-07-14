@@ -17,17 +17,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: true
-          # Full history so scripts/generate-lastmod.mjs can read git log
+          # Full history retained for optional lastmod regeneration tooling;
+          # production build consumes frozen src/data/lastmod.json only.
           fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: ".nvmrc"
           cache: npm
 
-      - name: Install JS dependencies
+      - name: Install dependencies
         run: npm ci
 
       - name: Lint
@@ -36,27 +36,36 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Build frontend assets
+      - name: Astro check
+        run: npm run check:astro
+
+      - name: Verify frozen lastmod
+        run: npm run lastmod:check
+
+      - name: Build Astro site
         run: npm run build
 
-      - name: Generate post lastmod data
-        run: npm run lastmod
+      - name: Verify routes (full site)
+        run: npm run verify:routes
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3"
-          bundler-cache: true
-
-      - name: Build Jekyll site
-        run: bundle exec jekyll build
-        env:
-          JEKYLL_ENV: production
+      - name: Verify static assets
+        run: npm run verify:assets
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
+
+      - name: Upload compare fixtures snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-dist-manifest
+          path: |
+            mig/fixtures/routes-jekyll.txt
+            mig/fixtures/assets-jekyll.json
+            mig/fixtures/legacy-post-urls.txt
+          if-no-files-found: ignore
 
   deploy:
     needs: build

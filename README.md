@@ -1,6 +1,6 @@
 # TC Blog (tautcony.github.io)
 
-Personal blog powered by **Jekyll** (GitHub Pages) with a **TypeScript + Vite** frontend.
+Personal blog built with **Astro 7** (static site generation) and a TypeScript client layer.
 
 Live site: <https://tautcony.xyz>
 
@@ -8,69 +8,53 @@ Live site: <https://tautcony.xyz>
 
 | Tool | Version |
 |------|---------|
-| Node.js | ≥ 20 (22 LTS recommended) |
+| Node.js | ≥ **22.12.0** (see `.nvmrc`) |
 | npm | ≥ 10 |
-| Ruby | **3.2 or 3.3** (see `.ruby-version`; Ruby 4.x is **not** supported by `github-pages` / `commonmarker` yet) |
-| Bundler | ≥ 2.4 |
+
+Ruby / Jekyll are **no longer required** for build or deploy.
 
 ## Install
 
 ```bash
-# 1) Ruby 3.3 (required — Ruby 4.x cannot install github-pages yet)
-brew install ruby@3.3
-export PATH="$(brew --prefix ruby@3.3)/bin:$PATH"
-ruby -v   # must print 3.3.x
-
-# 2) JS + gems
 npm ci
-bundle config set --local path 'vendor/bundle'
-bin/with-ruby bundle install   # or: npm run bundle -- install
 ```
-
-If `bundle install` complains about Ruby 4.0.x / `commonmarker`, your shell is still on Homebrew’s default Ruby 4. Put `ruby@3.3` **first** on `PATH` (snippet above), or always use `bin/with-ruby`.
 
 ## Development
 
 ```bash
-# Terminal 1 — frontend watch build (stable unhashed names + _data/assets.json)
-npm run build:dev
-
-# Terminal 2 — Jekyll (uses bin/with-ruby so Ruby 3.3 is preferred)
-npm start
-# optional live reload:
-# npm run start:l
+npm run dev
 ```
 
-Open <http://127.0.0.1:4000>.
+Open the URL printed by Astro (default <http://localhost:4321>).
 
-**Asset URLs:** production builds hash filenames (`tc-blog.XXXX.js`). Liquid reads paths from `_data/assets.json`, which Vite rewrites after every build. Local `build:dev` uses **stable** names (`js/tc-blog.js`) so the browser keeps working across rebuilds. Prefer `npm run build:dev` while `jekyll serve` is running; after a production `npm run build`, wait for Jekyll to regenerate (or restart `npm start`) before refreshing.
+`npm run dev` / `npm run build` sync root static assets (`img/`, `attach/`, `fonts/`, `css/`, `json/`, …) into `public/` before starting.
 
 ### Useful scripts
 
 | Script | Description |
 |--------|-------------|
+| `npm run dev` | Sync public assets + Astro dev server |
+| `npm run build` | Production SSG → `dist/` |
+| `npm run preview` | Serve `dist/` locally |
+| `npm run check:astro` | `astro check` |
 | `npm run eslint` | ESLint on `ts/` |
-| `npm run typecheck` | TypeScript check (`tsc --noEmit`) |
-| `npm run build` | Vite production build → hashed `assets/build/` + `_data/assets.json` |
-| `npm run build:dev` | Vite development watch (unhashed names + sync assets.json) |
-| `npm run sync:assets` | Manually regenerate `_data/assets.json` from the Vite manifest |
-| `npm run lastmod` | Generate `_data/lastmod.json` from git history (posts) |
-| `npm start` | lastmod + Jekyll serve (full rebuild on change; reliable with hashed assets) |
-| `npm run start:i` | lastmod + Jekyll serve with `--incremental` |
-| `npm run jekyll:build` | lastmod + static site → `_site/` |
-| `npm run ci` | eslint + typecheck + frontend build + Jekyll build |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lastmod:check` | Validate frozen `src/data/lastmod.json` (42 posts) |
+| `npm run verify:routes` | Full HTML/XML route diff vs fixtures |
+| `npm run verify:assets` | Static asset URL + size/hash diff |
+| `npm run ci` | Lint + typecheck + astro check + lastmod + build + verifies |
 
 ## Deploy
 
-GitHub Actions (`.github/workflows/build.yml`) builds and deploys to **GitHub Pages** on every push to `master`.
+GitHub Actions (`.github/workflows/build.yml`) builds Astro and deploys **`dist/`** to **GitHub Pages** on every push to `master`.
 
-Local full build:
+Local production check:
 
 ```bash
 npm run ci
 ```
 
-Docker image (optional):
+Docker image (optional; uses frozen lastmod, no git history required at build):
 
 ```bash
 docker build -t tautcony/tc-blog .
@@ -79,28 +63,31 @@ docker build -t tautcony/tc-blog .
 ## Project layout
 
 ```
+src/
+  pages/            Astro routes (posts, lists, 404, tcupdate, feed, sitemap)
+  layouts/          Base / page / post layouts
+  components/       Site chrome and post UI
+  content/posts/    Migrated Markdown (Content Layer)
+  data/             site.ts, pages.ts, lastmod.json (frozen)
+  lib/              posts helpers, rehype, pagination
 ts/
-  entries/          Vite entries (blog, page404, tcupdate)
+  entries/          Client entries (blog, page404, tcupdate)
   pages/            Per-page UI modules
-  Lib/              Shared utilities (navbar, geopattern, pdf-embed, …)
-  particle404/      Particle 404 scene (TypeScript)
-styles/             Site styles (Sass; unified with heti)
-assets/build/       Vite output (gitignored; hashed JS/CSS)
-_data/assets.json   Liquid map of entry → asset URLs (generated)
-_data/lastmod.json  Post last-modified from git (generated)
-_posts/             Blog posts
-docs/               Design / modernization notes
-.github/workflows/  CI / Pages deploy
-.github/dependabot.yml
+  Lib/              Shared utilities
+  particle404/      Particle 404 scene
+styles/             Site SCSS (frozen during migration; still at repo root)
+img/ attach/ fonts/ css/ json/   Static sources → synced to public/
+mig/                Migration docs, fixtures, PROGRESS.md
+scripts/            sync-public, compare-*, migrate-posts, lastmod
 ```
 
-Build outputs (hashed filenames; see `_data/assets.json`):
+### Client entry roles
 
 | Entry | Role |
 |-------|------|
-| `tc-blog` | Main site JS/CSS |
-| `page404` | Particle 404 |
-| `tcupdate` | Tools download page (Vue JSX) |
+| `ts/entries/blog.ts` | Main site JS (nav, quote, pdf-embed, archive tags, …) |
+| `ts/entries/page404.ts` | Particle 404 (Three.js r56 via CDN) |
+| `ts/entries/tcupdate.jsx` | Tools download page (Vue JSX, client-only) |
 
 ### 404 debug flags
 
@@ -108,20 +95,21 @@ Build outputs (hashed filenames; see `_data/assets.json`):
 |-------|--------|
 | `?webGL=true` | Use WebGL renderer instead of canvas |
 | `?perf=true` | Show FPS / MS panel |
-| `?gui=true` | Show dat.GUI (colors / message / explode) |
+| `?gui=true` | Show dat.GUI |
 
 Example: `/404.html?perf=true&gui=true`
 
-## Notes
+## Content notes
 
-- Target browsers: modern evergreen only (IE 11 dropped).
-- Frontend is ESM (`type="module"`) produced by Vite.
-- Service Worker support has been **removed** (legacy registrations are unregistered once for migration).
-- PDF previews load **PDF.js from cdnjs** on demand via `{% include pdf-embed.html file="..." %}`.
-- 404 particle scene loads **Three.js r56 from cdnjs** (CanvasRenderer-era API; not bundled).
-- Post math uses **KaTeX** (`site.katex`; opt out with `math: false` on a page).
-- Scroll UX uses native `window.scrollTo({ behavior: "smooth" })` (no anime.js).
-- Layout/grid utilities ship in `styles/layout.scss` (no Bootstrap / Font Awesome CDN).
-- Post “Update on” dates come from **build-time** git history (`npm run lastmod`), not the GitHub API.
-- Repository metadata lives only in `package.json` (no separate `repo.json`).
-- TypeScript is compiled under `strict: true`.
+- Post URLs are frozen against `mig/fixtures/legacy-post-urls.txt` (some filename dates differ from URL dates).
+- “Update on” dates come from **frozen** `src/data/lastmod.json` (not regenerated in Docker/CI).
+- PDF previews load **PDF.js from cdnjs** on demand (`.pdf-embed` placeholders).
+- 404 particle scene loads **Three.js r56 from cdnjs** (CanvasRenderer-era API).
+- Comments use **utterances**; math uses **KaTeX** when enabled on a post.
+- Legacy Service Worker registrations are unregistered once on the main client entry.
+
+## Migration
+
+Astro cutover notes and resumable checklist: [`mig/PROGRESS.md`](./mig/PROGRESS.md).
+
+Jekyll sources (`_posts/`, historical configs) may remain temporarily for dual-stack verification; production build path is Astro only.

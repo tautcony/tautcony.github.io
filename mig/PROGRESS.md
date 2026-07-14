@@ -40,11 +40,24 @@
 ### 此刻应做（合入 + M5）
 
 1. **切流前**：打保护 tag `pre-astro-YYYYMMDD`，保存最后一次 Jekyll Pages artifact。
-2. **开 PR** `feat/astro-mig` → `master`；确认 CI 绿（Astro `dist` + route/asset verify）。
-3. **合并后**线上验收：`/`、`/page2/`、`/page5/`、`/archive/`、`/about/`、2016/2023 文、`/tcupdate.html`、`/404.html`、`/feed.xml`、`/sitemap.xml`、`/robots.txt`。
-4. **M5**：删除 `_posts` 等运行时重复源（保留 mig fixtures）；Sentry 观察 7 天。
+2. **发布 checklist**：`npm run eval:consistency` + `npm run eval:visual`（已绿可复跑）。
+3. **开 PR** `feat/astro-mig` → `master`；确认 CI 绿（Astro `dist` + route/asset verify；**不强制** eval）。
+4. **合并后**线上验收：`/`、`/page2/`、`/page5/`、`/archive/`、`/about/`、2016/2023 文、`/tcupdate.html`、`/404.html`、`/feed.xml`、`/sitemap.xml`、`/robots.txt`。
+5. **M5**：删除 `_posts` 等运行时重复源（保留 mig fixtures）；Sentry 观察 7 天。
 
 **勿做**：改 `styles/**` 语义；无回滚计划时强推 master；Docker 内再跑 lastmod 生成器。
+
+### 一致性评估（相对 Jekyll `_site`）
+
+设计：`mig/10-consistency-eval.md`  
+Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`  
+
+| 层 | 命令 | 首轮 |
+|----|------|------|
+| L1–L5 | `npm run eval:consistency` | **PASS_WITH_KNOWN_DELTAS** |
+| L6 视觉 | `npm run eval:visual` | **PASS** 18/18 |
+
+报告：`mig/reports/consistency-latest.md`、`mig/reports/visual-latest.md`（gitignore）。
 
 ---
 
@@ -211,6 +224,7 @@
 | 2026-07-14 | M2 | 首页分页、archive、about、feed.xml、sitemap.xml、PageLayout/PostList |
 | 2026-07-14 | M3 | 404 粒子页、tcupdate preserve、PdfEmbed、assets fixture、全站 route+asset compare、HTTP smoke |
 | 2026-07-14 | M4 | CI/Docker/README 切 Astro；删 Jekyll 运行时；lastmod:check；待合 master |
+| 2026-07-14 | eval | 一致性 L1–L6：冻结 `_site` baseline；全文对齐 + 视觉截图门禁；非 CI 强制 |
 
 ---
 
@@ -263,6 +277,11 @@
 | `Dockerfile` / `.dockerignore` | M4 | node build → nginx |
 | `scripts/generate-lastmod.mjs` | M4 | `--check` 校验 frozen map |
 | `mig/legacy/_config.yml` | M4 | 归档的 Jekyll 配置 |
+| `scripts/eval-consistency.mjs` | eval | L1–L5 vs jekyll-site |
+| `scripts/eval-visual.mjs` | eval | L6 Playwright 截图 diff |
+| `mig/10-consistency-eval.md` | eval | 评估设计与首轮结果 |
+| `mig/baselines/jekyll-site.meta.json` | eval | baseline 血统元数据 |
+| `mig/fixtures/consistency-allowlist.json` | eval | 已知差异登记 |
 | `public/` | M0 | 同步产物（gitignore，构建前生成） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 

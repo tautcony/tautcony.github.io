@@ -196,4 +196,9 @@ function main() {
     process.exit(0);
 }
 
-main();
+const isDirect =
+    process.argv[1] &&
+    path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isDirect) {
+    main();
+}

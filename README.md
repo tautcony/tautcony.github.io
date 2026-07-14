@@ -43,6 +43,9 @@ Open the URL printed by Astro (default <http://localhost:4321>).
 | `npm run verify:routes` | Full HTML/XML route diff vs fixtures |
 | `npm run verify:assets` | Static asset URL + size/hash diff |
 | `npm run ci` | Lint + typecheck + astro check + lastmod + build + verifies |
+| `npm run eval:consistency` | Optional：相对冻结 Jekyll `_site` 的 L1–L5 一致性（不进 CI） |
+| `npm run eval:visual` | Optional/发布必做：六类页桌面+移动截图 diff（需 Playwright） |
+| `npm run eval:all` | consistency + visual |
 
 ## Deploy
 

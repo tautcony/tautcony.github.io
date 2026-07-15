@@ -1,17 +1,30 @@
-import excerptsJson from "../../mig/fixtures/excerpts.json";
+import { createMarkdownProcessor } from "@astrojs/markdown-remark";
 import type { PostEntry } from "./posts";
 
-const map = excerptsJson as Record<string, string>;
+const markdownProcessor = createMarkdownProcessor({
+    gfm: true,
+    smartypants: false,
+    syntaxHighlight: false,
+});
+
+function cleanExcerptSource(source: string): string {
+    return source
+        .replace(/<(script|style|template|noscript|iframe|object)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, "")
+        .replace(/<!--[\s\S]*?-->/g, "")
+        .replace(/<[^>]+>/g, "")
+        .trim();
+}
 
 export function getExcerpt(post: PostEntry): string {
-    const key = post.data.sourceFilename;
-    if (key && map[key] != null) return map[key];
-    // Fallback for new posts without fixture
     const body = post.body ?? "";
-    const raw = body.includes("<!--more-->") ? body.split("<!--more-->")[0] : body;
-    return raw
-        .replace(/<[^>]+>/g, "")
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 256);
+    const hasSeparator = body.includes("<!--more-->");
+    const raw = hasSeparator ? body.split("<!--more-->", 1)[0] : body;
+    const excerpt = cleanExcerptSource(raw);
+    return hasSeparator ? excerpt : excerpt.slice(0, 256).trimEnd();
+}
+
+export async function getExcerptHtml(post: PostEntry): Promise<string> {
+    const processor = await markdownProcessor;
+    const result = await processor.render(cleanExcerptSource(getExcerpt(post)));
+    return result.code;
 }

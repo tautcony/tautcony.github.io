@@ -1,7 +1,7 @@
 ---
 import type { PostEntry } from "../lib/posts";
 import { formatPostDate, postUrl } from "../lib/posts";
-import { getExcerpt } from "../lib/excerpts";
+import { getExcerptHtml } from "../lib/excerpts";
 import { site } from "../data/site";
 
 interface Props {
@@ -12,14 +12,19 @@ interface Props {
 
 const { posts, previousHref, nextHref } = Astro.props;
 const showPager = Boolean(previousHref || nextHref);
+const previews = await Promise.all(
+    posts.map(async (post) => ({
+        post,
+        excerptHtml: await getExcerptHtml(post),
+    }))
+);
 ---
 
 {
-    posts.map((post) => {
+    previews.map(({ post, excerptHtml }) => {
         const url = postUrl(post);
         const author = post.data.author || site.title;
         const date = formatPostDate(post.data.publishedDate);
-        const excerpt = getExcerpt(post);
         const titleHtml = post.data.titleHtml;
         return (
             <>
@@ -33,8 +38,8 @@ const showPager = Boolean(previousHref || nextHref);
                         {post.data.subtitle ? (
                             <h3 class="post-subtitle">{post.data.subtitle}</h3>
                         ) : null}
-                        <div class="post-content-preview">{excerpt}</div>
                     </a>
+                    <div class="post-content-preview" set:html={excerptHtml} />
                     <p class="post-meta">
                         Posted by {author} on {date}
                     </p>

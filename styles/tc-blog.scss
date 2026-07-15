@@ -527,6 +527,12 @@ code, kbd, pre, samp {
     font-size: 13px;
     font-style: italic;
     color: #757575;
+    > :first-child {
+        margin-top: 0;
+    }
+    > :last-child {
+        margin-bottom: 0;
+    }
     &:hover {
         color: $brand-primary;
     }

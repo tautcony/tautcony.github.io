@@ -6,8 +6,6 @@ author: TautCony
 catalog: false
 tags:
   - 编程
-sourceFilename: 2019-04-05-mysql-and-phpmyadmin-powered-by-docker.md
-legacyPath: _posts/2019-04-05-mysql-and-phpmyadmin-powered-by-docker.md
 image:
   credit: GeoPattern
   creditlink: https://github.com/btmills/geopattern

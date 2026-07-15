@@ -22,8 +22,6 @@ const d = post.data;
 const url = postUrl(post);
 const { previous, next } = getPrevNext(post, allPosts);
 const tagCounts = collectTagCounts(allPosts);
-const pagePath = d.legacyPath || `_posts/${d.sourceFilename || post.id}`;
-const pageId = url.replace(/\/$/, "") || url;
 const description = d.subtitle || undefined;
 ---
 
@@ -46,7 +44,7 @@ const description = d.subtitle || undefined;
         headerStyle={d.headerStyle}
         tags={d.tags}
         image={d.image}
-        sourceFilename={d.sourceFilename}
+        postId={post.id}
     />
 
     <article>
@@ -56,8 +54,6 @@ const description = d.subtitle || undefined;
                     post={post}
                     previous={previous}
                     next={next}
-                    pagePath={pagePath}
-                    pageId={pageId}
                 >
                     <slot />
                 </PostContainer>

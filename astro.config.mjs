@@ -6,8 +6,6 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeRaw from "rehype-raw";
 import { rehypeRougeCompat } from "./src/lib/rehype-rouge-compat.mjs";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { parseFrontmatter } from "@astrojs/markdown-remark";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
@@ -29,66 +27,7 @@ function sentryRelease() {
 }
 
 /**
- * Jekyll-era posts use `.markdown`; Astro only registers `.md` by default.
- * Register the same markdown pipeline for the legacy extension.
- */
-function legacyMarkdownExtension() {
-    /** @type {import('astro').ContentEntryType} */
-    const markdownLike = {
-        extensions: [".markdown"],
-        async getEntryInfo({ contents, fileUrl }) {
-            const parsed = parseFrontmatter(contents, {
-                // filename helps error messages
-                filename: fileURLToPath(fileUrl),
-            });
-            return {
-                data: parsed.frontmatter,
-                body: parsed.content.trim(),
-                slug: parsed.frontmatter?.slug,
-                rawData: parsed.rawFrontmatter,
-            };
-        },
-        handlePropagation: true,
-        async getRenderFunction(config) {
-            const { markdown, image } = config;
-            const processor = await markdown.processor.createRenderer({
-                image,
-                syntaxHighlight: markdown.syntaxHighlight,
-                shikiConfig: markdown.shikiConfig,
-                gfm: markdown.gfm,
-                smartypants: markdown.smartypants,
-            });
-            return async function renderToString(entry) {
-                const result = await processor.render(entry.body ?? "", {
-                    frontmatter: entry.data,
-                    fileURL: entry.filePath ? pathToFileURL(entry.filePath) : undefined,
-                });
-                return {
-                    html: result.code,
-                    metadata: {
-                        ...result.metadata,
-                        imagePaths: (result.metadata.localImagePaths ?? []).concat(
-                            result.metadata.remoteImagePaths ?? []
-                        ),
-                    },
-                };
-            };
-        },
-    };
-
-    return {
-        name: "legacy-markdown-extension",
-        hooks: {
-            "astro:config:setup"({ addContentEntryType }) {
-                addContentEntryType(markdownLike);
-            },
-        },
-    };
-}
-
-/**
- * Astro SSG config for TC Blog migration (M0+).
- * Dual-stack: Jekyll remains the production builder until M4/PR5.
+ * Astro SSG config for TC Blog.
  * Styles stay at repo-root `styles/`; client entries stay at `ts/`.
  *
  * Astro 7 defaults to Sätteri; use `@astrojs/markdown-remark` `unified()` so
@@ -101,7 +40,6 @@ export default defineConfig({
     publicDir: "public",
     outDir: "dist",
     integrations: [
-        legacyMarkdownExtension(),
         vue({
             // tcupdate uses Vue JSX entry; only mount on that page (M3).
             jsx: true,

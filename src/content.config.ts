@@ -10,8 +10,8 @@ const nullableString = z.preprocess(
 const posts = defineCollection({
     loader: glob({
         base: "./src/content/posts",
-        pattern: "**/*.{md,markdown}",
-        // Keep full source filenames (with extension) as entry ids for legacy lookup.
+        pattern: "**/*.md",
+        // Stable file IDs also key frozen last-modified metadata.
         generateId: ({ entry }) => entry,
     }),
     schema: z.object({
@@ -35,8 +35,6 @@ const posts = defineCollection({
                 creditlink: nullableString,
             })
             .optional(),
-        sourceFilename: nullableString,
-        legacyPath: nullableString,
         permalink: nullableString,
     }),
 });

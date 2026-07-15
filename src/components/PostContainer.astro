@@ -7,32 +7,17 @@ interface Props {
     post: PostEntry;
     previous?: PostEntry;
     next?: PostEntry;
-    pagePath: string;
-    pageId: string;
 }
 
-const { post, previous, next, pagePath, pageId } = Astro.props;
-const title = post.data.title;
-const dateIso = `${post.data.publishedDate}T00:00:00.000Z`;
+const { post, previous, next } = Astro.props;
 const prevUrl = previous ? postUrl(previous) : undefined;
 const nextUrl = next ? postUrl(next) : undefined;
 const prevTitle = previous?.data.title;
 const nextTitle = next?.data.title;
-
-const pageJson = JSON.stringify({
-    title,
-    date: dateIso,
-    path: pagePath,
-    id: pageId,
-});
 ---
 
 <!-- Post Container -->
 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
-    <script is:inline set:html={`
-        window.jekyll = window.jekyll || { };
-        window.jekyll.page = ${pageJson};
-    `} />
     <div class="post-content heti spacing">
         <slot />
     </div>

@@ -1,7 +1,7 @@
 /**
  * Last-modified map helpers for Astro posts.
  *
- * Frozen source of truth: `src/data/lastmod.json` (keyed by source filename).
+ * Frozen source of truth: `src/data/lastmod.json` (keyed by content entry ID).
  * Docker / CI without full git history must use --check only (never regenerate).
  *
  * Usage:
@@ -61,7 +61,7 @@ function listPostFilenames() {
     }
     return fs
         .readdirSync(contentPostsDir)
-        .filter((name) => /\.(md|markdown)$/i.test(name))
+        .filter((name) => /\.md$/i.test(name))
         .sort();
 }
 
@@ -143,10 +143,7 @@ function refreshFromContentGit() {
         const rel = path.posix.join("src/content/posts", name);
         const info = gitLastCommit(rel);
         if (info) {
-            data[name] = {
-                legacyPath: existing[name]?.legacyPath ?? `_posts/${name}`,
-                ...info,
-            };
+            data[name] = info;
             ok += 1;
         } else if (existing[name]) {
             data[name] = existing[name];

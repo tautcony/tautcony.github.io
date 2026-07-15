@@ -1,46 +1,26 @@
-/**
- * Shared post ordering / URL helpers (homepage, archive, prev-next).
- * Legacy posts: URL only from frozen map keyed by sourceFilename.
- */
+/** Shared post ordering / URL helpers (homepage, archive, prev-next). */
 import type { CollectionEntry } from "astro:content";
-import legacyUrls from "../../mig/fixtures/legacy-post-urls.json";
 
 export type PostEntry = CollectionEntry<"posts">;
 
-const legacyMap = legacyUrls as Record<string, string>;
-
-/** Fixture insertion order for same-day tie-break. */
-const legacyOrder = new Map<string, number>(
-    Object.keys(legacyMap).map((k, i) => [k, i])
-);
-
-export function getLegacyUrl(sourceFilename: string): string {
-    const url = legacyMap[sourceFilename];
-    if (!url) {
-        throw new Error(`Missing legacy URL for sourceFilename=${sourceFilename}`);
-    }
-    return url;
+function postSlug(post: PostEntry): string {
+    return post.id
+        .replace(/\.(md|markdown)$/i, "")
+        .replace(/^\d{4}-\d{2}-\d{2}-/, "");
 }
 
 export function postUrl(post: PostEntry): string {
     if (post.data.permalink) return post.data.permalink;
-    if (post.data.sourceFilename) {
-        return getLegacyUrl(post.data.sourceFilename);
-    }
-    // New posts without legacy mapping
     const [y, m, d] = post.data.publishedDate.split("-");
-    const slug = post.id.replace(/\.(md|markdown)$/i, "").replace(/^\d{4}-\d{2}-\d{2}-/, "");
-    return `/${y}/${m}/${d}/${slug}/`;
+    return `/${y}/${m}/${d}/${postSlug(post)}/`;
 }
 
-/** Ascending by publishedDate, then legacy fixture order. */
+/** Ascending by publishedDate, then stable file ID. */
 export function comparePostsAsc(a: PostEntry, b: PostEntry): number {
     if (a.data.publishedDate !== b.data.publishedDate) {
         return a.data.publishedDate < b.data.publishedDate ? -1 : 1;
     }
-    const ai = legacyOrder.get(a.data.sourceFilename ?? "") ?? 0;
-    const bi = legacyOrder.get(b.data.sourceFilename ?? "") ?? 0;
-    return ai - bi;
+    return a.id.localeCompare(b.id, "en");
 }
 
 /** Newest first (site.posts style). */
@@ -72,7 +52,7 @@ export function formatPostDate(ymd: string): string {
     });
 }
 
-export function parseLegacyUrl(url: string): {
+export function parsePostUrl(url: string): {
     year: string;
     month: string;
     day: string;
@@ -80,7 +60,7 @@ export function parseLegacyUrl(url: string): {
 } {
     const parts = url.replace(/^\/+|\/+$/g, "").split("/");
     if (parts.length !== 4) {
-        throw new Error(`Unexpected legacy URL shape: ${url}`);
+        throw new Error(`Unexpected post URL shape: ${url}`);
     }
     const [year, month, day, slug] = parts;
     return { year, month, day, slug };
@@ -91,11 +71,7 @@ export function getPrevNext(post: PostEntry, all: PostEntry[]): {
     next: PostEntry | undefined;
 } {
     const ordered = sortPostsAsc(all);
-    const idx = ordered.findIndex(
-        p =>
-            (p.data.sourceFilename && p.data.sourceFilename === post.data.sourceFilename) ||
-            p.id === post.id
-    );
+    const idx = ordered.findIndex(p => p.id === post.id);
     if (idx < 0) return { previous: undefined, next: undefined };
     return {
         previous: ordered[idx - 1],

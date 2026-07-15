@@ -4,7 +4,6 @@ import { formatPostDate } from "../lib/posts";
 import lastmodMap from "../data/lastmod.json";
 
 interface LastmodEntry {
-    legacyPath?: string;
     sha: string;
     short_sha: string;
     date: string;
@@ -25,7 +24,7 @@ interface Props {
     headerStyle?: string;
     tags?: string[];
     image?: { credit?: string; creditlink?: string };
-    sourceFilename?: string;
+    postId?: string;
     iframe?: string;
 }
 
@@ -43,7 +42,7 @@ const {
     headerStyle,
     tags = [],
     image,
-    sourceFilename,
+    postId,
     iframe,
 } = Astro.props;
 
@@ -53,8 +52,8 @@ const displayTitle = title ?? site.title;
 const postedBy = author || site.title;
 const postedOn = publishedDate ? formatPostDate(publishedDate) : "";
 
-const lastmod = sourceFilename
-    ? (lastmodMap as Record<string, LastmodEntry>)[sourceFilename]
+const lastmod = postId
+    ? (lastmodMap as Record<string, LastmodEntry>)[postId]
     : undefined;
 
 function tagHref(tag: string) {

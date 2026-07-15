@@ -10,7 +10,7 @@ import {
 export async function getStaticPaths() {
     const posts = await getCollection("posts");
     if (posts.length === 0) {
-        throw new Error("No posts in collection; run: node scripts/migrate-posts.mjs --write");
+        throw new Error("No posts in collection; run: node scripts/content/migrate-posts.mjs --write");
     }
 
     return posts.map((post) => {

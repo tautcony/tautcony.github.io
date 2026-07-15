@@ -2,9 +2,9 @@
  * Compare HTML/XML route sets between legacy (Jekyll) and Astro dist.
  *
  * Usage:
- *   node scripts/compare-routes.mjs --self-test
- *   node scripts/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
- *   node scripts/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist
+ *   node scripts/test/compare-routes.mjs --self-test
+ *   node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
+ *   node scripts/test/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist
  *
  * Exit 0 on match; 1 on mismatch or usage error.
  */
@@ -12,7 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 
 /**
  * Normalize a site path for comparison.
@@ -143,7 +143,7 @@ function selfTest() {
 function main() {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
-        console.log(`Usage: node scripts/compare-routes.mjs [--self-test] [--scope posts|all] --legacy <file> --dist <dir>`);
+        console.log(`Usage: node scripts/test/compare-routes.mjs [--self-test] [--scope posts|all] --legacy <file> --dist <dir>`);
         process.exit(0);
     }
     if (args.selfTest) {

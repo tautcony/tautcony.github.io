@@ -63,7 +63,7 @@ export const collections = { posts };
 | `layout` | 删除 | 由路由固定 |
 | `iframe`（keynote） | 若有则扩展 schema | |
 
-**必选迁移器**：`scripts/migrate-posts.mjs`
+**必选迁移器**：`scripts/content/migrate-posts.mjs`
 
 1. 从 `_posts` 复制到 `src/content/posts`，不在 PR1–PR4 移走旧源。
 2. 保留原扩展名和大小写，写入 `sourceFilename`、`legacyPath`。
@@ -148,7 +148,7 @@ function postUrl(post): string {
 
 | 项 | 说明 |
 |----|------|
-| 脚本 | 保留 `scripts/generate-lastmod.mjs` |
+| 脚本 | 保留 `scripts/content/generate-lastmod.mjs` |
 | key | 固定 `sourceFilename`，数据保留 `legacyPath` 和当前 content path |
 | 显示 | `IntroHeader`：`Update on {display} with commit {short_sha}` |
 | PR1–PR4 | 在搬迁前由 `_posts` 生成并提交 `src/data/lastmod.json` 基线 |

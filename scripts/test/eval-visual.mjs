@@ -5,9 +5,9 @@
  * (not part of required CI; required for release checklist)
  *
  * Usage:
- *   node scripts/eval-visual.mjs
- *   node scripts/eval-visual.mjs --legacy mig/baselines/jekyll-site --dist dist
- *   node scripts/eval-visual.mjs --threshold 0.02
+ *   node scripts/test/eval-visual.mjs
+ *   node scripts/test/eval-visual.mjs --legacy mig/baselines/jekyll-site --dist dist
+ *   node scripts/test/eval-visual.mjs --threshold 0.02
  *
  * Writes:
  *   mig/fixtures/visual/{baseline,current,diff}/...
@@ -15,14 +15,13 @@
  *
  * Exit 0 if all pages under threshold; 1 otherwise.
  */
-import crypto from "node:crypto";
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PNG } from "./eval-visual-png.mjs";
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 
 const PAGES = [
     { id: "home", path: "/" },
@@ -161,7 +160,7 @@ async function main() {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
         console.log(
-            "Usage: node scripts/eval-visual.mjs [--legacy dir] [--dist dir] [--threshold 0.04]"
+            "Usage: node scripts/test/eval-visual.mjs [--legacy dir] [--dist dir] [--threshold 0.04]"
         );
         process.exit(0);
     }
@@ -277,8 +276,8 @@ async function main() {
                             });
                         });
                     };
-                    await prep(pL).catch(() => {});
-                    await prep(pD).catch(() => {});
+                    await prep(pL).catch(() => undefined);
+                    await prep(pD).catch(() => undefined);
                     await pL.waitForTimeout(300);
                     await pD.waitForTimeout(300);
                 }
@@ -287,7 +286,7 @@ async function main() {
                     await Promise.all([
                         pL.evaluate(() => (document.fonts ? document.fonts.ready : null)),
                         pD.evaluate(() => (document.fonts ? document.fonts.ready : null)),
-                    ]).catch(() => {});
+                    ]).catch(() => undefined);
                 }
                 await pL.waitForTimeout(250);
                 await pD.waitForTimeout(250);

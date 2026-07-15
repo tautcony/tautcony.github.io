@@ -81,7 +81,7 @@ ts/
 styles/             Site SCSS (frozen during migration; still at repo root)
 img/ attach/ fonts/ css/ json/   Static sources → synced to public/
 mig/                Migration docs, fixtures, PROGRESS.md
-scripts/            sync-public, compare-*, migrate-posts, lastmod
+scripts/            build/ (pre-build), content/ (migration + metadata), test/ (verification)
 ```
 
 ### Client entry roles

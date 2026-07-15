@@ -92,7 +92,7 @@ export function getPrevNext(post: PostEntry, all: PostEntry[]): {
 } {
     const ordered = sortPostsAsc(all);
     const idx = ordered.findIndex(
-        (p) =>
+        p =>
             (p.data.sourceFilename && p.data.sourceFilename === post.data.sourceFilename) ||
             p.id === post.id
     );

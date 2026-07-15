@@ -100,9 +100,9 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 job compare:
   - build jekyll → _site (临时保留)
   - build astro → dist
-  - node scripts/compare-routes.mjs --scope posts   # M1
-  - node scripts/compare-routes.mjs --scope all     # M3/M4
-  - node scripts/compare-assets.mjs
+  - node scripts/test/compare-routes.mjs --scope posts   # M1
+  - node scripts/test/compare-routes.mjs --scope all     # M3/M4
+  - node scripts/test/compare-assets.mjs
   - 42 篇内容/摘要/front matter fixture
   - 失败则 PR 不可合并
 ```

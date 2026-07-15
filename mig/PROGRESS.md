@@ -87,7 +87,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | M0-03 | Node engines / `.nvmrc` ≥22.12.0 | done | engines + `.nvmrc` → `22.12.0` |
 | M0-04 | `astro.config.mjs` + `src/env.d.ts` | done | preserve + unified markdown |
 | M0-05 | `_config.yml` exclude Astro 路径 | done | src/public/dist/astro/mig |
-| M0-06 | `scripts/sync-public.mjs` + public 同步 | done | gitignore `public/`；构建前同步 |
+| M0-06 | `scripts/build/sync-public.mjs` + public 同步 | done | gitignore `public/`；构建前同步 |
 | M0-07 | `src/data/site.ts` 全量映射 | done | 含 `siteConfigMapping` |
 | M0-08 | BaseLayout + Head + Meta + Nav + Footer + Sns | done | class 契约对齐 |
 | M0-09 | 引入 `styles/tc-blog.scss` + heti | done | 根路径 import；不搬 styles/ |
@@ -256,10 +256,10 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `src/layouts/BaseLayout.astro` | M0 | 默认壳 |
 | `src/components/{Head,Meta,Nav,Footer,Sns}.astro` | M0 | 壳组件 |
 | `src/pages/index.astro` | M0 | 占位首页 |
-| `scripts/sync-public.mjs` | M0 | 根静态 → public |
-| `scripts/compare-routes.mjs` | M0 | 路由 diff 骨架 |
-| `scripts/compare-assets.mjs` | M0 | 资源 diff 骨架 |
-| `scripts/migrate-posts.mjs` | M1 | 写盘 + PDF/Liquid/excerpt/lastmod |
+| `scripts/build/sync-public.mjs` | M0 | 根静态 → public |
+| `scripts/test/compare-routes.mjs` | M0 | 路由 diff 骨架 |
+| `scripts/test/compare-assets.mjs` | M0 | 资源 diff 骨架 |
+| `scripts/content/migrate-posts.mjs` | M1 | 写盘 + PDF/Liquid/excerpt/lastmod |
 | `src/content.config.ts` | M1 | posts collection schema |
 | `src/content/posts/*` | M1 | 迁移副本（保留 .md/.markdown） |
 | `src/data/lastmod.json` | M1 | 冻结 lastmod（sourceFilename key） |
@@ -285,10 +285,10 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `mig/fixtures/assets-jekyll.json` | M3 | 静态资源 baseline（111） |
 | `.github/workflows/build.yml` | M4 | Astro Pages：dist + verify |
 | `Dockerfile` / `.dockerignore` | M4 | node build → nginx |
-| `scripts/generate-lastmod.mjs` | M4 | `--check` 校验 frozen map |
+| `scripts/content/generate-lastmod.mjs` | M4 | `--check` 校验 frozen map |
 | `mig/legacy/_config.yml` | M4 | 归档的 Jekyll 配置 |
-| `scripts/eval-consistency.mjs` | eval | L1–L5 vs jekyll-site |
-| `scripts/eval-visual.mjs` | eval | L6 Playwright 截图 diff |
+| `scripts/test/eval-consistency.mjs` | eval | L1–L5 vs jekyll-site |
+| `scripts/test/eval-visual.mjs` | eval | L6 Playwright 截图 diff |
 | `mig/10-consistency-eval.md` | eval | 评估设计与首轮结果 |
 | `mig/baselines/jekyll-site.meta.json` | eval | baseline 血统元数据 |
 | `mig/fixtures/consistency-allowlist.json` | eval | 已知差异登记 |
@@ -310,9 +310,9 @@ npm run ci
 npm run lastmod:check
 npm run verify:routes
 npm run verify:assets
-node scripts/compare-routes.mjs --self-test
-node scripts/compare-assets.mjs --self-test
-node scripts/migrate-posts.mjs --self-test
+node scripts/test/compare-routes.mjs --self-test
+node scripts/test/compare-assets.mjs --self-test
+node scripts/content/migrate-posts.mjs --self-test
 ```
 
 

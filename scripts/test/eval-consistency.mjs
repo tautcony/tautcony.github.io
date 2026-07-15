@@ -2,13 +2,13 @@
  * Jekyll baseline (_site / mig/baselines/jekyll-site) vs Astro dist consistency eval.
  *
  * Layers: L1 routes · L2 assets · L3 content (incl. feed full-text) · L4 DOM · L5 HTTP
- * Visual L6: scripts/eval-visual.mjs
+ * Visual L6: scripts/test/eval-visual.mjs
  *
  * Usage:
- *   node scripts/eval-consistency.mjs
- *   node scripts/eval-consistency.mjs --legacy mig/baselines/jekyll-site --dist dist
- *   node scripts/eval-consistency.mjs --skip-http
- *   node scripts/eval-consistency.mjs --self-test
+ *   node scripts/test/eval-consistency.mjs
+ *   node scripts/test/eval-consistency.mjs --legacy mig/baselines/jekyll-site --dist dist
+ *   node scripts/test/eval-consistency.mjs --skip-http
+ *   node scripts/test/eval-consistency.mjs --self-test
  *
  * Exit 0: PASS or PASS_WITH_KNOWN_DELTAS
  * Exit 1: FAIL
@@ -30,7 +30,7 @@ import {
     sha256File,
 } from "./compare-assets.mjs";
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 
 const SAMPLE_POSTS = [
     "/2016/03/22/hello-github-io/",
@@ -174,7 +174,7 @@ export function normalizePlainText(html) {
     s = s.replace(/\\\[([\s\S]*?)\\\]/g, (_, m) => ` ⟦MATH:${stripWs(m)}⟧ `);
     s = s.replace(/\\\(([\s\S]*?)\\\)/g, (_, m) => ` ⟦MATH:${stripWs(m)}⟧ `);
     s = s.replace(/\\([%&#_])/g, "$1");
-    s = s.replace(/[\u200b\u200c\u200d\ufeff]/g, "");
+    s = s.replace(/[\u200b]|[\u200c]|[\u200d]|[\ufeff]/g, "");
     return collapseWs(s);
 }
 
@@ -934,7 +934,7 @@ async function main() {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
         console.log(
-            "Usage: node scripts/eval-consistency.mjs [--legacy dir] [--dist dir] [--out dir] [--skip-http] [--self-test]"
+            "Usage: node scripts/test/eval-consistency.mjs [--legacy dir] [--dist dir] [--out dir] [--skip-http] [--self-test]"
         );
         process.exit(0);
     }

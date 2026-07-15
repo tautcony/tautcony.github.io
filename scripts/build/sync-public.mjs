@@ -2,13 +2,13 @@
  * Dual-stack: mirror root static assets into `public/` for Astro.
  * Does NOT delete or move sources at repo root (M0–M4 rule).
  *
- * Usage: node scripts/sync-public.mjs
+ * Usage: node scripts/build/sync-public.mjs
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const publicDir = path.join(root, "public");
 
 /** Directories / files copied root → public (see mig/02, mig/07 M0). */

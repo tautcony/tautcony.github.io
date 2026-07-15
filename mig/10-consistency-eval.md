@@ -1,6 +1,6 @@
 # 10 — 改造前后一致性评估设计
 
-> **状态**：已锁定决策并落地工具（`scripts/eval-consistency.mjs` / `eval-visual.mjs`）  
+> **状态**：已锁定决策并落地工具（`scripts/test/eval-consistency.mjs` / `scripts/test/eval-visual.mjs`）
 > **基线**：`mig/baselines/jekyll-site/`（gitignore；由 `_site` 冻结）  
 > **对照**：Astro 产物 `dist/`  
 > **原则**：路径/资源必须严格等价；HTML 字节不必相等；DOM 契约与用户可感知行为必须等价。
@@ -403,7 +403,7 @@ rsync -a _site/ /path/to/repo/mig/baselines/jekyll-site/
 **实施增量（建议拆 PR）**：
 
 1. **P0**：固化 baseline 目录 + 扩展 compare 支持 `--legacy-dir _site`  
-2. **P0**：`scripts/eval-consistency.mjs` 实现 L1–L4 + JSON 报告  
+2. **P0**：`scripts/test/eval-consistency.mjs` 实现 L1–L4 + JSON 报告
 3. **P1**：feed 策略决策 + 必要时改 `feed.xml.ts`  
 4. **P1**：L5 HTTP smoke 并入 `npm run eval:consistency`  
 5. **P2**：Playwright 视觉  

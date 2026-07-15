@@ -20,7 +20,7 @@ PR1–PR4 依次合入该分支，不进入 `master`；PR5 才把完整迁移合
 3. **锁定运行时**：`.nvmrc`、`package.json.engines`、CI、Docker 均为 Node `>=22.12.0`。
 4. **创建** `astro.config.mjs`、`src/env.d.ts`、根 `tsconfig` 扩展 Astro；配置 `build.format: 'preserve'`。
 5. **双栈隔离**：`_config.yml.exclude` 临时加入 `src`、`public`、`astro.config.mjs`；Jekyll 不得复制 Astro 源。
-6. **`public/`**：复制并用 `scripts/sync-public.mjs` 同步 `img`、`attach`、`fonts`、`css`、`json`、`CNAME`、`favicon.ico`、`arknights`、`contents`；禁止 `git mv`/删除根源。
+6. **`public/`**：复制并用 `scripts/build/sync-public.mjs` 同步 `img`、`attach`、`fonts`、`css`、`json`、`CNAME`、`favicon.ico`、`arknights`、`contents`；禁止 `git mv`/删除根源。
 7. **`src/data/site.ts`**：按 [03](./03-mapping-tables.md) 逐键迁移并输出 mapping report；禁止只抄配置草图。
 8. **`BaseLayout.astro` + `Nav` + `Footer` + `Head`**：按 [03](./03-mapping-tables.md) 的 class/ID/state/data 契约实现。
 9. **引入** 根 `styles/tc-blog.scss` + heti；不搬 `styles/`/`ts/`。
@@ -52,7 +52,7 @@ PR1–PR4 依次合入该分支，不进入 `master`；PR5 才把完整迁移合
    - 从当前 Jekyll `_site` 或 `site.posts` 生成 `mig/fixtures/legacy-post-urls.json`
    - key 固定为带扩展名/大小写的 `sourceFilename`；断言 42 key/42 URL/无重复
    - 生成 `legacy-post-urls.txt`、文章 HTML route fixture、`src/data/lastmod.json`
-2. **复制内容**：运行 `scripts/migrate-posts.mjs` 将 `_posts` 生成到 `src/content/posts`；禁止移动 `_posts`。
+2. **复制内容**：运行 `scripts/content/migrate-posts.mjs` 将 `_posts` 生成到 `src/content/posts`；禁止移动 `_posts`。
 3. **`src/content.config.ts`**：Content Layer `glob("**/*.{md,markdown}")` + [05](./05-content-and-markdown.md) schema。
 4. **Markdown 管线**：GFM、slug、S1 高亮 DOM、受控 raw HTML；raw body 阶段生成 42 条摘要。
 5. **强制转换**：Liquid 残留为 0；PDF include 转成静态 data HTML；含 HTML title 拆成纯文本/受控 HTML。
@@ -75,7 +75,7 @@ PR1–PR4 依次合入该分支，不进入 `master`；PR5 才把完整迁移合
 
 ```bash
 npm run build:astro
-node scripts/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
+node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
 ```
 
 ---
@@ -157,9 +157,9 @@ node scripts/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-
      "build": "astro build",
      "preview": "astro preview",
      "check:astro": "astro check",
-     "lastmod:check": "node scripts/generate-lastmod.mjs --check",
-     "verify:routes": "node scripts/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist",
-     "verify:assets": "node scripts/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist",
+     "lastmod:check": "node scripts/content/generate-lastmod.mjs --check",
+     "verify:routes": "node scripts/test/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist",
+     "verify:assets": "node scripts/test/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist",
      "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run build && npm run verify:routes && npm run verify:assets"
    }
    ```

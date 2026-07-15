@@ -7,8 +7,8 @@ import zlib from "node:zlib";
 
 function crc32buf(buf) {
     let c = ~0;
-    for (let i = 0; i < buf.length; i++) {
-        c ^= buf[i];
+    for (const byte of buf) {
+        c ^= byte;
         for (let k = 0; k < 8; k++) {
             c = c & 1 ? (0xedb88320 ^ (c >>> 1)) : c >>> 1;
         }

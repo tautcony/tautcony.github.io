@@ -2,8 +2,8 @@
  * Compare static asset URL + size/hash between legacy manifest and Astro dist.
  *
  * Usage:
- *   node scripts/compare-assets.mjs --self-test
- *   node scripts/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist
+ *   node scripts/test/compare-assets.mjs --self-test
+ *   node scripts/test/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist
  *
  * Manifest format:
  *   { "/img/foo.png": { "size": 123, "sha256": "..." }, ... }
@@ -15,7 +15,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 
 /** Asset path prefixes typically mirrored into public/ and expected stable. */
 const ASSET_PREFIXES = [
@@ -152,7 +152,7 @@ function main() {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
         console.log(
-            "Usage: node scripts/compare-assets.mjs [--self-test] --legacy <json> --dist <dir> [--ignore-hash]"
+            "Usage: node scripts/test/compare-assets.mjs [--self-test] --legacy <json> --dist <dir> [--ignore-hash]"
         );
         process.exit(0);
     }

@@ -3,8 +3,22 @@ import stylisticJs from "@stylistic/eslint-plugin-js";
 import stylisticTs from "@stylistic/eslint-plugin-ts";
 import tsEslint from "typescript-eslint";
 import tsParser from "@typescript-eslint/parser";
+import globals from "globals";
 
 export default [
+    {
+        ignores: [
+            "node_modules/**",
+            "vendor/**",
+            ".astro/**",
+            "dist/**",
+            "_site/**",
+            "public/**",
+            "assets/build/**",
+            "mig/baselines/**",
+            "mig/fixtures/visual/**",
+        ],
+    },
     ...tsEslint.config(
         eslint.configs.recommended,
         tsEslint.configs.recommended,
@@ -63,6 +77,30 @@ export default [
             "@typescript-eslint/lines-between-class-members": "off",
             "no-use-before-define": "off",
             "dot-notation": "off",
+        },
+    },
+    {
+        files: ["**/*.mjs", "eslint.config.mjs"],
+        languageOptions: {
+            globals: globals.node,
+        },
+    },
+    {
+        files: ["ts/**/*.{ts,tsx}"],
+        languageOptions: {
+            globals: globals.browser,
+        },
+    },
+    {
+        files: ["scripts/test/eval-visual.mjs"],
+        languageOptions: {
+            globals: globals.browser,
+        },
+    },
+    {
+        files: ["src/env.d.ts"],
+        rules: {
+            "@typescript-eslint/triple-slash-reference": "off",
         },
     },
     // Ambient shims for legacy THREE r56 / dat.GUI / createjs — structural `any` is intentional.

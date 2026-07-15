@@ -5,15 +5,15 @@
  * Docker / CI without full git history must use --check only (never regenerate).
  *
  * Usage:
- *   node scripts/generate-lastmod.mjs --check
- *   node scripts/generate-lastmod.mjs --refresh   # optional: rewrite frozen map from git on src/content/posts
+ *   node scripts/content/generate-lastmod.mjs --check
+ *   node scripts/content/generate-lastmod.mjs --refresh   # optional: rewrite frozen map from git on src/content/posts
  */
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const contentPostsDir = path.join(root, "src/content/posts");
 const astroOutFile = path.join(root, "src/data/lastmod.json");
 const EXPECTED = 42;
@@ -167,7 +167,7 @@ function main() {
     const args = process.argv.slice(2);
     if (args.includes("--help") || args.includes("-h")) {
         console.log(
-            "Usage: node scripts/generate-lastmod.mjs [--check | --refresh]"
+            "Usage: node scripts/content/generate-lastmod.mjs [--check | --refresh]"
         );
         process.exit(0);
     }

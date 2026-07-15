@@ -3,7 +3,7 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const nullableString = z.preprocess(
-    (value) => (value === null || value === "" ? undefined : value),
+    value => (value === null || value === "" ? undefined : value),
     z.string().optional()
 );
 
@@ -18,7 +18,7 @@ const posts = defineCollection({
         title: z.string(),
         titleHtml: nullableString,
         subtitle: z.preprocess(
-            (v) => (v == null ? "" : v),
+            v => (v == null ? "" : v),
             z.string().default("")
         ),
         publishedDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),

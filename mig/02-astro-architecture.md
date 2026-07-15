@@ -89,11 +89,10 @@
 │   └── env.d.ts
 │
 ├── scripts/
-│   ├── generate-lastmod.mjs     # 输出/验证 src/data/lastmod.json
-│   ├── sync-public.mjs           # 双栈期根资源 → public 同步
-│   ├── migrate-posts.mjs        # front matter、Liquid、legacyPath 迁移
-│   ├── compare-routes.mjs       # 必选：HTML/XML URL diff
-│   └── compare-assets.mjs       # 必选：静态资源 URL+size/hash diff
+│   ├── build/sync-public.mjs                # 双栈期根资源 → public 同步
+│   ├── content/generate-lastmod.mjs         # 输出/验证 src/data/lastmod.json
+│   ├── content/migrate-posts.mjs            # front matter、Liquid、legacyPath 迁移
+│   └── test/compare-{routes,assets}.mjs     # 必选：路由/资源 diff
 │
 ├── mig/                         # 本计划（可保留）
 ├── docs/
@@ -137,7 +136,7 @@ _posts / src/content/posts
         │
         ├─► HTML 片段（正文）
         │
-scripts/generate-lastmod.mjs ──► frozen lastmod map（按 sourceFilename）
+scripts/content/generate-lastmod.mjs ──► frozen lastmod map（按 sourceFilename）
         │
         ▼
  Astro pages/layouts（拼 DOM class）

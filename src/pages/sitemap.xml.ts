@@ -69,7 +69,7 @@ export const GET: APIRoute = async () => {
 
     // Attach PDFs that jekyll-sitemap included (only files under public/attach)
     const publicDir = path.join(process.cwd(), "public");
-    const attachPdfs = walkPublicFiles(path.join(publicDir, "attach"), "attach").filter((p) =>
+    const attachPdfs = walkPublicFiles(path.join(publicDir, "attach"), "attach").filter(p =>
         p.toLowerCase().endsWith(".pdf")
     );
     // Jekyll included a subset: naming-of-fonts PDFs + rubiksrevenge PDF
@@ -85,24 +85,24 @@ export const GET: APIRoute = async () => {
 
     // Deduplicate by path
     const seen = new Set<string>();
-    const unique = urls.filter((u) => {
+    const unique = urls.filter(u => {
         if (seen.has(u.path)) return false;
         seen.add(u.path);
         return true;
     });
 
     const body =
-        `<?xml version="1.0" encoding="UTF-8"?>\n` +
-        `<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        "<urlset xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" +
         unique
-            .map((u) => {
-                const lines = [`<url>`, `<loc>${loc(u.path)}</loc>`];
+            .map(u => {
+                const lines = ["<url>", `<loc>${loc(u.path)}</loc>`];
                 if (u.lastmod) lines.push(`<lastmod>${u.lastmod}</lastmod>`);
-                lines.push(`</url>`);
+                lines.push("</url>");
                 return lines.join("\n");
             })
             .join("\n") +
-        `\n</urlset>\n`;
+        "\n</urlset>\n";
 
     return new Response(body, {
         headers: {

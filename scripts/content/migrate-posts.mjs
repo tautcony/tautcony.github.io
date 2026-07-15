@@ -3,11 +3,11 @@
  * After M5, canonical source is `src/content/posts` only (`_posts` removed).
  *
  * Usage:
- *   node scripts/migrate-posts.mjs --self-test
- *   node scripts/migrate-posts.mjs --check-fixtures
- *   node scripts/migrate-posts.mjs --dry-run   # requires legacy `_posts/` if re-run
- *   node scripts/migrate-posts.mjs --write
- *   node scripts/migrate-posts.mjs --write --freeze-lastmod
+ *   node scripts/content/migrate-posts.mjs --self-test
+ *   node scripts/content/migrate-posts.mjs --check-fixtures
+ *   node scripts/content/migrate-posts.mjs --dry-run   # requires legacy `_posts/` if re-run
+ *   node scripts/content/migrate-posts.mjs --write
+ *   node scripts/content/migrate-posts.mjs --write --freeze-lastmod
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -17,7 +17,7 @@ const require = createRequire(import.meta.url);
 /** @type {typeof import("js-yaml")} */
 const yaml = require("js-yaml");
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const postsDir = path.join(root, "_posts");
 const outDir = path.join(root, "src/content/posts");
 const legacyJson = path.join(root, "mig/fixtures/legacy-post-urls.json");
@@ -212,7 +212,7 @@ export function convertPdfEmbeds(body) {
 }
 
 export function assertNoLiquid(body, filename) {
-    if (/\{\%/.test(body) || /\{\{/.test(body)) {
+    if (/{%/.test(body) || /\{\{/.test(body)) {
         throw new Error(`Liquid residual in ${filename}`);
     }
 }
@@ -410,12 +410,9 @@ export function migratePosts({ dryRun = true, freezeLastmod = false } = {}) {
     for (const filename of listPostFiles(outDir)) {
         const body = fs.readFileSync(path.join(outDir, filename), "utf8");
         // front matter may not contain liquid; scan full file
-        if (/\{\%/.test(body) || (/\{\{/.test(body) && !body.includes("{{"))) {
-            // second condition always false — use simple residual check on body only
-        }
         const parts = body.split(/^---$/m);
         const contentBody = parts.length >= 3 ? parts.slice(2).join("---") : body;
-        if (/\{\%/.test(contentBody) || /\{\{/.test(contentBody)) {
+        if (/{%/.test(contentBody) || /\{\{/.test(contentBody)) {
             return {
                 ok: false,
                 errors: [`Liquid residual after write: ${filename}`],
@@ -532,7 +529,7 @@ function main() {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
         console.log(
-            "Usage: node scripts/migrate-posts.mjs [--self-test|--check-fixtures|--dry-run|--write] [--freeze-lastmod]"
+            "Usage: node scripts/content/migrate-posts.mjs [--self-test|--check-fixtures|--dry-run|--write] [--freeze-lastmod]"
         );
         process.exit(0);
     }

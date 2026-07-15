@@ -28,7 +28,7 @@ M1 只用 `legacy-post-urls.txt` 比较文章路由；M3/M4 才比较全站 `rou
 
 ### legacy-post-urls.json
 
-由 `scripts/migrate-posts.mjs` 从 Jekyll `site.posts` 导出；key 必须是精确文件名（含扩展名和大小写），不能依赖 Astro 默认 id。
+由 `scripts/content/migrate-posts.mjs` 从 Jekyll `site.posts` 导出；key 必须是精确文件名（含扩展名和大小写），不能依赖 Astro 默认 id。
 
 格式建议：
 

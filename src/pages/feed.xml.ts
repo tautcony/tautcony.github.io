@@ -35,11 +35,11 @@ export const GET: APIRoute = async () => {
     const now = new Date().toUTCString().replace("GMT", "+0000");
 
     const items = posts
-        .map((post) => {
+        .map(post => {
             const url = absoluteUrl(postUrl(post));
             const html = post.rendered?.html ?? post.body ?? "";
             const cats = (post.data.tags ?? [])
-                .map((t) => `        <category>${xmlEscape(t)}</category>`)
+                .map(t => `        <category>${xmlEscape(t)}</category>`)
                 .join("\n");
             return `      <item>
         <title>${xmlEscape(post.data.title)}</title>

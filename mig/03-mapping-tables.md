@@ -77,9 +77,9 @@
 | `ts/entries/tcupdate.jsx` | tcupdate 页引入 |
 | `import "../../styles/tc-blog.scss"` | 改为 layout 引样式 **或** entry 继续引（二选一，避免重复） |
 | `window.jekyll.page` | 改为 `window.__PAGE__` 或 data 属性；**同步改 post.ts 等读取方**（若仍有依赖） |
-| `scripts/generate-lastmod.mjs` | 迁移前冻结 map；输出 `src/data/lastmod.json`，不依赖 Docker `.git` |
-| `scripts/migrate-posts.mjs` | 新增；42 篇 front matter、Liquid include、legacyPath 转换/校验 |
-| `scripts/compare-routes.mjs` / `compare-assets.mjs` | 新增且为 required CI check |
+| `scripts/content/generate-lastmod.mjs` | 迁移前冻结 map；输出 `src/data/lastmod.json`，不依赖 Docker `.git` |
+| `scripts/content/migrate-posts.mjs` | 新增；42 篇 front matter、Liquid include、legacyPath 转换/校验 |
+| `scripts/test/compare-routes.mjs` / `compare-assets.mjs` | 新增且为 required CI check |
 | `scripts/sync-asset-data.mjs` | **删除**（Astro 不需要 assets.json） |
 | `vite.config.mjs` 独立多入口 | 并入 `astro.config.mjs` 的 vite 字段或废弃 |
 

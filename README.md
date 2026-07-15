@@ -27,7 +27,7 @@ npm run dev
 
 Open the URL printed by Astro (default <http://localhost:4321>).
 
-`npm run dev` / `npm run build` sync root static assets (`img/`, `attach/`, `fonts/`, `css/`, `json/`, …) into `public/` before starting.
+`npm run dev` / `npm run build` use the committed legacy assets in `public/` directly. Their public URLs (`/img/`, `/attach/`, `/fonts/`, `/css/`, `/json/`, …) remain stable.
 
 ### Useful scripts
 
@@ -79,9 +79,9 @@ ts/
   Lib/              Shared utilities
   particle404/      Particle 404 scene
 styles/             Site SCSS (frozen during migration; still at repo root)
-img/ attach/ fonts/ css/ json/   Static sources → synced to public/
+public/             Stable legacy assets and runtime-static files
 mig/                Migration docs, fixtures, PROGRESS.md
-scripts/            build/ (pre-build), content/ (migration + metadata), test/ (verification)
+scripts/            content/ (migration + metadata), test/ (verification)
 ```
 
 ### Client entry roles

@@ -14,7 +14,7 @@ Archived during Astro cutover. **Not used by production build.**
 |------|------|
 | Posts | `src/content/posts/` only |
 | Frozen lastmod | `src/data/lastmod.json` |
-| Static roots | `img/` `attach/` `fonts/` `css/` `json/` … via `scripts/build/sync-public.mjs` |
+| Static roots | Archived as committed Astro assets under `public/img/`, `public/attach/`, `public/fonts/`, `public/css/`, `public/json/`, … |
 | Fixtures / compare | `mig/fixtures/*`, `scripts/compare-*.mjs`, `scripts/eval-*.mjs` |
 
 Do not reintroduce `_posts/` as a dual write path.

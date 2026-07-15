@@ -15,7 +15,6 @@ node_modules/
 
 # Build outputs
 dist/
-public/
 _site/
 assets/build/
 .sass-cache/

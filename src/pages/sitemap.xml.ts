@@ -59,7 +59,7 @@ export const GET: APIRoute = async () => {
     urls.push({ path: "/about/" });
     urls.push({ path: "/archive/" });
     urls.push({ path: "/" });
-    urls.push({ path: "/tcupdate/" });
+    urls.push({ path: "/tcupdate.html" });
 
     for (const slice of pages) {
         if (slice.page >= 2) {

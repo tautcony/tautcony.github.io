@@ -187,7 +187,7 @@ node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-
 
 ## M5 — 稳定与清理（持续）
 
-- [ ] 仅删除 Jekyll 运行时和重复源；保留 `legacy-post-urls.json`、route/resource baseline、compare 脚本和摘要 fixture
+- [x] 删除 Jekyll 运行时和重复根资源；定型静态资源提交到 `public/`，保留原 URL、route/resource baseline、compare 脚本和摘要 fixture
 - [ ] 以 commit/tag 写入 Sentry release，监控 7 天；页面/404/tcupdate/评论错误率不高于迁移前基线，超阈值自动回滚
 - [ ] 视需要：fonts 子集、tcupdate 去 Vue、高亮优化（**单独 PR，不绑迁移**）
 

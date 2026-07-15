@@ -89,10 +89,14 @@
 │   └── env.d.ts
 │
 ├── scripts/
-│   ├── build/sync-public.mjs                # 双栈期根资源 → public 同步
 │   ├── content/generate-lastmod.mjs         # 输出/验证 src/data/lastmod.json
 │   ├── content/migrate-posts.mjs            # front matter、Liquid、legacyPath 迁移
 │   └── test/compare-{routes,assets}.mjs     # 必选：路由/资源 diff
+│
+├── public/                      # 已定型 legacy 资源；保留原 URL
+│   ├── img/ attach/ fonts/
+│   ├── css/ json/ arknights/ contents/
+│   └── CNAME favicon.ico robots.txt
 │
 ├── mig/                         # 本计划（可保留）
 ├── docs/
@@ -102,7 +106,7 @@
 └── .github/workflows/build.yml
 ```
 
-> 迁移期必须把 `styles/`、`ts/` 留在仓库根，由 Astro alias 引用；双栈结束后再考虑物理搬入 `src/`。这可避免 SCSS 相对资源 URL 和旧 Jekyll 构建同时失效。
+> `styles/`、`ts/` 暂留仓库根，由 Astro alias 引用。Legacy 静态资源已收口到 `public/`，SCSS 使用 `/img/...` 稳定 URL。
 
 ---
 

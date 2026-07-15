@@ -3,7 +3,7 @@
 > **用途**：单一事实源。随时打开本文件可知当前阶段、已完成项、下一步与阻塞。
 > **约定**：改代码的同时更新本册；状态只允许 `todo` / `doing` / `done` / `blocked` / `n/a`。
 > **集成分支**：`feat/astro-mig`（计划文档中的 `astro-migration` 等价；未另建同名分支）
-> **策略**：PR1–PR4 双栈并行，不删 `_posts`/根静态源；PR5 才切 `master` 生产。
+> **策略**：PR1–PR4 双栈并行；PR5 已将定型静态资源收口到受 Git 管理的 `public/`。
 
 ---
 
@@ -13,7 +13,7 @@
 |------|-----|
 | 当前阶段 | **完成待发布**（M0–M5 代码完成；**合 master + 线上 7 日观察**） |
 | 当前 PR 切片 | 开 PR → master；M4-05 / M5-02 为线上动作 |
-| 上次更新 | 2026-07-14 |
+| 上次更新 | 2026-07-15 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
 | 阻塞 | 无（合入 master 为人工门禁） |
 
@@ -72,7 +72,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | D5 | `html lang=en` | 保持 | done |
 | D6 | Astro 7.0.7 / Node ≥22.12.0 | lockfile 已提交依赖 | done |
 | D7 | `build.format: 'preserve'` | `astro.config.mjs` | done |
-| D8 | PR1–4 不搬 `_posts`/根资源 | 复制/同步 | done |
+| D8 | PR1–4 不搬 `_posts`/根资源 | PR5 已迁入 `public/`，原 URL 不变 | done |
 
 ---
 
@@ -87,14 +87,14 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | M0-03 | Node engines / `.nvmrc` ≥22.12.0 | done | engines + `.nvmrc` → `22.12.0` |
 | M0-04 | `astro.config.mjs` + `src/env.d.ts` | done | preserve + unified markdown |
 | M0-05 | `_config.yml` exclude Astro 路径 | done | src/public/dist/astro/mig |
-| M0-06 | `scripts/build/sync-public.mjs` + public 同步 | done | gitignore `public/`；构建前同步 |
+| M0-06 | `sync-public` + public 同步 | done | M0 历史方案；PR5 已删除同步脚本并提交 `public/` |
 | M0-07 | `src/data/site.ts` 全量映射 | done | 含 `siteConfigMapping` |
 | M0-08 | BaseLayout + Head + Meta + Nav + Footer + Sns | done | class 契约对齐 |
 | M0-09 | 引入 `styles/tc-blog.scss` + heti | done | 根路径 import；不搬 styles/ |
 | M0-10 | 验证脚本骨架 | done | 三脚本均 `--self-test` 绿 |
 | M0-11 | package scripts | done | `dev:astro`/`build:astro`/`check:astro`/`ci:astro` |
 | M0-12 | 占位首页 | done | `src/pages/index.astro` |
-| M0-13 | `.gitignore` dist/.astro/public | done | |
+| M0-13 | `.gitignore` dist/.astro/public | done | M0 历史方案；M5 起提交 `public/` |
 | M0-14 | 验收 dual-stack | done | 见下方交付勾选 |
 
 ### M0 交付勾选
@@ -106,7 +106,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 
 ### M0 已知备注
 
-- `styles` 内 `::not` 触发 lightningcss minify 警告：属既有 SCSS，**迁移期不改**。
+- `styles` 内无效 `::not` 已修正为 `:not`；构建不再产生该 lightningcss 警告。
 - `blog.ts` 仍 import scss（Jekyll 需要）；Astro layout 也 import → 产物可能双链同一 CSS hash，切流前可再收敛（方案 A：样式归 layout）。
 - （历史）M0 时 `migrate-posts --write` 尚未实现；M1 已落地。
 
@@ -235,6 +235,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | 2026-07-14 | M4 | CI/Docker/README 切 Astro；删 Jekyll 运行时；lastmod:check；待合 master |
 | 2026-07-14 | eval | 一致性 L1–L6：冻结 `_site` baseline；全文对齐 + 视觉截图门禁；非 CI 强制 |
 | 2026-07-14 | M5 | 删 `_posts`/`_drafts`/`_data`；Sentry release；legacy 归档；观察 runbook |
+| 2026-07-15 | M5 | Legacy 静态资源从根目录收口到受 Git 管理的 `public/`；删除构建前同步，保持 111 项资源 URL/hash 契约 |
 
 ---
 
@@ -250,13 +251,12 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `package.json` / `package-lock.json` | M0 | 依赖与 scripts |
 | `.nvmrc` | M0 | 22.12.0 |
 | `_config.yml` | M0 | exclude Astro 路径 |
-| `.gitignore` | M0 | dist / .astro / public |
+| `.gitignore` | M0/M5 | 忽略 dist / .astro；`public/` 自 M5 起提交 |
 | `src/env.d.ts` | M0 | Astro types |
 | `src/data/site.ts` | M0 | 站点常量 |
 | `src/layouts/BaseLayout.astro` | M0 | 默认壳 |
 | `src/components/{Head,Meta,Nav,Footer,Sns}.astro` | M0 | 壳组件 |
 | `src/pages/index.astro` | M0 | 占位首页 |
-| `scripts/build/sync-public.mjs` | M0 | 根静态 → public |
 | `scripts/test/compare-routes.mjs` | M0 | 路由 diff 骨架 |
 | `scripts/test/compare-assets.mjs` | M0 | 资源 diff 骨架 |
 | `scripts/content/migrate-posts.mjs` | M1 | 写盘 + PDF/Liquid/excerpt/lastmod |
@@ -292,7 +292,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `mig/10-consistency-eval.md` | eval | 评估设计与首轮结果 |
 | `mig/baselines/jekyll-site.meta.json` | eval | baseline 血统元数据 |
 | `mig/fixtures/consistency-allowlist.json` | eval | 已知差异登记 |
-| `public/` | M0 | 同步产物（gitignore，构建前生成） |
+| `public/` | M5 | 定型 legacy 静态资源（提交 Git，保留原 URL） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 
 ---
@@ -314,5 +314,4 @@ node scripts/test/compare-routes.mjs --self-test
 node scripts/test/compare-assets.mjs --self-test
 node scripts/content/migrate-posts.mjs --self-test
 ```
-
 

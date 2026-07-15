@@ -24,7 +24,7 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "lastmod:check": "node scripts/generate-lastmod.mjs --check",
-    "lastmod": "node scripts/generate-lastmod.mjs --write-jekyll",
+    "lastmod:refresh": "node scripts/generate-lastmod.mjs --refresh",
     "verify:routes:selftest": "node scripts/compare-routes.mjs --self-test",
     "verify:assets:selftest": "node scripts/compare-assets.mjs --self-test",
     "migrate:posts:selftest": "node scripts/migrate-posts.mjs --self-test",

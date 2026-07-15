@@ -124,7 +124,8 @@ ts/ + less/ ── Webpack ──► js/*.min.js, css/*.min.css  (gitignore)
 | Astro 7 SSG + Content Layer | **done**（`feat/astro-mig` → M0–M3） |
 | URL / route / asset freeze fixtures | **done** |
 | CI / Docker / Pages → `dist` | **done**（M4） |
-| 删除 Ruby/Jekyll 运行时 | **done**（Gemfile、layouts、includes；`_posts` 暂留至 M5） |
+| 删除 Ruby/Jekyll 运行时 | **done**（Gemfile、layouts、includes） |
+| 删除 `_posts` 重复源 | **done**（M5；唯一源 `src/content/posts`） |
 | 线上合入 `master` | 待 PR 合并与验收 |
 
 实施造册与接续：见 [`mig/PROGRESS.md`](../mig/PROGRESS.md)。

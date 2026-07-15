@@ -228,4 +228,71 @@ pre {
   .il {
     color: #009999;
   } /* Literal.Number.Integer.Long */
+
+  // Astro uses Prism for tokenization. Keep its token classes on the legacy
+  // Rouge color palette so migrated posts retain their original appearance.
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #999988;
+    font-style: italic;
+  }
+  .token.keyword,
+  .token.atrule,
+  .token.attr-value {
+    color: #000000;
+    font-weight: bold;
+  }
+  .token.operator {
+    color: #000000;
+    font-weight: bold;
+  }
+  .token.boolean,
+  .token.number {
+    color: #009999;
+  }
+  .token.string,
+  .token.char,
+  .token.attr-name {
+    color: #d01040;
+  }
+  .token.regex {
+    color: #009926;
+  }
+  .token.function {
+    color: #990000;
+    font-weight: bold;
+  }
+  .token.class-name {
+    color: #445588;
+    font-weight: bold;
+  }
+  .token.builtin {
+    color: #0086b3;
+  }
+  .token.constant,
+  .token.property,
+  .token.symbol,
+  .token.variable {
+    color: #008080;
+  }
+  .token.tag {
+    color: #000080;
+  }
+  .token.deleted {
+    color: #000000;
+    background-color: #ffdddd;
+  }
+  .token.inserted {
+    color: #000000;
+    background-color: #ddffdd;
+  }
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+  .token.italic {
+    font-style: italic;
+  }
 }

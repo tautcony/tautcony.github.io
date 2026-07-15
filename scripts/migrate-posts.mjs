@@ -1,11 +1,11 @@
 /**
- * Migrate `_posts` → `src/content/posts` for Astro Content Layer.
- * Dual-stack: never deletes or moves `_posts`.
+ * Historical: migrate `_posts` → `src/content/posts` for Astro Content Layer.
+ * After M5, canonical source is `src/content/posts` only (`_posts` removed).
  *
  * Usage:
  *   node scripts/migrate-posts.mjs --self-test
  *   node scripts/migrate-posts.mjs --check-fixtures
- *   node scripts/migrate-posts.mjs --dry-run
+ *   node scripts/migrate-posts.mjs --dry-run   # requires legacy `_posts/` if re-run
  *   node scripts/migrate-posts.mjs --write
  *   node scripts/migrate-posts.mjs --write --freeze-lastmod
  */
@@ -23,6 +23,7 @@ const outDir = path.join(root, "src/content/posts");
 const legacyJson = path.join(root, "mig/fixtures/legacy-post-urls.json");
 const legacyTxt = path.join(root, "mig/fixtures/legacy-post-urls.txt");
 const jekyllLastmod = path.join(root, "_data/lastmod.json");
+const jekyllLastmodLegacy = path.join(root, "mig/legacy/lastmod-jekyll.json");
 const astroLastmod = path.join(root, "src/data/lastmod.json");
 const excerptsOut = path.join(root, "mig/fixtures/excerpts.json");
 
@@ -37,6 +38,15 @@ export function listPostFiles(dir = postsDir) {
         .sort();
 }
 
+/** Canonical post filenames after M5: content collection first. */
+export function listCanonicalPostFiles() {
+    if (fs.existsSync(outDir)) {
+        const files = listPostFiles(outDir);
+        if (files.length) return files;
+    }
+    return listPostFiles(postsDir);
+}
+
 export function loadLegacyMap(filePath = legacyJson) {
     if (!fs.existsSync(filePath)) {
         throw new Error(`legacy map missing: ${filePath}`);
@@ -49,9 +59,11 @@ export function loadLegacyMap(filePath = legacyJson) {
  */
 export function checkFixtures() {
     const errors = [];
-    const files = listPostFiles();
+    const files = listCanonicalPostFiles();
     if (files.length !== EXPECTED_POST_COUNT) {
-        errors.push(`_posts count ${files.length} !== ${EXPECTED_POST_COUNT}`);
+        errors.push(
+            `posts count ${files.length} !== ${EXPECTED_POST_COUNT} (src/content/posts)`
+        );
     }
 
     if (!fs.existsSync(legacyJson)) {
@@ -75,7 +87,9 @@ export function checkFixtures() {
         if (!(f in map)) errors.push(`legacy map missing key for post file: ${f}`);
     }
     for (const k of keys) {
-        if (!files.includes(k)) errors.push(`legacy map key has no _posts file: ${k}`);
+        if (!files.includes(k)) {
+            errors.push(`legacy map key has no content post file: ${k}`);
+        }
         const u = map[k];
         if (typeof u !== "string" || !u.startsWith("/") || !u.endsWith("/")) {
             errors.push(`bad URL for ${k}: ${u}`);
@@ -284,12 +298,17 @@ export function transformPost(filename, raw) {
 }
 
 export function freezeLastmodFromJekyll() {
-    if (!fs.existsSync(jekyllLastmod)) {
+    const lastmodSrc = fs.existsSync(jekyllLastmod)
+        ? jekyllLastmod
+        : fs.existsSync(jekyllLastmodLegacy)
+          ? jekyllLastmodLegacy
+          : null;
+    if (!lastmodSrc) {
         throw new Error(
-            `Missing ${path.relative(root, jekyllLastmod)}; run npm run lastmod first`
+            `Missing Jekyll lastmod map (${path.relative(root, jekyllLastmod)} or ${path.relative(root, jekyllLastmodLegacy)})`
         );
     }
-    const src = JSON.parse(fs.readFileSync(jekyllLastmod, "utf8"));
+    const src = JSON.parse(fs.readFileSync(lastmodSrc, "utf8"));
     /** @type {Record<string, any>} */
     const out = {};
     for (const [legacyPath, info] of Object.entries(src)) {
@@ -490,11 +509,17 @@ Hello
         process.exit(1);
     }
 
-    // Dry-run all posts
-    const plan = migratePosts({ dryRun: true });
-    if (!plan.ok || plan.planned !== EXPECTED_POST_COUNT) {
-        console.error("[migrate-posts] dry-run plan failed", plan);
-        process.exit(1);
+    // Dry-run only when legacy `_posts/` still present (pre-M5)
+    if (fs.existsSync(postsDir) && listPostFiles(postsDir).length) {
+        const plan = migratePosts({ dryRun: true });
+        if (!plan.ok || plan.planned !== EXPECTED_POST_COUNT) {
+            console.error("[migrate-posts] dry-run plan failed", plan);
+            process.exit(1);
+        }
+    } else {
+        console.log(
+            "[migrate-posts] skip dry-run (no `_posts/`; M5+ uses src/content/posts)"
+        );
     }
 
     console.log(

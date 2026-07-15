@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import "../../styles/tcupdate.scss";
-import { createApp } from "vue";
+// This standalone legacy page uses its existing DOM as the Vue template.
+// The default Vue bundler entry is runtime-only and cannot compile it.
+import { createApp } from "vue/dist/vue.esm-bundler.js";
 
 async function getJSON(url) {
     const response = await fetch(url, { credentials: "omit" });

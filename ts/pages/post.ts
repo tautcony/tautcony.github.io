@@ -3,7 +3,7 @@ import { isExternal } from "../Lib/utils";
 
 /**
  * Post page polish. Last-modified date is rendered at build time from
- * `_data/lastmod.json` (see scripts/generate-lastmod.mjs) — no GitHub API.
+ * `src/data/lastmod.json` (frozen map; see scripts/generate-lastmod.mjs) — no GitHub API.
  */
 export function init() {
     const banner = document.querySelector("header.intro-header");

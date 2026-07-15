@@ -8,6 +8,25 @@ import rehypeRaw from "rehype-raw";
 import { rehypeRougeCompat } from "./src/lib/rehype-rouge-compat.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseFrontmatter } from "@astrojs/markdown-remark";
+import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+
+function sentryRelease() {
+    try {
+        const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
+        let sha = "unknown";
+        try {
+            sha = execFileSync("git", ["rev-parse", "--short", "HEAD"], {
+                encoding: "utf8",
+            }).trim();
+        } catch {
+            /* Docker / shallow without git */
+        }
+        return `tc-blog@${pkg.version}+${sha}`;
+    } catch {
+        return "tc-blog@unknown";
+    }
+}
 
 /**
  * Jekyll-era posts use `.markdown`; Astro only registers `.md` by default.
@@ -100,10 +119,17 @@ export default defineConfig({
             // raw before slug so ids apply to raw HTML headings too when possible
             rehypePlugins: [rehypeRaw, rehypeSlug, rehypeRougeCompat],
         }),
-        // S1: class-compatible DOM via rehypeRougeCompat (not Shiki).
-        syntaxHighlight: false,
+        // Prism emits syntax tokens; rehypeRougeCompat preserves the legacy
+        // Rouge wrapper classes consumed by styles/syntax.scss.
+        syntaxHighlight: "prism",
     },
     vite: {
+        // Expose release to client entries (Sentry). Prefer env override in CI.
+        define: {
+            "import.meta.env.PUBLIC_SENTRY_RELEASE": JSON.stringify(
+                process.env.PUBLIC_SENTRY_RELEASE || sentryRelease()
+            ),
+        },
         resolve: {
             extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".scss", ".css"],
         },

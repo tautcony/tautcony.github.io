@@ -6,7 +6,7 @@
  *
  * Usage:
  *   node scripts/generate-lastmod.mjs --check
- *   node scripts/generate-lastmod.mjs --write-jekyll   # optional dual-stack legacy
+ *   node scripts/generate-lastmod.mjs --refresh   # optional: rewrite frozen map from git on src/content/posts
  */
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -14,9 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const postsDir = path.join(root, "_posts");
 const contentPostsDir = path.join(root, "src/content/posts");
-const jekyllOutFile = path.join(root, "_data", "lastmod.json");
 const astroOutFile = path.join(root, "src/data/lastmod.json");
 const EXPECTED = 42;
 
@@ -58,13 +56,11 @@ function gitLastCommit(relPath) {
 }
 
 function listPostFilenames() {
-    const dirs = [contentPostsDir, postsDir].filter((d) => fs.existsSync(d));
-    if (dirs.length === 0) {
+    if (!fs.existsSync(contentPostsDir)) {
         return [];
     }
-    const dir = fs.existsSync(contentPostsDir) ? contentPostsDir : postsDir;
     return fs
-        .readdirSync(dir)
+        .readdirSync(contentPostsDir)
         .filter((name) => /\.(md|markdown)$/i.test(name))
         .sort();
 }
@@ -99,7 +95,9 @@ function checkFrozen() {
         }
         for (const key of keys) {
             if (posts.length && !posts.includes(key)) {
-                console.warn(`[lastmod:check] map has extra key (ok if intentional): ${key}`);
+                console.warn(
+                    `[lastmod:check] map has extra key (ok if intentional): ${key}`
+                );
             }
         }
     }
@@ -123,36 +121,45 @@ function checkFrozen() {
     process.exit(0);
 }
 
-/** Legacy Jekyll path: write `_data/lastmod.json` from git + `_posts`. */
-function writeJekyll() {
-    if (!fs.existsSync(postsDir)) {
-        console.warn("[lastmod] _posts/ missing; writing empty map");
-        fs.mkdirSync(path.dirname(jekyllOutFile), { recursive: true });
-        fs.writeFileSync(jekyllOutFile, "{}\n");
-        return;
+/**
+ * Optional: refresh frozen map from git history of `src/content/posts`.
+ * Prefer keeping the committed freeze unless intentionally updating post history.
+ */
+function refreshFromContentGit() {
+    const files = listPostFilenames();
+    if (!files.length) {
+        console.error("[lastmod:refresh] no posts in src/content/posts");
+        process.exit(1);
     }
 
-    const files = fs
-        .readdirSync(postsDir)
-        .filter((name) => /\.(md|markdown)$/i.test(name))
-        .sort();
-
-    /** @type {Record<string, { sha: string, short_sha: string, date: string, display: string }>} */
+    /** @type {Record<string, object>} */
+    const existing = fs.existsSync(astroOutFile)
+        ? JSON.parse(fs.readFileSync(astroOutFile, "utf8"))
+        : {};
+    /** @type {Record<string, object>} */
     const data = {};
     let ok = 0;
     for (const name of files) {
-        const rel = path.posix.join("_posts", name);
-        const info = gitLastCommit(path.join("_posts", name));
+        const rel = path.posix.join("src/content/posts", name);
+        const info = gitLastCommit(rel);
         if (info) {
-            data[rel] = info;
+            data[name] = {
+                legacyPath: existing[name]?.legacyPath ?? `_posts/${name}`,
+                ...info,
+            };
             ok += 1;
+        } else if (existing[name]) {
+            data[name] = existing[name];
+            ok += 1;
+        } else {
+            console.warn(`[lastmod:refresh] no git history for ${rel}`);
         }
     }
 
-    fs.mkdirSync(path.dirname(jekyllOutFile), { recursive: true });
-    fs.writeFileSync(jekyllOutFile, `${JSON.stringify(data, null, 2)}\n`);
+    fs.mkdirSync(path.dirname(astroOutFile), { recursive: true });
+    fs.writeFileSync(astroOutFile, `${JSON.stringify(data, null, 2)}\n`);
     console.log(
-        `[lastmod] wrote ${ok}/${files.length} entries → ${path.relative(root, jekyllOutFile)}`
+        `[lastmod:refresh] wrote ${ok}/${files.length} → ${path.relative(root, astroOutFile)}`
     );
 }
 
@@ -160,18 +167,24 @@ function main() {
     const args = process.argv.slice(2);
     if (args.includes("--help") || args.includes("-h")) {
         console.log(
-            "Usage: node scripts/generate-lastmod.mjs [--check | --write-jekyll]"
+            "Usage: node scripts/generate-lastmod.mjs [--check | --refresh]"
         );
         process.exit(0);
     }
-    if (args.includes("--check")) {
+    if (args.includes("--check") || args.length === 0) {
         checkFrozen();
         return;
     }
-    if (args.includes("--write-jekyll") || args.length === 0) {
-        // Default kept as Jekyll write for historical scripts; CI uses --check.
-        writeJekyll();
+    if (args.includes("--refresh")) {
+        refreshFromContentGit();
         return;
+    }
+    // Legacy flag no longer regenerates Jekyll _data (M5 removed dual-stack)
+    if (args.includes("--write-jekyll")) {
+        console.error(
+            "[lastmod] --write-jekyll removed in M5; use --check or --refresh"
+        );
+        process.exit(1);
     }
     console.error(`Unknown args: ${args.join(" ")}`);
     process.exit(1);

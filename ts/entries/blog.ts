@@ -11,11 +11,15 @@ import * as page from "../pages/page";
 import * as post from "../pages/post";
 import * as about from "../pages/about";
 
-import "../../styles/tc-blog.scss";
-import "heti/lib/heti.scss";
+// CSS: BaseLayout imports tc-blog.scss + heti (M5: drop entry-side duplicate CSS).
+
+/** Sentry release: Vite injects at build; see astro.config.mjs `define`. */
+const sentryRelease =
+    import.meta.env.PUBLIC_SENTRY_RELEASE || "tc-blog@1.1.0+astro";
 
 Sentry.init({
     dsn: "https://24f09a831bb64823a88e88b918b2bb4f@o955448.ingest.sentry.io/6683081",
+    release: sentryRelease,
     integrations: [Sentry.browserTracingIntegration()],
     tracesSampleRate: 0.05,
     enabled: location.hostname !== "localhost" && location.hostname !== "127.0.0.1",

@@ -1,11 +1,11 @@
 ---
 /**
- * ← `tcupdate.html` (layout: null)
+ * Standalone tools page (layout: null).
  * Independent tool downloads page; Vue JSX client-only mount.
- * build.format: preserve → dist/tcupdate.html (must NOT be dist/tcupdate/index.html)
+ * build.format: preserve → dist/tcupdate/index.html
  */
-import "../../styles/tcupdate.scss";
-import { site } from "../data/site";
+import "../../../styles/tcupdate.scss";
+import { site } from "../../data/site";
 ---
 
 <!DOCTYPE html>
@@ -160,7 +160,7 @@ import { site } from "../data/site";
 
         <!-- Client-only Vue JSX entry (do not import in frontmatter) -->
         <script>
-            import "../../ts/entries/tcupdate.jsx";
+            import "../../../ts/entries/tcupdate.jsx";
         </script>
 
         {

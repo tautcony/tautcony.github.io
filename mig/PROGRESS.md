@@ -11,11 +11,11 @@
 
 | 字段 | 值 |
 |------|-----|
-| 当前阶段 | **M5**（M0–M4 代码已完成；**待合入 master**） |
-| 当前 PR 切片 | M4 切流配置就绪；**M4-05 合 master 需人工 PR** |
+| 当前阶段 | **完成待发布**（M0–M5 代码完成；**合 master + 线上 7 日观察**） |
+| 当前 PR 切片 | 开 PR → master；M4-05 / M5-02 为线上动作 |
 | 上次更新 | 2026-07-14 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
-| 阻塞 | 无（合入 master 为人工门禁，非技术阻塞） |
+| 阻塞 | 无（合入 master 为人工门禁） |
 
 | 阶段 | 名称 | 状态 | 备注 |
 |------|------|------|------|
@@ -23,8 +23,8 @@
 | M1 | 内容集合与文章页 | **done** | PR2：42 文 URL diff=0 |
 | M2 | 列表页与站点页 | **done** | 首页/分页/archive/about/feed/sitemap |
 | M3 | 特殊页与脚本收尾 | **done** | 404/tcupdate/pdf/quote；全站 route+asset OK |
-| M4 | CI / Docker / 切流 | **done*** | *除合 master；workflow/Docker/scripts/Jekyll 清理已完成 |
-| M5 | 稳定与清理 | **todo** | 删 `_posts` 等重复源；Sentry 观察 |
+| M4 | CI / Docker / 切流 | **done*** | *除合 master |
+| M5 | 稳定与清理 | **done*** | *M5-02 线上 7 日观察待部署后执行 |
 
 ---
 
@@ -37,13 +37,13 @@
 3. 从「下一步」第一条未完成项开始；完成后把本册勾选/改状态并写 changelog。
 4. 每阶段结束跑该阶段验收命令，再把阶段状态改为 `done`。
 
-### 此刻应做（合入 + M5）
+### 此刻应做（发布）
 
 1. **切流前**：打保护 tag `pre-astro-YYYYMMDD`，保存最后一次 Jekyll Pages artifact。
-2. **发布 checklist**：`npm run eval:consistency` + `npm run eval:visual`（已绿可复跑）。
-3. **开 PR** `feat/astro-mig` → `master`；确认 CI 绿（Astro `dist` + route/asset verify；**不强制** eval）。
-4. **合并后**线上验收：`/`、`/page2/`、`/page5/`、`/archive/`、`/about/`、2016/2023 文、`/tcupdate.html`、`/404.html`、`/feed.xml`、`/sitemap.xml`、`/robots.txt`。
-5. **M5**：删除 `_posts` 等运行时重复源（保留 mig fixtures）；Sentry 观察 7 天。
+2. **发布 checklist**：`npm run ci`；可选 `eval:consistency` + `eval:visual`。
+3. **开 PR** `feat/astro-mig` → `master`；CI 绿后合并。
+4. **合并后**线上验收六类页 + feed/sitemap/robots。
+5. **Sentry 7 日**：按 `mig/11-sentry-observe.md`；窗口结束勾 M5-02。
 
 **勿做**：改 `styles/**` 语义；无回滚计划时强推 master；Docker 内再跑 lastmod 生成器。
 
@@ -207,13 +207,22 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 
 ## M5 — 稳定与清理
 
-| ID | 任务 | 状态 |
-|----|------|------|
-| M5-01 | 仅删运行时重复源；保留 fixtures/compare | todo |
-| M5-02 | Sentry release 观察 7 天 | todo |
-| M5-03 | 可选后续优化（独立 PR） | todo |
+| ID | 任务 | 状态 | 备注 |
+|----|------|------|------|
+| M5-01 | 仅删运行时重复源；保留 fixtures/compare | **done** | 删 `_posts`/`_drafts`/`_data`；草稿→`mig/legacy/drafts`；内容唯一源 `src/content/posts` |
+| M5-02 | Sentry release 观察 7 天 | **todo** | release 已注入；观察 runbook `mig/11-sentry-observe.md`（合 master 后起算） |
+| M5-03 | 可选后续优化（独立 PR） | **n/a** | fonts 子集 / tcupdate 去 Vue / Shiki — 不绑迁移 |
+
+### M5 交付勾选
+
+- [x] `_posts` 删除；`src/content/posts` 为唯一博文源
+- [x] fixtures / compare / eval 脚本保留
+- [x] blog entry 去掉重复 scss 导入（样式归 BaseLayout）
+- [x] Sentry `release` = `tc-blog@version+sha`
+- [ ] 线上 7 日观察（M5-02）
 
 ---
+
 
 ## 变更日志（实施记录）
 
@@ -225,6 +234,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | 2026-07-14 | M3 | 404 粒子页、tcupdate preserve、PdfEmbed、assets fixture、全站 route+asset compare、HTTP smoke |
 | 2026-07-14 | M4 | CI/Docker/README 切 Astro；删 Jekyll 运行时；lastmod:check；待合 master |
 | 2026-07-14 | eval | 一致性 L1–L6：冻结 `_site` baseline；全文对齐 + 视觉截图门禁；非 CI 强制 |
+| 2026-07-14 | M5 | 删 `_posts`/`_drafts`/`_data`；Sentry release；legacy 归档；观察 runbook |
 
 ---
 

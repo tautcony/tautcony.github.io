@@ -104,15 +104,17 @@ Example: `/404.html?perf=true&gui=true`
 
 ## Content notes
 
+- **Posts live only in** `src/content/posts/` (M5+; former `_posts/` removed).
 - Post URLs are frozen against `mig/fixtures/legacy-post-urls.txt` (some filename dates differ from URL dates).
-- “Update on” dates come from **frozen** `src/data/lastmod.json` (not regenerated in Docker/CI).
+- “Update on” dates come from **frozen** `src/data/lastmod.json` (`npm run lastmod:check`; optional `lastmod:refresh`).
 - PDF previews load **PDF.js from cdnjs** on demand (`.pdf-embed` placeholders).
 - 404 particle scene loads **Three.js r56 from cdnjs** (CanvasRenderer-era API).
 - Comments use **utterances**; math uses **KaTeX** when enabled on a post.
 - Legacy Service Worker registrations are unregistered once on the main client entry.
+- Sentry `release` is `tc-blog@<version>+<gitsha>` (see `mig/11-sentry-observe.md` for 7-day watch).
 
 ## Migration
 
 Astro cutover notes and resumable checklist: [`mig/PROGRESS.md`](./mig/PROGRESS.md).
 
-Jekyll sources (`_posts/`, historical configs) may remain temporarily for dual-stack verification; production build path is Astro only.
+Jekyll runtime is gone; archived config/drafts under `mig/legacy/`.

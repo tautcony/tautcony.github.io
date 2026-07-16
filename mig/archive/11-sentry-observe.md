@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 11 — Sentry 观察 runbook（M5）
 
 > **窗口**：合入 `master` 并完成首次 Astro 生产部署后 **7 天**。  

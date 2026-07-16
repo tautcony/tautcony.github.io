@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 01 — 现站模块盘点
 
 按「迁移时要处理的边界」划分模块。每个模块在 [03-mapping-tables.md](./03-mapping-tables.md) 有目标落点。

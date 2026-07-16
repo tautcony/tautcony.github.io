@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 03 — 映射表（Jekyll → Astro）
 
 ## 1. 布局与组件

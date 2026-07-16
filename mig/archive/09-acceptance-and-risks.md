@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 09 — 验收清单与风险
 
 ## 1. 功能验收清单

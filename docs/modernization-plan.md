@@ -1,12 +1,12 @@
 # TC Blog 完整代码审查与现代化方案
 
-> **Status (2026-07-16)**：Astro cutover **代码已完成**（M0–M5）。下文大量内容为 pre-Astro / 路径 A 战略考古。Cutover 后收口见 [`mig/12-post-cutover-astro-native.md`](../mig/12-post-cutover-astro-native.md)与 [`mig/PROGRESS.md`](../mig/PROGRESS.md)。
+> **Status**：本文为 pre-Astro / 路径 A **战略考古**，主体描述已过时。  
+> **现行实现**：仓库根 [`README.md`](../README.md)。  
+> **契约与档案**：[`mig/README.md`](../mig/README.md)、[`mig/contracts.md`](../mig/contracts.md)。  
+> **迁移计划原文**：[`mig/archive/`](../mig/archive/)。
 
-
-> 文档日期：2026-07-12
+> 文档日期：2026-07-12（归档）
 > 仓库：`tautcony/tautcony.github.io`
-> 范围：Jekyll 历史站点、Astro/TypeScript 前端、CI/Docker、静态资源与模板
-> 状态：本文主体是切流前方案归档；当前实现以 `README.md` 与 `mig/PROGRESS.md` 为准
 
 ---
 
@@ -15,7 +15,7 @@
 | 议题 | 决策 |
 |------|------|
 | 总体路径 | 已切换到 **Astro SSG**；Jekyll 仅保留归档与冻结 baseline |
-| 实施范围 | M0–M5 已落地；后续按 `mig/PROGRESS.md` 维护 |
+| 实施范围 | 迁移已完成；日常维护以根 `README.md` / `mig/contracts.md` 为准 |
 | Service Worker | **删除**（不需要离线能力；清理 `sw.js` / 注册逻辑） |
 | PDF 预览 | 使用浏览器原生 PDF viewer，点击后才加载文件；不再引入 PDF.js/canvas |
 | 数学公式 | **换成 KaTeX**（替换 MathJax 2/3 混用） |
@@ -131,7 +131,7 @@ ts/ + less/ ── Webpack ──► js/*.min.js, css/*.min.css  (gitignore)
 | 删除 `_posts` 重复源 | **done**（M5；唯一源 `src/content/posts`） |
 | 线上合入 `master` | 待 PR 合并与验收 |
 
-实施造册与接续：见 [`mig/PROGRESS.md`](../mig/PROGRESS.md)。
+迁移档案：见 [`mig/archive/`](../mig/archive/)。
 
 下文 Phase 清单仍以路径 A 为历史记录；路径 B 以 `mig/` 为准。
 
@@ -755,7 +755,7 @@ npm run ci           # lint + typecheck + build
 
 ## 附录 B — 路径 B（Astro）若启动时的最小迁移清单
 
-> **完整可执行计划已落到仓库 [`mig/`](../mig/README.md)**（模块盘点、映射表、样式冻结、分阶段 checklist、验收与风险）。
+> 迁移计划原文已归档到 [`mig/archive/`](../mig/archive/)；现行契约见 [`mig/README.md`](../mig/README.md)。
 
 1. URL 兼容：`permalink: pretty` → Astro 路由映射表，旧链接 301/同路径。  
 2. 内容：front matter 字段（`catalog`、`header-img`、`subtitle`、tags）schema 化。  

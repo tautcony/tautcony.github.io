@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 08 — CI、部署与 Docker
 
 ## 1. 目标流水线

@@ -1,3 +1,5 @@
+> **历史档案**：本文件已移入 `mig/archive/`，不再作为接续入口。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # Astro 迁移实施造册（PROGRESS）
 
 > **用途**：单一事实源。随时打开本文件可知当前阶段、已完成项、下一步与阻塞。

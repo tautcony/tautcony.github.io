@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 10 — 改造前后一致性评估设计
 
 > **状态**：已锁定决策并落地工具（`scripts/test/eval-consistency.mjs` / `scripts/test/eval-visual.mjs`）

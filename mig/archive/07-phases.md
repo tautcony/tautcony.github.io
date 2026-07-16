@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 07 — 分阶段实施步骤
 
 每阶段结束应满足 **可构建、可预览、可回滚**。

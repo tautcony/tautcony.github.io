@@ -1,3 +1,5 @@
+> **历史档案**（`mig/archive/`）。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 04 — 样式冻结策略
 
 > **Historical note (2026-07-16)**：高亮 DOM 已改为 Astro Prism 原生 `pre.language-*` / `.token`（见 `src/styles/syntax.scss`）。下文中 `highlighter-rouge` 兼容要求 **已 superseded**，仅作迁移期记录。  

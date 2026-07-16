@@ -1,3 +1,5 @@
+> **历史档案**：本文件已移入 `mig/archive/`，不再作为接续入口。现行说明见 [`../README.md`](../README.md)、[`../contracts.md`](../contracts.md)。
+
 # 12 — Cutover 后：剩余「非 Astro 原生」项与改造计划
 
 > **背景**：M0–M5 已完成 Jekyll → Astro 运行时切换；`feat/astro-mig` 代码侧 ready。  

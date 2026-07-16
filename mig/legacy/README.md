@@ -1,20 +1,19 @@
-# Legacy Jekyll artifacts
+# Legacy 档案（只读）
 
-Archived during Astro cutover. **Not used by production build.**
+Astro 切流时归档的 Jekyll 侧文件。**不参与** `npm run build` / CI / Docker。
 
-| Path | Notes |
-|------|--------|
-| `_config.yml` | Pre-Astro Jekyll site config → mapped to `src/data/site.ts` |
-| `drafts/` | Former `_drafts/` (not published) |
-| `lastmod-jekyll.json` | Last Jekyll-keyed lastmod map (`_posts/...` keys); freeze for Astro is `src/data/lastmod.json` |
-
-## Content source of truth (M5+)
-
-| Role | Path |
+| 路径 | 说明 |
 |------|------|
-| Posts | `src/content/posts/` only |
-| Frozen lastmod | `src/data/lastmod.json` |
-| Static roots | Archived as committed Astro assets under `public/img/`, `public/attach/`, `public/fonts/`, `public/css/`, `public/json/`, … |
-| Fixtures / compare | `mig/fixtures/*`, `scripts/compare-*.mjs`, `scripts/eval-*.mjs` |
+| `_config.yml` | 旧站配置（现行配置在 `src/data/site.ts`） |
+| `drafts/` | 未发布草稿 |
+| `lastmod-jekyll.json` | 旧 key 形态的 lastmod 快照（现行为 `src/data/lastmod.json`） |
 
-Do not reintroduce `_posts/` as a dual write path.
+内容与静态资源的现行位置：
+
+| 角色 | 路径 |
+|------|------|
+| 文章 | `src/content/posts/` |
+| lastmod | `src/data/lastmod.json` |
+| 静态 URL | `public/` |
+
+不要恢复 `_posts/` 双写路径。

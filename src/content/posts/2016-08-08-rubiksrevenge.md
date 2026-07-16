@@ -2,6 +2,7 @@
 title: Rubik’s Revenge in ... 2D!? 3D?
 subtitle: 2015 Rocky Mountain Regional Contest G
 publishedDate: '2016-08-08'
+math: true
 author: TautCony
 headerImg: img/post-bg-default.png
 catalog: false

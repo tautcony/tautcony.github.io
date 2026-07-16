@@ -1,7 +1,12 @@
 /** Shared post ordering / URL helpers (homepage, archive, prev-next). */
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 export type PostEntry = CollectionEntry<"posts">;
+
+/** Single place for collection fetch + typing (pages should not re-cast). */
+export async function getAllPosts(): Promise<PostEntry[]> {
+    return getCollection("posts");
+}
 
 function postSlug(post: PostEntry): string {
     return post.id

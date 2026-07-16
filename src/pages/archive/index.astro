@@ -1,23 +1,23 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import IntroHeader from "../../components/IntroHeader.astro";
 import { pageMeta } from "../../data/pages";
-import type { PostEntry } from "../../lib/posts";
-import { postUrl, sortPostsDesc } from "../../lib/posts";
+import {
+    collectTagCounts,
+    getAllPosts,
+    postUrl,
+    sortPostsDesc,
+    type PostEntry,
+} from "../../lib/posts";
 
-const allPosts = (await getCollection("posts")) as PostEntry[];
+const allPosts = await getAllPosts();
 const ordered = sortPostsDesc(allPosts);
 const meta = pageMeta.archive;
 
 // Tag list: unique tags with counts (order: by count desc then name, matching featured style)
-const tagMap = new Map<string, number>();
-for (const p of allPosts) {
-    for (const t of p.data.tags ?? []) {
-        tagMap.set(t, (tagMap.get(t) ?? 0) + 1);
-    }
-}
-const tags = [...tagMap.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const tags = [...collectTagCounts(allPosts).entries()].sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+);
 const postTotal = allPosts.length;
 
 /** Canonical tag key for data-* attributes (raw UTF-8). URL query still uses encodeURIComponent. */

@@ -1,8 +1,7 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
 import { site } from "../data/site";
-import type { PostEntry } from "../lib/posts";
-import { postUrl, sortPostsDesc } from "../lib/posts";
+import { getAllPosts, postUrl, sortPostsDesc } from "../lib/posts";
+import { absoluteUrl } from "../lib/url";
 
 export const prerender = true;
 
@@ -23,15 +22,8 @@ function toRfc822(ymd: string): string {
     return d.toUTCString().replace("GMT", "+0000");
 }
 
-function absoluteUrl(path: string): string {
-    const base = site.url.replace(/\/$/, "");
-    if (path.startsWith("http")) return path;
-    return `${base}${path.startsWith("/") ? path : `/${path}`}`;
-}
-
 export const GET: APIRoute = async () => {
-    const all = (await getCollection("posts")) as PostEntry[];
-    const posts = sortPostsDesc(all).slice(0, 10);
+    const posts = sortPostsDesc(await getAllPosts()).slice(0, 10);
     const now = new Date().toUTCString().replace("GMT", "+0000");
 
     const items = posts

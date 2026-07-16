@@ -2,6 +2,7 @@
 title: Dice Notation [ZOJ 3930]
 subtitle: ''
 publishedDate: '2016-04-10'
+math: true
 author: TautCony
 headerImg: img/post-bg-default.png
 catalog: false

@@ -12,11 +12,15 @@ interface Props {
 }
 
 const { enable = true, tagCounts, postTotal } = Astro.props;
+const friends = site.friends;
+const shellClass = enable
+    ? "col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container"
+    : "col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 sidebar-container";
 ---
 
-{
-    enable ? (
-        <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container">
+<div class={shellClass}>
+    {
+        enable && (
             <div align="right">
                 <label class="visually-hidden" for="s">
                     Search
@@ -32,7 +36,11 @@ const { enable = true, tagCounts, postTotal } = Astro.props;
                     <input type="hidden" name="as_sitesearch" value={site.url} />
                 </form>
             </div>
-            <FeaturedTags tagCounts={tagCounts} postTotal={postTotal} />
+        )
+    }
+    <FeaturedTags tagCounts={tagCounts} postTotal={postTotal} />
+    {
+        enable && (
             <section class="visible-md visible-lg">
                 <hr />
                 <h5>
@@ -55,40 +63,23 @@ const { enable = true, tagCounts, postTotal } = Astro.props;
                     <Sns center={false} />
                 </div>
             </section>
-            {site.friends?.length > 0 && (
-                <>
-                    <hr />
-                    <h5>FRIENDS</h5>
-                    <ul class="list-inline">
-                        {site.friends.map((friend) => (
-                            <li>
-                                <a href={friend.href} target="_blank" rel="noopener">
-                                    {friend.title}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
-        </div>
-    ) : (
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 sidebar-container">
-            <FeaturedTags tagCounts={tagCounts} postTotal={postTotal} />
-            {site.friends?.length > 0 && (
-                <>
-                    <hr />
-                    <h5>FRIENDS</h5>
-                    <ul class="list-inline">
-                        {site.friends.map((friend) => (
-                            <li>
-                                <a href={friend.href} target="_blank" rel="noopener">
-                                    {friend.title}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
-        </div>
-    )
-}
+        )
+    }
+    {
+        friends.length > 0 && (
+            <>
+                <hr />
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    {friends.map((friend) => (
+                        <li>
+                            <a href={friend.href} target="_blank" rel="noopener">
+                                {friend.title}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        )
+    }
+</div>

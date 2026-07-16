@@ -1,14 +1,15 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import PostLayout from "../../../../../layouts/PostLayout.astro";
 import {
+    getAllPosts,
     parsePostUrl,
     postUrl,
     type PostEntry,
 } from "../../../../../lib/posts";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("posts");
+    const posts = await getAllPosts();
     if (posts.length === 0) {
         throw new Error("No posts in collection; expected Markdown under src/content/posts/");
     }
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
         const { year, month, day, slug } = parsePostUrl(postUrl(post));
         return {
             params: { year, month, day, slug },
-            props: { post, allPosts: posts as PostEntry[] },
+            props: { post, allPosts: posts },
         };
     });
 }

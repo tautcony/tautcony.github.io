@@ -1,11 +1,9 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
 import fs from "node:fs";
 import path from "node:path";
-import { site } from "../data/site";
-import type { PostEntry } from "../lib/posts";
-import { postUrl, sortPostsAsc } from "../lib/posts";
+import { getAllPosts, postUrl, sortPostsAsc } from "../lib/posts";
 import { listPageHref, paginatePosts } from "../lib/pagination";
+import { absoluteUrl } from "../lib/url";
 
 export const prerender = true;
 
@@ -16,12 +14,6 @@ const SITEMAP_ATTACH_PDFS = [
     "/attach/naming-of-fonts/JIS2004_Comparison.pdf",
     "/attach/rubiksrevenge/G-rubiksrevenge.pdf",
 ] as const;
-
-function loc(pathOrUrl: string): string {
-    if (pathOrUrl.startsWith("http")) return pathOrUrl;
-    const base = site.url.replace(/\/$/, "");
-    return `${base}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
-}
 
 /** Post lastmod as calendar date at +08:00 midnight (stable, TZ-independent). */
 function lastmodFromYmd(ymd: string): string {
@@ -50,7 +42,7 @@ function walkPublicFiles(dir: string, base = ""): string[] {
  * posts → static pages → paginated lists → allowlisted attach PDFs.
  */
 export const GET: APIRoute = async () => {
-    const all = (await getCollection("posts")) as PostEntry[];
+    const all = await getAllPosts();
     const posts = sortPostsAsc(all);
     const pages = paginatePosts(all);
 
@@ -96,7 +88,7 @@ export const GET: APIRoute = async () => {
         "<urlset xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" +
         unique
             .map(u => {
-                const lines = ["<url>", `<loc>${loc(u.path)}</loc>`];
+                const lines = ["<url>", `<loc>${absoluteUrl(u.path)}</loc>`];
                 if (u.lastmod) lines.push(`<lastmod>${u.lastmod}</lastmod>`);
                 lines.push("</url>");
                 return lines.join("\n");

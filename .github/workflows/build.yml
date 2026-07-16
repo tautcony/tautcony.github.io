@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [master]
 
+permissions:
+  contents: read
+
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
@@ -15,14 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          # Full history retained for optional lastmod regeneration tooling;
-          # production build consumes frozen src/data/lastmod.json only.
-          fetch-depth: 0
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: ".nvmrc"
           cache: npm
@@ -30,42 +29,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint
-        run: npm run eslint
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Astro check
-        run: npm run check:astro
-
-      - name: Verify frozen lastmod
-        run: npm run lastmod:check
-
-      - name: Build Astro site
-        run: npm run build
-
-      - name: Verify routes (full site)
-        run: npm run verify:routes
-
-      - name: Verify static assets
-        run: npm run verify:assets
+      - name: Verify and build Astro site
+        run: npm run ci
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
-
-      - name: Upload compare fixtures snapshot
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: astro-dist-manifest
-          path: |
-            mig/fixtures/routes-jekyll.txt
-            mig/fixtures/assets-jekyll.json
-            mig/fixtures/legacy-post-urls.txt
-          if-no-files-found: ignore
 
   deploy:
     needs: build
@@ -81,4 +51,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

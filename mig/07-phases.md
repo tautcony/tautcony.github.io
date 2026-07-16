@@ -144,9 +144,9 @@ node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-
 
 1. **改** `.github/workflows/build.yml`
    - 去掉 Ruby
-   - `npm ci` → `npm run lastmod:check` → `npm run ci`（Astro）
+   - `npm ci` → `npm run ci`（Astro；已包含 lastmod 校验）
    - artifact 路径 `dist`
-   - 保持 `fetch-depth: 0`
+   - 使用默认浅克隆；冻结 lastmod 校验不需要 Git 历史
 2. **Dockerfile**：node build → nginx（去 generator stage）
    - Docker 不运行 lastmod 生成器；使用仓库提交的 `src/data/lastmod.json`
    - `.dockerignore` 可排除 `.git`，但 build 必须与 Pages 产物的 lastmod 一致
@@ -173,7 +173,7 @@ node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-
 - [ ] PR CI 绿
 - [ ] 预发 Pages 或 `astro preview` 全链路
 - [ ] `astro check`、lint glob 覆盖最终 `src/`/`ts/` 路径
-- [ ] 全量 route/resource/HTTP/截图门禁有 CI artifact
+- [ ] CI 执行全量 route/resource 门禁并只上传 Pages `dist`；HTTP/截图门禁按发布 checklist 本地执行
 - [ ] 合并 `master` 后线上验收
 
 ### 回滚

@@ -3,14 +3,10 @@
 ## 1. 目标流水线
 
 ```text
-push/PR → checkout (fetch-depth: 0)
+push/PR → checkout (shallow)
         → setup-node 22.12+
         → npm ci
-        → eslint
-        → typecheck + astro check
-        → npm run lastmod:check
-        → npm run build   # astro build → dist/
-        → compare routes + assets + HTTP/screenshot artifacts
+        → npm run ci      # lint/typecheck/check/build/route+asset gates
         → upload-pages-artifact (path: dist)
         → (master) deploy-pages
 ```
@@ -24,9 +20,11 @@ push/PR → checkout (fetch-depth: 0)
 | Ruby job steps | 有 | 无 |
 | 产物目录 | `_site` | `dist`（或 `astro.config` 的 `outDir`） |
 | lastmod | 已有 node 脚本 | PR1–PR4 冻结/校验；Docker 消费提交的 map |
-| fetch-depth | 0 | 保持 0 |
+| fetch-depth | 0 | 使用 checkout 默认浅克隆；CI 只校验冻结的 lastmod，不读取 Git 历史 |
 | Node | 22.12+ | 与 Astro 7 engine 一致 |
 | 并发 group | `pages-${{ github.ref }}` | 保持 |
+| compare fixtures snapshot | 每次额外上传 | 删除；fixture 已入库，Pages artifact 只含 `dist` |
+| Action major | checkout/setup-node v4、Pages v3/v4 | checkout/setup-node v7、Pages v5 |
 
 ## 3. 环境变量
 
@@ -38,11 +36,7 @@ push/PR → checkout (fetch-depth: 0)
 
 ## 4. Docker
 
-### 现
-
-`node build` → `ruby jekyll` → `nginx` 拷 `_site`
-
-### 目标
+### 当前
 
 ```dockerfile
 FROM node:22.12-bookworm AS builder
@@ -72,7 +66,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 | 配置 | 动作 |
 |------|------|
-| `codeql.yml` | 语言保持 javascript；去掉 ruby 若有 |
+| `codeql.yml` | `javascript-typescript` + `actions`、`build-mode: none`；归档 Jekyll 配置不需要 Ruby 分析 |
 | dependabot npm | 保留；可 group `astro` |
 | dependabot bundler | Gemfile 删除后移除 |
 | dependabot github-actions | 保留 |
@@ -84,7 +78,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 | `npm start` (jekyll serve) | `npm run dev` (astro dev) |
 | `npm run build` (vite only) | `npm run build` (astro build；lastmod 由 CI 单独校验) |
 | `npm run jekyll:build` | 删除 |
-| `npm run ci` | eslint + typecheck + astro check + build + route/resource compare |
+| `npm run ci` | eslint + typecheck + astro check + lastmod + build + route/resource compare + compare self-test |
 
 ## 8. 切流当日 runbook
 

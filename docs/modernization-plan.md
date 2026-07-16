@@ -1,9 +1,9 @@
 # TC Blog 完整代码审查与现代化方案
 
-> 文档日期：2026-07-12  
-> 仓库：`tautcony/tautcony.github.io`  
-> 范围：Jekyll 站点、TypeScript/Webpack 前端、CI/Docker、静态资源与模板  
-> 目标：便于长期维护；按 Phase 落地，每完成一个 Phase 单独 commit
+> 文档日期：2026-07-12
+> 仓库：`tautcony/tautcony.github.io`
+> 范围：Jekyll 历史站点、Astro/TypeScript 前端、CI/Docker、静态资源与模板
+> 状态：本文主体是切流前方案归档；当前实现以 `README.md` 与 `mig/PROGRESS.md` 为准
 
 ---
 
@@ -11,8 +11,8 @@
 
 | 议题 | 决策 |
 |------|------|
-| 总体路径 | **路径 A**：保留 Jekyll，现代化前端与工程化 |
-| 实施范围 | **Phase 0–3** 全做；每 Phase 单独 commit |
+| 总体路径 | 已切换到 **Astro SSG**；Jekyll 仅保留归档与冻结 baseline |
+| 实施范围 | M0–M5 已落地；后续按 `mig/PROGRESS.md` 维护 |
 | Service Worker | **删除**（不需要离线能力；清理 `sw.js` / 注册逻辑） |
 | PDF.js | **保留**，改为 **按需加载**（文章内嵌 viewer，非首屏必载） |
 | 数学公式 | **换成 KaTeX**（替换 MathJax 2/3 混用） |
@@ -58,8 +58,8 @@ ts/ + less/ ── Webpack ──► js/*.min.js, css/*.min.css  (gitignore)
 
 ### 1.3 已做得较好的部分（审查肯定项）
 
-- 近期已完成一轮现代化：去掉 jQuery 依赖路径、ESLint flat config、Node 22 / Ruby 3.3 锁定、Pages 官方 Actions 部署、404 粒子 TS 化、`bin/with-ruby` 规避 Ruby 4 兼容坑。
-- `npm run ci` 串起 typecheck + 前端构建 + Jekyll build，CI 路径清晰。
+- 近期已完成一轮现代化：Astro 7/Node 22 替换 Jekyll/Ruby，采用 Pages 官方 Actions 部署，404 粒子切换到现代 Three.js。
+- `npm run ci` 串起 lint、typecheck、Astro check/build、lastmod 与 route/resource 门禁，CI 与本地入口一致。
 - 构建产物 `*.min.js/css` 已 gitignore，避免「源码与产物双轨提交」。
 - 评论、分析、侧栏、特性开关大多集中在 `_config.yml`，可配置性尚可。
 - 外链 JS（bootstrap.native / pace / anime / MathJax CDN）多数带了 **SRI**。
@@ -520,21 +520,21 @@ DSN 本身通常可公开，但环境切换不灵活。
 
 #### 已有优点
 
-- Node 22 + Ruby 3.3 + bundler-cache + npm cache。  
+- Node 22 + npm cache；CI 与 Docker 已无 Ruby。
 - PR 构建、master 部署分离。  
-- CodeQL 覆盖 JS/TS 与 Ruby。  
-- 多阶段 Docker（node build → jekyll → nginx）结构清晰。
+- CodeQL 覆盖 JavaScript/TypeScript 与 GitHub Actions workflow。
+- 多阶段 Docker 已收敛为 node build → nginx。
 
 #### 改进建议
 
 | 项 | 建议 |
 |----|------|
-| CI 门禁 | 加入 `eslint`；可选 bundle size budget |
+| CI 门禁 | 已统一执行 `npm run ci`；后续可加 bundle size budget |
 | 依赖审计 | 周期性 `npm audit` / Dependabot |
-| Docker | generator 阶段应 `bundle install` 后只 copy 必要文件；考虑 non-root nginx |
-| 本地 DX | 提供 **concurrently** 一键：`vite build -w` + `jekyll serve` |
+| Docker | 考虑 non-root nginx 与镜像 digest 更新策略 |
+| 本地 DX | 继续使用 Astro dev server；按需补 preview smoke |
 | 文档 | `docs/` 放架构与约定；README 保持短 |
-| exclude | 构建产物断言脚本（防止 secrets/配置泄漏进 `_site`） |
+| exclude | 保持 `dist` 产物审计，防止 secrets/配置进入 Pages artifact |
 
 ---
 

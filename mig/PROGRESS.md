@@ -182,7 +182,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 
 | ID | 任务 | 状态 | 备注 |
 |----|------|------|------|
-| M4-01 | workflow 去 Ruby → Astro dist | done | `.github/workflows/build.yml`：Node `.nvmrc`、lastmod:check、build、verify、artifact=`dist` |
+| M4-01 | workflow 去 Ruby → Astro dist | done | `.github/workflows/build.yml`：浅克隆、Node `.nvmrc`、`npm run ci`、Pages artifact=`dist` |
 | M4-02 | Dockerfile node→nginx | done | `node:22.12-bookworm` → `nginx:1.27-alpine`；无 Ruby stage |
 | M4-03 | package scripts 切换默认 build | done | `dev`/`build`/`preview`/`ci` 均 Astro；别名 `*:astro` 保留 |
 | M4-04 | 删 Jekyll 遗留 + README | done | 去 Gemfile/layouts/includes/根页/vite.config；`_config.yml`→`mig/legacy/`；README Astro |
@@ -193,7 +193,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 - [x] CI 配置改为 Astro `dist`（待 PR 上跑绿）
 - [x] Dockerfile 仅 node→nginx + frozen lastmod
 - [x] `npm run ci` 本地：build + route/asset OK
-- [x] Dependabot 去 bundler；CodeQL 去 ruby
+- [x] Dependabot 去 bundler；CodeQL 覆盖 JavaScript/TypeScript + Actions，不扫描归档 Ruby
 - [ ] 合并 `master` 后线上验收（M4-05）
 
 ### 回滚要点
@@ -237,6 +237,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | 2026-07-14 | M5 | 删 `_posts`/`_drafts`/`_data`；Sentry release；legacy 归档；观察 runbook |
 | 2026-07-15 | M5 | Legacy 静态资源从根目录收口到受 Git 管理的 `public/`；删除构建前同步，保持 111 项资源 URL/hash 契约 |
 | 2026-07-16 | 404 | 切换现代 Three.js 验收；退役 r56 专用 `disc`、`particle_tr`、`inner_bck`，当前资源契约 108 项 |
+| 2026-07-16 | CI | Actions 更新至 checkout/setup-node v7、Pages v5、CodeQL v4；移除 compare fixture snapshot 上传与 full-history checkout |
 
 ---
 

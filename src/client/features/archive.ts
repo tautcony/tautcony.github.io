@@ -2,13 +2,14 @@ function queryString(): Record<string, string> {
     const queryObj: Record<string, string> = {};
     const params = new URLSearchParams(window.location.search);
     for (const [key, value] of params.entries()) {
+        // URLSearchParams already percent-decodes (e.g. %E7%BC%96%E7%A8%8B → 编程, C%2B%2B → C++).
         queryObj[key] = value;
     }
     return queryObj;
 }
 
 const setUrlQuery = (() => {
-    const baseUrl = window.location.href.split("?")[0];
+    const baseUrl = window.location.href.split("?")[0] ?? window.location.pathname;
     return (query?: string) => {
         if (typeof query === "string") {
             window.history.replaceState(null, "", baseUrl + query);
@@ -17,6 +18,26 @@ const setUrlQuery = (() => {
         }
     };
 })();
+
+/** Normalize tag key for comparison (trim; decode once if still percent-encoded). */
+function normalizeTagKey(raw: string | null | undefined): string {
+    if (raw === null || raw === undefined) {
+        return "";
+    }
+    let t = raw.trim();
+    if (!t) {
+        return "";
+    }
+    // Legacy pages may store data-encode as encodeURIComponent(tag); query is decoded.
+    if (/%[0-9A-Fa-f]{2}/.test(t)) {
+        try {
+            t = decodeURIComponent(t);
+        } catch {
+            /* keep original */
+        }
+    }
+    return t;
+}
 
 function find(selectors: string, parent: Element | Element[] | Document | null = document) {
     const queryParent = parent;
@@ -76,22 +97,27 @@ export default class Archive {
             return;
         }
         const query = queryString();
-        const queryTag = query["tag"];
+        // From /post → /archive/?tag=编程 (or C%2B%2B); value is already decoded.
+        const queryTag = normalizeTagKey(query["tag"]);
 
         this.tagSelect(queryTag);
 
         find("a", this.tags).forEach(tag => {
-            (tag as HTMLAnchorElement).addEventListener("click", () => { /* only change */
+            (tag as HTMLAnchorElement).addEventListener("click", e => {
+                e.preventDefault();
                 this.tagSelect(tag.getAttribute("data-encode"), tag);
             });
         });
     }
 
-    private searchButtonsByTag(_tag: string | null/* raw tag */) {
-        if (!_tag) {
+    private searchButtonsByTag(_tag: string | null /* raw tag */) {
+        const key = normalizeTagKey(_tag);
+        if (!key) {
             return this.tagShowAll;
         }
-        const buttons = this.articalTags.filter(tag => tag.getAttribute("data-encode") === _tag);
+        const buttons = this.articalTags.filter(
+            tag => normalizeTagKey(tag.getAttribute("data-encode")) === key
+        );
         if (buttons.length === 0) {
             return this.tagShowAll;
         }
@@ -108,25 +134,29 @@ export default class Archive {
         }
     }
 
-    private tagSelect(_tag: string | null/* raw tag */, target?: Element) {
+    private tagSelect(_tag: string | null /* raw tag */, target?: Element) {
+        const key = normalizeTagKey(_tag);
+        const showAll = key === "";
+
         const result: Record<number, Record<number, boolean>> = {};
         for (let i = 0; i < this.sectionArticles.length; i++) {
             const articles = this.sectionArticles[i];
             for (let j = 0; j < articles.length; j++) {
-                if (_tag === "" || _tag === undefined) {
+                if (showAll) {
                     if (result[i] === undefined) {
                         result[i] = {};
                     }
                     result[i][j] = true;
                 } else {
-                    const tags = articles[j].getAttribute("data-tags")?.split(",") ?? [];
-                    for (const element of tags) {
-                        if (element === _tag) {
-                            if (result[i] === undefined) {
-                                result[i] = {};
-                            }
-                            result[i][j] = true; break;
+                    const tags = (articles[j].getAttribute("data-tags") ?? "")
+                        .split(",")
+                        .map(t => normalizeTagKey(t))
+                        .filter(Boolean);
+                    if (tags.includes(key)) {
+                        if (result[i] === undefined) {
+                            result[i] = {};
                         }
+                        result[i][j] = true;
                     }
                 }
             }
@@ -154,14 +184,14 @@ export default class Archive {
 
         if (target) {
             this.buttonFocus(target);
-            const targetTag = target.getAttribute("data-encode");
-            if (targetTag === "" || typeof targetTag !== "string") {
+            const targetTag = normalizeTagKey(target.getAttribute("data-encode"));
+            if (!targetTag) {
                 setUrlQuery();
             } else {
-                setUrlQuery(`?tag=${targetTag}`);
+                setUrlQuery(`?tag=${encodeURIComponent(targetTag)}`);
             }
         } else {
-            this.buttonFocus(this.searchButtonsByTag(_tag));
+            this.buttonFocus(this.searchButtonsByTag(key));
         }
     }
 }

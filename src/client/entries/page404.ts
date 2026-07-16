@@ -2,8 +2,8 @@
  * Particle 404 page entry.
  */
 
-import "../../styles/404.scss";
-import { startParticle404 } from "../particle404/modern-scene";
+import "../../../styles/404.scss";
+import { startParticle404 } from "../features/particle404";
 
 function boot(): void {
     startParticle404();

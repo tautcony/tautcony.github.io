@@ -285,7 +285,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `src/pages/404.astro` | M3 | `/404.html` 粒子页 |
 | `src/pages/tcupdate.astro` | M3 | `/tcupdate.html` 工具页（纯 TS，无 Vue） |
 | `src/components/PdfEmbed.astro` | M3 | PDF 占位组件（帖文已静态化） |
-| `ts/particle404/modern-scene.ts` | M3/P1 | 现行 404 粒子；r56 bootstrap/scene/shell 已删 |
+| `src/client/features/particle404/modern-scene.ts` | M3/P1 | 现行 404 粒子；r56 bootstrap/scene/shell 已删 |
 | `mig/fixtures/assets-jekyll.json` | M3+ | 当前需继续发布的静态资源 baseline（108） |
 | `.github/workflows/build.yml` | M4 | Astro Pages：dist + verify |
 | `Dockerfile` / `.dockerignore` | M4 | node build → nginx |

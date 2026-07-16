@@ -1,15 +1,15 @@
 import * as Sentry from "@sentry/browser";
 import Heti from "heti/js/heti-addon";
 
-import Nav from "../Lib/navbar";
-import Quote from "../Lib/quote";
-import Title from "../Lib/title";
-import tagcloud from "../Lib/tagcloud";
-import { initPdfEmbeds } from "../Lib/pdf-embed";
-import Archive from "../pages/archive";
-import * as page from "../pages/page";
-import * as post from "../pages/post";
-import * as about from "../pages/about";
+import Nav from "../features/navbar";
+import Quote from "../features/quote";
+import Title from "../features/title";
+import tagcloud from "../features/tagcloud";
+import { initPdfEmbeds } from "../features/pdf-embed";
+import Archive from "../features/archive";
+import * as pageChrome from "../features/page-chrome";
+import * as post from "../features/post";
+import * as about from "../features/about";
 
 // CSS: BaseLayout imports tc-blog.scss + heti (M5: drop entry-side duplicate CSS).
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nav.init();
     const archive = new Archive();
     archive.init();
-    page.init();
+    pageChrome.init();
     post.init();
 
     title.init();

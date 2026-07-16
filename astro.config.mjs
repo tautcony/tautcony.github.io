@@ -27,7 +27,7 @@ function sentryRelease() {
 
 /**
  * Astro SSG config for TC Blog.
- * Styles stay at repo-root `styles/`; client entries stay at `ts/`.
+ * Styles stay at repo-root `styles/`; browser code under `src/client/`, build helpers under `src/lib/`.
  *
  * Astro 7 defaults to Sätteri; use `@astrojs/markdown-remark` `unified()` so
  * remark/rehype plugins remain available (see mig/05).

@@ -178,7 +178,7 @@ ts/ + less/ ── Webpack ──► js/*.min.js, css/*.min.css  (gitignore)
 
 #### 🔴 Service Worker 处于「半死」状态
 
-**位置**：`sw.js`、`js/sw-registration.js`、`ts/entries/blog.ts`
+**位置**：`sw.js`、`js/sw-registration.js`、`src/client/entries/blog.ts`
 
 - 注册代码被注释 / 主动 `unregister()`。  
 - 但仓库仍保留完整 SW 实现与 offline 资源列表。  
@@ -197,7 +197,7 @@ ts/ + less/ ── Webpack ──► js/*.min.js, css/*.min.css  (gitignore)
 
 #### 🟠 文章「最后更新」路径猜测脆弱
 
-**位置**：`ts/pages/post.ts`
+**位置**：`src/client/features/post.ts`
 
 ```ts
 const filename = `_posts/${window.location.pathname.split("/").filter(_ => _).join("-")}.markdown`;
@@ -267,7 +267,7 @@ const filename = `_posts/${window.location.pathname.split("/").filter(_ => _).jo
 
 #### 🟠 axios 用于极简单请求
 
-**位置**：`ts/Lib/quote.ts`、`js/tcupdate.js`
+**位置**：`src/client/lib/quote.ts`、`js/tcupdate.js`
 
 现代浏览器 `fetch` 足够；axios 增加包体积与 API 面。
 
@@ -414,7 +414,7 @@ window["generateCatalog"] = page.generateCatalog;
 
 #### 🟠 导航无障碍不完整
 
-**位置**：`_includes/nav.html` + `ts/Lib/navbar.ts`
+**位置**：`_includes/nav.html` + `src/client/lib/navbar.ts`
 
 - toggle 按钮缺少 `aria-expanded` / `aria-controls`。  
 - `sr-only` 文案在 icon-bar **之后**，部分读屏顺序怪异。  
@@ -435,7 +435,7 @@ window["generateCatalog"] = page.generateCatalog;
 
 #### 🟢 Title 恶搞与可访问性
 
-`ts/Lib/title.ts` 在 `visibilitychange` 时改 `document.title`。
+`src/client/lib/title.ts` 在 `visibilitychange` 时改 `document.title`。
 
 对部分用户（多标签工作流、读屏）可能干扰。
 
@@ -499,7 +499,7 @@ DSN 本身通常可公开，但环境切换不灵活。
 
 #### ✅ PDF.js 已移除
 
-原 ~16MB vendoring 与后续 CDN canvas 实现均已删除。PDF 预览点击后创建浏览器原生 `object[type="application/pdf"]`，保留矢量缩放能力，并提供直接打开/下载 fallback（见 `ts/Lib/pdf-embed.ts`）。
+原 ~16MB vendoring 与后续 CDN canvas 实现均已删除。PDF 预览点击后创建浏览器原生 `object[type="application/pdf"]`，保留矢量缩放能力，并提供直接打开/下载 fallback（见 `src/client/lib/pdf-embed.ts`）。
 
 #### ✅ Three.js r56 运行时已移除
 
@@ -507,7 +507,7 @@ DSN 本身通常可公开，但环境切换不灵活。
 
 **后续可选**：
 
-- 删除 `ts/particle404/` 中已不可达的 r56 迁移实现和 ambient shim。
+- 删除 `src/client/features/particle404/` 中已不可达的 r56 迁移实现和 ambient shim。
 - 将仅供 `?gui=true` 使用的 `dat.gui` 改为动态导入，降低默认 404 bundle 大小。
 
 #### 🟢 `_site/` 本地 200MB+
@@ -737,10 +737,10 @@ npm run ci           # lint + typecheck + build
 |------|------|
 | `_config.yml` | 站点与插件配置 |
 | `_layouts/*`, `_includes/*` | HTML 骨架与 CDN 依赖 |
-| `ts/entries/blog.ts` | 主前端入口 |
-| `ts/pages/*`, `ts/Lib/*` | 业务与工具 |
-| `ts/particle404/modern-scene.ts` | 当前 404 粒子（现代 Three.js） |
-| `ts/particle404/{bootstrap,scene,shell,mask}.ts` | **已删除**（P1 清债；现行入口 `modern-scene.ts`） |
+| `src/client/entries/blog.ts` | 主前端入口 |
+| `src/client/features/*`, `src/client/lib/*` | 业务与工具 |
+| `src/client/features/particle404/modern-scene.ts` | 当前 404 粒子（现代 Three.js） |
+| `src/client/features/particle404/{bootstrap,scene,shell,mask}.ts` | **已删除**（P1 清债；现行入口 `modern-scene.ts`） |
 | `less/*` | 主题样式源 |
 | `build/webpack.*` | 当前打包 |
 | `js/tcupdate.js` | 工具页（Vue） |

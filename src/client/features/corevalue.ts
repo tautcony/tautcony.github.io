@@ -1,4 +1,4 @@
-import { el } from "./utils";
+import { el } from "../lib/dom";
 
 /**
  * Click easter-egg: float a short phrase at the pointer.

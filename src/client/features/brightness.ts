@@ -1,4 +1,4 @@
-import { el } from "./utils";
+import { el } from "../lib/dom";
 
 interface BrightnessConfig {
     enable: boolean;

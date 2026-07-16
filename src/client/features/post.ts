@@ -1,5 +1,5 @@
-import * as GeoPattern from "../Lib/geopattern";
-import { isExternal } from "../Lib/utils";
+import * as GeoPattern from "../lib/geopattern";
+import { isExternal } from "../lib/dom";
 
 /**
  * Post page polish. Last-modified date is rendered at build time from

@@ -75,12 +75,12 @@
 
 | ID | 入口 / 模块 | 路径 | 绑定页面 |
 |----|-------------|------|----------|
-| D1 | 主站 entry | `ts/entries/blog.ts` | 全局（default layout） |
-| D2 | 404 entry | `ts/entries/page404.ts` | 404 |
-| D3 | tcupdate entry | `ts/entries/tcupdate.jsx` | tcupdate（Vue JSX） |
-| D4 | 页面逻辑 | `ts/pages/{post,page,archive,about}.ts` | 按需 |
-| D5 | 库 | `ts/Lib/*` | navbar、quote、pdf-embed、utils.el、geopattern… |
-| D6 | 粒子 | `ts/particle404/modern-scene.ts` 等 | 404；npm Three.js WebGL；r56 迁移源码待清理 |
+| D1 | 主站 entry | `src/client/entries/blog.ts` | 全局（default layout） |
+| D2 | 404 entry | `src/client/entries/page404.ts` | 404 |
+| D3 | tcupdate entry | `src/client/entries/tcupdate.jsx` | tcupdate（Vue JSX） |
+| D4 | 页面逻辑 | `src/client/features/{post,page,archive,about}.ts` | 按需 |
+| D5 | 库 | `src/client/lib/*` | navbar、quote、pdf-embed、utils.el、geopattern… |
+| D6 | 粒子 | `src/client/features/particle404/modern-scene.ts` 等 | 404；npm Three.js WebGL；r56 迁移源码待清理 |
 | D7 | 构建 | `astro.config.mjs`、`scripts/*` | Content Layer + route/resource compare + frozen lastmod |
 
 ---

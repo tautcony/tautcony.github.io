@@ -38,7 +38,7 @@ Open the URL printed by Astro (default <http://localhost:4321>).
 | `npm run preview` | Serve `dist/` locally |
 | `npm run check:astro` | `astro check` |
 | `npm run math:check` | Reject display-math delimiters embedded in prose |
-| `npm run eslint` | ESLint on `ts/` |
+| `npm run eslint` | ESLint on `src/` + scripts |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lastmod:check` | Validate frozen `src/data/lastmod.json` (42 posts) |
 | `npm run ci` | Lint + typecheck + astro check + math + lastmod + build（CI 入口） |
@@ -74,12 +74,8 @@ src/
   components/       Site chrome and post UI
   content/posts/    Migrated Markdown (Content Layer)
   data/             site.ts, pages.ts, lastmod.json (frozen)
-  lib/              posts helpers, rehype, pagination
-ts/
-  entries/          Client entries (blog, page404, tcupdate)
-  pages/            Per-page UI modules
-  Lib/              Shared utilities
-  particle404/      Modern Three.js 404 scene
+  lib/              Build-time helpers (posts, pagination, excerpts, rehype)
+  client/           Browser runtime (entries, features, geopattern, …)
 styles/             Site SCSS (frozen contract; repo root)
 public/             Stable static assets (historical URLs)
 mig/                Migration docs, fixtures, PROGRESS.md
@@ -90,9 +86,9 @@ scripts/            content/ (metadata), test/ (verification)
 
 | Entry | Role |
 |-------|------|
-| `ts/entries/blog.ts` | Main site JS (nav, quote, pdf-embed, archive tags, …) |
-| `ts/entries/page404.ts` | Responsive particle 404 (bundled modern Three.js) |
-| `ts/entries/tcupdate.ts` | Tools download page GitHub release enhancement |
+| `src/client/entries/blog.ts` | Main site JS (nav, quote, pdf-embed, archive tags, …) |
+| `src/client/entries/page404.ts` | Responsive particle 404 (bundled modern Three.js) |
+| `src/client/entries/tcupdate.ts` | Tools download page GitHub release enhancement |
 
 ## Content notes
 

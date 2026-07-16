@@ -1,4 +1,4 @@
-import { el } from "../Lib/utils";
+import { el } from "../lib/dom";
 
 function wrap<K extends keyof HTMLElementTagNameMap>(
     node: HTMLElement,

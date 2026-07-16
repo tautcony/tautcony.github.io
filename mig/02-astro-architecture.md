@@ -7,7 +7,7 @@
 | SSG | **Astro `7.0.7`** | 静态优先、Vite 原生、Pages 友好；升级单独 PR |
 | 内容 | **Content Layer Collections**（`src/content.config.ts` + `glob()`） | front matter schema、类型安全；显式纳入 `.md`/`.markdown` |
 | 样式 | **现有 Sass**（`sass` 包） | 冻结视觉；Astro 直接 `import` scss |
-| 脚本 | 现有 `ts/**` + 少量 `<script>` | 少改行为 |
+| 脚本 | `src/client/**` + 少量 `<script>` | 少改行为 |
 | Vue | 仅 tcupdate：`@astrojs/vue@7.0.1` + `vue@^3.5.24` | 决策 D3；只在客户端挂载 |
 | 站点地图 | 自定义 `pages/sitemap.xml.ts` endpoint | 首迁固定 `/sitemap.xml`，不生成 sitemap index |
 | RSS | 自写 `pages/feed.xml.ts` 或社区 RSS 集成 | 对齐现 `feed.xml` 字段 |
@@ -106,7 +106,7 @@
 └── .github/workflows/build.yml
 ```
 
-> `styles/`、`ts/` 暂留仓库根，由 Astro alias 引用。Legacy 静态资源已收口到 `public/`，SCSS 使用 `/img/...` 稳定 URL。
+> `styles/` 暂留仓库根；浏览器代码在 `src/client/`，构建期 helpers 在 `src/lib/`。Legacy 静态资源已收口到 `public/`，SCSS 使用 `/img/...` 稳定 URL。
 
 ---
 

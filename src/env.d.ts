@@ -8,3 +8,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
+
+/** Optional third-party Crisp chat widget (`window.$crisp`). */
+interface Window {
+    $crisp?: (string | number | boolean)[][];
+}

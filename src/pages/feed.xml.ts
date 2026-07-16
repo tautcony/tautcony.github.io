@@ -38,8 +38,9 @@ export const GET: APIRoute = async () => {
         .map(post => {
             const url = absoluteUrl(postUrl(post));
             const html = post.rendered?.html ?? post.body ?? "";
-            const cats = (post.data.tags ?? [])
-                .map(t => `        <category>${xmlEscape(t)}</category>`)
+            const tags: string[] = post.data.tags ?? [];
+            const cats = tags
+                .map((t: string) => `        <category>${xmlEscape(t)}</category>`)
                 .join("\n");
             return `      <item>
         <title>${xmlEscape(post.data.title)}</title>

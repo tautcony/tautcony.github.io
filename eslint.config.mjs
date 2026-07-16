@@ -103,13 +103,4 @@ export default [
             "@typescript-eslint/triple-slash-reference": "off",
         },
     },
-    // Ambient shims for legacy THREE r56 / dat.GUI / createjs — structural `any` is intentional.
-    {
-        files: ["ts/particle404/shims.d.ts"],
-        rules: {
-            "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/prefer-function-type": "off",
-            "@typescript-eslint/consistent-type-definitions": "off",
-        },
-    },
 ];

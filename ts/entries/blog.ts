@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
         size: { start: 1, end: 1.1, unit: "em" },
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const crisp = (window as any).$crisp;
+    // Optional Crisp chat widget (injected only when the third-party snippet is present).
+    const crisp = window.$crisp;
     if (crisp !== undefined) {
         crisp.push(["safe", true]);
     }

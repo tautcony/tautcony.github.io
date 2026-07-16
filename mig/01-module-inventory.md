@@ -104,7 +104,7 @@
 | ID | 服务 | 使用位置 |
 |----|------|----------|
 | F1 | KaTeX | post |
-| F2 | PDF.js (cdnjs) | pdf-embed |
+| F2 | 浏览器原生 PDF viewer | pdf-embed（无第三方运行时） |
 | F3 | Three.js（npm bundle） | 404 |
 | F4 | utterances | comment |
 | F5 | Sentry | blog.ts |

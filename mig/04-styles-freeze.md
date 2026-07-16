@@ -98,7 +98,7 @@ import "../../styles/tc-blog.scss";
 | 4 | `/about/` | header 图、多语言块、APlayer |
 | 5 | `/404.html` | 全屏、粒子、fallback 字 |
 | 6 | `/tcupdate.html` | 独立字体与下载按钮布局 |
-| 7 | 含 PDF embed 文 | 占位按钮、canvas 区 |
+| 7 | 含 PDF embed 文 | 占位按钮、原生 PDF viewer、打开/下载 fallback |
 | 8 | 含公式文 | KaTeX 字号与行距 |
 
 工具：Playwright 截图 diff（**切流前必须**）。基线至少固定 `1440x900`、`390x844` 两个 viewport；CI 保存 baseline/current/diff，像素阈值在首次基线 PR 中冻结。人工并排仅作为补充。

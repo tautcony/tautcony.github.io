@@ -250,6 +250,12 @@ function extractMainHtml(html) {
     chunk = chunk.split(
         /class=["']pager["']|id=["']disqus_thread["']|class=["']comments?["']|id=["']comments?["']|utteranc|side-catalog|id=["']tag_cloud["']|<footer\b|id=["']secondary["']|class=["']col-lg-3[^"']*sidebar/i
     )[0];
+    // Interactive embed labels are UI chrome, not article prose. The PDF URL
+    // contract is checked separately below.
+    chunk = chunk.replace(
+        /<div\b(?=[^>]*\bclass=["'][^"']*\bpdf-embed\b)[^>]*>[\s\S]*?<\/div>\s*<\/div>/gi,
+        ""
+    );
     return chunk;
 }
 
@@ -559,10 +565,13 @@ function layerL3(legacyDir, distDir) {
         info.push(...cmp.notes);
         // PDF contract on rubiks
         if (route.includes("rubiksrevenge")) {
-            const pdfL = /data-pdf-file="([^"]+)"/.test(hl);
-            const pdfD = /data-pdf-file="([^"]+)"/.test(hd);
-            if (pdfL !== pdfD) {
-                failed.push({ route, reason: "pdf-embed presence mismatch" });
+            const pdfL = hl.match(/data-pdf-file="([^"]+)"/)?.[1];
+            const pdfD = hd.match(/data-pdf-file="([^"]+)"/)?.[1];
+            if (!pdfL || pdfL !== pdfD) {
+                failed.push({ route, reason: "pdf-embed URL mismatch", legacy: pdfL, dist: pdfD });
+            }
+            if (/<object\b[^>]*type=["']application\/pdf/i.test(hd)) {
+                failed.push({ route, reason: "pdf-embed is not lazy in static HTML" });
             }
         }
     }

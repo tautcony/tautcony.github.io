@@ -14,7 +14,7 @@
 | 总体路径 | 已切换到 **Astro SSG**；Jekyll 仅保留归档与冻结 baseline |
 | 实施范围 | M0–M5 已落地；后续按 `mig/PROGRESS.md` 维护 |
 | Service Worker | **删除**（不需要离线能力；清理 `sw.js` / 注册逻辑） |
-| PDF.js | **保留**，改为 **按需加载**（文章内嵌 viewer，非首屏必载） |
+| PDF 预览 | 使用浏览器原生 PDF viewer，点击后才加载文件；不再引入 PDF.js/canvas |
 | 数学公式 | **换成 KaTeX**（替换 MathJax 2/3 混用） |
 | 字体 | **只删 `fonts/ttf`**，保留全部 woff2 |
 | `tcupdate` | **暂保留 Vue**，只并入统一构建 |
@@ -497,9 +497,9 @@ DSN 本身通常可公开，但环境切换不灵活。
 
 预期：fonts 目录可压到 **数 MB 级**，clone 体验质变。
 
-#### ✅ `js/pdfjs/` 已外置（cdnjs）
+#### ✅ PDF.js 已移除
 
-原 ~16MB 完整 vendoring 已删除。PDF 预览改为按需从 cdnjs 加载 `pdf.js@3.3.122` 并 canvas 渲染（见 `ts/Lib/pdf-embed.ts`）。
+原 ~16MB vendoring 与后续 CDN canvas 实现均已删除。PDF 预览点击后创建浏览器原生 `object[type="application/pdf"]`，保留矢量缩放能力，并提供直接打开/下载 fallback（见 `ts/Lib/pdf-embed.ts`）。
 
 #### ✅ Three.js r56 运行时已移除
 
@@ -591,14 +591,14 @@ npm run ci           # lint + typecheck + build
 
 - [x] 确认路径 A（本文默认）  
 - [x] 决定 SW：**删除** 或 **Workbox 重建**（二选一写进 README）  
-- [x] 盘点 `pdfjs`、fonts、attach 是否线上必需（pdfjs/three 已 CDN；fonts ttf 已删）  
+- [x] 盘点 `pdfjs`、fonts、attach 是否线上必需（PDF.js 已删除；fonts ttf 已删）
 - [x] 修复 MathJax 配置错位（小 PR，高收益）— 已换 KaTeX
 
 **验收**：含公式的文章渲染正确；README 写明 SW 策略。
 
 ### Phase 1 — 仓库瘦身与死代码清理（1–3 天）
 
-- [x] 删除或外置 `js/pdfjs`（cdnjs + canvas 渲染）  
+- [x] 删除 `js/pdfjs` 与 CDN canvas 渲染，改用原生矢量 PDF viewer
 
 - [ ] fonts 仅保留 woff2 子集；更新 `iosevka.css` / `fonts.css`  
 - [x] 删除 SW 死链文件或标记迁移期 unregister  

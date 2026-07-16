@@ -97,7 +97,7 @@ scripts/            content/ (migration + metadata), test/ (verification)
 - **Posts live only in** `src/content/posts/` (M5+; former `_posts/` removed).
 - Post URLs are frozen against `mig/fixtures/legacy-post-urls.txt` (some filename dates differ from URL dates).
 - “Update on” dates come from **frozen** `src/data/lastmod.json` (`npm run lastmod:check`; optional `lastmod:refresh`).
-- PDF previews load **PDF.js from cdnjs** on demand (`.pdf-embed` placeholders).
+- PDF previews lazily mount the browser's native vector PDF viewer (`.pdf-embed` placeholders).
 - 404 particle scene bundles the current **Three.js** WebGL renderer.
 - Comments use **utterances**; math uses **KaTeX** when enabled on a post.
 - Sentry `release` is `tc-blog@<version>+<gitsha>` (see `mig/11-sentry-observe.md` for 7-day watch).

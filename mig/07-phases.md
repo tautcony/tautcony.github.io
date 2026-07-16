@@ -118,7 +118,7 @@ node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-
 2. **验证**默认 WebGL 场景及 `?perf`、`?gui`
 3. **`tcupdate.astro`**：依赖已冻结的 `build.format: 'preserve'`，构建后必须存在 `dist/tcupdate.html` 且不存在 `dist/tcupdate/index.html`。
 4. **Vue JSX**：`@astrojs/vue@7.0.1` + Vue 3.5.24，client-only mount 一次。
-5. **pdf-embed**：验证 M1 转换后的静态 HTML、点击加载、canvas、下载 fallback 和 CDN 失败状态。
+5. **pdf-embed**：验证 M1 转换后的静态 HTML、点击后延迟加载、原生矢量 viewer 和打开/下载 fallback。
 6. **quote.json** 在 public，footer 语录轮换
 7. **删除** entry 内重复 scss（若已改 layout 引入）
 8. **SW unregister** 策略再确认

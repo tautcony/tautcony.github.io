@@ -162,7 +162,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 |----|------|------|------|
 | M3-01 | 404 粒子页 | done | `404.astro`：主站 CSS+`404.scss`、现代 Three.js page404 entry；body `page-fullscreen page page-404` |
 | M3-02 | tcupdate.html preserve | done | `dist/tcupdate.html` 存在；无 `dist/tcupdate/index.html`；Vue JSX client mount |
-| M3-03 | pdf-embed 验证 | done | rubiksrevenge 静态 HTML+`attach` PDF；`PdfEmbed.astro` 可复用 |
+| M3-03 | pdf-embed 验证 | done | 点击后挂载原生矢量 PDF viewer；`PdfEmbed.astro` 可复用 |
 | M3-04 | quote.json / footer 语录 | done | `public/json/quote.json`（15 条）；Footer `.copyright` + blog.ts Quote/SW unregister |
 | M3-05 | 全站 compare-routes/assets + smoke | done | routes 53/53；当前 assets 108/108；preview HTTP 200 |
 
@@ -238,6 +238,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | 2026-07-15 | M5 | Legacy 静态资源从根目录收口到受 Git 管理的 `public/`；删除构建前同步，保持 111 项资源 URL/hash 契约 |
 | 2026-07-16 | 404 | 切换现代 Three.js 验收；退役 r56 专用 `disc`、`particle_tr`、`inner_bck`，当前资源契约 108 项 |
 | 2026-07-16 | CI | Actions 更新至 checkout/setup-node v7、Pages v5、CodeQL v4；移除 compare fixture snapshot 上传与 full-history checkout |
+| 2026-07-16 | PDF | 移除 PDF.js canvas 预览；点击后挂载浏览器原生矢量 PDF viewer，并保留打开/下载 fallback |
 
 ---
 

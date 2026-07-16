@@ -163,7 +163,7 @@ function postUrl(post): string {
 
 首迁不引入 MDX。`migrate-posts.mjs` 把现有 `{% include pdf-embed.html ... %}` 精确替换为 `pdf-embed.ts` 所需的静态 HTML/data 属性；`PdfEmbed.astro` 仅供未来普通页面复用。
 
-门禁：迁移目录不得残留 Liquid；该 PDF 文章必须验证占位、点击加载、canvas、直接下载 fallback 和 CDN 失败提示。
+门禁：迁移目录不得残留 Liquid；该 PDF 文章必须验证占位、点击后才请求 PDF、原生矢量 viewer，以及不支持内嵌预览时的直接打开/下载 fallback。
 
 ## 7. 草稿与未来写作
 

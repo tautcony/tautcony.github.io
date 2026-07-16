@@ -24,7 +24,7 @@
 | `utils.ts` (`el`, `isExternal`) | DOM 与外链 | 原样 |
 | `navbar.ts` | 移动菜单 | 依赖 nav class |
 | `quote.ts` | 页脚语录 | fetch `/json/quote.json`（public） |
-| `pdf-embed.ts` | PDF.js CDN | 不改 CDN API 则原样 |
+| `pdf-embed.ts` | 点击后挂载浏览器原生 PDF viewer | 保持延迟请求与打开/下载 fallback |
 | `title.ts` | 恶搞 title | 原样 |
 | `tagcloud.ts` | 标签字号颜色 | archive |
 | `corevalue.ts` | 点击彩蛋 | 原样 |

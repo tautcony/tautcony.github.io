@@ -28,8 +28,8 @@ image:
   style="min-height: 500px;"
 >
   <div class="pdf-embed__placeholder">
-    <p class="pdf-embed__label">Rubik’s Revenge problem statement（按需加载，点击后才会拉取 PDF.js）</p>
-    <button type="button" class="pdf-embed__button">加载 PDF 预览</button>
+    <p class="pdf-embed__label">Rubik’s Revenge problem statement</p>
+    <button type="button" class="pdf-embed__button">打开 PDF 预览</button>
     <p class="pdf-embed__alt">
       <a href="/attach/rubiksrevenge/G-rubiksrevenge.pdf" target="_blank" rel="noopener">直接打开 / 下载 PDF</a>
     </p>

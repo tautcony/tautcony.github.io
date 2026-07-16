@@ -271,7 +271,7 @@ dist 多出的 class（如 heti）→ 记录为 info，不失败。
 | H4 | 首页 HTML 含 blog entry `/_astro/*blog*` 或 BaseLayout script | 有 module |
 | H5 | 404 HTML 含 page404 module，且不含 r56 classic script | 有 |
 | H6 | tcupdate HTML 含 Vue entry module | 有 |
-| H7* | Playwright：点 PDF 按钮 | canvas 或 fallback 链出现（可选） |
+| H7* | Playwright：点 PDF 按钮 | `object[type="application/pdf"]` 或打开/下载 fallback 出现（可选） |
 | H8* | Playwright：`/archive/?tag=...` | 筛选后可见条目变化（可选） |
 | H9* | Playwright：404 `?perf=true` | 无 console error（可选） |
 

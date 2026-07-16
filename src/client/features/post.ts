@@ -2,8 +2,8 @@ import * as GeoPattern from "../lib/geopattern";
 import { isExternal } from "../lib/dom";
 
 /**
- * Post page polish. Last-modified date is rendered at build time from
- * `src/data/lastmod.json` (frozen map; see scripts/content/generate-lastmod.mjs) — no GitHub API.
+ * Post-page enhancements: GeoPattern header fallback, `//` comment tint, external links.
+ * “Update on” dates are SSG-only from `src/data/lastmod.json`.
  */
 export function init() {
     const banner = document.querySelector("header.intro-header");

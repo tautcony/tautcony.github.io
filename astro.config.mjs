@@ -6,6 +6,7 @@ import rehypeSlug from "rehype-slug";
 import rehypeRaw from "rehype-raw";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { site as siteConfig } from "./src/data/site.ts";
 
 function sentryRelease() {
     try {
@@ -26,19 +27,18 @@ function sentryRelease() {
 
 /**
  * Astro SSG config for TC Blog.
- * Styles stay at repo-root `styles/`; browser code under `src/client/`, build helpers under `src/lib/`.
- *
- * Astro 7 defaults to Sätteri; use `@astrojs/markdown-remark` `unified()` so
- * remark/rehype plugins remain available (see mig/05).
+ * Canonical host comes from `src/data/site.ts` (`site` / `base` mirror url + baseurl).
+ * Styles: `src/styles/`; browser code: `src/client/`; build helpers: `src/lib/`.
  */
 export default defineConfig({
-    site: "https://tautcony.xyz",
-    base: "/",
+    site: siteConfig.url,
+    base: siteConfig.baseurl === "" ? "/" : siteConfig.baseurl,
     trailingSlash: "always",
     publicDir: "public",
     outDir: "dist",
     build: {
-        // Keep bare .html paths (e.g. tcupdate.html, 404.html) instead of directories.
+        // preserve: about/index → about/index.html; 404.astro → 404.html; etc.
+        // /tcupdate/ is pages/tcupdate/index.astro; /tcupdate.html is public/tcupdate.html → redirect.
         format: "preserve",
     },
     markdown: {
@@ -49,7 +49,7 @@ export default defineConfig({
             // raw before slug so ids apply to raw HTML headings too when possible
             rehypePlugins: [rehypeRaw, rehypeSlug],
         }),
-        // Native Astro Prism: pre.language-* > code.language-* > .token (see styles/syntax.scss).
+        // Native Astro Prism: pre.language-* > code.language-* > .token (see src/styles/syntax.scss).
         syntaxHighlight: "prism",
     },
     vite: {

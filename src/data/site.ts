@@ -1,6 +1,8 @@
 /**
- * Site constants (from legacy `_config.yml`; see mig/03-mapping-tables.md §4).
- * Single source of truth for Astro builds.
+ * Site-wide configuration for Astro SSG.
+ *
+ * - `url` / `baseurl` mirror `astro.config` `site` / `base` (single content source: this file).
+ * - `rss: false` hides the footer RSS icon; `/feed.xml` is still generated for feed readers.
  */
 export const site = {
     title: "踢锡部落格",
@@ -8,6 +10,7 @@ export const site = {
     description: "试着记录点东西 | 都是些有的没的",
     keyword: "TautCony, @tautcony, TC的博客, TC Blog, 博客, 个人网站, 踢锡部落格",
     url: "https://tautcony.xyz",
+    /** Path prefix; empty string = site at domain root (same as Astro `base: "/"`). */
     baseurl: "",
     headerImg: "img/home-bg.jpg",
     email: "tautcony@gmail.com",
@@ -15,24 +18,25 @@ export const site = {
         twitter: "tautcony",
         github: "tautcony",
     },
+    /**
+     * When true, footer SNS shows an RSS icon linking to `/feed.xml`.
+     * Feed route is always built; keep false to match current chrome (no extra icon).
+     */
     rss: false,
     socialAccount: [
         {
             title: "github",
             href: "https://github.com/tautcony",
-            icon: "fa-github",
             content: "",
         },
         {
             title: "twitter",
             href: "https://twitter.com/tautcony",
-            icon: "fa-twitter",
             content: "",
         },
         {
             title: "steam",
             href: "https://steamcommunity.com/id/tautcony",
-            icon: "fa-steam",
             content: "",
         },
     ],
@@ -67,12 +71,13 @@ export const site = {
     paginate: 10,
     lang: "en",
     /**
-     * Jekyll `site.pages` with `title` (about, archive). Tool is hardcoded in Nav.
-     * Order matches historical nav: About then Archive.
+     * Primary nav links after Home (order is UI contract).
+     * Includes Tool so Nav does not hardcode a separate item.
      */
     navPages: [
         { title: "About", href: "/about/" },
         { title: "Archive", href: "/archive/" },
+        { title: "Tool", href: "/tcupdate/" },
     ],
 } as const;
 

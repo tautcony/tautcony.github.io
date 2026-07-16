@@ -1,13 +1,13 @@
 ---
 /**
- * Standalone tools page (layout: null).
- * Independent tool downloads page; Astro markup with client-side GitHub data.
- * build.format: preserve → dist/tcupdate.html
+ * Tools downloads page (standalone document, no BaseLayout).
+ * Canonical URL: /tcupdate/  → dist/tcupdate/index.html
+ * Alias: /tcupdate.html via astro.config redirects (meta refresh for static host).
  */
 import "../../styles/tcupdate.scss";
-import ToolDownload from "../components/ToolDownload.astro";
-import ReleaseHistory from "../components/ReleaseHistory.astro";
-import GoogleAnalytics from "../components/GoogleAnalytics.astro";
+import ToolDownload from "../../components/ToolDownload.astro";
+import ReleaseHistory from "../../components/ReleaseHistory.astro";
+import GoogleAnalytics from "../../components/GoogleAnalytics.astro";
 ---
 
 <!DOCTYPE html>
@@ -164,7 +164,7 @@ import GoogleAnalytics from "../components/GoogleAnalytics.astro";
         </div>
 
         <script>
-            import "../client/entries/tcupdate.ts";
+            import "../../client/entries/tcupdate.ts";
         </script>
     </body>
 </html>

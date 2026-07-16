@@ -1,5 +1,8 @@
 # 04 — 样式冻结策略
 
+> **Historical note (2026-07-16)**：高亮 DOM 已改为 Astro Prism 原生 `pre.language-*` / `.token`（见 `src/styles/syntax.scss`）。下文中 `highlighter-rouge` 兼容要求 **已 superseded**，仅作迁移期记录。  
+> **W6**：样式目录已迁至 **`src/styles/`**；class 名与 `/img/...` URL 契约不变。
+
 ## 1. 原则
 
 > **迁移期把 CSS 当 API：只改「谁引用、从哪打包」，不改「选择器语义与视觉 token」。**

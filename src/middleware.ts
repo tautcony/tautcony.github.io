@@ -1,9 +1,8 @@
 import { defineMiddleware } from "astro:middleware";
 
 /**
- * Astro's static `preserve` format emits tcupdate.html, while the dev server
- * resolves the source page as /tcupdate/. Keep the published URL usable in
- * both environments without changing the generated production artifact.
+ * Dev-only rewrites: static `preserve` / redirects map historical `.html` URLs to
+ * the pretty routes the dev server actually serves.
  */
 export const onRequest = defineMiddleware((context, next) => {
     if (import.meta.env.DEV) {

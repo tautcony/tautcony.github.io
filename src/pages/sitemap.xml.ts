@@ -9,14 +9,22 @@ import { listPageHref, paginatePosts } from "../lib/pagination";
 
 export const prerender = true;
 
+/** Attach PDFs listed as first-class sitemap URLs (frozen set). */
+const SITEMAP_ATTACH_PDFS = [
+    "/attach/naming-of-fonts/040220kanjicode.pdf",
+    "/attach/naming-of-fonts/5078.Adobe-Japan1-6.pdf",
+    "/attach/naming-of-fonts/JIS2004_Comparison.pdf",
+    "/attach/rubiksrevenge/G-rubiksrevenge.pdf",
+] as const;
+
 function loc(pathOrUrl: string): string {
     if (pathOrUrl.startsWith("http")) return pathOrUrl;
     const base = site.url.replace(/\/$/, "");
     return `${base}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
 }
 
+/** Post lastmod as calendar date at +08:00 midnight (stable, TZ-independent). */
 function lastmodFromYmd(ymd: string): string {
-    // Jekyll jekyll-sitemap used +08:00 midnight for post dates
     return `${ymd}T00:00:00+08:00`;
 }
 
@@ -38,8 +46,8 @@ function walkPublicFiles(dir: string, base = ""): string[] {
 }
 
 /**
- * Match legacy jekyll-sitemap: posts + key pages + a few attach PDFs that
- * appear as standalone URLs. Do NOT emit sitemap-index / sitemap-0.
+ * Single urlset sitemap (no sitemap index):
+ * posts → static pages → paginated lists → allowlisted attach PDFs.
  */
 export const GET: APIRoute = async () => {
     const all = (await getCollection("posts")) as PostEntry[];
@@ -55,11 +63,10 @@ export const GET: APIRoute = async () => {
         });
     }
 
-    // Static pages (order similar to jekyll: posts first then pages)
     urls.push({ path: "/about/" });
     urls.push({ path: "/archive/" });
     urls.push({ path: "/" });
-    urls.push({ path: "/tcupdate.html" });
+    urls.push({ path: "/tcupdate/" });
 
     for (const slice of pages) {
         if (slice.page >= 2) {
@@ -67,23 +74,16 @@ export const GET: APIRoute = async () => {
         }
     }
 
-    // Attach PDFs that jekyll-sitemap included (only files under public/attach)
     const publicDir = path.join(process.cwd(), "public");
-    const attachPdfs = walkPublicFiles(path.join(publicDir, "attach"), "attach").filter(p =>
-        p.toLowerCase().endsWith(".pdf")
+    const attachPdfs = new Set(
+        walkPublicFiles(path.join(publicDir, "attach"), "attach").filter(p =>
+            p.toLowerCase().endsWith(".pdf")
+        )
     );
-    // Jekyll included a subset: naming-of-fonts PDFs + rubiksrevenge PDF
-    const allowPdf = new Set([
-        "/attach/naming-of-fonts/040220kanjicode.pdf",
-        "/attach/naming-of-fonts/5078.Adobe-Japan1-6.pdf",
-        "/attach/naming-of-fonts/JIS2004_Comparison.pdf",
-        "/attach/rubiksrevenge/G-rubiksrevenge.pdf",
-    ]);
-    for (const p of attachPdfs) {
-        if (allowPdf.has(p)) urls.push({ path: p });
+    for (const p of SITEMAP_ATTACH_PDFS) {
+        if (attachPdfs.has(p)) urls.push({ path: p });
     }
 
-    // Deduplicate by path
     const seen = new Set<string>();
     const unique = urls.filter(u => {
         if (seen.has(u.path)) return false;

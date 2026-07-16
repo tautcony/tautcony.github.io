@@ -176,14 +176,8 @@ function main() {
         refreshFromContentGit();
         return;
     }
-    // Legacy flag no longer regenerates Jekyll _data (M5 removed dual-stack)
-    if (args.includes("--write-jekyll")) {
-        console.error(
-            "[lastmod] --write-jekyll removed in M5; use --check or --refresh"
-        );
-        process.exit(1);
-    }
     console.error(`Unknown args: ${args.join(" ")}`);
+    console.error("Usage: --check | --refresh");
     process.exit(1);
 }
 

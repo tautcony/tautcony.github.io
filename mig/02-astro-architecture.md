@@ -106,7 +106,7 @@
 └── .github/workflows/build.yml
 ```
 
-> `styles/` 暂留仓库根；浏览器代码在 `src/client/`，构建期 helpers 在 `src/lib/`。Legacy 静态资源已收口到 `public/`，SCSS 使用 `/img/...` 稳定 URL。
+> 浏览器代码在 `src/client/`，样式在 `src/styles/`，构建期 helpers 在 `src/lib/`。Legacy 静态资源在 `public/`；SCSS 使用 `/img/...` 稳定 URL。
 
 ---
 

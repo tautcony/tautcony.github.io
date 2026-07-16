@@ -1,5 +1,7 @@
 # 05 — 内容集合与 Markdown
 
+> **Historical note (2026-07-16)**：双栈 `_posts`、`legacyPath` / S1 Rouge DOM 等描述已过时。现行：唯一内容源 `src/content/posts/`、schema 见 `src/content.config.ts`、摘要 `src/lib/excerpts.ts`、高亮 Prism。详见 [12-post-cutover-astro-native.md](./12-post-cutover-astro-native.md)。
+
 ## 1. Collection 定义
 
 **集合名**：`posts`

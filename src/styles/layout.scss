@@ -413,7 +413,7 @@ a {
     }
 }
 
-// Social icon stack (replaces Font Awesome stacks)
+// Circular SNS control (inline SVG inside)
 .sns-icon {
     display: inline-flex;
     align-items: center;
@@ -440,7 +440,7 @@ a {
     }
 }
 
-// External link marker without Font Awesome
+// External link marker
 a.external::after {
     content: "↗";
     font-family: inherit;

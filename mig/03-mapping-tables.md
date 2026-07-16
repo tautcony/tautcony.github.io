@@ -70,11 +70,13 @@
 
 ## 5. 前端脚本
 
+> **现行路径（cutover 后）**：客户端在 `src/client/{entries,features,lib}`；无 Vue；无 `window.jekyll` 桥。历史映射见上表。
+
 | 现 | Astro |
 |----|-------|
-| `src/client/entries/blog.ts` | `src/scripsrc/client/entries/blog.ts`（路径可变） |
+| `src/client/entries/blog.ts` | `src/client/entries/blog.ts`（路径可变） |
 | `src/client/entries/page404.ts` | 404 layout 引入 |
-| `src/client/entries/tcupdate.jsx` | tcupdate 页引入 |
+| `src/client/entries/tcupdate.ts` | tcupdate 页引入 |
 | `import "../../styles/tc-blog.scss"` | 改为 layout 引样式 **或** entry 继续引（二选一，避免重复） |
 | `window.jekyll.page` | 改为 `window.__PAGE__` 或 data 属性；**同步改 post.ts 等读取方**（若仍有依赖） |
 | `scripts/content/generate-lastmod.mjs` | 迁移前冻结 map；输出 `src/data/lastmod.json`，不依赖 Docker `.git` |

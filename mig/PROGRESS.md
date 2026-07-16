@@ -11,10 +11,10 @@
 
 | 字段 | 值 |
 |------|-----|
-| 当前阶段 | **完成待发布**（M0–M5 代码完成；**合 master + 线上 7 日观察**） |
-| 当前 PR 切片 | 开 PR → master；M4-05 / M5-02 为线上动作 |
+| 当前阶段 | **完成待发布** + **M6 可并行**（M0–M5 代码完成；合 master；Astro-native 收口见 `12`） |
+| 当前 PR 切片 | 开 PR → master；M4-05 / M5-02 线上；M6 见 `12-post-cutover-astro-native.md` |
 | 上次更新 | 2026-07-16 |
-| 可接续入口 | 见下方「下一步（接续指令）」 |
+| 可接续入口 | 见下方「下一步」；M6 从 W1 起 |
 | 阻塞 | 无（合入 master 为人工门禁） |
 
 | 阶段 | 名称 | 状态 | 备注 |
@@ -25,6 +25,7 @@
 | M3 | 特殊页与脚本收尾 | **done** | 404/tcupdate/pdf/quote；全站 route+asset OK |
 | M4 | CI / Docker / 切流 | **done*** | *除合 master |
 | M5 | 稳定与清理 | **done*** | *M5-02 线上 7 日观察待部署后执行 |
+| M6 | Post-cutover Astro-native | **doing** | W1–W3/W5/W6 done；W4/W7 待；明细 [`12`](./12-post-cutover-astro-native.md) |
 
 ---
 
@@ -45,7 +46,23 @@
 4. **合并后**线上验收六类页 + feed/sitemap/robots。
 5. **Sentry 7 日**：按 `mig/11-sentry-observe.md`；窗口结束勾 M5-02。
 
-**勿做**：改 `styles/**` 语义；无回滚计划时强推 master；Docker 内再跑 lastmod 生成器。
+### 此刻可并行（M6 · Astro-native 收口）
+
+详见 **[12-post-cutover-astro-native.md](./12-post-cutover-astro-native.md)**。建议顺序：
+
+| 包 | 内容 | 状态 |
+|----|------|------|
+| W1 | 注释 Astro-first + 删 `fa-*` / `--write-jekyll` | **done** |
+| W2 | `site` 单一源 + RSS 策略（`rss: false` 保页脚；feed 仍生成） | **done** |
+| W3 | sitemap/nav 契约注释化/小重构（行为冻结；Tool 并入 navPages） | **done** |
+| W4 | tcupdate 去 simple-line-icons → SVG | todo |
+| W5 | mig/docs historical 标注 + 本阶段勾选 | **done** |
+| W6 | styles 迁入 `src/styles/` | **done** |
+| W7 | 可选：brightness/corevalue 决策 | todo |
+
+**M6 原则**：URL / lastmod / fixtures / baselines **保留 Jekyll 时代语义**；业务源码不再用「from legacy _config」叙事。
+
+**勿做**：改 `styles/**` 语义（除非 W6 专 PR）；无回滚计划时强推 master；Docker 内再跑 lastmod 生成器；为「干净」删除 `mig/fixtures` 或 `legacy-post-urls`。
 
 ### 一致性评估（相对 Jekyll `_site`）
 

@@ -1,5 +1,8 @@
 # TC Blog 完整代码审查与现代化方案
 
+> **Status (2026-07-16)**：Astro cutover **代码已完成**（M0–M5）。下文大量内容为 pre-Astro / 路径 A 战略考古。Cutover 后收口见 [`mig/12-post-cutover-astro-native.md`](../mig/12-post-cutover-astro-native.md)与 [`mig/PROGRESS.md`](../mig/PROGRESS.md)。
+
+
 > 文档日期：2026-07-12
 > 仓库：`tautcony/tautcony.github.io`
 > 范围：Jekyll 历史站点、Astro/TypeScript 前端、CI/Docker、静态资源与模板

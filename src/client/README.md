@@ -22,6 +22,6 @@ src/
 |-------|--------------|------------|
 | `entries/blog.ts` | `layouts/BaseLayout.astro` | main-site features |
 | `entries/page404.ts` | `pages/404.astro` | `features/particle404` |
-| `entries/tcupdate.ts` | `pages/tcupdate.astro` | GitHub release UI |
+| `entries/tcupdate.ts` | `pages/tcupdate/index.astro` (`/tcupdate/`; `/tcupdate.html` redirects) | GitHub release UI |
 
 `features/brightness.ts` and `features/corevalue.ts` exist but are not wired into an entry yet.

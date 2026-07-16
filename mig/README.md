@@ -1,7 +1,7 @@
 # TC Blog → Astro 迁移计划
 
 > 状态：**完成待发布**（代码侧 M0–M5 done；见 [PROGRESS.md](./PROGRESS.md)）
-> 原则：**视觉样式冻结** — 现有 `styles/*.scss`、class 名与静态资源视为只读契约
+> 原则：**视觉样式冻结** — `src/styles/*.scss` 的 class 名与静态资源 URL 视为契约
 > 对应战略：现代化方案路径 B（见 `docs/modernization-plan.md`）
 > 仓库：`tautcony/tautcony.github.io`
 > 集成分支：`feat/astro-mig`
@@ -11,6 +11,8 @@
 > 2026-07-14：开始 M0/PR1 实施；**进度与接续入口统一写在 [PROGRESS.md](./PROGRESS.md)**。
 >
 > 2026-07-16：P1 清债后以 **PROGRESS 为准**。下列分册（`00`–`09`）保留双栈期设计叙述（如 `migrate-posts.mjs`、`@astrojs/vue`、excerpts fixture）；**现状事实**：内容唯一源 `src/content/posts/`，`tcupdate` 为纯 TS（无 Vue），摘要由 `src/lib/excerpts.ts` 运行时生成，404 仅 `modern-scene.ts`。
+>
+> 2026-07-16：Cutover 后「非 Astro 原生」收口见 **[12-post-cutover-astro-native.md](./12-post-cutover-astro-native.md)**（M6 计划：数据/注释/死字段/文档，**保留** Jekyll fixture 与 URL 契约）。
 
 ---
 
@@ -19,6 +21,7 @@
 | 文档 | 内容 |
 |------|------|
 | **[PROGRESS.md](./PROGRESS.md)** | **实施造册**：阶段状态、任务勾选、下一步、变更日志（先读这个） |
+| **[12-post-cutover-astro-native.md](./12-post-cutover-astro-native.md)** | **Cutover 后 M6**：剩余非 Astro 项清单、改造方案、W1–W7 切片 |
 | [00-overview.md](./00-overview.md) | 目标、非目标、约束、成功标准、总工期 |
 | [01-module-inventory.md](./01-module-inventory.md) | 现站模块盘点（Jekyll / 前端 / 静态 / CI） |
 | [02-astro-architecture.md](./02-astro-architecture.md) | 目标目录树、技术选型、构建图 |

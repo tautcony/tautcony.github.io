@@ -11,7 +11,7 @@ import * as pageChrome from "../features/page-chrome";
 import * as post from "../features/post";
 import * as about from "../features/about";
 
-// CSS: BaseLayout imports tc-blog.scss + heti (M5: drop entry-side duplicate CSS).
+// Styles are imported from BaseLayout (not here) to avoid duplicate CSS chunks.
 
 /** Sentry release: Vite injects at build; see astro.config.mjs `define`. */
 const sentryRelease =

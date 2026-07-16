@@ -76,7 +76,7 @@ src/
   data/             site.ts, pages.ts, lastmod.json (frozen)
   lib/              Build-time helpers (posts, pagination, excerpts, rehype)
   client/           Browser runtime (entries, features, geopattern, …)
-styles/             Site SCSS (frozen contract; repo root)
+  styles/           Site SCSS (visual contract; class names frozen)
 public/             Stable static assets (historical URLs)
 mig/                Migration docs, fixtures, PROGRESS.md
 scripts/            content/ (metadata), test/ (verification)

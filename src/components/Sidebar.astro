@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import { site } from "../data/site";
 import FeaturedTags from "./FeaturedTags.astro";
 import Sns from "./Sns.astro";
+import avatar from "../assets/avatar-tautcony.jpg";
 
 interface Props {
     enable?: boolean;
@@ -38,7 +40,16 @@ const { enable = true, tagCounts, postTotal } = Astro.props;
                 </h5>
                 <div class="short-about">
                     {site.sidebarAvatar && (
-                        <img src={`${site.baseurl}${site.sidebarAvatar}`} alt="Avatar" />
+                        <Image
+                            src={avatar}
+                            alt="Avatar"
+                            width={200}
+                            height={200}
+                            densities={[1.5, 2]}
+                            loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
+                        />
                     )}
                     {site.sidebarAboutDescription && <p>{site.sidebarAboutDescription}</p>}
                     <Sns center={false} />

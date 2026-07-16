@@ -79,7 +79,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 | `npm run build` (vite only) | `npm run build` (astro build；lastmod 由 CI 单独校验) |
 | `npm run jekyll:build` | 删除 |
 | `npm run ci` | eslint + typecheck + astro check + math + lastmod + build |
-| `npm run verify:legacy` | 可选：route/resource 与 Jekyll fixtures 比对（不进 CI） |
 
 ## 8. 切流当日 runbook
 

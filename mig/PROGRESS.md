@@ -41,7 +41,7 @@
 ### 此刻应做（发布）
 
 1. **切流前**：打保护 tag `pre-astro-YYYYMMDD`，保存最后一次 Jekyll Pages artifact。
-2. **发布 checklist**：`npm run ci`；可选 `verify:legacy` / `eval:consistency` + `eval:visual`。
+2. **发布 checklist**：`npm run ci`。
 3. **开 PR** `feat/astro-mig` → `master`；CI 绿后合并。
 4. **合并后**线上验收六类页 + feed/sitemap/robots。
 5. **Sentry 7 日**：按 `mig/11-sentry-observe.md`；窗口结束勾 M5-02。
@@ -327,11 +327,6 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 npm run dev
 npm run build
 npm run preview
-npm run ci          # lint/typecheck/check/math/lastmod/build（CI 入口；不含 legacy 比对）
-
-# 可选：相对 Jekyll fixtures / baseline 的门禁（不进 CI）
-npm run verify:legacy
+npm run ci          # lint/typecheck/check/math/lastmod/build（CI 入口）
 npm run lastmod:check
-node scripts/test/compare-routes.mjs --self-test
-node scripts/test/compare-assets.mjs --self-test
 ```

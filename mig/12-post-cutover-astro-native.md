@@ -226,11 +226,6 @@ W1 (注释/死字段) ──► W5 (文档)
 
 ```bash
 npm run ci
-# 有 fixture 时：
-npm run verify:routes:posts
-# 可选：
-npm run verify:legacy
-npm run eval:consistency   # 允许 Prism DOM 与 allowlist 已声明的差异
 ```
 
 手测：首页 SNS、一篇带代码块文章、一篇 PDF、archive 标签、`/tcupdate.html`、`/404.html`。

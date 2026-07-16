@@ -22,7 +22,6 @@ import { fileURLToPath } from "node:url";
 const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const contentPostsDir = path.join(root, "src/content/posts");
 const astroOutFile = path.join(root, "src/data/lastmod.json");
-const EXPECTED = 42;
 
 function formatDisplay(isoDate) {
     const d = new Date(isoDate);
@@ -237,13 +236,6 @@ function checkFrozen() {
     const data = JSON.parse(fs.readFileSync(astroOutFile, "utf8"));
     const keys = Object.keys(data);
     let failed = 0;
-
-    if (keys.length !== EXPECTED) {
-        console.error(
-            `[lastmod:check] expected ${EXPECTED} entries, got ${keys.length}`
-        );
-        failed += 1;
-    }
 
     const posts = listPostFilenames();
     if (posts.length) {

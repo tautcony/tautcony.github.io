@@ -1,0 +1,80 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import IntroHeader from "../components/IntroHeader.astro";
+import PostContainer from "../components/PostContainer.astro";
+import Sidebar from "../components/Sidebar.astro";
+import AnchorJS from "../components/AnchorJS.astro";
+import Katex from "../components/Katex.astro";
+import type { PostEntry } from "../lib/posts";
+import {
+    collectTagCounts,
+    getPrevNext,
+    postUrl,
+} from "../lib/posts";
+
+interface Props {
+    post: PostEntry;
+    allPosts: PostEntry[];
+}
+
+const { post, allPosts } = Astro.props;
+const d = post.data;
+const url = postUrl(post);
+const { previous, next } = getPrevNext(post, allPosts);
+const tagCounts = collectTagCounts(allPosts);
+const description = d.subtitle || undefined;
+---
+
+<BaseLayout
+    title={d.title}
+    description={description}
+    subtitle={d.subtitle}
+    headerImg={d.headerImg}
+    pageUrl={url}
+>
+    <IntroHeader
+        type="post"
+        title={d.title}
+        titleHtml={d.titleHtml}
+        subtitle={d.subtitle}
+        author={d.author}
+        publishedDate={d.publishedDate}
+        headerImg={d.headerImg}
+        headerMask={d.headerMask}
+        headerStyle={d.headerStyle}
+        tags={d.tags}
+        image={d.image}
+        postId={post.id}
+    />
+
+    <article>
+        <div class="container">
+            <div class="row">
+                <PostContainer
+                    post={post}
+                    previous={previous}
+                    next={next}
+                >
+                    <slot />
+                </PostContainer>
+                {
+                    d.catalog && (
+                        <div class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container">
+                            <div class="side-catalog">
+                                <hr class="hidden-sm hidden-xs" />
+                                <h5>
+                                    <a class="catalog-toggle" href="#">CATALOG</a>
+                                </h5>
+                                <ul class="catalog-body" />
+                            </div>
+                        </div>
+                    )
+                }
+                <Sidebar enable={false} tagCounts={tagCounts} postTotal={allPosts.length} />
+            </div>
+        </div>
+    </article>
+
+    <AnchorJS />
+    <Katex math={d.math} />
+</BaseLayout>

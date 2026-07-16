@@ -11,8 +11,8 @@ export default abstract class Pattern extends Generator<Pattern> {
     public constructor(options: IPatternOption, svg?: SVG) {
         super();
         this.opts = { ...options };
-        this.hash = this.opts.hash || '';
-        this.color = this.opts.color || '';
+        this.hash = this.opts.hash || "";
+        this.color = this.opts.color || "";
         if (svg) {
             this.svg = svg;
         } else {
@@ -31,7 +31,7 @@ export default abstract class Pattern extends Generator<Pattern> {
         return this.svg.toString();
     }
 
-    public toString() {
+    public override toString() {
         return this.toSvg();
     }
 
@@ -48,7 +48,7 @@ export default abstract class Pattern extends Generator<Pattern> {
                 byteArray[i] = str.charCodeAt(i);
             }
             b64 = base64.fromByteArray(byteArray); */
-            b64 = Buffer.from(str).toString("base64");
+            b64 = btoa(unescape(encodeURIComponent(str)));
         }
 
         return b64;

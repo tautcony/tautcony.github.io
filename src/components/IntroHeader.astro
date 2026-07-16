@@ -1,0 +1,243 @@
+---
+import { site } from "../data/site";
+import { formatPostDate } from "../lib/posts";
+import lastmodMap from "../data/lastmod.json";
+
+interface LastmodEntry {
+    sha: string;
+    short_sha: string;
+    date: string;
+    display: string;
+}
+
+interface Props {
+    type: "post" | "page" | "keynote";
+    short?: boolean;
+    title?: string;
+    titleHtml?: string;
+    subtitle?: string;
+    description?: string;
+    author?: string;
+    publishedDate?: string;
+    headerImg?: string;
+    headerMask?: string | number | null;
+    headerStyle?: string;
+    tags?: string[];
+    image?: { credit?: string; creditlink?: string };
+    postId?: string;
+    iframe?: string;
+}
+
+const {
+    type,
+    short = false,
+    title,
+    titleHtml,
+    subtitle = "",
+    description = "",
+    author,
+    publishedDate,
+    headerImg,
+    headerMask,
+    headerStyle,
+    tags = [],
+    image,
+    postId,
+    iframe,
+} = Astro.props;
+
+const bg = headerImg || site.headerImg;
+const bgUrl = bg.startsWith("/") || /^https?:/i.test(bg) ? bg : `/${bg}`;
+const displayTitle = title ?? site.title;
+const postedBy = author || site.title;
+const postedOn = publishedDate ? formatPostDate(publishedDate) : "";
+
+const lastmod = postId
+    ? (lastmodMap as Record<string, LastmodEntry>)[postId]
+    : undefined;
+
+function tagHref(tag: string) {
+    return `${site.baseurl}/archive/?tag=${encodeURIComponent(tag)}`;
+}
+---
+
+{
+    type === "post" && (
+        <>
+            <style is:global set:html={`
+    header.intro-header{
+        position: relative;
+        background-image: url('${bgUrl}');
+    }
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, ${headerMask != null && headerMask !== "" ? headerMask : 0});
+    }
+`} />
+            {headerStyle === "text" ? (
+                <header class="intro-header style-text">
+                    {image?.credit && (
+                        <div class="image-credit">
+                            Image by <a href={image.creditlink || "#"}>{image.credit}</a>
+                        </div>
+                    )}
+                    <div class="header-mask" />
+                    <div class="container spacing">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                                <div class="post-heading">
+                                    <div class="tags">
+                                        {tags.map((tag) => (
+                                            <a class="tag" href={tagHref(tag)} title={tag}>
+                                                {tag}
+                                            </a>
+                                        ))}
+                                    </div>
+                                    {titleHtml ? (
+                                        <h1 set:html={titleHtml} />
+                                    ) : (
+                                        <h1>{displayTitle}</h1>
+                                    )}
+                                    <h2 class="subheading">{subtitle}</h2>
+                                    <span class="meta">
+                                        Posted by {postedBy} on {postedOn}
+                                    </span>
+                                    {lastmod ? (
+                                        <span class="meta">
+                                            Update on{" "}
+                                            <span id="update-date">
+                                                {lastmod.display}
+                                                {lastmod.short_sha
+                                                    ? ` with commit ${lastmod.short_sha}`
+                                                    : ""}
+                                            </span>
+                                        </span>
+                                    ) : (
+                                        <span class="meta">
+                                            Update on{" "}
+                                            <span id="update-date">{postedOn}</span>
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            ) : (
+                <header class="intro-header">
+                    {image?.credit && (
+                        <div class="image-credit">
+                            Image by <a href={image.creditlink || "#"}>{image.credit}</a>
+                        </div>
+                    )}
+                    <div class="header-mask" />
+                    <div class="container spacing">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                                <div class="post-heading">
+                                    <div class="tags">
+                                        {tags.map((tag) => (
+                                            <a class="tag" href={tagHref(tag)} title={tag}>
+                                                {tag}
+                                            </a>
+                                        ))}
+                                    </div>
+                                    {titleHtml ? (
+                                        <h1 set:html={titleHtml} />
+                                    ) : (
+                                        <h1>{displayTitle}</h1>
+                                    )}
+                                    <h2 class="subheading">{subtitle}</h2>
+                                    <span class="meta">
+                                        Posted by {postedBy} on {postedOn}
+                                    </span>
+                                    {lastmod ? (
+                                        <span class="meta">
+                                            Update on{" "}
+                                            <span id="update-date">
+                                                {lastmod.display}
+                                                {lastmod.short_sha
+                                                    ? ` with commit ${lastmod.short_sha}`
+                                                    : ""}
+                                            </span>
+                                        </span>
+                                    ) : (
+                                        <span class="meta">
+                                            Update on{" "}
+                                            <span id="update-date">{postedOn}</span>
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            )}
+        </>
+    )
+}
+
+{
+    type === "page" && (
+        <header class="intro-header" style={`background-image: url('${bgUrl}')`}>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class:list={["site-heading", short && null]} id={short ? "tag-heading" : undefined}>
+                            <h1>{title || site.title}</h1>
+                            <span class="subheading">{description}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    )
+}
+
+{
+    type === "keynote" && (
+        <>
+            <style is:global>
+                {`
+    header.intro-header{
+        height: 500px;
+        overflow: hidden;
+    }
+    header.intro-header .container{
+        visibility: hidden;
+    }
+    header iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+`}
+            </style>
+            <header class="intro-header">
+                {iframe && <iframe src={iframe} />}
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <div class="tags">
+                                    {tags.map((tag) => (
+                                        <a class="tag" href={tagHref(tag)} title={tag}>
+                                            {tag}
+                                        </a>
+                                    ))}
+                                </div>
+                                <h1>{displayTitle}</h1>
+                                <h2 class="subheading">{subtitle}</h2>
+                                <span class="meta">
+                                    Posted by {postedBy} on {postedOn}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </>
+    )
+}

@@ -1,66 +1,58 @@
-import anime from "animejs/lib/anime.es";
-import { util_ui_element_creator as _ } from "./utils";
+import { el } from "./utils";
 
+/**
+ * Click easter-egg: float a short phrase at the pointer.
+ * Animation uses CSS transitions (no anime.js).
+ */
 export default class CoreValue {
-    private coreText: string[];
-    private coreIndex: number;
-
-    public constructor() {
-        this.coreText = ["富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善", "+1s"];
-        this.coreIndex = 0;
-    }
+    private readonly phrases = [
+        "富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治",
+        "爱国", "敬业", "诚信", "友善", "+1s",
+    ];
+    private index = 0;
 
     public Init() {
         document.body.addEventListener("click", ev => {
-            const target = ev.target as Element;
-            if (target.nodeName && target.nodeName.toLowerCase() === "a") {
+            if (this.isInsideLink(ev)) {
                 return;
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const event = ev as any;
-            // The path attribute is only exists in Chrome
-            if (event.path) {
-                for (const node of event.path) {
-                    const { nodeName } = (node as Element);
-                    if (nodeName === undefined) {
-                        continue;
-                    }
-                    if (nodeName.toLowerCase() === "a") {
-                        return;
-                    }
-                }
-            }
-            const span = _("span", {
+
+            const phrase = this.phrases[this.index++ % this.phrases.length];
+            const span = el("span", {
                 style: {
-                    "z-index": `${1 << 24}`,
+                    zIndex: 1 << 24,
                     position: "absolute",
-                    "font-weight": "bold",
+                    fontWeight: "bold",
                     top: `${ev.pageY - 20}px`,
                     left: `${ev.pageX}px`,
                     color: "#ff6651",
-                    "user-select": "none",
+                    userSelect: "none",
+                    transition: "transform 1s ease-out, opacity 0.6s ease-out 0.4s",
+                    transform: "translateY(0)",
+                    opacity: 1,
+                    pointerEvents: "none",
                 },
+            }, phrase);
+
+            document.body.append(span);
+            requestAnimationFrame(() => {
+                span.style.transform = "translateY(-150px)";
+                span.style.opacity = "0";
             });
-            document.body.appendChild(span);
-            span.textContent = this.coreText[this.coreIndex++ % this.coreText.length];
-            anime.timeline()
-                .add({
-                    targets: span,
-                    translateY: {
-                        value: -150,
-                        duration: 1000,
-                    },
-                })
-                .add({
-                    targets: span,
-                    opacity: 0,
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    complete: anim => {
-                        if (span.parentNode) {
-                            span.parentNode.removeChild(span);
-                        }
-                    },
-                });
+            window.setTimeout(() => {
+                span.remove();
+            }, 1100);
         });
+    }
+
+    private isInsideLink(ev: MouseEvent): boolean {
+        const path = typeof ev.composedPath === "function" ? ev.composedPath() : [];
+        for (const node of path) {
+            if (node instanceof Element && node.closest("a")) {
+                return true;
+            }
+        }
+        const target = ev.target;
+        return target instanceof Element && target.closest("a") !== null;
     }
 }

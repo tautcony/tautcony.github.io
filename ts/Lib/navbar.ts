@@ -1,61 +1,69 @@
-// Drop Bootstarp low-performance Navbar
-// Use customize navbar with high-quality material design animation
-// in high-perf jank-free CSS3 implementation
+// Custom mobile navbar (no Bootstrap JS). Material-style open/close animation in CSS.
 export default class Nav {
-    private navbar: HTMLDivElement;
-    private toggle: HTMLButtonElement;
-    private collapse: HTMLDivElement;
+    private navbar: HTMLDivElement | null;
+    private toggle: HTMLButtonElement | null;
+    private collapse: HTMLDivElement | null;
 
     public constructor() {
-        this.navbar = document.querySelector("#blog_navbar") as HTMLDivElement;
-        this.toggle = document.querySelector(".navbar-toggle") as HTMLButtonElement;
-        this.collapse = document.querySelector(".navbar-collapse") as HTMLDivElement;
+        this.navbar = document.querySelector("#blog_navbar");
+        this.toggle = document.querySelector(".navbar-toggle");
+        this.collapse = document.querySelector(".navbar-collapse");
     }
 
     public init() {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        if (!this.navbar || !this.toggle || !this.collapse) {
+            return;
+        }
+
         this.toggle.addEventListener("click", e => {
-            if (this.navbar.classList.contains("in")) {
+            e.stopPropagation();
+            if (this.navbar?.classList.contains("in")) {
                 this.close();
             } else {
                 this.open();
             }
         });
-        /**
-         * Since Fastclick is used to delegate "touchstart" globally
-         * to hack 300ms delay in iOS by performing a fake "click",
-         * Using "e.stopPropagation" to stop "touchstart" event from
-         * $toggle/$collapse will break global delegation.
-         *
-         * Instead, we use a "e.target" filter to prevent handler
-         * added to document close Nav.
-         *
-         * Also, we use "click" instead of "touchstart" as compromise
-         */
+
         document.addEventListener("click", e => {
-            if (e.target === this.toggle
-                || (e.target as Element).className === "icon-bar") {
+            const target = e.target as Element | null;
+            if (!target || !this.toggle || !this.navbar) {
+                return;
+            }
+            if (this.toggle.contains(target) || this.navbar.contains(target)) {
                 return;
             }
             this.close();
         });
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") {
+                this.close();
+                this.toggle?.focus();
+            }
+        });
     }
 
     public close() {
+        if (!this.navbar || !this.toggle || !this.collapse) {
+            return;
+        }
         this.toggle.classList.add("is-collapsed");
+        this.toggle.setAttribute("aria-expanded", "false");
         this.navbar.classList.remove("in");
-        // wait until animation end.
         setTimeout(() => {
-            // prevent frequently toggle
-            if (!this.navbar.classList.contains("in")) {
+            if (this.navbar && !this.navbar.classList.contains("in") && this.collapse) {
                 this.collapse.style.height = "0";
             }
         }, 400);
     }
 
     public open() {
+        if (!this.navbar || !this.toggle || !this.collapse) {
+            return;
+        }
         this.navbar.classList.add("in");
         this.toggle.classList.remove("is-collapsed");
+        this.toggle.setAttribute("aria-expanded", "true");
         this.collapse.style.height = "auto";
     }
 }

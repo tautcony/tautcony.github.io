@@ -1,0 +1,51 @@
+---
+import { site } from "../data/site";
+import Sns from "./Sns.astro";
+
+const year = new Date().getFullYear();
+---
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <Sns />
+                <p class="copyright text-muted">
+                    Copyright &copy; {site.title}{" "}{year}
+                    <br />
+                    Theme &copy;{" "}
+                    <a
+                        href="https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Clean Blog
+                    </a>
+                    {" "}powered by{" "}
+                    <a href="https://astro.build/">Astro</a>
+                    {" "}modified by{" "}
+                    <a href="https://huangxuan.me" target="_blank" rel="noopener">Hux</a>
+                    {" "}|{" "}
+                    <a href={site.url}>TautCony</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Goto Top -->
+<div class="corner-buttons">
+    <button id="gotop" aria-label="回到顶部" type="button" class="back-to-top">
+        <svg viewBox="0 0 120 120" class="back-to-top">
+            <polyline points="60,105 60,8"></polyline>
+            <polyline points="10,57 60,8 110,57"></polyline>
+        </svg>
+    </button>
+</div>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"
+    integrity="sha512-2cbsQGdowNDPcKuoBd2bCcsJky87Mv0LEtD/nunJUgk6MOYTgVMGihS/xCEghNf04DPhNiJ4DZw5BxDd1uyOdw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+    is:inline></script>

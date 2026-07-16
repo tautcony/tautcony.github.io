@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "../layouts/PageLayout.astro";
+import PostList from "../components/PostList.astro";
+import { pageMeta } from "../data/pages";
+import { paginatePosts } from "../lib/pagination";
+import type { PostEntry } from "../lib/posts";
+
+const allPosts = (await getCollection("posts")) as PostEntry[];
+const slices = paginatePosts(allPosts);
+const first = slices[0];
+if (!first) {
+    throw new Error("No posts to paginate");
+}
+
+const meta = pageMeta.home;
+---
+
+<PageLayout
+    title={meta.title}
+    description={meta.description}
+    headerImg={meta.headerImg}
+    pageUrl={meta.path}
+    allPosts={allPosts}
+>
+    <PostList
+        posts={first.posts}
+        previousHref={first.previousHref}
+        nextHref={first.nextHref}
+    />
+</PageLayout>

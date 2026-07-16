@@ -1,0 +1,49 @@
+---
+/**
+ * ← `_layouts/default.html`
+ * Styles remain at repo-root `styles/` (see mig/04-styles-freeze.md).
+ */
+import "../../styles/tc-blog.scss";
+// Prefer heti's published CSS — packaging SCSS still uses deprecated @import / global builtins.
+import "heti/umd/heti.min.css";
+import Head from "../components/Head.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+
+interface Props {
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    headerImg?: string;
+    feature?: boolean;
+    pageUrl?: string;
+    bodyClass?: string;
+}
+
+const props = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={site.lang} dir="ltr">
+    <Head {...props} />
+    <!-- hack iOS CSS :active style -->
+    <body ontouchstart="" class={props.bodyClass}>
+        <Nav />
+        <main id="main-content">
+            <slot />
+        </main>
+        <Footer />
+        <!-- Image to hack wechat -->
+        <img
+            src={`${site.baseurl}/img/icon_wechat.png`}
+            width="0"
+            height="0"
+            alt="Icon for wechat"
+        />
+        <!-- Client entry: browser-only (do not import in frontmatter) -->
+        <script>
+            import "../../ts/entries/blog.ts";
+        </script>
+    </body>
+</html>

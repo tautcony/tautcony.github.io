@@ -1,0 +1,26 @@
+[
+  {
+    "id": "asset-bundle-path",
+    "layer": "L4",
+    "reason": "Jekyll uses /assets/build/*; Astro uses /_astro/* hashed modules",
+    "severity": "permanent"
+  },
+  {
+    "id": "404-body-class-static",
+    "layer": "L4",
+    "reason": "Astro sets page-fullscreen on body at SSG; Jekyll injected via inline script — equivalent",
+    "severity": "permanent"
+  },
+  {
+    "id": "feed-html-markup",
+    "layer": "L3",
+    "reason": "Feed description compared as normalized plain text (full body), not raw highlighter HTML",
+    "severity": "permanent"
+  },
+  {
+    "id": "heti-class-extra",
+    "layer": "L4",
+    "reason": "Astro may surface heti classes more consistently; extra presentation class is non-breaking",
+    "severity": "permanent"
+  }
+]

@@ -61,3 +61,7 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# GitHub Pages custom domain — always LF (CI vs local CRLF was breaking asset hash gate)
+CNAME text eol=lf
+public/CNAME text eol=lf

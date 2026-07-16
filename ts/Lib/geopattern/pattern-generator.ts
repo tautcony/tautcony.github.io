@@ -30,7 +30,7 @@ const PATTERNS = {
 };
 
 export default class PatternGenerator extends Generator<Pattern> {
-    private pattern: Pattern;
+    private pattern!: Pattern;
     private options: IPatternOption;
 
     public constructor(str: string, options?: IPatternOption) {
@@ -68,5 +68,5 @@ export default class PatternGenerator extends Generator<Pattern> {
     }
 }
 
-export { IPatternOption } from "./types";
+export type { IPatternOption } from "./types";
 export { Pattern } from "./generators/structure";

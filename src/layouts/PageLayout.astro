@@ -1,0 +1,77 @@
+---
+/**
+ * ← `_layouts/page.html`
+ * Home / about style pages with optional sidebar.
+ */
+import BaseLayout from "./BaseLayout.astro";
+import IntroHeader from "../components/IntroHeader.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { site } from "../data/site";
+import type { PostEntry } from "../lib/posts";
+import { collectTagCounts } from "../lib/posts";
+
+interface Props {
+    title?: string;
+    description?: string;
+    headerImg?: string;
+    pageUrl: string;
+    shortHeader?: boolean;
+    /** When false, match sidebar enable=false layout (archive-like). Default: site.sidebar */
+    sidebar?: boolean;
+    allPosts?: PostEntry[];
+}
+
+const {
+    title,
+    description,
+    headerImg,
+    pageUrl,
+    shortHeader = false,
+    sidebar = site.sidebar,
+    allPosts = [],
+} = Astro.props;
+
+const tagCounts = collectTagCounts(allPosts);
+const postTotal = allPosts.length;
+---
+
+<BaseLayout
+    title={title}
+    description={description}
+    headerImg={headerImg}
+    pageUrl={pageUrl}
+>
+    <IntroHeader
+        type="page"
+        title={title}
+        description={description}
+        headerImg={headerImg}
+        short={shortHeader}
+    />
+
+    <div class="container spacing">
+        <div class="row">
+            {
+                sidebar ? (
+                    <>
+                        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 postlist-container">
+                            <slot />
+                        </div>
+                        <Sidebar enable={true} tagCounts={tagCounts} postTotal={postTotal} />
+                    </>
+                ) : (
+                    <>
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 postlist-container">
+                            <slot />
+                        </div>
+                        <Sidebar enable={false} tagCounts={tagCounts} postTotal={postTotal} />
+                    </>
+                )
+            }
+        </div>
+    </div>
+    <div class="content_bg">
+        <canvas id="webgl" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
+        ></canvas>
+    </div>
+</BaseLayout>

@@ -61,8 +61,8 @@ export function rgb2hsl(rgb: Irgb): Ihsl {
     r /= 255; g /= 255; b /= 255;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h: number = 0;
-    let s: number = 0;
+    let h = 0;
+    let s: number;
     const l = (max + min) / 2;
 
     if (max === min) {

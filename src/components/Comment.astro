@@ -1,0 +1,17 @@
+---
+import { site } from "../data/site";
+---
+
+{
+    site.utteranc?.repo && (
+        <script
+            src="https://utteranc.es/client.js"
+            repo={site.utteranc.repo}
+            issue-term={site.utteranc.issueTerm}
+            theme={site.utteranc.theme}
+            crossorigin="anonymous"
+            async
+            is:inline
+        />
+    )
+}

@@ -1,0 +1,14 @@
+{
+  "source": "_site",
+  "capturedAt": "2026-07-14T02:28:29.830Z",
+  "gitBranch": "feat/astro-mig",
+  "note": "Pre-cutover Jekyll artifact frozen for consistency eval. Cannot rebuild Jekyll from current tree.",
+  "htmlXmlCount": 53,
+  "fileCount": 172,
+  "decisions": {
+    "feed": "full-content plain-text alignment (not raw HTML)",
+    "baselineStorage": "mig/baselines/jekyll-site (gitignored)",
+    "ciGate": "optional (not required on PR)",
+    "visual": "required for release checklist"
+  }
+}

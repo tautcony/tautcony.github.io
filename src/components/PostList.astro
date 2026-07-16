@@ -1,0 +1,68 @@
+---
+import type { PostEntry } from "../lib/posts";
+import { formatPostDate, postUrl } from "../lib/posts";
+import { getExcerptHtml } from "../lib/excerpts";
+import { site } from "../data/site";
+
+interface Props {
+    posts: PostEntry[];
+    previousHref?: string;
+    nextHref?: string;
+}
+
+const { posts, previousHref, nextHref } = Astro.props;
+const showPager = Boolean(previousHref || nextHref);
+const previews = await Promise.all(
+    posts.map(async (post) => ({
+        post,
+        excerptHtml: await getExcerptHtml(post),
+    }))
+);
+---
+
+{
+    previews.map(({ post, excerptHtml }) => {
+        const url = postUrl(post);
+        const author = post.data.author || site.title;
+        const date = formatPostDate(post.data.publishedDate);
+        const titleHtml = post.data.titleHtml;
+        return (
+            <>
+                <div class="post-preview">
+                    <a href={url}>
+                        {titleHtml ? (
+                            <h2 class="post-title" set:html={titleHtml} />
+                        ) : (
+                            <h2 class="post-title">{post.data.title}</h2>
+                        )}
+                        {post.data.subtitle ? (
+                            <h3 class="post-subtitle">{post.data.subtitle}</h3>
+                        ) : null}
+                    </a>
+                    <div class="post-content-preview" set:html={excerptHtml} />
+                    <p class="post-meta">
+                        Posted by {author} on {date}
+                    </p>
+                </div>
+                <hr />
+            </>
+        );
+    })
+}
+
+{
+    showPager && (
+        <ul class="pager">
+            {previousHref && (
+                <li class="previous">
+                    <a href={previousHref}>&larr; Newer Posts</a>
+                </li>
+            )}
+            {nextHref && (
+                <li class="next">
+                    <a href={nextHref}>Older Posts &rarr;</a>
+                </li>
+            )}
+        </ul>
+    )
+}

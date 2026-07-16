@@ -37,21 +37,13 @@ export default abstract class Pattern extends Generator<Pattern> {
 
     public toBase64() {
         const str = this.toSvg();
-        let b64;
-
-        // Use window.btoa if in the browser; otherwise fallback to node buffers
-        if (typeof window !== "undefined" && typeof window.btoa === "function") {
-            b64 = window.btoa(str);
-        } else {
-            /* const byteArray: Uint8Array = new Uint8Array(str.length);
-            for (let i = 0; i < str.length; ++i) {
-                byteArray[i] = str.charCodeAt(i);
-            }
-            b64 = base64.fromByteArray(byteArray); */
-            b64 = btoa(unescape(encodeURIComponent(str)));
+        // Encode as UTF-8 bytes then base64 (no deprecated unescape).
+        const bytes = new TextEncoder().encode(str);
+        let binary = "";
+        for (const byte of bytes) {
+            binary += String.fromCharCode(byte);
         }
-
-        return b64;
+        return btoa(binary);
     }
 
     public toDataUri() {

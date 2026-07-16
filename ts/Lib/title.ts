@@ -9,8 +9,7 @@ export default class Title {
     }
 
     public init() {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        document.addEventListener("visibilitychange", event => {
+        document.addEventListener("visibilitychange", () => {
             if (!document.hidden) {
                 document.title = "．．．．．．";
                 if (this.restoreTitleID !== null) {

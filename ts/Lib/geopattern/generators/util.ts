@@ -2,12 +2,12 @@ import Preset from "./preset";
 
 /**
  * Extract a substring from a hex string and parse it as an integer
- * @param {string} hash - Source hex string
- * @param {number} index - Start index of substring
- * @param {number} [length] - Length of substring. Defaults to 1.
+ * @param hash - Source hex string
+ * @param index - Start index of substring
+ * @param len - Length of substring. Defaults to 1.
  */
-export function hexVal(hash: string, index: number, len?: number) {
-    return parseInt(hash.substr(index, len || 1), 16);
+export function hexVal(hash: string, index: number, len = 1) {
+    return parseInt(hash.substring(index, index + len), 16);
 }
 
 /*

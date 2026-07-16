@@ -30,14 +30,7 @@ const kon = {
 };
 
 function createEvent(type: string) {
-    let event: Event;
-    if (typeof (Event) === "function") {
-        event = new Event(type);
-    } else {
-        event = document.createEvent("Event");
-        event.initEvent(type, true, true);
-    }
-    return event;
+    return new Event(type, { bubbles: true, cancelable: true });
 }
 
 export function init() {

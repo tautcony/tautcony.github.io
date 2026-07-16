@@ -1,14 +1,9 @@
 import * as Sentry from "@sentry/browser";
 import Heti from "heti/js/heti-addon";
 
-import * as about from "../features/about";
-import * as archive from "../features/archive";
 import * as navbar from "../features/navbar";
 import * as pageChrome from "../features/page-chrome";
-import * as pdfEmbed from "../features/pdf-embed";
-import * as post from "../features/post";
 import * as quote from "../features/quote";
-import * as tagCloud from "../features/tag-cloud";
 import * as title from "../features/title";
 
 // Styles are imported from BaseLayout (not here) to avoid duplicate CSS chunks.
@@ -38,19 +33,15 @@ const TITLE_JOKES = [
     "_( -ω-` )⌒)_",
 ] as const;
 
-function boot(): void {
+/**
+ * Shell features always run. Page-local features load via dynamic import only when
+ * their mount points exist (keeps ownership readable and enables code-splitting).
+ */
+function bootShell(): void {
     navbar.init();
-    archive.init();
     pageChrome.init();
-    post.init();
     title.init(TITLE_JOKES);
     quote.init({ intervalMs: 10_000 });
-    about.init();
-    pdfEmbed.init();
-    tagCloud.init(document.querySelectorAll("#tag_cloud a"), {
-        color: { start: "#bbbbee", end: "#0085a1" },
-        size: { start: 1, end: 1.1, unit: "em" },
-    });
 
     // Optional Crisp chat widget (injected only when the third-party snippet is present).
     window.$crisp?.push(["safe", true]);
@@ -58,6 +49,41 @@ function boot(): void {
     if (typeof XPathResult !== "undefined") {
         new Heti(".heti").autoSpacing();
     }
+}
+
+async function bootPageFeatures(): Promise<void> {
+    const tasks: Promise<unknown>[] = [];
+
+    if (document.querySelector(".catalog-body")) {
+        tasks.push(import("../features/catalog").then(m => m.init()));
+    }
+    if (document.querySelector(".post-content")) {
+        tasks.push(import("../features/post").then(m => m.init()));
+    }
+    if (document.querySelector("#tag_cloud")) {
+        tasks.push(
+            import("../features/archive").then(m => m.init()),
+            import("../features/tag-cloud").then(m =>
+                m.init(document.querySelectorAll("#tag_cloud a"), {
+                    color: { start: "#bbbbee", end: "#0085a1" },
+                    size: { start: 1, end: 1.1, unit: "em" },
+                })
+            )
+        );
+    }
+    if (document.querySelector("#kon-container")) {
+        tasks.push(import("../features/about").then(m => m.init()));
+    }
+    if (document.querySelector(".pdf-embed")) {
+        tasks.push(import("../features/pdf-embed").then(m => m.init()));
+    }
+
+    await Promise.all(tasks);
+}
+
+function boot(): void {
+    bootShell();
+    void bootPageFeatures();
 }
 
 if (document.readyState === "loading") {

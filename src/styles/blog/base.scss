@@ -1,0 +1,124 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// Global Components
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    @include sans-serif;
+    font-size: 16px;
+    // Hux mpdify to 16px (Mobile First), and increase to 20px while 768+ width
+    font-weight: 300;
+    //set font as light
+    color: $gray-dark;
+    //-webkit-user-select: text; //对于 Blog 还是先不开启这句。
+    overflow-x: hidden;
+    -ms-text-autospace: ideograph-alpha;
+}
+
+// -- Typography
+
+p {
+    margin: 30px 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @include sans-serif;
+    line-height: 1.1;
+    font-weight: bold;
+}
+h1 {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+h4 {
+    font-size: 21px;
+}
+a {
+    color: $gray-dark;
+    &:hover,
+    &:focus {
+        color: $brand-primary;
+    }
+    img {
+        &:hover,
+        &:focus {
+            cursor: zoom-in;
+        }
+    }
+}
+
+article {
+    overflow-x: hidden;
+}
+
+blockquote {
+    color: $gray;
+    font-style: italic;
+    font-size: 0.95em;
+    margin: 20px 0 20px;
+    padding: 10px 20px;
+    border-left: 5px solid #eee;
+    p {
+        margin: 0;
+    }
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+// Utils Style Class can be used in Markdown.
+small.img-hint {
+    display: block;
+    margin-top: -20px;
+    text-align: center;
+}
+br + small.img-hint {
+    margin-top: -40px;
+}
+img.shadow {
+    box-shadow: rgba(0, 0, 0, 0.258824) 0 2px 5px 0;
+}
+// Utils Style End
+
+@media screen and (max-width: 768px) {
+    select {
+        -webkit-appearance: none;
+        margin-top: 15px;
+        color: #337ab7;
+        border-color: #337ab7;
+        padding: 0 0.4em;
+        background: white;
+    }
+}
+// override table style in bootstrap
+.table th, .table td {
+    border: 1px solid #eee !important;
+}
+
+hr.small {
+    max-width: 100px;
+    margin: 15px auto;
+    border-width: 4px;
+    border-color: white;
+}
+// add by Hux
+pre, .table-responsive {
+    // sometimes you should use vendor-feature.
+    -webkit-overflow-scrolling: touch;
+}
+
+code, kbd, pre, samp {
+    width: auto;
+    white-space: pre;    // save it but no-wrap;
+    word-wrap: normal;    // no-wrap
+    font-family: "Iosevka Web", Menlo, Monaco, Consolas,
+    "Microsoft YaHei", "Hiragino Sans GB", "Courier New", monospace !important;
+}
+

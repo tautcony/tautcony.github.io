@@ -1,0 +1,221 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// Navigation
+
+// materialize, mobile only
+@media only screen and (max-width: 767px) {
+    /**
+     * Layout
+     * Since V1.6 we use absolute positioning to prevent to expand container-fluid
+     * which would cover tags. A absolute positioning make a new layer.
+     */
+    .navbar-default .navbar-collapse {
+        position: absolute;
+        right: 0;
+        border: 0;
+        background: white;
+        box-shadow: rgba(0, 0, 0, 0.117647) 0 1px 6px, rgba(0, 0, 0, 0.239216) 0 1px 4px;
+        border-radius: 2px;
+        width: 170px;
+    }
+    /**
+     * Animation
+     * Blog-Navbar using genuine Material Design Animation
+     */
+    #blog_navbar {
+        /**
+         * Sharable code and 'out' function
+         */
+        // the container do width-transition
+        opacity: 0;
+        transform: scaleX(0);
+        transform-origin: top right;
+        transition: all 200ms cubic-bezier(0.47, 0, 0.4, 0.99) 0ms;
+        a {
+            font-size: 13px;
+            line-height: 28px;
+        }
+        .navbar-collapse {    // the navbar do height-transition
+            height: 0;     // to solve container-mask-tags issue (default state).
+            transform: scaleY(0);
+            transform-origin: top right;
+            transition: transform 400ms cubic-bezier(0.32, 1, 0.23, 1) 0ms;
+        }
+        li {
+            opacity: 0;
+            transition: opacity 100ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+        }
+        /**
+         *'In' Animation
+         */
+        &.in {
+            transform: scaleX(1);
+            opacity: 1;
+            transition: all 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+            .navbar-collapse {
+                transform: scaleY(1);
+                transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+            }
+            li {
+                opacity: 1;
+                transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1) 205ms;
+            }
+        }
+    }
+}
+
+.navbar-custom {
+    // materialize
+    background: none;
+    border: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    @include sans-serif;
+    .navbar-brand {
+        font-weight: 800;
+        // materialize
+        color: white;
+        height: 56px;
+        line-height: 25px;
+        &:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+    }
+    .nav {
+        li {
+            a {
+                text-transform: uppercase;
+                font-size: 12px;
+                line-height: 20px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                // only highlight in mobile
+                &:active {
+                    background: rgba(0, 0, 0, 0.12);
+                }
+            }
+        }
+    }
+    @media only screen and (min-width: 768px) {
+        body {
+            font-size: 20px;
+        }
+        background: transparent;
+        border-bottom: 1px solid transparent;
+        .navbar-brand {
+            color: white;
+            padding: 20px;
+            line-height: 20px;
+            &:hover,
+            &:focus {
+                color: $white-faded;
+            }
+        }
+        .nav {
+            li {
+                a {
+                    color: white;
+                    padding: 20px;
+                    &:hover,
+                    &:focus {
+                        color: $white-faded;
+                    }
+                    &:active {
+                        background: none;
+                    }
+                }
+            }
+        }
+    }
+    @media only screen and (min-width: 1170px) {
+        transition: background-color 0.3s;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        &.is-fixed {
+            /* when the user scrolls down, we hide the header right above the viewport */
+            position: fixed;
+            top: -61px;
+            background-color: rgba(white, 0.9);
+            border-bottom: 1px solid #f2f2f2;
+            transition: transform 0.3s;
+            .navbar-brand {
+                color: $gray-dark;
+                &:hover,
+                &:focus {
+                    color: $brand-primary;
+                }
+            }
+            .nav {
+                li {
+                    a {
+                        color: $gray-dark;
+                        &:hover,
+                        &:focus {
+                            color: $brand-primary;
+                        }
+                    }
+                }
+            }
+        }
+        &.is-visible {
+            /* if the user changes the scrolling direction, we show the header */
+            transform: translate3d(0, 100%, 0);
+        }
+    }
+}
+
+/* Hux customize Style for navBar button */
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    padding: 19px 16px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    border-radius: 50%;
+    &:focus, &:hover {
+        background-color: inherit;
+    }
+    &:active {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+    .icon-bar {
+        width: 18px;
+        border-radius: 0;
+        // materialize
+        background-color: white;
+    }
+    .icon-bar+.icon-bar {
+        margin-top: 3px;
+    }
+}
+
+.navbar-toggle {
+    .icon-bar {
+        transition: opacity, transform;
+        transition-duration: 300ms;
+        transition-timing-function: cubic-bezier(0.7, 0, 0, 0.7);
+    }
+    &:not(.is-collapsed) {
+        .icon-bar {
+            &:nth-child(1) {
+                transform: translateY(5px) rotate(45deg);
+            }
+            &:nth-child(2) {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            &:nth-child(3) {
+                transform: translateY(-5px) rotate(-45deg);
+            }
+        }
+    }
+}
+
+.disqus-footer__wrapper, .disqus-footer {
+    display: none;
+}
+

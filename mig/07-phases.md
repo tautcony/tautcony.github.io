@@ -114,8 +114,8 @@ node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-
 
 ### 步骤
 
-1. **`404.astro`**：主站 CSS + `404.scss`、fullscreen/`#container .fallback`、client-only page404 entry、Three CDN。
-2. **验证** `?webGL` `?perf` `?gui`
+1. **`404.astro`**：主站 CSS + `404.scss`、fullscreen/`#container .fallback`、内含现代 Three.js 的 client-only page404 entry。
+2. **验证**默认 WebGL 场景及 `?perf`、`?gui`
 3. **`tcupdate.astro`**：依赖已冻结的 `build.format: 'preserve'`，构建后必须存在 `dist/tcupdate.html` 且不存在 `dist/tcupdate/index.html`。
 4. **Vue JSX**：`@astrojs/vue@7.0.1` + Vue 3.5.24，client-only mount 一次。
 5. **pdf-embed**：验证 M1 转换后的静态 HTML、点击加载、canvas、下载 fallback 和 CDN 失败状态。

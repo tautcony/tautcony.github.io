@@ -29,12 +29,14 @@ interface TweenStep {
     kind: "wait" | "to";
     duration: number;
     props?: NumericTarget;
+    easing?: EasingFn;
 }
 
 export class Tween {
     private readonly target: NumericTarget;
     private readonly loop: boolean;
     private readonly steps: TweenStep[] = [];
+    private readonly initial: NumericTarget = {};
     private stepIndex = 0;
     private elapsed = 0;
     private from: NumericTarget = {};
@@ -68,11 +70,17 @@ export class Tween {
         return this;
     }
 
-    to(props: NumericTarget, duration: number): this {
+    to(props: NumericTarget, duration: number, easing?: EasingFn): this {
+        for (const key of Object.keys(props)) {
+            if (!(key in this.initial)) {
+                this.initial[key] = this.target[key] ?? 0;
+            }
+        }
         this.steps.push({
             kind: "to",
             duration: Math.max(0, duration),
             props: { ...props },
+            easing,
         });
         return this;
     }
@@ -131,7 +139,7 @@ export class Tween {
                 const t = step.duration === 0
                     ? 1
                     : Math.min(1, this.elapsed / step.duration);
-                const eased = cubicInOut(t);
+                const eased = step.easing ? step.easing(t) : t;
                 for (const key of Object.keys(step.props)) {
                     const a = this.from[key] ?? 0;
                     const b = step.props[key];
@@ -155,6 +163,10 @@ export class Tween {
             const next = this.stepIndex + 1;
             if (next >= this.steps.length) {
                 if (this.loop) {
+                    for (const key of Object.keys(this.initial)) {
+                        this.target[key] = this.initial[key];
+                    }
+                    this.onChange?.();
                     this.beginStep(0);
                 } else {
                     activeTweens.delete(this);

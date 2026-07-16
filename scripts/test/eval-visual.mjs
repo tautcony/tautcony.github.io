@@ -224,7 +224,7 @@ async function main() {
                 const pL = await ctxL.newPage();
                 const pD = await ctxD.newPage();
 
-                // 404: block particle JS only (keep page404 CSS so container/inner_bck match)
+                // 404: block particle JS while preserving the static fallback layout.
                 if (page.id === "404") {
                     const block = (pg) =>
                         pg.route("**/*", (route) => {
@@ -266,13 +266,10 @@ async function main() {
                             document.querySelectorAll("canvas").forEach((el) => {
                                 el.style.display = "none";
                             });
-                            // Normalize 404 plate art: Jekyll Vite may point at missing
-                            // /media/inner_bck.*; Astro uses /_astro/hash. Use stable public path.
+                            // The legacy baseline used plate art that is intentionally no longer
+                            // shipped. Compare both pages against the header fallback background.
                             document.querySelectorAll("#container").forEach((el) => {
-                                el.style.backgroundImage =
-                                    "url(/img/404/inner_bck.jpg)";
-                                el.style.backgroundSize = "cover";
-                                el.style.backgroundPosition = "50% 0";
+                                el.style.backgroundImage = "none";
                             });
                         });
                     };

@@ -80,7 +80,7 @@
 | D3 | tcupdate entry | `ts/entries/tcupdate.jsx` | tcupdate（Vue JSX） |
 | D4 | 页面逻辑 | `ts/pages/{post,page,archive,about}.ts` | 按需 |
 | D5 | 库 | `ts/Lib/*` | navbar、quote、pdf-embed、utils.el、geopattern… |
-| D6 | 粒子 | `ts/particle404/*` | 404；Three r56 CDN |
+| D6 | 粒子 | `ts/particle404/modern-scene.ts` 等 | 404；npm Three.js WebGL；r56 迁移源码待清理 |
 | D7 | 构建 | `astro.config.mjs`、`scripts/*` | Content Layer + route/resource compare + frozen lastmod |
 
 ---
@@ -105,7 +105,7 @@
 |----|------|----------|
 | F1 | KaTeX | post |
 | F2 | PDF.js (cdnjs) | pdf-embed |
-| F3 | Three.js r56 (cdnjs) | 404 |
+| F3 | Three.js（npm bundle） | 404 |
 | F4 | utterances | comment |
 | F5 | Sentry | blog.ts |
 | F6 | Pace | head |

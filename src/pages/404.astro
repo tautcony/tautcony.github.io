@@ -39,20 +39,9 @@ const bg = meta.headerImg.startsWith("/") ? meta.headerImg : `/${meta.headerImg}
 
     {
         site.particle404 && (
-            <>
-                <!-- Three.js r56 via cdnjs (CanvasRenderer-era API required by the particle scene) -->
-                <script
-                    src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r56/three.min.js"
-                    integrity="sha512-KxG7ID/l1iHzcnYGb80EtdDWbl9v4F0BF7WBG3ME8Y1LSkzxkde/xr3AnBeBqqkesVoubcWmB+eX5kTm8qvL3Q=="
-                    crossorigin="anonymous"
-                    referrerpolicy="no-referrer"
-                    is:inline
-                />
-                <!-- Client-only: particle404 entry (do not import in frontmatter) -->
-                <script>
-                    import "../../ts/entries/page404.ts";
-                </script>
-            </>
+            <script>
+                import "../../ts/entries/page404.ts";
+            </script>
         )
     }
 </BaseLayout>

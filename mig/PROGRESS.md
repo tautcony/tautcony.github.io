@@ -160,15 +160,15 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 
 | ID | 任务 | 状态 | 备注 |
 |----|------|------|------|
-| M3-01 | 404 粒子页 | done | `404.astro`：主站 CSS+`404.scss`、Three r56 CDN、page404 entry；body `page-fullscreen page page-404` |
+| M3-01 | 404 粒子页 | done | `404.astro`：主站 CSS+`404.scss`、现代 Three.js page404 entry；body `page-fullscreen page page-404` |
 | M3-02 | tcupdate.html preserve | done | `dist/tcupdate.html` 存在；无 `dist/tcupdate/index.html`；Vue JSX client mount |
 | M3-03 | pdf-embed 验证 | done | rubiksrevenge 静态 HTML+`attach` PDF；`PdfEmbed.astro` 可复用 |
 | M3-04 | quote.json / footer 语录 | done | `public/json/quote.json`（15 条）；Footer `.copyright` + blog.ts Quote/SW unregister |
-| M3-05 | 全站 compare-routes/assets + smoke | done | routes 53/53；assets 111/111；preview HTTP 200 |
+| M3-05 | 全站 compare-routes/assets + smoke | done | routes 53/53；当前 assets 108/108；preview HTTP 200 |
 
 ### M3 交付勾选
 
-- [x] `/404.html`：`#container .fallback` + Three + page404 module
+- [x] `/404.html`：`#container .fallback` + 现代 Three.js page404 module；无 r56 classic script
 - [x] `/tcupdate.html` 下载卡片 DOM + Vue entry
 - [x] PDF 文静态占位 + PDF 文件可达
 - [x] 全站 HTML/XML route diff = 0
@@ -236,6 +236,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | 2026-07-14 | eval | 一致性 L1–L6：冻结 `_site` baseline；全文对齐 + 视觉截图门禁；非 CI 强制 |
 | 2026-07-14 | M5 | 删 `_posts`/`_drafts`/`_data`；Sentry release；legacy 归档；观察 runbook |
 | 2026-07-15 | M5 | Legacy 静态资源从根目录收口到受 Git 管理的 `public/`；删除构建前同步，保持 111 项资源 URL/hash 契约 |
+| 2026-07-16 | 404 | 切换现代 Three.js 验收；退役 r56 专用 `disc`、`particle_tr`、`inner_bck`，当前资源契约 108 项 |
 
 ---
 
@@ -282,7 +283,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `src/pages/404.astro` | M3 | `/404.html` 粒子页 |
 | `src/pages/tcupdate.astro` | M3 | `/tcupdate.html` Vue 工具页 |
 | `src/components/PdfEmbed.astro` | M3 | PDF 占位组件（帖文已静态化） |
-| `mig/fixtures/assets-jekyll.json` | M3 | 静态资源 baseline（111） |
+| `mig/fixtures/assets-jekyll.json` | M3+ | 当前需继续发布的静态资源 baseline（108） |
 | `.github/workflows/build.yml` | M4 | Astro Pages：dist + verify |
 | `Dockerfile` / `.dockerignore` | M4 | node build → nginx |
 | `scripts/content/generate-lastmod.mjs` | M4 | `--check` 校验 frozen map |
@@ -292,7 +293,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `mig/10-consistency-eval.md` | eval | 评估设计与首轮结果 |
 | `mig/baselines/jekyll-site.meta.json` | eval | baseline 血统元数据 |
 | `mig/fixtures/consistency-allowlist.json` | eval | 已知差异登记 |
-| `public/` | M5 | 定型 legacy 静态资源（提交 Git，保留原 URL） |
+| `public/` | M5+ | 定型静态资源（提交 Git；仅保留仍需发布的历史 URL） |
 | `dist/` | M0 | Astro 构建产物（gitignore） |
 
 ---
@@ -314,4 +315,3 @@ node scripts/test/compare-routes.mjs --self-test
 node scripts/test/compare-assets.mjs --self-test
 node scripts/content/migrate-posts.mjs --self-test
 ```
-

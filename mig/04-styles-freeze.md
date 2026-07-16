@@ -16,7 +16,7 @@
 - 把 BS 遗留 class 改成 Tailwind / 自创 BEM
 - 「优化」间距、断点、导航动画
 
-**首迁决策**：PR1–PR5 保留根 `styles/`。`styles/404.scss` 和 `styles/tc-blog.scss` 含 `../img/...` 相对 URL，只有在改成 `/img/...` 并通过资源/视觉门禁后才能搬入 `src/styles/`。
+**首迁决策**：PR1–PR5 保留根 `styles/`。样式资源 URL 已统一为 `/img/...`；移动到 `src/styles/` 前仍需通过资源与视觉门禁。
 
 ## 2. 接入方式（推荐）
 

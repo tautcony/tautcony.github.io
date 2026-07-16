@@ -6,8 +6,12 @@ import { defineMiddleware } from "astro:middleware";
  * both environments without changing the generated production artifact.
  */
 export const onRequest = defineMiddleware((context, next) => {
-    if (import.meta.env.DEV && context.url.pathname === "/tcupdate.html") {
-        return context.rewrite(new URL("/tcupdate/", context.url));
+    if (import.meta.env.DEV) {
+        const devPath = {
+            "/tcupdate.html": "/tcupdate/",
+            "/404.html": "/404/",
+        }[context.url.pathname];
+        if (devPath) return context.rewrite(new URL(devPath, context.url));
     }
 
     return next();

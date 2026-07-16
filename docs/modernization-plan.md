@@ -38,7 +38,7 @@
 | UI 基座 | Bootstrap **3.4.1** + bootstrap.native 2 + Font Awesome **4.7** | 严重过时 |
 | 监控 | Sentry Browser + GA4 | 有可观测性，但配置硬编码 |
 | 评论 | utterances | 轻量，适合个人博客 |
-| 特殊页 | 404 粒子（Three.js **r56** 定制）+ `tcupdate`（Vue 3 JSX） | 功能有个性，但技术债集中 |
+| 特殊页 | 404 粒子（现代 Three.js WebGL）+ `tcupdate`（Vue 3 JSX） | 404 已移除 r56 运行时，调试依赖仍可继续瘦身 |
 
 ### 1.2 架构简图
 
@@ -501,14 +501,14 @@ DSN 本身通常可公开，但环境切换不灵活。
 
 原 ~16MB 完整 vendoring 已删除。PDF 预览改为按需从 cdnjs 加载 `pdf.js@3.3.122` 并 canvas 渲染（见 `ts/Lib/pdf-embed.ts`）。
 
-#### ✅ `js/404/independent/three.min_r56.js` 已外置（cdnjs）
+#### ✅ Three.js r56 运行时已移除
 
-锁定 2013 年代 API 仍是功能现实（CanvasRenderer / ParticleSystem），但脚本改为 cdnjs `three.js/r56`，仓库不再 vendoring。
+404 场景已改用 npm `three` 的现代 WebGL API，由 Astro/Vite 随页面入口打包；页面不再加载 r56 CDN，也不再使用 `CanvasRenderer`、`ParticleSystem`、`Geometry` 等旧 API。
 
 **后续可选**：
 
-- 中期：用 Canvas 2D / 现代 WebGL 轻量重写粒子，去掉 three r56。  
-- 不要引入新 three 却不改场景代码。
+- 删除 `ts/particle404/` 中已不可达的 r56 迁移实现和 ambient shim。
+- 将仅供 `?gui=true` 使用的 `dat.gui` 改为动态导入，降低默认 404 bundle 大小。
 
 #### 🟢 `_site/` 本地 200MB+
 
@@ -557,7 +557,7 @@ src/
     archive-filter.ts
     catalog.ts
     quote.ts
-    particle404/          # 可选，标记为 legacy
+    particle404/          # 现代 Three.js 场景；旧迁移实现待清理
 
 public/                   # 原 img/ fonts(精简) attach...
 jekyll/
@@ -739,7 +739,8 @@ npm run ci           # lint + typecheck + build
 | `_layouts/*`, `_includes/*` | HTML 骨架与 CDN 依赖 |
 | `ts/entries/blog.ts` | 主前端入口 |
 | `ts/pages/*`, `ts/Lib/*` | 业务与工具 |
-| `ts/particle404/*` | 404 粒子（legacy three） |
+| `ts/particle404/modern-scene.ts` | 当前 404 粒子（现代 Three.js） |
+| `ts/particle404/{bootstrap,scene,shell,mask}.ts` | 已不可达的 r56 迁移实现，待删除 |
 | `less/*` | 主题样式源 |
 | `build/webpack.*` | 当前打包 |
 | `js/tcupdate.js` | 工具页（Vue） |

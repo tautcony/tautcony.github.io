@@ -1,12 +1,9 @@
 /**
  * Particle 404 page entry.
- *
- * THREE r56 stays a classic <script> on the page (CanvasRenderer-era API).
- * Stats / Tween are TypeScript modules; dat.GUI comes from the npm package.
  */
 
 import "../../styles/404.scss";
-import { startParticle404 } from "../particle404/bootstrap";
+import { startParticle404 } from "../particle404/modern-scene";
 
 function boot(): void {
     startParticle404();

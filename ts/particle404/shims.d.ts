@@ -141,4 +141,5 @@ interface Window {
 }
 
 declare const THREE: ThreeNamespace;
+
 declare const Modernizr: ModernizrStatic;

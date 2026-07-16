@@ -43,7 +43,7 @@
 |----|------|------|
 | HTML/XML 路由集合 | **53 = 53** | 与 `routes-jekyll.txt` 一致 |
 | Sitemap `<loc>` | **54 = 54** | 无差集 |
-| 稳定静态资源 | **111 = 111**，抽检 PDF hash 一致 | 与 `assets-jekyll.json` 一致 |
+| 稳定静态资源 | **108 = 108**，抽检 PDF hash 一致 | 与退役资源清理后的 `assets-jekyll.json` 一致 |
 | 首页帖序 / page5 帖序 | **一致** | |
 | archive `data-encode` | **42 标签一致** | |
 | feed 条目 link/title 序 | **一致** | |
@@ -158,9 +158,9 @@ npm run eval:consistency -- \
 | 前缀清单 | `/img` `/attach` `/fonts` `/css` `/json` `/arknights` `/contents` `/favicon.ico` `/CNAME` `/robots.txt` | 现有 `compare-assets` |
 | 字节+sha256 | 对 baseline 与 dist 同 path | 全等 |
 | 文内引用 | 从 Markdown/HTML 抽 `/attach/*` `/img/*` 等 | HTTP 200 或文件存在 |
-| 404 粒子贴图 | `/img/404/*` | 存在 |
+| 404 当前贴图 | `/img/box_bck.png`、`/img/404-bg.jpg` | 存在 |
 
-**排除**：`/_astro/**`、`/assets/build/**`（构建产物，不参与 hash 对齐）。
+**排除**：`/_astro/**`、`/assets/build/**`（构建产物）以及显式退役的 `/img/404/{disc.png,inner_bck.jpg,particle_tr.png}`。其余资源继续做严格 hash 对齐。
 
 ### L3 — 结构化内容（语义严格）
 
@@ -249,7 +249,7 @@ type PostSnapshot = {
 | about | `about.aplayer` | APlayer 容器/脚本痕迹 | 必须 |
 | about | `about.utterances` | utterances 配置 / container | 必须 |
 | 404 | `404.container` | `#container` + `.fallback` | 必须 |
-| 404 | `404.three` | three.js r56 script | 必须 |
+| 404 | `404.noLegacyThree` | 有 page404 module，且无 three.js r56 classic script | 必须 |
 | 404 | `404.flags` | page404 bundle 存在 | 必须 |
 | 404 | `404.bodyclass` | 最终含 `page-fullscreen`（静态或等价说明） | 必须 |
 | tcupdate | `tc.section` | `#tool-downloads` | 必须 |
@@ -269,7 +269,7 @@ dist 多出的 class（如 heti）→ 记录为 info，不失败。
 | H2 | GET `/json/quote.json` | 200，JSON 数组长度 > 0 |
 | H3 | GET PDF 附件 | 200 |
 | H4 | 首页 HTML 含 blog entry `/_astro/*blog*` 或 BaseLayout script | 有 module |
-| H5 | 404 HTML 含 three + page404 module | 有 |
+| H5 | 404 HTML 含 page404 module，且不含 r56 classic script | 有 |
 | H6 | tcupdate HTML 含 Vue entry module | 有 |
 | H7* | Playwright：点 PDF 按钮 | canvas 或 fallback 链出现（可选） |
 | H8* | Playwright：`/archive/?tag=...` | 筛选后可见条目变化（可选） |
@@ -473,10 +473,10 @@ npm run eval:all
 | 层 | 结果 |
 |----|------|
 | L1 routes / sitemap | PASS 53/53 · 54 loc |
-| L2 assets | PASS 111/111 |
+| L2 assets | PASS 108/108 |
 | L3 full content | PASS_WITH_KNOWN_DELTAS（高亮/RSS 转义 near-match 入 allowlist） |
 | L4 DOM | PASS |
 | L5 HTTP | PASS |
-| L6 visual | PASS（桌面阈值 6%，移动 14%；404 屏蔽粒子 JS、统一 inner_bck） |
+| L6 visual | PASS（桌面阈值 6%，移动 14%；404 屏蔽粒子 JS、统一使用 header fallback 背景） |
 
 ---

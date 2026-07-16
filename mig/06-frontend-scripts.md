@@ -30,7 +30,7 @@
 | `corevalue.ts` | 点击彩蛋 | 原样 |
 | `brightness.ts` | Alt+方向键亮度 | 原样 |
 | `geopattern/*` | 无头图时背景 | 原样 |
-| `particle404/*` | 404 场景 | Three CDN；query flags |
+| `particle404/*` | 404 场景 | npm Three.js WebGL；`perf` / `gui` query flags |
 
 ## 4. 与 HTML 的数据桥
 
@@ -74,7 +74,7 @@
 1. Head：meta、pace css、**主 CSS**、字体、modulepreload
 2. Body 底：主 **JS module**
 3. Post 额外：AnchorJS、KaTeX（defer）
-4. 404：主站 CSS → 404 CSS → Three classic script → page404 module
+4. 404：主站 CSS → 404 CSS → page404 module（内含现代 Three.js）
 5. about：APlayer css/js、about module、`Comment.astro`（pathname `/about/`）
 
 ## 8. Client-only 挂载规则

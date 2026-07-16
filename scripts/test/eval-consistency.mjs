@@ -32,6 +32,12 @@ import {
 
 const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 
+const RETIRED_ASSETS = new Set([
+    "/img/404/disc.png",
+    "/img/404/inner_bck.jpg",
+    "/img/404/particle_tr.png",
+]);
+
 const SAMPLE_POSTS = [
     "/2016/03/22/hello-github-io/",
     "/2016/08/08/rubiksrevenge/",
@@ -426,7 +432,6 @@ function domProbes(route, html) {
     if (is404) {
         p["404.container"] = /id=["']container["']/.test(html);
         p["404.fallback"] = /\bfallback\b/.test(html);
-        p["404.three"] = /three\.js\/r56/.test(html);
         p["404.module"] = /_astro\/|page404|particle/i.test(html);
         p["404.fullscreen"] =
             /page-fullscreen/.test(html) || /page-fullscreen/.test(html);
@@ -471,11 +476,19 @@ function layerL1(legacyDir, distDir) {
 function layerL2(legacyDir, distDir) {
     const legacy = collectAssetsFromDir(legacyDir);
     const current = collectDistAssets(distDir);
+    const retired = [];
+    for (const url of RETIRED_ASSETS) {
+        if (url in legacy) {
+            delete legacy[url];
+            retired.push(url);
+        }
+    }
     const d = diffAssets(legacy, current);
     return {
         ok: d.ok,
         legacy: Object.keys(legacy).length,
         dist: Object.keys(current).length,
+        retired,
         missing: d.missing,
         extra: d.extra,
         changed: d.changed.map((c) => c.url),
@@ -714,6 +727,9 @@ function layerL4(legacyDir, distDir) {
         }
         const pl = domProbes(route, hl);
         const pd = domProbes(route, hd);
+        if (route === "/404.html" && /three\.js\/r56/.test(hd)) {
+            failed.push({ route, probe: "404.noLegacyThree", dist: false });
+        }
         for (const key of Object.keys(pl)) {
             const lv = pl[key];
             const dv = pd[key];
@@ -817,11 +833,11 @@ async function layerL5(distDir, port) {
                 failed.push({ route, error: String(e) });
             }
         }
-        // quote + pdf
+        // quote + pdf + current 404 texture
         for (const route of [
             "/json/quote.json",
             "/attach/rubiksrevenge/G-rubiksrevenge.pdf",
-            "/img/404/disc.png",
+            "/img/box_bck.png",
             "/CNAME",
         ]) {
             const res = await fetch(`http://127.0.0.1:${port}${route}`);
@@ -861,7 +877,7 @@ function writeReport(outDir, report) {
             k === "L1_routes"
                 ? `routes ${v.legacy}/${v.dist}; sitemap ${v.sitemap?.legacy}/${v.sitemap?.dist}`
                 : k === "L2_assets"
-                  ? `assets ${v.legacy}/${v.dist}; missing ${v.missing?.length || 0}`
+                  ? `assets ${v.legacy}/${v.dist}; retired ${v.retired?.length || 0}; missing ${v.missing?.length || 0}`
                   : k === "L3_content"
                     ? `failed ${v.failed?.length || 0}; info ${v.info?.length || 0}`
                     : k === "L4_dom"

@@ -6,8 +6,14 @@
  *
  * Usage:
  *   node scripts/content/generate-lastmod.mjs --check
- *   node scripts/content/generate-lastmod.mjs --refresh   # optional: rewrite frozen map from git on src/content/posts
+ *   node scripts/content/generate-lastmod.mjs --refresh
+ *
+ * Refresh rules:
+ * - Path-only git ops do not count as content updates: rename (R*) and copy (C*).
+ * - Prefer an existing frozen entry when history since that entry is only R/C,
+ *   or when the only later path birth is A/C while the freeze still has an older edit.
  */
+import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -30,29 +36,183 @@ function formatDisplay(isoDate) {
     });
 }
 
-function gitLastCommit(relPath) {
+function contentSha256(buf) {
+    return createHash("sha256").update(buf).digest("hex");
+}
+
+/**
+ * Path-only changes: rename or copy (migration / move without a real content edit).
+ * @param {string} status git name-status code (A/M/R100/C095/…)
+ * @returns {boolean}
+ */
+function isPathOnlyChange(status) {
+    return typeof status === "string" && (status.startsWith("R") || status.startsWith("C"));
+}
+
+/**
+ * Walk `git log --follow` with name-status (newest first).
+ * @returns {{ sha: string, date: string, status: string }[]}
+ */
+function gitFollowNameStatus(relPath) {
     try {
         const out = execFileSync(
             "git",
-            ["log", "-1", "--format=%H%n%cI", "--", relPath],
+            [
+                "log",
+                "--follow",
+                "--name-status",
+                "--format=%H%n%cI",
+                "--",
+                relPath,
+            ],
             { cwd: root, encoding: "utf8" }
         ).trim();
-        if (!out) {
-            return null;
+        if (!out) return [];
+
+        /** @type {{ sha: string, date: string, status: string }[]} */
+        const commits = [];
+        const lines = out.split("\n");
+        let i = 0;
+        while (i < lines.length) {
+            const sha = lines[i]?.trim();
+            const date = lines[i + 1]?.trim();
+            if (!sha || !date) break;
+            i += 2;
+            // Skip blank line that git may insert after format block
+            while (i < lines.length && lines[i].trim() === "") i += 1;
+            // name-status line(s) until next 40-char sha or end
+            let status = "M";
+            while (i < lines.length) {
+                const line = lines[i];
+                if (/^[0-9a-f]{40}$/i.test(line.trim())) break;
+                const m = line.match(/^([AMDCRTUXB][0-9]*)\t/);
+                if (m) {
+                    status = m[1];
+                    // Prefer a content status (A/M/…) if multiple paths listed
+                    if (!isPathOnlyChange(status)) break;
+                }
+                i += 1;
+            }
+            commits.push({ sha, date, status });
+            // advance past remaining name-status lines for this commit
+            while (i < lines.length && !/^[0-9a-f]{40}$/i.test(lines[i].trim())) {
+                i += 1;
+            }
         }
-        const [sha, date] = out.split("\n");
-        if (!sha || !date) {
-            return null;
-        }
-        return {
-            sha,
-            short_sha: sha.slice(0, 7),
-            date,
-            display: formatDisplay(date),
-        };
+        return commits;
     } catch {
-        return null;
+        return [];
     }
+}
+
+/**
+ * @returns {{ sha: string, short_sha: string, date: string, display: string, content_sha256?: string } | null}
+ */
+function entryFromCommit(c) {
+    if (!c) return null;
+    return {
+        sha: c.sha,
+        short_sha: c.sha.slice(0, 7),
+        date: c.date,
+        display: formatDisplay(c.date),
+    };
+}
+
+/**
+ * Decide lastmod for one post: skip R/C path moves; keep freeze when only those happened after it.
+ * @param {string} relPath
+ * @param {object | undefined} existing
+ * @param {string} fileHash sha256 of working tree file
+ */
+function resolveLastmod(relPath, existing, fileHash) {
+    const commits = gitFollowNameStatus(relPath);
+    const lastContent = commits.find(c => !isPathOnlyChange(c.status)) ?? null;
+
+    // Fast path: content bytes unchanged since last refresh that recorded content_sha256
+    if (existing?.content_sha256 && existing.content_sha256 === fileHash) {
+        return {
+            sha: existing.sha,
+            short_sha: existing.short_sha,
+            date: existing.date,
+            display: existing.display,
+            content_sha256: fileHash,
+        };
+    }
+
+    if (!existing) {
+        const e = entryFromCommit(lastContent);
+        return e ? { ...e, content_sha256: fileHash } : null;
+    }
+
+    // Walk newest → older: any real content change before we hit the existing sha?
+    let sawContentAfterExisting = false;
+    let foundExisting = false;
+    for (const c of commits) {
+        if (c.sha === existing.sha) {
+            // Existing pointed at a path-only commit (stale refresh) — ignore and keep walking.
+            if (isPathOnlyChange(c.status)) continue;
+            foundExisting = true;
+            break;
+        }
+        if (!isPathOnlyChange(c.status)) {
+            sawContentAfterExisting = true;
+            break;
+        }
+    }
+
+    if (foundExisting && !sawContentAfterExisting) {
+        return {
+            sha: existing.sha,
+            short_sha: existing.short_sha,
+            date: existing.date,
+            display: existing.display,
+            content_sha256: fileHash,
+        };
+    }
+
+    // Freeze not found on follow chain: keep if only later path birth (A/C) is newer.
+    if (!foundExisting && lastContent && existing.date) {
+        const existingTime = Date.parse(existing.date);
+        const contentTime = Date.parse(lastContent.date);
+        const pathBirth =
+            lastContent.status.startsWith("A") || lastContent.status.startsWith("C");
+        if (
+            pathBirth &&
+            !Number.isNaN(existingTime) &&
+            !Number.isNaN(contentTime) &&
+            existingTime < contentTime
+        ) {
+            return {
+                sha: existing.sha,
+                short_sha: existing.short_sha,
+                date: existing.date,
+                display: existing.display,
+                content_sha256: fileHash,
+            };
+        }
+    }
+
+    if (sawContentAfterExisting || !existing.date) {
+        const e = entryFromCommit(lastContent);
+        return e
+            ? { ...e, content_sha256: fileHash }
+            : {
+                  sha: existing.sha,
+                  short_sha: existing.short_sha,
+                  date: existing.date,
+                  display: existing.display,
+                  content_sha256: fileHash,
+              };
+    }
+
+    // Default: keep freeze
+    return {
+        sha: existing.sha,
+        short_sha: existing.short_sha,
+        date: existing.date,
+        display: existing.display,
+        content_sha256: fileHash,
+    };
 }
 
 function listPostFilenames() {
@@ -61,7 +221,7 @@ function listPostFilenames() {
     }
     return fs
         .readdirSync(contentPostsDir)
-        .filter((name) => /\.md$/i.test(name))
+        .filter(name => /\.md$/i.test(name))
         .sort();
 }
 
@@ -122,8 +282,8 @@ function checkFrozen() {
 }
 
 /**
- * Optional: refresh frozen map from git history of `src/content/posts`.
- * Prefer keeping the committed freeze unless intentionally updating post history.
+ * Refresh frozen map from git history of `src/content/posts`.
+ * Pure renames/copies do not bump lastmod; historical freezes are preserved across moves.
  */
 function refreshFromContentGit() {
     const files = listPostFilenames();
@@ -139,24 +299,54 @@ function refreshFromContentGit() {
     /** @type {Record<string, object>} */
     const data = {};
     let ok = 0;
+    let kept = 0;
+    let updated = 0;
+
     for (const name of files) {
         const rel = path.posix.join("src/content/posts", name);
-        const info = gitLastCommit(rel);
+        const abs = path.join(root, rel);
+        const fileHash = contentSha256(fs.readFileSync(abs));
+        const prev = existing[name];
+        const info = resolveLastmod(rel, prev, fileHash);
+
         if (info) {
             data[name] = info;
             ok += 1;
-        } else if (existing[name]) {
-            data[name] = existing[name];
+            if (
+                prev &&
+                prev.sha === info.sha &&
+                prev.date === info.date
+            ) {
+                kept += 1;
+            } else if (prev) {
+                updated += 1;
+            } else {
+                updated += 1;
+            }
+        } else if (prev) {
+            data[name] = { ...prev, content_sha256: fileHash };
             ok += 1;
+            kept += 1;
         } else {
             console.warn(`[lastmod:refresh] no git history for ${rel}`);
         }
     }
 
+    // Preserve key order: existing keys first (stable), then any new names sorted
+    /** @type {Record<string, object>} */
+    const ordered = {};
+    for (const key of Object.keys(existing)) {
+        if (data[key]) ordered[key] = data[key];
+    }
+    for (const name of files) {
+        if (data[name] && !ordered[name]) ordered[name] = data[name];
+    }
+
     fs.mkdirSync(path.dirname(astroOutFile), { recursive: true });
-    fs.writeFileSync(astroOutFile, `${JSON.stringify(data, null, 2)}\n`);
+    fs.writeFileSync(astroOutFile, `${JSON.stringify(ordered, null, 2)}\n`);
     console.log(
-        `[lastmod:refresh] wrote ${ok}/${files.length} → ${path.relative(root, astroOutFile)}`
+        `[lastmod:refresh] wrote ${ok}/${files.length} → ${path.relative(root, astroOutFile)}` +
+            ` (kept ${kept}, changed ${updated})`
     );
 }
 

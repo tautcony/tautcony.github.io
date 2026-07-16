@@ -1,7 +1,8 @@
 ---
 /**
- * Static PDF embed placeholder matching pdf-embed.ts / Jekyll include contract.
- * Posts already ship static pdf-embed markup; this component is for other pages.
+ * Static `.pdf-embed` placeholder (data-pdf-file / data-pdf-height / …).
+ * Hydrated by `src/client/features/pdf-embed.ts`. Posts usually inline the same
+ * markup; this component is for non-post pages.
  */
 interface Props {
     file: string;

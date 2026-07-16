@@ -1,27 +1,28 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import IntroHeader from "../../components/IntroHeader.astro";
 import { pageMeta } from "../../data/pages";
-import type { PostEntry } from "../../lib/posts";
-import { postUrl, sortPostsDesc } from "../../lib/posts";
+import {
+    collectTagCounts,
+    getAllPosts,
+    postUrl,
+    sortPostsDesc,
+    type PostEntry,
+} from "../../lib/posts";
 
-const allPosts = (await getCollection("posts")) as PostEntry[];
+const allPosts = await getAllPosts();
 const ordered = sortPostsDesc(allPosts);
 const meta = pageMeta.archive;
 
 // Tag list: unique tags with counts (order: by count desc then name, matching featured style)
-const tagMap = new Map<string, number>();
-for (const p of allPosts) {
-    for (const t of p.data.tags ?? []) {
-        tagMap.set(t, (tagMap.get(t) ?? 0) + 1);
-    }
-}
-const tags = [...tagMap.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const tags = [...collectTagCounts(allPosts).entries()].sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+);
 const postTotal = allPosts.length;
 
-function encodeTag(tag: string) {
-    return encodeURIComponent(tag.trim());
+/** Canonical tag key for data-* attributes (raw UTF-8). URL query still uses encodeURIComponent. */
+function tagKey(tag: string) {
+    return tag.trim();
 }
 
 // Group by calendar year of publishedDate
@@ -66,7 +67,7 @@ for (const post of ordered) {
                             return (
                                 <a
                                     data-sort={sortKey}
-                                    data-encode={encodeTag(tag)}
+                                    data-encode={tagKey(tag)}
                                     class="tag-button"
                                     title={tag}
                                     rel={String(size)}
@@ -87,8 +88,10 @@ for (const post of ordered) {
                                     <span class="tag-text">{group.year}</span>
                                 </span>
                                 {group.posts.map((post) => {
+                                    // Comma-separated raw tags; must match ?tag= after URLSearchParams decode.
                                     const tagEnc = (post.data.tags ?? [])
-                                        .map((t) => encodeTag(t))
+                                        .map(t => tagKey(t))
+                                        .filter(Boolean)
                                         .join(",");
                                     const url = postUrl(post);
                                     return (

@@ -2,6 +2,7 @@
 title: 码元比特傻傻分不清
 subtitle: 前提能不能好好写
 publishedDate: '2017-07-18'
+math: true
 author: TautCony
 catalog: false
 tags:

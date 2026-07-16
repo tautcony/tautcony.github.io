@@ -82,7 +82,7 @@ export default [
         },
     },
     {
-        files: ["ts/**/*.{ts,tsx}"],
+        files: ["src/client/**/*.{ts,tsx}"],
         languageOptions: {
             globals: globals.browser,
         },

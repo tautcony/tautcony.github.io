@@ -85,7 +85,7 @@
 
 ### P0-P1-10: [P1] browser-only entry 的 Astro 挂载边界未固定
 
-- 位置: `mig/02-astro-architecture.md:139-143,190-197`、`mig/06-frontend-scripts.md:5-10,67-74`；`ts/entries/blog.ts:17-22,68-75`、`ts/entries/page404.ts:15-18`、`ts/entries/tcupdate.jsx:25-125`
+- 位置: `mig/02-astro-architecture.md:139-143,190-197`、`mig/06-frontend-scripts.md:5-10,67-74`；`src/client/entries/blog.ts:17-22,68-75`、`src/client/entries/page404.ts:15-18`、`src/client/entries/tcupdate.jsx:25-125`
 - 触发条件: 方案同时允许在 Astro layout 中 `import` entry 和输出 `<script src>`；这些 entry 顶层访问 `location`/`navigator`/`document` 或直接 mount Vue。若被放入 Astro frontmatter，SSG 构建会执行浏览器代码。
 - 影响: build 阶段 ReferenceError，或页面脚本重复执行/挂载；特殊页和主站可能无法产出。
 - 修复方向: 统一使用 Astro client `<script type="module" src>`/隔离 client entry，禁止 frontmatter import；或为所有入口加明确的 browser guard，并用 build + preview smoke 验证只挂载一次。

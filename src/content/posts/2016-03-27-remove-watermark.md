@@ -2,6 +2,7 @@
 title: 图像移除水印的实现
 subtitle: ''
 publishedDate: '2016-03-27'
+math: true
 author: TautCony
 headerImg: img/post-bg-remove-watermark.svg
 catalog: false

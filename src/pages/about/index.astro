@@ -1,11 +1,10 @@
 ---
-import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import Comment from "../../components/Comment.astro";
 import { pageMeta } from "../../data/pages";
-import type { PostEntry } from "../../lib/posts";
+import { getAllPosts } from "../../lib/posts";
 
-const allPosts = (await getCollection("posts")) as PostEntry[];
+const allPosts = await getAllPosts();
 const meta = pageMeta.about;
 ---
 
@@ -18,34 +17,9 @@ const meta = pageMeta.about;
 >
     <div id="player1" class="aplayer" style="float: right;"></div>
 
-    <!-- Language Selector -->
+    <!-- Language Selector (hydrated by client/features/about) -->
     <select id="langSelect"></select>
     <div id="kon-container"></div>
-    <div id="qr-container"></div>
-
-    <!-- Handle QrCode Hover -->
-    <style is:global>
-        #qrcode {
-            width: 350px;
-            height: 0;
-            opacity: 0;
-            float: left;
-            padding-top: 25px;
-            z-index: -1993;
-            transition: all 200ms ease-in-out;
-        }
-        #donate {
-            float: left;
-            opacity: 0.5;
-            margin-bottom: 10px;
-        }
-        #donate:hover + #qrcode {
-            z-index: 1250;
-            opacity: 1;
-            width: 350px;
-            height: 350px;
-        }
-    </style>
 
     <link
         rel="stylesheet"

@@ -1,15 +1,5 @@
-### Jekyll ###
-_site/
-.sass-cache/
-.jekyll-metadata
-.jekyll-cache
-
-### Bundler ###
-.bundle/
-vendor/
-
 ### JetBrains+iml ###
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Covers JetBrains IDEs: IntelliJ, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
@@ -52,9 +42,6 @@ atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
 .idea/replstate.xml
-
-# Ruby plugin and RubyMine
-/.rakeTasks
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
@@ -146,19 +133,12 @@ typings/
 .tscache
 .baseDir.ts
 .DS_Store
-js/*.min.js
-css/*.min.css
-
-### Frontend build (Vite) ###
-assets/build/
-_data/assets.json
-_data/lastmod.json
 
 ### Astro ###
 dist/
 .astro/
 
-### Consistency eval baselines / reports (large) ###
+### Optional local eval artifacts (large) ###
 mig/baselines/jekyll-site/
 mig/reports/
 mig/fixtures/visual/baseline/

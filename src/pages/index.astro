@@ -1,12 +1,11 @@
 ---
-import { getCollection } from "astro:content";
 import PageLayout from "../layouts/PageLayout.astro";
 import PostList from "../components/PostList.astro";
 import { pageMeta } from "../data/pages";
 import { paginatePosts } from "../lib/pagination";
-import type { PostEntry } from "../lib/posts";
+import { getAllPosts } from "../lib/posts";
 
-const allPosts = (await getCollection("posts")) as PostEntry[];
+const allPosts = await getAllPosts();
 const slices = paginatePosts(allPosts);
 const first = slices[0];
 if (!first) {

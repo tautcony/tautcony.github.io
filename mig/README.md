@@ -1,51 +1,45 @@
-# TC Blog → Astro 迁移计划
+# `mig/` — 档案、契约与可选对照
 
-> 状态：**完成待发布**（代码侧 M0–M5 done；见 [PROGRESS.md](./PROGRESS.md)）
-> 原则：**视觉样式冻结** — 现有 `styles/*.scss`、class 名与静态资源视为只读契约
-> 对应战略：现代化方案路径 B（见 `docs/modernization-plan.md`）
-> 仓库：`tautcony/tautcony.github.io`
-> 集成分支：`feat/astro-mig`
+本目录**不是**日常开发入口（日常见仓库根 [`README.md`](../README.md)）。  
+这里放的是：冻结契约数据、历史 Jekyll 档案、以及迁移期留下的对照工具与设计文档。
 
-> 2026-07-13 修订：已锁定 Astro 7/Node 22.12+、preserve 路由输出、双栈复制策略、Content Layer/schema、全量 route/resource compare 和可演练回滚。
->
-> 2026-07-14：开始 M0/PR1 实施；**进度与接续入口统一写在 [PROGRESS.md](./PROGRESS.md)**。
->
-> 2026-07-16：P1 清债后以 **PROGRESS 为准**。下列分册（`00`–`09`）保留双栈期设计叙述（如 `migrate-posts.mjs`、`@astrojs/vue`、excerpts fixture）；**现状事实**：内容唯一源 `src/content/posts/`，`tcupdate` 为纯 TS（无 Vue），摘要由 `src/lib/excerpts.ts` 运行时生成，404 仅 `modern-scene.ts`。
+## 目录
 
----
-
-## 文档索引
-
-| 文档 | 内容 |
+| 路径 | 用途 |
 |------|------|
-| **[PROGRESS.md](./PROGRESS.md)** | **实施造册**：阶段状态、任务勾选、下一步、变更日志（先读这个） |
-| [00-overview.md](./00-overview.md) | 目标、非目标、约束、成功标准、总工期 |
-| [01-module-inventory.md](./01-module-inventory.md) | 现站模块盘点（Jekyll / 前端 / 静态 / CI） |
-| [02-astro-architecture.md](./02-astro-architecture.md) | 目标目录树、技术选型、构建图 |
-| [03-mapping-tables.md](./03-mapping-tables.md) | 文件 / 组件 / 路由 / 配置 对照表 |
-| [04-styles-freeze.md](./04-styles-freeze.md) | 样式不变化的具体策略与验收 |
-| [05-content-and-markdown.md](./05-content-and-markdown.md) | Content Collections、front matter、Markdown/高亮 |
-| [06-frontend-scripts.md](./06-frontend-scripts.md) | TypeScript 入口、client 脚本、特殊页 |
-| [07-phases.md](./07-phases.md) | **分阶段实施步骤**（可执行 checklist） |
-| [08-ci-deploy-docker.md](./08-ci-deploy-docker.md) | CI / Pages / Docker / 域名 |
-| [09-acceptance-and-risks.md](./09-acceptance-and-risks.md) | 验收清单、风险、回滚 |
+| [`contracts.md`](./contracts.md) | **现行冻结契约**（URL / lastmod / 静态路径 / 样式约定） |
+| [`fixtures/`](./fixtures/) | 入库的路由与资源 baseline（小文件，可 diff） |
+| [`legacy/`](./legacy/) | 只读 Jekyll 配置与草稿归档（**不参与构建**） |
+| [`baselines/`](./baselines/) | 本地可选的完整旧站快照（大体量，默认 gitignore） |
+| [`reports/`](./reports/) | 本地 eval 报告输出（gitignore） |
+| [`archive/`](./archive/) | 迁移计划与实施造册（历史文档，不再维护为「下一步」） |
 
-**建议阅读顺序**：`PROGRESS` → `00` → `01` → `03` → `04` → `07`，实施时按 `07` 推进并**同步更新 PROGRESS**，其余作查阅手册。
+## 现行站点要点（摘要）
 
-**实施前置**：先完成 `00` 的 D1–D8 决策和 `07/M0` 的版本、fixture、compare 脚本门禁；PR1–PR4 只进入集成分支，PR5 才切换 `master`。
+- 内容唯一源：`src/content/posts/`
+- 站点配置：`src/data/site.ts`、`src/data/pages.ts`
+- 展示用更新日期：`src/data/lastmod.json`（`npm run lastmod:check`）
+- 静态资源：`public/`（稳定 URL）
+- 生产构建：`npm run ci` → `dist/` → GitHub Pages / Docker(nginx)
 
----
+## 可选对照（不进 CI）
 
-## 一句话
+package 已不再注册 `verify:*` / `eval:*`。需要时直接跑脚本：
 
-用 **Astro SSG** 替换 **Jekyll**，保留现有 Sass/class/静态资源与 TypeScript 行为；通过 **DOM class 契约 + URL 兼容表** 做到用户侧「样式与链接几乎无感」。
+```bash
+# 路由 / 资源相对 fixtures
+node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist
+node scripts/test/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist
+node scripts/test/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist
 
----
+# 相对完整 baseline（需本机 mig/baselines/jekyll-site/）
+node scripts/test/eval-consistency.mjs
+node scripts/test/eval-visual.mjs
+```
 
-## 不做的事（迁移期）
+有意改 URL 或 `public/` 稳定资源时：**先更新 fixture**，再改代码，避免 silent drift。
 
-- 不重写主题视觉、不改 class 命名体系
-- 不升级 Three.js、不重写粒子 404 算法
-- 不强制去掉 Vue（`tcupdate` 可先以 client 挂载）
-- 不把历史 Markdown 改写成 MDX（除非个别页需要）
-- 不引入 React/Next 全栈
+## 历史文档
+
+迁移全过程（M0–M6 计划、PROGRESS、一致性评估设计等）在 [`archive/`](./archive/)。  
+内容可能与现状不一致；以根 `README.md`、`src/**` 和本目录 `contracts.md` / `fixtures` 为准。

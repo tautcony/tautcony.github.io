@@ -2,6 +2,7 @@
 title: 变限积分函数的求导
 subtitle: 这是题解的一小步，却是做题的一大步
 publishedDate: '2017-08-07'
+math: true
 author: TautCony
 catalog: false
 tags:

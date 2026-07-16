@@ -1,11 +1,10 @@
 ---
 /**
- * ← `404.html` (Jekyll default layout + particle overlay)
- * Main site CSS via BaseLayout; 404.scss here for SSR; page404 client entry.
- * Output: dist/404.html (build.format: preserve)
+ * Fullscreen 404: BaseLayout chrome + 404.scss + particle client entry.
+ * Emitted as dist/404.html (`build.format: preserve`).
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import "../../styles/404.scss";
+import "../styles/404.scss";
 import { site } from "../data/site";
 import { pageMeta } from "../data/pages";
 
@@ -40,7 +39,7 @@ const bg = meta.headerImg.startsWith("/") ? meta.headerImg : `/${meta.headerImg}
     {
         site.particle404 && (
             <script>
-                import "../../ts/entries/page404.ts";
+                import "../client/entries/page404.ts";
             </script>
         )
     }

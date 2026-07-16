@@ -2,15 +2,14 @@
 /**
  * Paginated list pages: only `page2`, `page3`, … (never `page1` or `/page/n`).
  */
-import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import PostList from "../../components/PostList.astro";
 import { pageMeta } from "../../data/pages";
 import { listPageHref, paginatePosts } from "../../lib/pagination";
-import type { PostEntry } from "../../lib/posts";
+import { getAllPosts, type PostEntry } from "../../lib/posts";
 
 export async function getStaticPaths() {
-    const allPosts = (await getCollection("posts")) as PostEntry[];
+    const allPosts = await getAllPosts();
     const slices = paginatePosts(allPosts);
     // Only page 2+
     return slices

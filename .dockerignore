@@ -15,12 +15,6 @@ node_modules/
 
 # Build outputs
 dist/
-_site/
-assets/build/
-.sass-cache/
-.jekyll-metadata
-.jekyll-cache
-vendor/
 
 # Logs / env
 logs
@@ -32,5 +26,7 @@ logs
 .DS_Store
 *.tgz
 
-# Do not send the Dockerfile itself into the build context recursively
-# (harmless either way; listed for clarity with older ignore patterns)
+# Optional local eval artifacts
+mig/baselines/
+mig/reports/
+mig/fixtures/visual/

@@ -12,7 +12,7 @@
     "name": "tautcony.github.io"
   },
   "engines": {
-    "node": ">=22.12.0",
+    "node": ">=24",
     "npm": ">=10"
   },
   "scripts": {
@@ -24,19 +24,11 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "math:check": "node scripts/content/check-math-delimiters.mjs",
+    "quotes:build": "node scripts/content/build-quotes.mjs",
+    "quotes:check": "node scripts/content/build-quotes.mjs --check",
     "lastmod:check": "node scripts/content/generate-lastmod.mjs --check",
     "lastmod:refresh": "node scripts/content/generate-lastmod.mjs --refresh",
-    "verify:routes:selftest": "node scripts/test/compare-routes.mjs --self-test",
-    "verify:assets:selftest": "node scripts/test/compare-assets.mjs --self-test",
-    "verify:routes:posts": "node scripts/test/compare-routes.mjs --scope posts --legacy mig/fixtures/legacy-post-urls.txt --dist dist",
-    "verify:routes": "node scripts/test/compare-routes.mjs --scope all --legacy mig/fixtures/routes-jekyll.txt --dist dist",
-    "verify:assets": "node scripts/test/compare-assets.mjs --legacy mig/fixtures/assets-jekyll.json --dist dist",
-    "eval:consistency": "node scripts/test/eval-consistency.mjs",
-    "eval:consistency:selftest": "node scripts/test/eval-consistency.mjs --self-test",
-    "eval:visual": "node scripts/test/eval-visual.mjs",
-    "eval:all": "npm run eval:consistency && npm run eval:visual",
-    "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run math:check && npm run lastmod:check && npm run build",
-    "verify:legacy": "npm run verify:routes && npm run verify:assets"
+    "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run math:check && npm run quotes:check && npm run lastmod:check && npm run build"
   },
   "browserslist": [
     "defaults",
@@ -62,7 +54,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/dat.gui": "^0.7.13",
     "@types/js-yaml": "4.0.9",
-    "@types/node": "^22.20.1",
+    "@types/node": "^24.0.0",
     "@types/three": "^0.185.1",
     "@typescript-eslint/parser": "^8.64.0",
     "eslint": "^10.7.0",

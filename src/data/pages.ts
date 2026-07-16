@@ -1,6 +1,6 @@
 /**
- * Non-post page front-matter manifest (from Jekyll page files).
- * IntroHeader must not silently fall back when these are missing.
+ * Non-post page meta for IntroHeader / 404 (title, description, header image).
+ * Missing fields must not be silently invented in layout components.
  */
 import { site } from "./site";
 

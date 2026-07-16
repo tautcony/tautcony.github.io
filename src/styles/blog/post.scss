@@ -1,0 +1,88 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// In the list of posts
+.postlist-container {
+    margin-bottom: 15px;
+}
+
+// In the post.
+.post-container {
+    a {
+        display: inline-block;
+        color: #337ab7;
+        // different to $brand-primary
+        &:hover,
+        &:focus {
+            color: $brand-primary;
+        }
+    }
+    h1, h2, h3, h4, h5, h6 {
+        margin: 30px 0 10px;
+    }
+    h5 {
+        font-size: 19px;
+        font-weight: 600;
+        color: gray;
+        & + p {
+            margin-top: 5px;
+        }
+    }
+    h6 {
+        font-size: 16px;
+        font-weight: 600;
+        color: gray;
+        & + p {
+            margin-top: 5px;
+        }
+    }
+    ul, ol {
+        margin-bottom: 40px;
+        @media screen and (max-width: 768px) {
+            & {
+                padding-left: 30px;
+            }
+        }
+        @media screen and (max-width: 500px) {
+            & {
+                padding-left: 20px;
+            }
+        }
+    }
+    ol ol, ol ul, ul ol, ul ul {
+        margin-bottom: 5px;
+    }
+    li {
+        p {
+            margin: 0;
+            margin-bottom: 5px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 2;
+            margin-top: 20px;
+        }
+    }
+    // V1.6 Hux display title by default.
+    .pager li {
+        width: 48%;
+        &.next { float: right; }
+        &.previous { float: left; }
+        > a {
+            width: 100%;
+            > span {
+                color: $gray;
+                font-weight: normal;
+                letter-spacing: 0.5px;
+            }
+        }
+    }
+    /* Hux make all img responsible in post-container */
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 1.5em auto 1.6em auto;
+    }
+}
+
+

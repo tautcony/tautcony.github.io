@@ -1,0 +1,125 @@
+// Astro Prism output: <pre class="language-X" data-language="X"><code class="language-X">…</code></pre>
+// Tokens: <span class="token …">
+
+code:not(pre code) {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
+
+// Scroll on the inner <code>, not <pre>: language badges use pre::before above the box
+// (see tc-blog.scss). Overflow on <pre> would clip those labels (and heti sets overflow:auto).
+pre {
+    overflow: visible;
+    background-color: #f8f8f8;
+    border: 1px solid #cccccc;
+    padding: 6px 10px;
+    border-radius: 3px;
+
+    code {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0;
+        font-size: inherit;
+        color: inherit;
+        background: transparent;
+        border-radius: 0;
+        white-space: pre;
+    }
+}
+
+// Prism token palette (aligned with the site’s long-standing light theme)
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #999988;
+    font-style: italic;
+}
+
+.token.punctuation {
+    color: #333;
+}
+
+.token.keyword,
+.token.atrule {
+    color: #000;
+    font-weight: bold;
+}
+
+.token.operator {
+    color: #000;
+    font-weight: bold;
+}
+
+.token.boolean,
+.token.number {
+    color: #009999;
+}
+
+.token.string,
+.token.char,
+.token.attr-name,
+.token.attr-value {
+    color: #d01040;
+}
+
+.token.regex {
+    color: #009926;
+}
+
+.token.function {
+    color: #990000;
+    font-weight: bold;
+}
+
+.token.class-name {
+    color: #445588;
+    font-weight: bold;
+}
+
+.token.builtin {
+    color: #0086b3;
+}
+
+.token.constant,
+.token.property,
+.token.symbol,
+.token.variable {
+    color: #008080;
+}
+
+.token.tag {
+    color: #000080;
+}
+
+.token.selector {
+    color: #000080;
+}
+
+.token.deleted {
+    color: #000;
+    background-color: #ffdddd;
+}
+
+.token.inserted {
+    color: #000;
+    background-color: #ddffdd;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    color: #800080;
+    cursor: help;
+}

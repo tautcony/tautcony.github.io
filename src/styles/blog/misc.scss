@@ -1,0 +1,503 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// -- Highlight Color Customization
+
+::-moz-selection {
+    color: white;
+    text-shadow: none;
+    background: $brand-primary;
+}
+
+::selection {
+    color: white;
+    text-shadow: none;
+    background: $brand-primary;
+}
+
+img::selection {
+    color: white;
+    background: transparent;
+}
+
+img::-moz-selection {
+    color: white;
+    background: transparent;
+}
+
+
+/* Tags support End*/
+
+
+.page-fullscreen {
+    .intro-header {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #tag-heading {
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-bottom: 150px;
+        width: 100%;
+        height: 100%;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    footer {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        padding-bottom: 20px;
+        opacity: 0.6;
+        color: #fff;
+        .copyright {
+            color: #fff;
+            a {
+                color: #fff;
+                &:hover {
+                    color: #ddd;
+                }
+            }
+        }
+    }
+}
+
+.corner-buttons {
+    position: fixed;
+    left: 28px;
+    bottom: 34px;
+    z-index: 1;
+    margin: -5px 0;
+    padding: 0;
+    transition: transform .2s ease;
+    will-change: transfrom;
+
+    button {
+        &.back-to-top {
+            background-color: rgb(0, 0, 0);
+            display: inline-block;
+            box-sizing: border-box;
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.15;
+            transition: opacity .3s;
+        }
+
+        &[disabled] {
+            cursor: default;
+            opacity: 0.05;
+        }
+    }
+
+    svg.back-to-top {
+        width: 24px;
+        height: 24px;
+        stroke: #fff;
+        fill: none;
+        stroke-width: 10;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+}
+
+#kon-container .lang {
+    &.none {
+        display: none;
+        opacity: 0;
+    }
+    transition: opacity 0.5s ease-in;
+}
+
+.heimu, .heimu a, a .heimu, .heimu a.new {
+    background-color: #252525 !important;
+    color: #252525 !important;
+    text-shadow: none !important;
+    line-height: 100% !important;
+}
+
+#searchform {
+    margin: 15px 0 15px 0;
+    #s {
+        background-color: #fff;
+        background-image: url("/img/search.svg");
+        background-repeat: no-repeat;
+        // Vertically center; 6px left keeps icon balanced in the 28px left padding.
+        background-position: 6px center;
+        background-size: 16px 16px;
+        font-size: 13.3333px;
+        font-weight: 300;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        -moz-border-radius: 2px;
+        width: 110px;
+        height: 30px;
+        line-height: 12px;
+        padding: 4px 10px 4px 28px;
+        transition: all 400ms ease;
+        &:focus {
+            background-color: #f9f9f9;
+            width: 218px;
+        }
+    }
+}
+
+.visually-hidden {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+
+.image-credit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 440px;
+    padding: 10px 15px;
+    background-color: rgba(34, 34, 34, 0.5);
+    color: #fff;
+    font-size: 0.75em;
+    text-align: right;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 3px;
+    background-clip: padding-box;
+    z-index: 10;
+    > a {
+        color: #fff;
+        text-decoration: none;
+    }
+}
+
+@media only screen and (min-width: 48em) {
+    .image-credit {
+        max-width: 760px;
+    }
+}
+
+@media only screen and (min-width: 62.5em) {
+    .image-credit {
+        max-width: 960px;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+    display: block;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    &:hover {
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+::-webkit-scrollbar-track {
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+}
+
+
+canvas {
+    vertical-align: baseline;
+    margin: 0;
+    outline: 0;
+    border: 0;
+    background: transparent;
+    padding: 0;
+}
+
+// Fenced code: Astro Prism emits <pre class="language-X" data-language="X">…</pre>
+// (no Rouge wrappers). Language tab sits on pre::before above the box — keep pre
+// overflow visible so heti's `.heti pre { overflow: auto }` does not clip it.
+// Horizontal scroll is on `pre > code` (see syntax.scss).
+//
+// Alignment: bottom:100% + margin-bottom:-1px tucks the tab onto the pre top border
+// (same idea as legacy `.highlighter-rouge > .highlight { transform: translateY(-2px) }`).
+// left:-1px lines up with the outer left border edge (containing block is the padding box).
+.post-content pre[class*="language-"] {
+    position: relative;
+    // Room for the tab above the box (line-height 1.4 + padding + a little slack).
+    margin-top: 2em;
+    border-top-left-radius: 0;
+    overflow: visible;
+
+    &::before {
+        position: absolute;
+        bottom: 100%;
+        left: -1px;
+        z-index: 1;
+        margin-bottom: -1px;
+        padding: 2px 7px;
+        font-size: 0.9em;
+        font-weight: 700;
+        line-height: 1.4;
+        color: #616161;
+        background: #ededed;
+        content: "Code";
+        border: 1px solid #cccccc;
+        border-bottom: 0;
+        border-radius: 5px 5px 0 0;
+        font-family: "Arial", "Helvetica Neue", sans-serif;
+        box-sizing: border-box;
+    }
+
+    &.language-bash::before {
+        content: "Bash";
+    }
+    &.language-c::before {
+        content: "C";
+    }
+    &.language-cs::before {
+        content: "C♯";
+    }
+    &.language-c\+\+::before,
+    &.language-cpp::before {
+        content: "C++";
+    }
+    &.language-css::before {
+        content: "CSS";
+    }
+    &.language-coffeescript::before {
+        content: "CoffeeScript";
+    }
+    &.language-html::before {
+        content: "HTML";
+    }
+    &.language-xml::before {
+        content: "XML";
+    }
+    &.language-http::before {
+        content: "HTTP";
+    }
+    &.language-json::before {
+        content: "JSON";
+    }
+    &.language-java::before {
+        content: "Java";
+    }
+    &.language-js::before,
+    &.language-javascript::before {
+        content: "JavaScript";
+    }
+    &.language-makefile::before {
+        content: "Makefile";
+    }
+    &.language-markdown::before {
+        content: "Markdown";
+    }
+    &.language-objectivec::before {
+        content: "Objective-C";
+    }
+    &.language-php::before {
+        content: "PHP";
+    }
+    &.language-perl::before {
+        content: "Perl";
+    }
+    &.language-python::before {
+        content: "Python";
+    }
+    &.language-ruby::before {
+        content: "Ruby";
+    }
+    &.language-sql::before {
+        content: "SQL";
+    }
+    &.language-shell::before {
+        content: "Shell";
+    }
+    &.language-erlang::before {
+        content: "Erlang";
+    }
+    &.language-go::before {
+        content: "Go";
+    }
+    &.language-go-html-template::before {
+        content: "Go HTML Template";
+    }
+    &.language-groovy::before {
+        content: "Groovy";
+    }
+    &.language-haskell::before {
+        content: "Haskell";
+    }
+    &.language-kotlin::before {
+        content: "Kotlin";
+    }
+    &.language-clojure::before {
+        content: "Clojure";
+    }
+    &.language-less::before {
+        content: "Less";
+    }
+    &.language-lisp::before {
+        content: "Lisp";
+    }
+    &.language-lua::before {
+        content: "Lua";
+    }
+    &.language-matlab::before {
+        content: "Matlab";
+    }
+    &.language-rust::before {
+        content: "Rust";
+    }
+    &.language-scss::before {
+        content: "Scss";
+    }
+    &.language-scala::before {
+        content: "Scala";
+    }
+    &.language-swift::before {
+        content: "Swift";
+    }
+    &.language-ts::before,
+    &.language-typescript::before {
+        content: "TypeScript";
+    }
+    &.language-yml::before,
+    &.language-yaml::before {
+        content: "YAML";
+    }
+    &.language-toml::before {
+        content: "TOML";
+    }
+    &.language-diff::before {
+        content: "Diff";
+    }
+    &.language-powershell::before {
+        content: "PowerShell";
+    }
+    &.language-plaintext::before {
+        content: "Text";
+    }
+}
+
+// Lazy native PDF embed (see PdfEmbed.astro + src/client/features/pdf-embed.ts)
+.pdf-embed {
+    margin: 1.5em 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background: #fafafa;
+    overflow: hidden;
+
+    &__placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75em;
+        min-height: inherit;
+        padding: 2em 1em;
+        text-align: center;
+    }
+
+    &__label {
+        margin: 0;
+        color: $gray;
+        font-size: 0.95em;
+    }
+
+    &__button {
+        appearance: none;
+        border: 1px solid $brand-primary;
+        background: $brand-primary;
+        color: #fff;
+        border-radius: 3px;
+        padding: 0.5em 1.25em;
+        font-size: 0.95em;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            filter: brightness(1.05);
+            outline: 2px solid rgba($brand-primary, 0.4);
+            outline-offset: 2px;
+        }
+    }
+
+    &__alt {
+        margin: 0;
+        font-size: 0.85em;
+    }
+
+    &__viewer {
+        display: block;
+        width: 100%;
+        min-height: 320px;
+        border: 0;
+        background: #525659;
+    }
+
+    &__actions {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        min-height: 44px;
+        margin: 0;
+        padding: 10px 14px;
+        border-top: 1px solid #e5e5e5;
+        background: #fff;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    // Beat Heti's paragraph/link selectors without changing global prose links.
+    & &__label,
+    & &__alt {
+        margin: 0;
+    }
+
+    & &__alt a,
+    & &__placeholder a,
+    & &__alt a:hover,
+    & &__alt a:focus,
+    & &__placeholder a:hover,
+    & &__placeholder a:focus {
+        padding-block-end: 0;
+        border-block-end: 0;
+        color: $brand-primary;
+        text-decoration: none;
+        text-underline-offset: 0.18em;
+    }
+
+    & &__alt a:hover,
+    & &__alt a:focus,
+    & &__placeholder a:hover,
+    & &__placeholder a:focus {
+        text-decoration-line: underline;
+        text-decoration-thickness: 1px;
+    }
+}

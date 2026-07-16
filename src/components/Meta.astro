@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import { absoluteUrl } from "../lib/url";
 
 interface Props {
     title?: string;
@@ -19,18 +20,11 @@ const {
     pageUrl = "/",
 } = Astro.props;
 
-const absolute = (path: string) => {
-    if (/^https?:\/\//i.test(path)) return path;
-    const base = site.url.replace(/\/$/, "");
-    const p = path.startsWith("/") ? path : `/${path}`;
-    return `${base}${p}`;
-};
-
 const imagePath = headerImg || site.headerImg;
-const image = absolute(imagePath);
+const image = absoluteUrl(imagePath);
 const desc = description ?? subtitle ?? "";
 const displayTitle = title ?? site.title;
-const url = absolute(pageUrl);
+const url = absoluteUrl(pageUrl);
 const card = feature ? "summary_large_image" : "summary";
 ---
 

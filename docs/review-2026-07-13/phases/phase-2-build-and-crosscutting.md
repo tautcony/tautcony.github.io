@@ -8,7 +8,7 @@
 ## 已审查文件
 
 - `mig/02-astro-architecture.md`、`mig/06-frontend-scripts.md`、`mig/08-ci-deploy-docker.md`、`mig/09-acceptance-and-risks.md`
-- `vite.config.mjs`、`ts/entries/*`、`styles/*`、`.github/workflows/*`、`Dockerfile`、`.dockerignore`
+- `vite.config.mjs`、`src/client/entries/*`、`styles/*`、`.github/workflows/*`、`Dockerfile`、`.dockerignore`
 
 ## Findings
 

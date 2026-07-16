@@ -7,7 +7,8 @@ interface Props {
 }
 
 const { math } = Astro.props;
-const enabled = site.katex && math !== false;
+/** Opt-in only: set front matter `math: true` on posts that need KaTeX. */
+const enabled = site.katex && math === true;
 ---
 
 {

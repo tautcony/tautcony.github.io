@@ -45,28 +45,69 @@
 }
 // tag_cloud
 #tag_cloud {
-    margin: 20px 0 15px 0;
+    margin: 24px 0 18px;
+    padding-top: 6px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid $gray-light;
     a, .tag {
-        transition-property: all;
-        transition-duration: 0.4s;
-        transition-timing-function: ease;
-        font-size: 14px;
-        border: 0;
-        line-height: 28px;
-        margin: 0 2px;
-        margin-bottom: 8px;
-        background: #f3f5f5;
+        @include sans-serif;
+        position: relative;
+        box-sizing: border-box;
+        transition:
+            color 0.2s ease,
+            border-color 0.2s ease,
+            background-color 0.2s ease;
+        border: 1px solid $gray-light;
+        border-radius: 0;
+        padding: 0 20px 0 9px;
+        color: $gray;
+        line-height: 26px;
+        margin: 0 10px 10px 0;
+        background: transparent;
+        letter-spacing: 0;
+        vertical-align: top;
         &:hover, &:active {
-            background-color: #0085a1 !important;
+            color: white !important;
+            border-color: $brand-primary;
+            background-color: $brand-primary !important;
+            > sup {
+                background-color: $gray-dark;
+            }
         }
-        &.focus{
-            box-shadow: rgba(0,0,0,.117647) 0 1px 6px, rgba(0,0,0,.239216) 0 1px 4px;
-          }
-          &.tag-button--all {
+        &.focus {
+            color: white !important;
+            border-color: $brand-primary;
+            background-color: $brand-primary !important;
+            > sup {
+                background-color: $gray-dark;
+            }
+        }
+        > sup {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-color: $brand-primary;
+            font-size: 10px !important;
             font-weight: 700;
-            color: #0085a1!important;
-            &:hover, &:active{
-                background-color: #e4e4e4 !important;
+            line-height: 16px;
+        }
+        &.tag-button--all {
+            font-weight: 700;
+            color: $brand-primary !important;
+            border-color: rgba(0, 133, 161, 0.45);
+            &:hover, &:active, &.focus {
+                color: white !important;
+                border-color: $brand-primary;
+                background-color: $brand-primary !important;
             }
         }
     }

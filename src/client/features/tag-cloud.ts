@@ -52,7 +52,7 @@ function tagColor(start: Rgb, increment: Rgb, weighting: number): string {
 
 const DEFAULT_CONFIG = {
     size: { start: 14, end: 18, unit: "pt" },
-    color: { start: "#bbbbee", end: "#0085a1" },
+    color: { start: "#999999", end: "#0085a1" },
 } as const;
 
 export function init(
@@ -95,6 +95,6 @@ export function init(
         }
         const weighting = weight - lowest;
         element.style.fontSize = `${config.size.start + weighting * fontIncrement}${config.size.unit}`;
-        element.style.backgroundColor = tagColor(startRgb, colorStep, weighting);
+        element.style.color = tagColor(startRgb, colorStep, weighting);
     }
 }

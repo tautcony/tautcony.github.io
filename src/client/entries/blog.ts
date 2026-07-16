@@ -65,7 +65,7 @@ async function bootPageFeatures(): Promise<void> {
             import("../features/archive").then(m => m.init()),
             import("../features/tag-cloud").then(m =>
                 m.init(document.querySelectorAll("#tag_cloud a"), {
-                    color: { start: "#bbbbee", end: "#0085a1" },
+                    color: { start: "#999999", end: "#0085a1" },
                     size: { start: 1, end: 1.1, unit: "em" },
                 })
             )

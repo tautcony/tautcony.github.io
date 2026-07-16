@@ -2,7 +2,7 @@
  * Site-wide configuration for Astro SSG.
  *
  * - `url` / `baseurl` mirror `astro.config` `site` / `base` (single content source: this file).
- * - `rss: false` hides the footer RSS icon; `/feed.xml` is still generated for feed readers.
+ * - `rss: true` shows the footer RSS icon linking to `/feed.xml`.
  */
 export const site = {
     title: "踢锡部落格",
@@ -18,11 +18,8 @@ export const site = {
         twitter: "tautcony",
         github: "tautcony",
     },
-    /**
-     * When true, footer SNS shows an RSS icon linking to `/feed.xml`.
-     * Feed route is always built; keep false to match current chrome (no extra icon).
-     */
-    rss: false,
+    /** Footer SNS shows an RSS icon linking to `/feed.xml` (feed route always built). */
+    rss: true,
     socialAccount: [
         {
             title: "github",

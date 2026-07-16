@@ -263,6 +263,10 @@
     "size": 318,
     "sha256": "f1ba94c9c148da71ff5f1ea981fedd2fd0fffb0f05e44d47d0490cd1670dd1c0"
   },
+  "/img/favicon.svg": {
+    "size": 756,
+    "sha256": "ee91f5180ded102b86ead89fc03769d802c5ec3fdb585ed49af11386c92d3a1b"
+  },
   "/img/home-bg-2.png": {
     "size": 41805,
     "sha256": "a5e93c426b90f9ff3001d981d0de4d0dabf13852ff28ac1e48eb97971750a04b"
@@ -411,9 +415,9 @@
     "size": 395,
     "sha256": "db86a835b0871797ab1835dd6d12975ca4a5de408e7631c71c8b6cc3c858f5d8"
   },
-  "/img/search.png": {
-    "size": 440,
-    "sha256": "c99de94cb887e8c3236dd934c1a675ebd453fc8872a7291639d81d07e331fe48"
+  "/img/search.svg": {
+    "size": 367,
+    "sha256": "083401a0d7a91cd1e2eda2be20561d62cad60386f7283bd4f4525f3e7089b5c5"
   },
   "/img/tag-bg.jpg": {
     "size": 112800,

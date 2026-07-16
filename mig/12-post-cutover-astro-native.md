@@ -276,4 +276,4 @@ npm run eval:consistency   # 允许 Prism DOM 与 allowlist 已声明的差异
 
 ---
 
-*文档状态：plan · 2026-07-16 · **W1–W3 / W5 / W6 已执行**（W4/W7 待；styles → `src/styles/`）*
+*文档状态：plan · 2026-07-16 · W1–W3/W5/W6 done；**W4/W7 deferred**；`rss: true`；已删 `search.png`（fixture 同步 search.svg/favicon.svg）*

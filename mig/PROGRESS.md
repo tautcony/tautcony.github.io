@@ -55,10 +55,12 @@
 | W1 | 注释 Astro-first + 删 `fa-*` / `--write-jekyll` | **done** |
 | W2 | `site` 单一源 + RSS 策略（`rss: false` 保页脚；feed 仍生成） | **done** |
 | W3 | sitemap/nav 契约注释化/小重构（行为冻结；Tool 并入 navPages） | **done** |
-| W4 | tcupdate 去 simple-line-icons → SVG | todo |
+| W4 | tcupdate 去 simple-line-icons → SVG | **deferred**（决策：延后） |
 | W5 | mig/docs historical 标注 + 本阶段勾选 | **done** |
 | W6 | styles 迁入 `src/styles/` | **done** |
-| W7 | 可选：brightness/corevalue 决策 | todo |
+| W7 | brightness/corevalue | **deferred**（决策：暂时不动） |
+| — | RSS 页脚 | **done**（`rss: true`） |
+| — | 删 `public/img/search.png` | **done**（已用 search.svg） |
 
 **M6 原则**：URL / lastmod / fixtures / baselines **保留 Jekyll 时代语义**；业务源码不再用「from legacy _config」叙事。
 

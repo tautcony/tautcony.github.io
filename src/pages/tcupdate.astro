@@ -1,11 +1,13 @@
 ---
 /**
  * Standalone tools page (layout: null).
- * Independent tool downloads page; Vue JSX client-only mount.
+ * Independent tool downloads page; Astro markup with client-side GitHub data.
  * build.format: preserve → dist/tcupdate.html
  */
 import "../../styles/tcupdate.scss";
 import { site } from "../data/site";
+import ToolDownload from "../components/ToolDownload.astro";
+import ReleaseHistory from "../components/ReleaseHistory.astro";
 ---
 
 <!DOCTYPE html>
@@ -38,10 +40,10 @@ import { site } from "../data/site";
             <h2 style="font-family:Orbitron">TC Tools Downloads</h2>
             <h4><center>Hope you enjoy using these tools.</center></h4>
             <div id="downlinks">
-                <download-link width="wide" owner="tautcony" repo="ChapterTool"></download-link>
-                <download-link width="wide" owner="vcb-s" repo="Auto-Torrent-Inspection"></download-link>
-                <download-link width="middle" owner="vcb-s" repo="RP-Checker"></download-link>
-                <download-link width="middle" owner="tautcony" repo="ISTA-Patcher"></download-link>
+                <ToolDownload width="wide" owner="tautcony" repo="ChapterTool" />
+                <ToolDownload width="wide" owner="vcb-s" repo="Auto-Torrent-Inspection" />
+                <ToolDownload width="middle" owner="vcb-s" repo="RP-Checker" />
+                <ToolDownload width="middle" owner="tautcony" repo="ISTA-Patcher" />
             </div>
 
             <br /><br />
@@ -138,19 +140,19 @@ import { site } from "../data/site";
             </p>
             <h3>ChapterTool History Releases</h3>
             <div class="all-releases-w">
-                <history-download owner="tautcony" repo="ChapterTool"></history-download>
+                <ReleaseHistory owner="tautcony" repo="ChapterTool" />
             </div>
             <h3>AutoTorrentInspection History Releases</h3>
             <div class="all-releases-w">
-                <history-download owner="vcb-s" repo="auto-torrent-inspection"></history-download>
+                <ReleaseHistory owner="vcb-s" repo="auto-torrent-inspection" />
             </div>
             <h3>RPChecker History Releases</h3>
             <div class="all-releases-w">
-                <history-download owner="vcb-s" repo="rp-checker"></history-download>
+                <ReleaseHistory owner="vcb-s" repo="rp-checker" />
             </div>
             <h3>ISTA-Patcher History Releases</h3>
             <div class="all-releases-w">
-                <history-download owner="tautcony" repo="ISTA-Patcher"></history-download>
+                <ReleaseHistory owner="tautcony" repo="ISTA-Patcher" />
             </div>
         </section>
         <div id="copyright-line">
@@ -158,9 +160,8 @@ import { site } from "../data/site";
             <a href="http://be5invis.github.io/Iosevka/" target="_blank" rel="noopener">be5invis</a>.
         </div>
 
-        <!-- Client-only Vue JSX entry (do not import in frontmatter) -->
         <script>
-            import "../../ts/entries/tcupdate.jsx";
+            import "../../ts/entries/tcupdate.ts";
         </script>
 
         {

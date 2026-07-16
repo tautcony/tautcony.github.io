@@ -1,0 +1,12 @@
+---
+interface Props {
+    owner: string;
+    repo: string;
+}
+
+const { owner, repo } = Astro.props;
+---
+
+<ul data-release-history data-owner={owner} data-repo={repo} hidden>
+    <li>Loading...</li>
+</ul>

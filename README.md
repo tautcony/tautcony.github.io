@@ -89,18 +89,8 @@ scripts/            content/ (migration + metadata), test/ (verification)
 | Entry | Role |
 |-------|------|
 | `ts/entries/blog.ts` | Main site JS (nav, quote, pdf-embed, archive tags, …) |
-| `ts/entries/page404.ts` | Particle 404 (Three.js r56 via CDN) |
-| `ts/entries/tcupdate.jsx` | Tools download page (Vue JSX, client-only) |
-
-### 404 debug flags
-
-| Query | Effect |
-|-------|--------|
-| `?webGL=true` | Use WebGL renderer instead of canvas |
-| `?perf=true` | Show FPS / MS panel |
-| `?gui=true` | Show dat.GUI |
-
-Example: `/404.html?perf=true&gui=true`
+| `ts/entries/page404.ts` | Responsive particle 404 (bundled modern Three.js) |
+| `ts/entries/tcupdate.ts` | Tools download page GitHub release enhancement |
 
 ## Content notes
 
@@ -108,9 +98,8 @@ Example: `/404.html?perf=true&gui=true`
 - Post URLs are frozen against `mig/fixtures/legacy-post-urls.txt` (some filename dates differ from URL dates).
 - “Update on” dates come from **frozen** `src/data/lastmod.json` (`npm run lastmod:check`; optional `lastmod:refresh`).
 - PDF previews load **PDF.js from cdnjs** on demand (`.pdf-embed` placeholders).
-- 404 particle scene loads **Three.js r56 from cdnjs** (CanvasRenderer-era API).
+- 404 particle scene bundles the current **Three.js** WebGL renderer.
 - Comments use **utterances**; math uses **KaTeX** when enabled on a post.
-- Legacy Service Worker registrations are unregistered once on the main client entry.
 - Sentry `release` is `tc-blog@<version>+<gitsha>` (see `mig/11-sentry-observe.md` for 7-day watch).
 
 ## Migration

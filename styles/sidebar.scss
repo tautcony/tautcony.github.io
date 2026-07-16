@@ -18,9 +18,12 @@
 .sidebar-container {
     color: $gray-l;
     font-size: 14px;
+    align-self: flex-start;
 
     h5 {
         color: $gray;
+        font-size: 14px;
+        margin: 10px 0;
         padding-bottom: 1em;
         a {
             color: $gray !important;

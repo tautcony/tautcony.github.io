@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import vue from "@astrojs/vue";
 import { unified } from "@astrojs/markdown-remark";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
@@ -39,12 +38,6 @@ export default defineConfig({
     trailingSlash: "always",
     publicDir: "public",
     outDir: "dist",
-    integrations: [
-        vue({
-            // tcupdate uses Vue JSX entry; only mount on that page (M3).
-            jsx: true,
-        }),
-    ],
     build: {
         // Keep bare .html paths (e.g. tcupdate.html, 404.html) instead of directories.
         format: "preserve",
@@ -62,6 +55,10 @@ export default defineConfig({
         syntaxHighlight: "prism",
     },
     vite: {
+        build: {
+            // The isolated 404 entry includes the Three.js WebGL renderer.
+            chunkSizeWarningLimit: 550,
+        },
         // Expose release to client entries (Sentry). Prefer env override in CI.
         define: {
             "import.meta.env.PUBLIC_SENTRY_RELEASE": JSON.stringify(
@@ -69,7 +66,7 @@ export default defineConfig({
             ),
         },
         resolve: {
-            extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".scss", ".css"],
+            extensions: [".mjs", ".js", ".ts", ".json", ".scss", ".css"],
         },
         css: {
             preprocessorOptions: {

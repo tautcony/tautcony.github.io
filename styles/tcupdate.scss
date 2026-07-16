@@ -12,6 +12,10 @@ html, body {
     font-family: "Iosevka Web", monospace;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 p {
     margin: 1rem 0;
     border-left: dotted;
@@ -173,6 +177,10 @@ section {
         span {
             display:   block;
             font-size: 60%;
+        }
+        .release-version {
+            display: inline;
+            font-size: inherit;
         }
     }
 }

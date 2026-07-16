@@ -4,7 +4,6 @@
         "module": "ESNext",
         "moduleResolution": "bundler",
         "lib": ["ES2022", "DOM", "DOM.Iterable"],
-        "jsx": "preserve",
         "strict": true,
         "noImplicitOverride": true,
         "noFallthroughCasesInSwitch": true,
@@ -21,8 +20,6 @@
     },
     "include": [
         "ts/**/*.ts",
-        "ts/**/*.tsx",
-        "ts/**/*.jsx",
         "src/**/*.ts",
         "src/**/*.tsx"
     ],

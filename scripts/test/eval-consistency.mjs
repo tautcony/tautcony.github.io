@@ -433,8 +433,8 @@ function domProbes(route, html) {
     }
     if (isTc) {
         p["tc.section"] = /id=["']tool-downloads["']/.test(html);
-        p["tc.downloadLink"] = /download-link/.test(html);
-        p["tc.history"] = /history-download/.test(html);
+        p["tc.downloadLink"] = /download-link|data-latest-release/.test(html);
+        p["tc.history"] = /history-download|data-release-history/.test(html);
     }
     if (/^\/\d{4}\//.test(route)) {
         p["post.updateDate"] = extractUpdateDate(html) || "(empty)";

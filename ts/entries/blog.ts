@@ -68,13 +68,3 @@ document.addEventListener("DOMContentLoaded", () => {
         heti.autoSpacing();
     }
 });
-
-// One-shot migration: drop any legacy service workers from older deploys.
-// Safe to remove after a few months in production.
-if (navigator.serviceWorker) {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        for (const registration of registrations) {
-            registration.unregister();
-        }
-    });
-}

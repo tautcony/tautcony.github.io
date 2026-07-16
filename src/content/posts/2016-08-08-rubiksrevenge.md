@@ -56,7 +56,7 @@ image:
 
 改到自己感觉天衣无缝了，运行时间依然是不能更慢，对于case02的`BYYYYBBBGRRRRGGG >> 12`需要接近3分半才能出结果，这我就不能接受了啊，哪来这么高的时间复杂度啊。
 
-祭出VS的性能探查器跑了一把，惊了，说好的`unordered map` $\mathcal{O}(1)$的插入、查询呢，你家$\mathcal{O}(1)$操作能占$63\%$的时间啊。
+祭出VS的性能探查器跑了一把，惊了，说好的`unordered map` $\mathcal{O}(1)$的插入、查询呢，你家$\mathcal{O}(1)$操作能占 63% 的时间啊。
 
 ![unordered map with debuge mode](/img/in-post/rubiksrevenge/diagsession_debug.png)
 

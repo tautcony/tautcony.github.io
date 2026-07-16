@@ -1,0 +1,35 @@
+---
+/**
+ * Google tag (gtag.js) — GA4 Measurement ID from site.gaMeasurementId.
+ *
+ * Place in <head> (Google recommendation). data-cfasync="false" opts out of
+ * Cloudflare Rocket Loader, which rewrites script type to
+ * "{hash}-text/javascript" and commonly aborts / breaks gtag.js loads.
+ *
+ * Avoid Astro define:vars so gtag stays global (not wrapped in an IIFE).
+ */
+import { site } from "../data/site";
+
+const gaId = site.gaMeasurementId;
+const inline = gaId
+    ? `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaId}');`
+    : "";
+---
+
+{
+    gaId && (
+        <>
+            <!-- Google tag (gtag.js) -->
+            <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                data-cfasync="false"
+                is:inline
+            ></script>
+            <script is:inline data-cfasync="false" set:html={inline} />
+        </>
+    )
+}

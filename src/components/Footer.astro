@@ -49,21 +49,3 @@ const year = new Date().getFullYear();
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
     is:inline></script>
-{
-    site.gaMeasurementId && (
-        <>
-            <script
-                async
-                src={`https://www.googletagmanager.com/gtag/js?id=${site.gaMeasurementId}`}
-                is:inline></script>
-            <script is:inline define:vars={{ gaId: site.gaMeasurementId }}>
-                window.dataLayer = window.dataLayer || [];
-                function gtag() {
-                    dataLayer.push(arguments);
-                }
-                gtag("js", new Date());
-                gtag("config", gaId);
-            </script>
-        </>
-    )
-}

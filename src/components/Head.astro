@@ -1,6 +1,7 @@
 ---
 import { site } from "../data/site";
 import Meta from "./Meta.astro";
+import GoogleAnalytics from "./GoogleAnalytics.astro";
 
 interface Props {
     title?: string;
@@ -30,8 +31,7 @@ const canonical = new URL(canonicalPath, site.url).href.replace(/\/index\.html$/
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <title>{pageTitle}</title>
-
-    <script is:inline></script><!-- ga & ba script hook -->
+    <GoogleAnalytics />
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-minimal.min.css"

@@ -5,9 +5,9 @@
  * build.format: preserve → dist/tcupdate.html
  */
 import "../../styles/tcupdate.scss";
-import { site } from "../data/site";
 import ToolDownload from "../components/ToolDownload.astro";
 import ReleaseHistory from "../components/ReleaseHistory.astro";
+import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 ---
 
 <!DOCTYPE html>
@@ -15,6 +15,7 @@ import ReleaseHistory from "../components/ReleaseHistory.astro";
     <head>
         <meta charset="utf-8" />
         <title>TautCony Tools Downloads</title>
+        <GoogleAnalytics />
         <meta name="BaseUrl" content="example.com" />
         <meta name="ChapterTool" content="2.33.33.3331" />
         <meta name="AutoTorrentInspection" content="1.1.0.0" />
@@ -163,25 +164,5 @@ import ReleaseHistory from "../components/ReleaseHistory.astro";
         <script>
             import "../../ts/entries/tcupdate.ts";
         </script>
-
-        {
-            site.gaMeasurementId && (
-                <>
-                    <script
-                        async
-                        src={`https://www.googletagmanager.com/gtag/js?id=${site.gaMeasurementId}`}
-                        is:inline
-                    />
-                    <script is:inline define:vars={{ gaId: site.gaMeasurementId }}>
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag() {
-                            dataLayer.push(arguments);
-                        }
-                        gtag("js", new Date());
-                        gtag("config", gaId);
-                    </script>
-                </>
-            )
-        }
     </body>
 </html>

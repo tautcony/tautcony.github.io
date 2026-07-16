@@ -50,6 +50,12 @@
 - `src/data/pages.ts`：home / about / archive / 404 等页 meta
 - `astro.config.mjs` 的 `site` / `base` 应与 `site.url` / `site.baseurl` 一致
 
+## 6b. 页脚语录
+
+- 可编辑源：`src/data/quotes.yml`
+- 发布产物：`public/json/quote.json`（`npm run quotes:build`；CI `quotes:check`）
+- 运行时：`src/client/features/quote.ts` fetch 该 JSON
+
 ## 7. 明确不在契约内
 
 - `mig/archive/**` 计划文档叙述

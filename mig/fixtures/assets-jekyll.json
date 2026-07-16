@@ -424,12 +424,8 @@
     "sha256": "c2ac2aab9c0e4b0075dc3ca9b0238fd4a36aace83dd357707610908e0480a8ed"
   },
   "/json/quote.json": {
-    "size": 5837,
-    "sha256": "136e29f49f1e8e7c42ffba10505e365ca46cdd63b9a868e044a38d7fd176e82f"
-  },
-  "/json/quote.json.gz": {
-    "size": 2707,
-    "sha256": "f3c9f3f2931b4171d6a4f6eb29f0f0526cd8d7a7f8fcd17d9738eef3134193f0"
+    "size": 5794,
+    "sha256": "85a256ebb34437ac9749c7dc0fa6879e7fbebfd99d354e41c1f583e2c8573220"
   },
   "/robots.txt": {
     "size": 42,

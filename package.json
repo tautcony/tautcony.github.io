@@ -24,9 +24,11 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "math:check": "node scripts/content/check-math-delimiters.mjs",
+    "quotes:build": "node scripts/content/build-quotes.mjs",
+    "quotes:check": "node scripts/content/build-quotes.mjs --check",
     "lastmod:check": "node scripts/content/generate-lastmod.mjs --check",
     "lastmod:refresh": "node scripts/content/generate-lastmod.mjs --refresh",
-    "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run math:check && npm run lastmod:check && npm run build"
+    "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run math:check && npm run quotes:check && npm run lastmod:check && npm run build"
   },
   "browserslist": [
     "defaults",

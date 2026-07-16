@@ -71,14 +71,43 @@ function resolve(p) {
     return path.isAbsolute(p) ? p : path.join(root, p);
 }
 
+function resolveStaticRequestPath(staticRoot, requestUrl) {
+    let urlPath;
+    try {
+        urlPath = decodeURIComponent(requestUrl.split("?")[0].split("#")[0]);
+    } catch {
+        return null;
+    }
+
+    if (urlPath.includes("\0") || urlPath.includes("\\")) {
+        return null;
+    }
+
+    const parts = urlPath.split("/");
+    if (parts.some(part => part === "..")) {
+        return null;
+    }
+
+    const safeParts = parts.filter(part => part && part !== ".");
+    if (safeParts.length === 0 || urlPath.endsWith("/")) {
+        safeParts.push("index.html");
+    }
+
+    const candidate = path.resolve(staticRoot, ...safeParts);
+    const relative = path.relative(staticRoot, candidate);
+    if (relative && (relative.startsWith("..") || path.isAbsolute(relative))) {
+        return null;
+    }
+
+    return candidate;
+}
+
 function startStaticServer(dir, port) {
     const abs = path.resolve(dir);
     const server = http.createServer((req, res) => {
         try {
-            let urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
-            if (urlPath.endsWith("/")) urlPath += "index.html";
-            let filePath = path.join(abs, urlPath);
-            if (!filePath.startsWith(abs)) {
+            let filePath = resolveStaticRequestPath(abs, req.url || "/");
+            if (!filePath) {
                 res.writeHead(403);
                 res.end("Forbidden");
                 return;
@@ -113,9 +142,9 @@ function startStaticServer(dir, port) {
             };
             res.writeHead(200, { "Content-Type": types[ext] || "application/octet-stream" });
             fs.createReadStream(filePath).pipe(res);
-        } catch (e) {
+        } catch {
             res.writeHead(500);
-            res.end(String(e));
+            res.end("Internal server error");
         }
     });
     return new Promise((resolvePromise, reject) => {

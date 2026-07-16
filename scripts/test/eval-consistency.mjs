@@ -85,6 +85,37 @@ function resolve(p) {
     return path.isAbsolute(p) ? p : path.join(root, p);
 }
 
+function resolveStaticRequestPath(staticRoot, requestUrl) {
+    let urlPath;
+    try {
+        urlPath = decodeURIComponent(requestUrl.split("?")[0].split("#")[0]);
+    } catch {
+        return null;
+    }
+
+    if (urlPath.includes("\0") || urlPath.includes("\\")) {
+        return null;
+    }
+
+    const parts = urlPath.split("/");
+    if (parts.some(part => part === "..")) {
+        return null;
+    }
+
+    const safeParts = parts.filter(part => part && part !== ".");
+    if (safeParts.length === 0 || urlPath.endsWith("/")) {
+        safeParts.push("index.html");
+    }
+
+    const candidate = path.resolve(staticRoot, ...safeParts);
+    const relative = path.relative(staticRoot, candidate);
+    if (relative && (relative.startsWith("..") || path.isAbsolute(relative))) {
+        return null;
+    }
+
+    return candidate;
+}
+
 function sha256Text(s) {
     return crypto.createHash("sha256").update(s, "utf8").digest("hex");
 }
@@ -129,6 +160,172 @@ function stripWs(s) {
     return String(s).replace(/\s+/g, "");
 }
 
+function isHtmlNameChar(ch) {
+    return ch !== undefined && (
+        (ch >= "a" && ch <= "z")
+        || (ch >= "A" && ch <= "Z")
+        || (ch >= "0" && ch <= "9")
+        || ch === "-"
+        || ch === ":"
+    );
+}
+
+function findTagEnd(source, start) {
+    let quote = "";
+    for (let i = start; i < source.length; i++) {
+        const ch = source[i];
+        if (quote) {
+            if (ch === quote) quote = "";
+        } else if (ch === "\"" || ch === "'") {
+            quote = ch;
+        } else if (ch === ">") {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function parseHtmlTagAt(source, index) {
+    if (source[index] !== "<") return null;
+
+    let cursor = index + 1;
+    let closing = false;
+    if (source[cursor] === "/") {
+        closing = true;
+        cursor++;
+    }
+
+    while (source[cursor] === " " || source[cursor] === "\n" || source[cursor] === "\r" || source[cursor] === "\t") {
+        cursor++;
+    }
+
+    const nameStart = cursor;
+    while (isHtmlNameChar(source[cursor])) cursor++;
+    if (cursor === nameStart) return null;
+
+    const end = findTagEnd(source, cursor);
+    if (end === -1) return null;
+
+    return {
+        name: source.slice(nameStart, cursor).toLowerCase(),
+        start: index,
+        end: end + 1,
+        closing,
+        selfClosing: source[end - 1] === "/",
+    };
+}
+
+function findElementContentEnd(source, start, name) {
+    let depth = 1;
+    let cursor = start;
+
+    while (cursor < source.length) {
+        const nextTag = source.indexOf("<", cursor);
+        if (nextTag === -1) {
+            return { contentEnd: source.length, blockEnd: source.length };
+        }
+
+        const tag = parseHtmlTagAt(source, nextTag);
+        if (!tag) {
+            cursor = nextTag + 1;
+            continue;
+        }
+
+        if (tag.name === name) {
+            if (tag.closing) {
+                depth--;
+                if (depth === 0) {
+                    return { contentEnd: tag.start, blockEnd: tag.end };
+                }
+            } else if (!tag.selfClosing) {
+                depth++;
+            }
+        }
+
+        cursor = tag.end;
+    }
+
+    return { contentEnd: source.length, blockEnd: source.length };
+}
+
+function removeHtmlComments(source, replacement = " ") {
+    let out = "";
+    let cursor = 0;
+
+    while (cursor < source.length) {
+        const start = source.indexOf("<!--", cursor);
+        if (start === -1) {
+            out += source.slice(cursor);
+            break;
+        }
+
+        out += source.slice(cursor, start) + replacement;
+        const end = source.indexOf("-->", start + 4);
+        if (end === -1) break;
+        cursor = end + 3;
+    }
+
+    return out;
+}
+
+function transformHtmlElements(source, shouldTransform, transform) {
+    let out = "";
+    let cursor = 0;
+
+    while (cursor < source.length) {
+        const nextTag = source.indexOf("<", cursor);
+        if (nextTag === -1) {
+            out += source.slice(cursor);
+            break;
+        }
+
+        const tag = parseHtmlTagAt(source, nextTag);
+        const openingTag = tag ? source.slice(nextTag, tag.end) : "";
+        if (!tag || tag.closing || tag.selfClosing || !shouldTransform(tag, openingTag)) {
+            out += source.slice(cursor, nextTag + 1);
+            cursor = nextTag + 1;
+            continue;
+        }
+
+        const match = findElementContentEnd(source, tag.end, tag.name);
+        out += source.slice(cursor, nextTag);
+        out += transform(source.slice(tag.end, match.contentEnd), tag);
+        cursor = match.blockEnd;
+    }
+
+    return out;
+}
+
+function stripHtmlTags(source, replacement = " ") {
+    let out = "";
+    let cursor = 0;
+
+    while (cursor < source.length) {
+        const nextTag = source.indexOf("<", cursor);
+        if (nextTag === -1) {
+            out += source.slice(cursor);
+            break;
+        }
+
+        const tag = parseHtmlTagAt(source, nextTag);
+        if (!tag) {
+            out += source.slice(cursor, nextTag + 1);
+            cursor = nextTag + 1;
+            continue;
+        }
+
+        out += source.slice(cursor, nextTag) + replacement;
+        cursor = tag.end;
+    }
+
+    return out;
+}
+
+function hasTexAnnotationEncoding(openingTag) {
+    const lower = openingTag.toLowerCase();
+    return lower.includes("encoding=\"application/x-tex\"") || lower.includes("encoding='application/x-tex'");
+}
+
 /**
  * Full-content plain text for Jekyll↔Astro compare.
  *
@@ -151,27 +348,28 @@ export function normalizePlainText(html) {
         s = decodeEntities(s);
     }
 
-    s = s.replace(/<script[\s\S]*?<\/script>/gi, " ");
-    s = s.replace(/<style[\s\S]*?<\/style>/gi, " ");
+    s = transformHtmlElements(
+        s,
+        tag => tag.name === "script" || tag.name === "style",
+        () => " "
+    );
 
     // KaTeX annotation → math token (before general strip)
-    s = s.replace(
-        /<annotation[^>]*encoding=["']application\/x-tex["'][^>]*>([\s\S]*?)<\/annotation>/gi,
-        (_, m) => ` ⟦MATH:${stripWs(decodeEntities(m))}⟧ `
+    s = transformHtmlElements(
+        s,
+        (tag, openingTag) => tag.name === "annotation" && hasTexAnnotationEncoding(openingTag),
+        m => ` \u27e6MATH:${stripWs(decodeEntities(m))}\u27e7 `
     );
 
     // Code first while &lt; still protects << inside source
-    s = s.replace(/<pre[\s\S]*?<\/pre>/gi, (block) => {
-        const inner = block.replace(/<[^>]+>/g, " ");
-        return ` ⟦CODE:${stripWs(decodeEntities(inner))}⟧ `;
-    });
-    s = s.replace(/<code[\s\S]*?<\/code>/gi, (block) => {
-        const inner = block.replace(/<[^>]+>/g, " ");
-        return ` ⟦CODE:${stripWs(decodeEntities(inner))}⟧ `;
-    });
+    s = transformHtmlElements(
+        s,
+        tag => tag.name === "pre" || tag.name === "code",
+        block => ` \u27e6CODE:${stripWs(decodeEntities(stripHtmlTags(block)))}\u27e7 `
+    );
 
-    s = s.replace(/<!--[\s\S]*?-->/g, " ");
-    s = s.replace(/<[^>]+>/g, " ");
+    s = removeHtmlComments(s);
+    s = stripHtmlTags(s);
     // Now safe to decode remaining entities in prose
     s = decodeEntities(s);
 
@@ -774,12 +972,11 @@ function layerL4(legacyDir, distDir) {
 }
 
 function startStaticServer(dir, port) {
+    const abs = path.resolve(dir);
     const server = http.createServer((req, res) => {
         try {
-            let urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
-            if (urlPath.endsWith("/")) urlPath += "index.html";
-            let filePath = path.join(dir, urlPath);
-            if (!filePath.startsWith(dir)) {
+            let filePath = resolveStaticRequestPath(abs, req.url || "/");
+            if (!filePath) {
                 res.writeHead(403);
                 res.end("Forbidden");
                 return;
@@ -813,9 +1010,9 @@ function startStaticServer(dir, port) {
             };
             res.writeHead(200, { "Content-Type": types[ext] || "application/octet-stream" });
             fs.createReadStream(filePath).pipe(res);
-        } catch (e) {
+        } catch {
             res.writeHead(500);
-            res.end(String(e));
+            res.end("Internal server error");
         }
     });
     return new Promise((resolvePromise) => {

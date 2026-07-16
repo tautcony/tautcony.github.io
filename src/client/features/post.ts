@@ -1,20 +1,11 @@
-import * as GeoPattern from "../lib/geopattern";
 import { isExternal } from "../lib/dom";
 
 /**
- * Post-page enhancements: GeoPattern header fallback, `//` comment tint, external links.
+ * Post-page enhancements: `//` comment tint, external link markers.
+ * Header backgrounds (including GeoPattern fallback) are SSG-only via IntroHeader.
  * “Update on” dates are SSG-only from `src/data/lastmod.json`.
  */
 export function init(): void {
-    const banner = document.querySelector("header.intro-header");
-    if (banner instanceof HTMLElement) {
-        const style = window.getComputedStyle(banner);
-        if (style.backgroundImage === "none") {
-            const pattern = GeoPattern.generate(document.location.href);
-            banner.style.backgroundImage = pattern.toDataUrl();
-        }
-    }
-
     for (const p of document.querySelectorAll<HTMLParagraphElement>(".post-content p")) {
         // textContent avoids forced layout (innerText) for a simple prefix check.
         if ((p.textContent ?? "").trimStart().startsWith("//")) {

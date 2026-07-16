@@ -1,12 +1,5 @@
 import { el } from "../lib/dom";
 
-export interface Info {
-    tagName: string;
-    className?: string;
-    cssText?: string;
-    content: string | HTMLElement[];
-}
-
 /** One author/work with one or more interchangeable lines. */
 export interface QuoteEntry {
     text: string[];
@@ -15,7 +8,14 @@ export interface QuoteEntry {
     source?: string;
 }
 
-async function getJSON(url: string): Promise<unknown> {
+export interface QuoteInitOptions {
+    containerSelector?: string;
+    className?: string;
+    /** Rotation interval in milliseconds. */
+    intervalMs?: number;
+}
+
+async function fetchJson(url: string): Promise<unknown> {
     const response = await fetch(url, { credentials: "omit" });
     if (!response.ok) {
         throw new Error(`HTTP ${response.status} for ${url}`);
@@ -36,36 +36,42 @@ export function parseQuotePayload(data: unknown): QuoteEntry[] {
         throw new Error("quote payload must be an array or { quotes: [] }");
     }
 
-    return list.map((item, i) => {
+    return list.map((item, index) => {
         if (item === null || typeof item !== "object" || Array.isArray(item)) {
-            throw new Error(`quote[${i}] must be an object`);
+            throw new Error(`quote[${index}] must be an object`);
         }
-        const rec = item as Record<string, unknown>;
-        const author = rec.author;
-        const text = rec.text;
+        const record = item as Record<string, unknown>;
+        const author = record.author;
+        const text = record.text;
         if (typeof author !== "string" || !author.trim()) {
-            throw new Error(`quote[${i}].author required`);
+            throw new Error(`quote[${index}].author required`);
         }
-        if (!Array.isArray(text) || text.length === 0 || !text.every(t => typeof t === "string" && t.trim())) {
-            throw new Error(`quote[${i}].text must be a non-empty string array`);
+        if (!Array.isArray(text) || text.length === 0 || !text.every(line => typeof line === "string" && line.trim())) {
+            throw new Error(`quote[${index}].text must be a non-empty string array`);
         }
         const entry: QuoteEntry = {
             author: author.trim(),
             text: text as string[],
         };
-        if (typeof rec.source === "string" && rec.source.trim()) {
-            entry.source = rec.source;
+        if (typeof record.source === "string" && record.source.trim()) {
+            entry.source = record.source;
         }
         return entry;
     });
 }
 
-export default class Quote {
-    private readonly container: HTMLElement;
+function pickRandom<T>(items: readonly T[]): T | undefined {
+    if (items.length === 0) {
+        return undefined;
+    }
+    return items[Math.floor(Math.random() * items.length)];
+}
+
+class QuoteRotator {
     private readonly content: HTMLElement;
     private readonly author: HTMLElement;
     private quotes: QuoteEntry[] = [];
-    private timer: number | undefined;
+    private timerId: number | undefined;
 
     public constructor(containerSelector: string, className: string) {
         this.content = el("div", {
@@ -79,62 +85,63 @@ export default class Quote {
                 fontSize: "85%",
             },
         });
-        this.container = el("div", { class: className }, this.content, this.author);
-
-        document.querySelector(containerSelector)?.append(this.container);
+        const container = el("div", { class: className }, this.content, this.author);
+        document.querySelector(containerSelector)?.append(container);
     }
 
-    public init(timeout: number) {
-        void this.fetchData().then(() => {
+    public init(intervalMs: number): void {
+        void this.fetchQuotes().then(() => {
             this.updateQuote();
-            this.interval(timeout);
+            this.startInterval(intervalMs);
         });
     }
 
-    public updateQuote() {
-        const quote = this.randomQuote();
+    public updateQuote(): void {
+        const quote = pickRandom(this.quotes);
         if (quote === undefined) {
+            if (this.timerId !== undefined) {
+                clearInterval(this.timerId);
+                this.timerId = undefined;
+            }
             return;
         }
-        const content = quote.text[Math.floor(Math.random() * quote.text.length)];
+        const line = pickRandom(quote.text) ?? "";
         let author = `—— ${quote.author}`;
         if (quote.source) {
             author += `《${quote.source}》`;
         }
-        this.content.textContent = content;
+        this.content.textContent = line;
         this.author.textContent = author;
     }
 
-    /** @deprecated Prefer {@link updateQuote}. */
-    public UpdateQuote() {
-        this.updateQuote();
-    }
-
-    private randomQuote(): QuoteEntry | undefined {
-        if (this.quotes.length === 0) {
-            if (this.timer !== undefined) {
-                clearInterval(this.timer);
-            }
-            return undefined;
-        }
-        return this.quotes[Math.floor(Math.random() * this.quotes.length)];
-    }
-
-    private interval(timeout: number) {
-        this.timer = window.setInterval(() => {
+    private startInterval(intervalMs: number): void {
+        this.timerId = window.setInterval(() => {
             this.updateQuote();
-        }, timeout);
+        }, intervalMs);
     }
 
-    private async fetchData() {
+    private async fetchQuotes(): Promise<void> {
         const baseMeta = document.head.querySelector("meta[name=baseurl]");
-        const baseurl = baseMeta instanceof HTMLMetaElement ? baseMeta.content : "";
-        const url = `${baseurl}/json/quote.json`;
+        const baseUrl = baseMeta instanceof HTMLMetaElement ? baseMeta.content : "";
+        const url = `${baseUrl}/json/quote.json`;
 
         try {
-            this.quotes = parseQuotePayload(await getJSON(url));
-        } catch (err) {
-            console.warn("Failed to load quote.json", err);
+            this.quotes = parseQuotePayload(await fetchJson(url));
+        } catch (error) {
+            console.warn("Failed to load quote.json", error);
         }
     }
+}
+
+const DEFAULT_QUOTE_OPTIONS = {
+    containerSelector: ".copyright",
+    className: "quote",
+    intervalMs: 10_000,
+} as const;
+
+export function init(options: QuoteInitOptions = {}): void {
+    const containerSelector = options.containerSelector ?? DEFAULT_QUOTE_OPTIONS.containerSelector;
+    const className = options.className ?? DEFAULT_QUOTE_OPTIONS.className;
+    const intervalMs = options.intervalMs ?? DEFAULT_QUOTE_OPTIONS.intervalMs;
+    new QuoteRotator(containerSelector, className).init(intervalMs);
 }

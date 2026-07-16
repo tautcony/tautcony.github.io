@@ -1,13 +1,9 @@
 import { el } from "../lib/dom";
 
-function wrap<K extends keyof HTMLElementTagNameMap>(
-    node: HTMLElement,
-    wrapperTagName: K,
-    wrapperClassList: string[]
-) {
-    const wrapper = el(wrapperTagName, { class: wrapperClassList.join(" ") });
-    node.replaceWith(wrapper);
-    wrapper.append(node);
+function wrapTable(table: HTMLTableElement): void {
+    const wrapper = el("div", { class: "table-responsive" });
+    table.replaceWith(wrapper);
+    wrapper.append(table);
 }
 
 function smoothScrollTo(top: number): void {
@@ -46,14 +42,18 @@ function scrollOffset(): number {
     return h > 0 ? h + 8 : 0;
 }
 
-const scrollToHeadingId = (id: string) => (event?: Event) => {
-    event?.preventDefault();
+function scrollToHeading(id: string, behavior: ScrollBehavior = "smooth"): void {
     const target = findHeadingById(id);
     if (target === null) {
         return;
     }
     const top = target.getBoundingClientRect().top + window.scrollY - scrollOffset();
-    smoothScrollTo(Math.max(0, top));
+    window.scrollTo({ top: Math.max(0, top), behavior });
+}
+
+const onCatalogLinkClick = (id: string) => (event?: Event) => {
+    event?.preventDefault();
+    scrollToHeading(id, "smooth");
 };
 
 /**
@@ -85,7 +85,7 @@ export function ensureHeadingId(heading: Element, used: Set<string>): string {
     return id;
 }
 
-export function generateCatalog(selector: string) {
+export function generateCatalog(selector: string): void {
     const postContainer = document.querySelector("div.post-container");
     if (postContainer === null) {
         return;
@@ -108,7 +108,7 @@ export function generateCatalog(selector: string) {
                 { class: `${tagName}_nav` },
                 el("a", {
                     href: `#${id}`,
-                    on: { click: scrollToHeadingId(id) },
+                    on: { click: onCatalogLinkClick(id) },
                 }, label)
             );
         })
@@ -120,13 +120,10 @@ function initCatalog(): void {
         return;
     }
     generateCatalog(".catalog-body");
-    const catalogToggle = document.querySelector(".catalog-toggle");
-    if (catalogToggle) {
-        catalogToggle.addEventListener("click", e => {
-            e.preventDefault();
-            document.querySelector(".side-catalog")?.classList.toggle("fold");
-        });
-    }
+    document.querySelector(".catalog-toggle")?.addEventListener("click", e => {
+        e.preventDefault();
+        document.querySelector(".side-catalog")?.classList.toggle("fold");
+    });
 
     // Deep-link / refresh with hash (incl. CJK and digit-leading ids).
     const scrollHash = () => {
@@ -134,75 +131,68 @@ function initCatalog(): void {
         if (!raw) {
             return;
         }
-        const id = decodeURIComponent(raw);
-        const target = findHeadingById(id);
-        if (target) {
-            const top = target.getBoundingClientRect().top + window.scrollY - scrollOffset();
-            // Instant on first paint; avoid fighting the browser's default jump.
-            window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
-        }
+        // Instant on first paint; avoid fighting the browser's default jump.
+        scrollToHeading(decodeURIComponent(raw), "auto");
     };
     scrollHash();
     window.addEventListener("hashchange", scrollHash);
 }
 
-export function init() {
+export function init(): void {
     initCatalog();
 
-    const tables = document.querySelectorAll("table");
-    for (const table of Array.from(tables)) {
+    for (const table of document.querySelectorAll("table")) {
         table.classList.add("table");
-        wrap(table, "div", ["table-responsive"]);
+        wrapTable(table);
     }
 
-    const gotop = document.getElementById("gotop") as HTMLButtonElement | null;
-    if (gotop) {
+    const gotop = document.getElementById("gotop");
+    if (gotop instanceof HTMLButtonElement) {
         gotop.addEventListener("click", () => {
             smoothScrollTo(0);
         });
     }
 
     const MQL = 1170;
-    const navbar = document.querySelector(".navbar-custom");
-    const catalog = document.querySelector(".side-catalog");
-    const banner = document.querySelector(".intro-header .container");
+    const navbarEl = document.querySelector(".navbar-custom");
+    const catalogEl = document.querySelector(".side-catalog");
+    const bannerEl = document.querySelector(".intro-header .container");
 
-    if (navbar === null || banner == null) {
+    if (!(navbarEl instanceof HTMLElement) || !(bannerEl instanceof HTMLElement)) {
         return;
     }
 
+    const navbar = navbarEl;
+    const catalog = catalogEl instanceof HTMLElement ? catalogEl : null;
     const headerHeight = navbar.clientHeight;
-    const bannerHeight = banner.clientHeight;
+    const bannerHeight = bannerEl.clientHeight;
 
-    function updateBanner(currentTop: number, previousTop: number) {
-        if (gotop) {
+    function updateBanner(currentTop: number, previousTop: number): void {
+        if (gotop instanceof HTMLButtonElement) {
             gotop.disabled = currentTop < 300;
         }
-        if (window.innerWidth > MQL && navbar !== null) {
-            if (currentTop - previousTop <= 0) {
-                if (currentTop > 0 && navbar.classList.contains("is-fixed")) {
-                    navbar.classList.add("is-visible");
-                } else {
-                    navbar.classList.remove("is-visible");
-                    navbar.classList.remove("is-fixed");
-                }
-            } else {
-                navbar.classList.remove("is-visible");
-                if (currentTop > headerHeight && !navbar.classList.contains("is-fixed")) {
-                    navbar.classList.add("is-fixed");
-                }
-            }
+        if (window.innerWidth <= MQL) {
+            return;
+        }
 
-            if (catalog === null) {
-                return;
-            }
-            (catalog as HTMLDivElement).style.display = "block";
-            if (currentTop > bannerHeight) {
-                catalog.classList.add("fixed");
+        if (currentTop - previousTop <= 0) {
+            if (currentTop > 0 && navbar.classList.contains("is-fixed")) {
+                navbar.classList.add("is-visible");
             } else {
-                catalog.classList.remove("fixed");
+                navbar.classList.remove("is-visible", "is-fixed");
+            }
+        } else {
+            navbar.classList.remove("is-visible");
+            if (currentTop > headerHeight && !navbar.classList.contains("is-fixed")) {
+                navbar.classList.add("is-fixed");
             }
         }
+
+        if (catalog === null) {
+            return;
+        }
+        catalog.style.display = "block";
+        catalog.classList.toggle("fixed", currentTop > bannerHeight);
     }
 
     let lastKnownScrollPosition = 0;
@@ -215,8 +205,8 @@ export function init() {
                 updateBanner(window.scrollY, previousTop);
                 ticking = false;
             });
+            ticking = true;
         }
-        ticking = true;
         lastKnownScrollPosition = window.scrollY;
     };
 

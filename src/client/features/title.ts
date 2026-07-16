@@ -1,30 +1,39 @@
-export default class Title {
-    private titles: string[];
-    private initalTitle: string;
-    private restoreTitleID: number | null;
-    public constructor(titles: string[]) {
+class TitleSwitcher {
+    private readonly titles: readonly string[];
+    private readonly initialTitle: string;
+    private restoreTimerId: number | null = null;
+
+    public constructor(titles: readonly string[]) {
         this.titles = titles;
-        this.initalTitle = document.title;
-        this.restoreTitleID = null;
+        this.initialTitle = document.title;
     }
 
-    public init() {
+    public init(): void {
         document.addEventListener("visibilitychange", () => {
+            this.clearRestoreTimer();
+
             if (!document.hidden) {
                 document.title = "．．．．．．";
-                if (this.restoreTitleID !== null) {
-                    clearTimeout(this.restoreTitleID);
-                }
-                this.restoreTitleID = window.setTimeout(() => {
-                    document.title = this.initalTitle;
-                    this.restoreTitleID = null;
+                this.restoreTimerId = window.setTimeout(() => {
+                    document.title = this.initialTitle;
+                    this.restoreTimerId = null;
                 }, 500);
-            } else {
-                if (this.restoreTitleID !== null) {
-                    clearTimeout(this.restoreTitleID);
-                }
-                document.title = `${this.titles[Math.floor(Math.random() * this.titles.length)]} ${this.initalTitle}`;
+                return;
             }
+
+            const joke = this.titles[Math.floor(Math.random() * this.titles.length)];
+            document.title = `${joke} ${this.initialTitle}`;
         });
     }
+
+    private clearRestoreTimer(): void {
+        if (this.restoreTimerId !== null) {
+            clearTimeout(this.restoreTimerId);
+            this.restoreTimerId = null;
+        }
+    }
+}
+
+export function init(titles: readonly string[]): void {
+    new TitleSwitcher(titles).init();
 }

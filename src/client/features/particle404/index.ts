@@ -1,1 +1,1 @@
-export { startParticle404 } from "./scene";
+export { init } from "./scene";

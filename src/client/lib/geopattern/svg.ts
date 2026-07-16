@@ -1,10 +1,10 @@
-import XMLNode from "./xmlnode";
+import XmlNode from "./xmlnode";
 
 import {
-    Length, Coordinate, Angle, Percentage, Idict,
+    Length, Coordinate, Angle, Percentage, SvgAttributes,
 } from "./types";
 
-interface Itransformation {
+interface SvgTransform {
     matrix?: [number, number, number, number, number, number];
     translate?: [Length, Length?];
     scale?: [number, number?];
@@ -13,49 +13,50 @@ interface Itransformation {
     skewY?: [Angle];
 }
 
-export default class SVG {
+export default class Svg {
     private width: number;
     private height: number;
-    private svg: XMLNode;
-    private context: XMLNode[];
+    private readonly svg: XmlNode;
+    private readonly context: XmlNode[];
+
     public constructor() {
         this.width = 100;
         this.height = 100;
-        this.svg = new XMLNode("svg");
+        this.svg = new XmlNode("svg");
         this.context = []; // Track nested nodes
-        SVG.setAttributes(this.svg, {
+        Svg.setAttributes(this.svg, {
             xmlns: "http://www.w3.org/2000/svg",
             width: this.width,
             height: this.height,
         });
     }
 
-    public static setAttributes(el: XMLNode, attrs: Idict) {
-        Object.keys(attrs).forEach(attr => {
+    public static setAttributes(el: XmlNode, attrs: SvgAttributes): void {
+        for (const attr of Object.keys(attrs)) {
             el.setAttribute(attr, attrs[attr]);
-        });
+        }
     }
 
     // This is a hack so groups work.
-    public currentContext() {
+    public currentContext(): XmlNode {
         return this.context[this.context.length - 1] || this.svg;
     }
 
     // This is a hack so groups work.
-    public end() {
+    public end(): this {
         this.context.pop();
         return this;
     }
 
-    public currentNode() {
+    public currentNode(): XmlNode {
         const context = this.currentContext();
         return context.lastChild || context;
     }
 
-    public transform(transformations: Itransformation) {
+    public transform(transformations: SvgTransform): this {
         this.currentNode().setAttribute(
             "transform",
-            (Object.keys(transformations) as (keyof Itransformation)[]).map(transformation => {
+            (Object.keys(transformations) as (keyof SvgTransform)[]).map(transformation => {
                 const args = (transformations[transformation] || []).join(",");
                 return `${transformation}(${args})`;
             }).join(" ")
@@ -63,24 +64,29 @@ export default class SVG {
         return this;
     }
 
-    public setWidth(width: number) {
+    public setWidth(width: number): void {
         this.svg.setAttribute("width", Math.floor(width));
     }
 
-    public setHeight(height: number) {
+    public setHeight(height: number): void {
         this.svg.setAttribute("height", Math.floor(height));
     }
 
-    public toString() {
+    public toString(): string {
         return this.svg.toString();
     }
 
-    public rect(x: Coordinate | [Coordinate, Coordinate, Length, Length][], y?: Coordinate | Idict, width?: Length, height?: Length, args?: Idict) {
-        // Accept array first argument
+    public rect(
+        x: Coordinate | [Coordinate, Coordinate, Length, Length][],
+        y?: Coordinate | SvgAttributes,
+        width?: Length,
+        height?: Length,
+        args?: SvgAttributes
+    ): this {
         if (Array.isArray(x)) {
-            x.forEach(list => {
-                this.rect(...list, y as Idict);
-            });
+            for (const list of x) {
+                this.rect(...list, y as SvgAttributes);
+            }
             return this;
         }
         if (width === undefined || height === undefined) {
@@ -88,54 +94,54 @@ export default class SVG {
         }
         const rect = this.newChild("rect");
         const value: Coordinate = y as Coordinate;
-        SVG.setAttributes(rect, {
+        Svg.setAttributes(rect, {
             x, y: value, width, height, ...args,
         });
-
-
         return this;
     }
 
-    public circle(cx: Length | Percentage, cy: Length | Percentage, r: Length | Percentage, args: Idict) {
-        const circle = new XMLNode("circle");
+    public circle(
+        cx: Length | Percentage,
+        cy: Length | Percentage,
+        r: Length | Percentage,
+        args: SvgAttributes
+    ): this {
+        const circle = new XmlNode("circle");
         this.currentContext().appendChild(circle);
-        SVG.setAttributes(circle, {
+        Svg.setAttributes(circle, {
             cx, cy, r, ...args,
         });
-
         return this;
     }
 
-    public path(d: string, args: Idict) {
+    public path(d: string, args: SvgAttributes): this {
         const path = this.newChild("path");
-        SVG.setAttributes(path, { d, ...args });
+        Svg.setAttributes(path, { d, ...args });
         return this;
     }
 
-    public polyline(str: string | string[], args?: Idict) {
-        // Accept array first argument
+    public polyline(str: string | string[], args?: SvgAttributes): this {
         if (Array.isArray(str)) {
-            str.forEach(s => {
+            for (const s of str) {
                 this.polyline(s, args);
-            });
+            }
             return this;
         }
         const polyline = this.newChild("polyline");
-        SVG.setAttributes(polyline, { points: str, ...args });
-
+        Svg.setAttributes(polyline, { points: str, ...args });
         return this;
     }
 
     // group and context are hacks
-    public group(args: Idict) {
+    public group(args: SvgAttributes): this {
         const group = this.newChild("g");
         this.context.push(group);
-        SVG.setAttributes(group, { ...args });
+        Svg.setAttributes(group, { ...args });
         return this;
     }
 
-    private newChild(type: string) {
-        const child = new XMLNode(type);
+    private newChild(type: string): XmlNode {
+        const child = new XmlNode(type);
         this.currentContext().appendChild(child);
         return child;
     }

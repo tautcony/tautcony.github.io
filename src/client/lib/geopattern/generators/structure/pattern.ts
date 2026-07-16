@@ -1,14 +1,14 @@
-import SVG from "../../svg";
+import Svg from "../../svg";
 import { Generator } from "../generator";
-import { IPatternOption } from "../../types";
+import { PatternOptions } from "../../types";
 
 export default abstract class Pattern extends Generator<Pattern> {
     public color: string;
-    protected opts: IPatternOption;
+    protected opts: PatternOptions;
     protected hash: string;
-    protected svg: SVG;
+    protected svg: Svg;
 
-    public constructor(options: IPatternOption, svg?: SVG) {
+    public constructor(options: PatternOptions, svg?: Svg) {
         super();
         this.opts = { ...options };
         this.hash = this.opts.hash || "";
@@ -16,7 +16,7 @@ export default abstract class Pattern extends Generator<Pattern> {
         if (svg) {
             this.svg = svg;
         } else {
-            this.svg = new SVG();
+            this.svg = new Svg();
         }
     }
 

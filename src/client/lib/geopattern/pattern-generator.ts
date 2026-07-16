@@ -7,7 +7,7 @@ import { Generator } from "./generators/generator";
 import SolidBackgroundGenerator from "./generators/background/solid";
 import Preset from "./generators/preset";
 import BaseColorGenerator from "./generators/color";
-import { IPatternOption, AvailableStructure } from "./types";
+import { PatternOptions, STRUCTURE_NAMES } from "./types";
 import * as Color from "./color";
 
 const PATTERNS = {
@@ -31,9 +31,9 @@ const PATTERNS = {
 
 export default class PatternGenerator extends Generator<Pattern> {
     private pattern!: Pattern;
-    private options: IPatternOption;
+    private options: PatternOptions;
 
-    public constructor(str: string, options?: IPatternOption) {
+    public constructor(str: string, options?: PatternOptions) {
         super();
         this.options = { ...options };
         this.options.hash = this.options.hash || sha1(str);
@@ -47,18 +47,18 @@ export default class PatternGenerator extends Generator<Pattern> {
     public generate() {
         const colorGenerator = new BaseColorGenerator(this.options);
         const color = colorGenerator.generate();
-        this.options.color = Color.rgb2hex(color);
+        this.options.color = Color.rgbToHex(color);
 
-        const backgroundGeneraor = new SolidBackgroundGenerator(this.options);
-        const background = backgroundGeneraor.generate();
+        const backgroundGenerator = new SolidBackgroundGenerator(this.options);
+        const background = backgroundGenerator.generate();
 
         let generatorName = this.options.generator;
         if (generatorName) {
-            if (!AvailableStructure.includes(generatorName)) {
-                throw new Error(`The generator ${generatorName}  does not exist.`);
+            if (!(STRUCTURE_NAMES as readonly string[]).includes(generatorName)) {
+                throw new Error(`The generator ${generatorName} does not exist.`);
             }
         } else {
-            generatorName = AvailableStructure[hexVal(this.options.hash!, 20)];
+            generatorName = STRUCTURE_NAMES[hexVal(this.options.hash!, 20)];
         }
 
         const PatternType = PATTERNS[generatorName];
@@ -68,5 +68,5 @@ export default class PatternGenerator extends Generator<Pattern> {
     }
 }
 
-export type { IPatternOption } from "./types";
+export type { PatternOptions } from "./types";
 export { Pattern } from "./generators/structure";

@@ -2,7 +2,7 @@ import Pattern from "./pattern";
 import {
     hexVal, fillOpacity, fillColor, map,
 } from "../util";
-import SVG from "../../svg";
+import Svg from "../../svg";
 import Preset from "../preset";
 
 export default class MosaicSquares extends Pattern {
@@ -15,7 +15,7 @@ export default class MosaicSquares extends Pattern {
         ].join(",");
     }
 
-    private static drawOuterMosaicTile(svg: SVG, x: number, y: number, triangleSize: number, val: number) {
+    private static drawOuterMosaicTile(svg: Svg, x: number, y: number, triangleSize: number, val: number) {
         const opacity = fillOpacity(val);
         const fill = fillColor(val);
         const triangle = MosaicSquares.buildRightTriangleShape(triangleSize);
@@ -56,7 +56,7 @@ export default class MosaicSquares extends Pattern {
         });
     }
 
-    private static drawInnerMosaicTile(svg: SVG, x: number, y: number, triangleSize: number, vals: number[]) {
+    private static drawInnerMosaicTile(svg: Svg, x: number, y: number, triangleSize: number, vals: number[]) {
         const triangle = MosaicSquares.buildRightTriangleShape(triangleSize);
         let opacity = fillOpacity(vals[0]);
         let fill = fillColor(vals[0]);

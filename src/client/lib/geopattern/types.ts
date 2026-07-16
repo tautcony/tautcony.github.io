@@ -5,15 +5,33 @@ export type Percentage = string;
 
 export type ContentType = Length | Coordinate | Angle | Percentage;
 
-export const AvailableStructure = ["octogons", "overlappingCircles", "plusSigns", "xes", "sineWaves", "hexagons", "overlappingRings", "plaid", "triangles", "squares", "concentricCircles", "diamonds", "tessellation", "nestedSquares", "mosaicSquares", "chevrons"] as const;
+export const STRUCTURE_NAMES = [
+    "octogons",
+    "overlappingCircles",
+    "plusSigns",
+    "xes",
+    "sineWaves",
+    "hexagons",
+    "overlappingRings",
+    "plaid",
+    "triangles",
+    "squares",
+    "concentricCircles",
+    "diamonds",
+    "tessellation",
+    "nestedSquares",
+    "mosaicSquares",
+    "chevrons",
+] as const;
 
-export type AvailableStructureType = typeof AvailableStructure[number];
+export type StructureName = typeof STRUCTURE_NAMES[number];
 
-export type Idict = Record<string, ContentType>;
+/** SVG attribute map used by the geopattern SVG builder. */
+export type SvgAttributes = Record<string, ContentType>;
 
-export interface IPatternOption {
+export interface PatternOptions {
     hash?: string;
     color?: string;
     baseColor?: string;
-    generator?: AvailableStructureType;
+    generator?: StructureName;
 }

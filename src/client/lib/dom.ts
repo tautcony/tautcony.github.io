@@ -189,9 +189,6 @@ export function el<K extends keyof HTMLElementTagNameMap>(
     return element;
 }
 
-/** @deprecated Use {@link el}. Kept as a named alias for gradual migrations. */
-export const createElement = el;
-
 export function isExternal(url: string): boolean {
     if (url.length <= 1) {
         return false;

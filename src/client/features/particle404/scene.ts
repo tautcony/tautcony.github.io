@@ -24,7 +24,7 @@ import {
 } from "three";
 import { mountGui } from "./gui";
 import { StatsPanel } from "./stats-panel";
-import { Tween } from "./tween";
+import { Tween, cubicInOut } from "./tween";
 
 const PARTICLE_COUNT = 950;
 const TEXT_SIZE = 60;
@@ -81,12 +81,6 @@ const guiDefaults = {
         explosionPoint = new Vector3(0, 0, 0);
     },
 };
-
-function cubicInOut(value: number): number {
-    return value < 0.5
-        ? 4 * value * value * value
-        : 1 - Math.pow(-2 * value + 2, 3) / 2;
-}
 
 function range(min: number, max: number): number {
     return min + Math.random() * (max - min);
@@ -231,7 +225,7 @@ function hasFlag(name: string): boolean {
     return ["", "1", "true", "yes"].includes(value.trim().toLowerCase());
 }
 
-export function startParticle404(): void {
+export function init(): void {
     const container = document.getElementById("container");
     const fallback = container?.querySelector<HTMLElement>(".fallback");
     if (!container || !fallback) return;

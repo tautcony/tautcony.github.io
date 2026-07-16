@@ -1,24 +1,37 @@
 import { el } from "../lib/dom";
 
 interface BrightnessConfig {
-    enable: boolean;
-    brightness: number;
+    enabled: boolean;
+    /** Dim amount 0–100 (higher = darker mask). */
+    dimPercent: number;
 }
 
 const STORAGE_KEY = "brightness";
+const MIN_DIM_PERCENT = 5;
+const MAX_DIM_PERCENT = 95;
+const STEP_PERCENT = 5;
+const DEFAULT_ENABLED_DIM_PERCENT = 30;
 
 function loadConfig(): BrightnessConfig {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
-            return JSON.parse(raw) as BrightnessConfig;
+            const parsed = JSON.parse(raw) as Partial<BrightnessConfig> & {
+                enable?: boolean;
+                brightness?: number;
+            };
+            // Support legacy keys `enable` / `brightness` from older builds.
+            return {
+                enabled: parsed.enabled ?? parsed.enable ?? false,
+                dimPercent: parsed.dimPercent ?? parsed.brightness ?? 0,
+            };
         }
     } catch {
         // ignore corrupt storage
     }
     return {
-        brightness: 0,
-        enable: false,
+        dimPercent: 0,
+        enabled: false,
     };
 }
 
@@ -30,7 +43,7 @@ function saveConfig(config: BrightnessConfig): void {
     }
 }
 
-class BrightnessWatcher {
+class BrightnessController {
     private readonly mask: HTMLDivElement;
     private config: BrightnessConfig;
 
@@ -47,47 +60,48 @@ class BrightnessWatcher {
         });
         document.body.append(this.mask);
         this.config = loadConfig();
-        this.update();
+        this.apply();
     }
 
-    public increase() {
-        if (this.config.enable) {
-            this.config.brightness = Math.max(5, this.config.brightness - 5);
-            this.update();
+    public brighten(): void {
+        if (!this.config.enabled) {
+            return;
         }
+        this.config.dimPercent = Math.max(MIN_DIM_PERCENT, this.config.dimPercent - STEP_PERCENT);
+        this.apply();
     }
 
-    public decrease() {
-        if (this.config.enable) {
-            this.config.brightness = Math.min(95, this.config.brightness + 5);
-            this.update();
+    public darken(): void {
+        if (!this.config.enabled) {
+            return;
         }
+        this.config.dimPercent = Math.min(MAX_DIM_PERCENT, this.config.dimPercent + STEP_PERCENT);
+        this.apply();
     }
 
-    public toggle() {
-        this.config.enable = !this.config.enable;
-        this.config.brightness = this.config.enable ? 30 : 0;
-        this.update();
+    public toggle(): void {
+        this.config.enabled = !this.config.enabled;
+        this.config.dimPercent = this.config.enabled ? DEFAULT_ENABLED_DIM_PERCENT : 0;
+        this.apply();
     }
 
-    private update() {
-        this.mask.style.outlineColor = `rgba(0, 0, 0, ${this.config.brightness / 100})`;
+    private apply(): void {
+        this.mask.style.outlineColor = `rgba(0, 0, 0, ${this.config.dimPercent / 100})`;
         saveConfig(this.config);
     }
 }
 
-const brightness = new BrightnessWatcher();
-
-export default function init() {
-    const keyMapping: Record<string, () => void> = {
-        KeyZ: () => brightness.toggle(),
-        ArrowUp: () => brightness.increase(),
-        ArrowDown: () => brightness.decrease(),
+export function init(): void {
+    const controller = new BrightnessController();
+    const keyActions: Record<string, () => void> = {
+        KeyZ: () => controller.toggle(),
+        ArrowUp: () => controller.brighten(),
+        ArrowDown: () => controller.darken(),
     };
-    window.addEventListener("keydown", e => {
-        if (!e.altKey) {
+    window.addEventListener("keydown", event => {
+        if (!event.altKey) {
             return;
         }
-        keyMapping[e.code]?.();
+        keyActions[event.code]?.();
     });
 }

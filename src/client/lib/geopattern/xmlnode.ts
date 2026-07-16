@@ -1,7 +1,7 @@
-export default class XMLNode {
-    private tagName: string;
-    private attributes: Record<string, string | number>;
-    private children: XMLNode[];
+export default class XmlNode {
+    private readonly tagName: string;
+    private readonly attributes: Record<string, string | number>;
+    private readonly children: XmlNode[];
 
     public constructor(tagName: string) {
         this.tagName = tagName;
@@ -9,15 +9,15 @@ export default class XMLNode {
         this.children = [];
     }
 
-    public get lastChild() {
+    public get lastChild(): XmlNode | undefined {
         return this.children[this.children.length - 1];
     }
 
-    public appendChild(child: XMLNode) {
+    public appendChild(child: XmlNode): void {
         this.children.push(child);
     }
 
-    public setAttribute(name: string, value: string | number) {
+    public setAttribute(name: string, value: string | number): void {
         this.attributes[name] = value;
     }
 

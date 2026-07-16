@@ -1,100 +1,102 @@
-interface IKON {
+import { el } from "../lib/dom";
+
+interface KonBlock {
     title: string;
     lang: string;
     blockquote: string;
     content: string[];
 }
 
-const kon = {
-    data: [
-        {
-            title: "中文",
-            lang: "zh",
-            blockquote: "夜空彼方与飞机尾云",
-            content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"],
-        }, {
-            title: "日本語",
-            lang: "jp",
-            blockquote: "夜空ノムコウとひこうき雲",
-            content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"],
-        }, {
-            title: "English",
-            lang: "en",
-            blockquote: "Translation Server Error :)",
-            content: ["Yui「I hope I can playing in a band with you guys forever」", "Ritsu「I konw what you mean」", "Mugi「Hum」", "Azusa「Me, too」", "Mio「Yeah! Forever. And ever」"],
-        },
-    ] as IKON[],
+const KON_BLOCKS: readonly KonBlock[] = [
+    {
+        title: "中文",
+        lang: "zh",
+        blockquote: "夜空彼方与飞机尾云",
+        content: ["唯「以后我们也能一直组乐队就好了」", "律「是啊」", "紬「嗯」", "梓「是啊」", "澪「嗯。就这样，直到永远吧」"],
+    },
+    {
+        title: "日本語",
+        lang: "jp",
+        blockquote: "夜空ノムコウとひこうき雲",
+        content: ["唯「これからもずっと、みんなでバンドできたらいいね」", "律「そうだな」", "紬「うん」", "梓「そうですね」", "澪「ああ。ずっと、ずっとな」"],
+    },
+    {
+        title: "English",
+        lang: "en",
+        blockquote: "Translation Server Error :)",
+        content: [
+            "Yui「I hope I can playing in a band with you guys forever」",
+            "Ritsu「I konw what you mean」",
+            "Mugi「Hum」",
+            "Azusa「Me, too」",
+            "Mio「Yeah! Forever. And ever」",
+        ],
+    },
+];
+
+const KON_META = {
     className: "lang",
     title: "K-ON!! EP12",
-    url: "http://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
-};
+    url: "https://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
+} as const;
 
-function createEvent(type: string) {
-    return new Event(type, { bubbles: true, cancelable: true });
+function createBlock(block: KonBlock): HTMLDivElement {
+    return el(
+        "div",
+        {
+            class: `${KON_META.className} none`,
+            title: block.title,
+            lang: block.lang,
+        },
+        el("blockquote", block.blockquote),
+        block.content.map(line => el("p", line)),
+        el(
+            "p",
+            { style: { textAlign: "right" }, title: KON_META.title },
+            "—— ",
+            el("a", { href: KON_META.url }, KON_META.title)
+        )
+    );
 }
 
-export function init() {
-    const konContainer = document.getElementById("kon-container");
-    if (konContainer === null) {
+export function init(): void {
+    const container = document.getElementById("kon-container");
+    const languageSelect = document.getElementById("langSelect");
+    if (container === null || !(languageSelect instanceof HTMLSelectElement)) {
         return;
     }
 
-    function getElement(value: IKON): HTMLDivElement {
-        const div = document.createElement("div");
-        div.className = kon.className;
-        div.title = value.title;
-        div.lang = value.lang;
-        div.classList.add("none");
-        const blockquote = document.createElement("blockquote");
-        blockquote.textContent = value.blockquote;
-        div.appendChild(blockquote);
-        value.content.forEach(element => {
-            const p = document.createElement("p");
-            p.textContent = element;
-            div.appendChild(p);
-        });
-        const source = document.createElement("p");
-        source.style.textAlign = "right";
-        source.title = kon.title;
-        const link = document.createElement("a");
-        link.href = kon.url;
-        link.text = kon.title;
-        source.appendChild(document.createTextNode("—— "));
-        source.appendChild(link);
-        div.appendChild(source);
-        return div;
+    const blocks = KON_BLOCKS.map(block => {
+        const element = createBlock(block);
+        container.append(element);
+        return element;
+    });
+
+    const browserLanguage = window.navigator.language;
+    let preferredIndex = 0;
+    for (const [index, block] of blocks.entries()) {
+        languageSelect.append(el("option", {
+            value: String(index),
+            textContent: block.title,
+        }));
+        if (browserLanguage.includes(block.lang)) {
+            preferredIndex = index;
+        }
     }
 
-    const lang: HTMLDivElement[] = [];
-    const selector = document.getElementById("langSelect") as HTMLSelectElement;
-    kon.data.forEach(value => {
-        const div = getElement(value);
-        lang.push(div);
-        konContainer.appendChild(div);
-    });
-
-    let currentLanguageIndex = 0;
-    const currentLanguage = window.navigator.language;
-    lang.forEach((value, index) => {
-        const opt = document.createElement("option");
-        opt.value = index.toString();
-        opt.innerHTML = value.getAttribute("title") as string;
-        selector.appendChild(opt);
-        if (currentLanguage.indexOf(value.getAttribute("lang") as string) >= 0) {
-            currentLanguageIndex = index;
+    let lastSelectedIndex = -1;
+    languageSelect.addEventListener("change", () => {
+        const selectedIndex = Number.parseInt(languageSelect.value, 10);
+        if (!Number.isFinite(selectedIndex) || !blocks[selectedIndex]) {
+            return;
         }
-    });
-
-    let lastSelectedLanguageIndex = -1;
-    selector.addEventListener("change", (event: Event) => {
-        const selectedIndex = parseInt((event.target as HTMLOptionElement).value, 10);
-        if (lastSelectedLanguageIndex !== -1) {
-            lang[lastSelectedLanguageIndex].classList.add("none");
+        if (lastSelectedIndex !== -1) {
+            blocks[lastSelectedIndex].classList.add("none");
         }
-        lastSelectedLanguageIndex = selectedIndex;
-        lang[selectedIndex].classList.remove("none"); // todo: fix fadein effect
+        lastSelectedIndex = selectedIndex;
+        blocks[selectedIndex].classList.remove("none");
     });
 
-    selector.options.selectedIndex = currentLanguageIndex;
-    selector.dispatchEvent(createEvent("change"));
+    languageSelect.selectedIndex = preferredIndex;
+    languageSelect.dispatchEvent(new Event("change", { bubbles: true }));
 }

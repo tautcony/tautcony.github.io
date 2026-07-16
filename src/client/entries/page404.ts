@@ -3,10 +3,10 @@
  */
 
 import "../../styles/404.scss";
-import { startParticle404 } from "../features/particle404";
+import * as particle404 from "../features/particle404";
 
 function boot(): void {
-    startParticle404();
+    particle404.init();
 }
 
 if (document.readyState === "loading") {

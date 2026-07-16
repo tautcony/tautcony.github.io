@@ -37,6 +37,7 @@ Open the URL printed by Astro (default <http://localhost:4321>).
 | `npm run build` | Production SSG → `dist/` |
 | `npm run preview` | Serve `dist/` locally |
 | `npm run check:astro` | `astro check` |
+| `npm run math:check` | Reject display-math delimiters embedded in prose |
 | `npm run eslint` | ESLint on `ts/` |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lastmod:check` | Validate frozen `src/data/lastmod.json` (42 posts) |

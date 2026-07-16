@@ -4,7 +4,6 @@ import { unified } from "@astrojs/markdown-remark";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeRaw from "rehype-raw";
-import { rehypeRougeCompat } from "./src/lib/rehype-rouge-compat.mjs";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
@@ -48,10 +47,9 @@ export default defineConfig({
             gfm: true,
             remarkPlugins: [remarkGfm],
             // raw before slug so ids apply to raw HTML headings too when possible
-            rehypePlugins: [rehypeRaw, rehypeSlug, rehypeRougeCompat],
+            rehypePlugins: [rehypeRaw, rehypeSlug],
         }),
-        // Prism emits syntax tokens; rehypeRougeCompat preserves the legacy
-        // Rouge wrapper classes consumed by styles/syntax.scss.
+        // Native Astro Prism: pre.language-* > code.language-* > .token (see styles/syntax.scss).
         syntaxHighlight: "prism",
     },
     vite: {

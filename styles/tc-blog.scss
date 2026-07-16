@@ -1160,199 +1160,160 @@ canvas {
     padding: 0;
 }
 
-.highlight pre, pre {
+// Fenced code: Astro Prism emits <pre class="language-X">…</pre> (no Rouge wrappers).
+.post-content pre[class*="language-"] {
+    position: relative;
+    margin-top: 1.75em;
     border-top-left-radius: 0;
-}
 
-pre.highlight {
-    margin-top: 0 !important;
-}
-
-.post-content div.highlighter-rouge {
     &::before {
+        position: absolute;
+        top: -1.45em;
+        left: 0;
         padding: 2px 7px;
-        font-size: .9em;
+        font-size: 0.9em;
         font-weight: 700;
         color: #616161;
         background: #ededed;
-        content: 'Code';
+        content: "Code";
         border-radius: 5px 5px 0 0;
+        line-height: 1.4;
+        font-family: "Arial", "Helvetica Neue", sans-serif;
     }
-    & > .highlight {
-        transform: translateY(-2px);
-    }
-}
 
-.post-content div.highlighter-rouge {
     &.language-bash::before {
-        content: "Bash"
+        content: "Bash";
     }
-
     &.language-c::before {
-        content: "C"
+        content: "C";
     }
-
     &.language-cs::before {
-        content: "C♯"
+        content: "C♯";
     }
-
-    &.language-c\+\+::before, &.language-cpp::before {
-        content: "C++"
+    &.language-c\+\+::before,
+    &.language-cpp::before {
+        content: "C++";
     }
-
     &.language-css::before {
-        content: "CSS"
+        content: "CSS";
     }
-
     &.language-coffeescript::before {
-        content: "CoffeeScript"
+        content: "CoffeeScript";
     }
-
     &.language-html::before {
-        content: "HTML"
+        content: "HTML";
     }
-
     &.language-xml::before {
-        content: "XML"
+        content: "XML";
     }
-
     &.language-http::before {
-        content: "HTTP"
+        content: "HTTP";
     }
-
     &.language-json::before {
-        content: "JSON"
+        content: "JSON";
     }
-
     &.language-java::before {
-        content: "Java"
+        content: "Java";
     }
-
-    &.language-js::before, &.language-javascript::before {
-        content: "JavaScript"
+    &.language-js::before,
+    &.language-javascript::before {
+        content: "JavaScript";
     }
-
     &.language-makefile::before {
-        content: "Makefile"
+        content: "Makefile";
     }
-
     &.language-markdown::before {
-        content: "Markdown"
+        content: "Markdown";
     }
-
     &.language-objectivec::before {
-        content: "Objective-C"
+        content: "Objective-C";
     }
-
     &.language-php::before {
-        content: "PHP"
+        content: "PHP";
     }
-
     &.language-perl::before {
-        content: "Perl"
+        content: "Perl";
     }
-
     &.language-python::before {
-        content: "Python"
+        content: "Python";
     }
-
     &.language-ruby::before {
-        content: "Ruby"
+        content: "Ruby";
     }
-
     &.language-sql::before {
-        content: "SQL"
+        content: "SQL";
     }
-
     &.language-shell::before {
-        content: "Shell"
+        content: "Shell";
     }
-
     &.language-erlang::before {
-        content: "Erlang"
+        content: "Erlang";
     }
-
     &.language-go::before {
-        content: "Go"
+        content: "Go";
     }
-
     &.language-go-html-template::before {
-        content: "Go HTML Template"
+        content: "Go HTML Template";
     }
-
     &.language-groovy::before {
-        content: "Groovy"
+        content: "Groovy";
     }
-
     &.language-haskell::before {
-        content: "Haskell"
+        content: "Haskell";
     }
-
     &.language-kotlin::before {
-        content: "Kotlin"
+        content: "Kotlin";
     }
-
     &.language-clojure::before {
-        content: "Clojure"
+        content: "Clojure";
     }
-
     &.language-less::before {
-        content: "Less"
+        content: "Less";
     }
-
     &.language-lisp::before {
-        content: "Lisp"
+        content: "Lisp";
     }
-
     &.language-lua::before {
-        content: "Lua"
+        content: "Lua";
     }
-
     &.language-matlab::before {
-        content: "Matlab"
+        content: "Matlab";
     }
-
     &.language-rust::before {
-        content: "Rust"
+        content: "Rust";
     }
-
     &.language-scss::before {
-        content: "Scss"
+        content: "Scss";
     }
-
     &.language-scala::before {
-        content: "Scala"
+        content: "Scala";
     }
-
     &.language-swift::before {
-        content: "Swift"
+        content: "Swift";
     }
-
+    &.language-ts::before,
     &.language-typescript::before {
-        content: "TypeScript"
+        content: "TypeScript";
     }
-
-    &.language-yml::before {
-        content: "YAML"
-    }
-
+    &.language-yml::before,
     &.language-yaml::before {
-        content: "YAML"
+        content: "YAML";
     }
-
     &.language-toml::before {
-        content: "TOML"
+        content: "TOML";
     }
-
     &.language-diff::before {
-        content: "Diff"
+        content: "Diff";
     }
     &.language-powershell::before {
         content: "PowerShell";
     }
+    &.language-plaintext::before {
+        content: "Text";
+    }
 }
 
-// Lazy native PDF embed (see PdfEmbed.astro + ts/Lib/pdf-embed.ts)
+// Lazy native PDF embed (see PdfEmbed.astro + src/client/features/pdf-embed.ts)
 .pdf-embed {
     margin: 1.5em 0;
     border: 1px solid #e5e5e5;

@@ -119,7 +119,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | M1-01 | 冻结/校验 legacy-post-urls 42 条 | done | fixtures + self-test |
 | M1-02 | `migrate-posts.mjs` 生成 `src/content/posts` | done | 保留扩展名；不删 `_posts` |
 | M1-03 | `content.config.ts` schema | done | + `.markdown` entry type 集成 |
-| M1-04 | Markdown 管线 GFM/slug/高亮/raw | done | `rehype-rouge-compat` S1 |
+| M1-04 | Markdown 管线 GFM/slug/高亮/raw | done | Astro Prism 原生 DOM（已移除 rouge-compat） |
 | M1-05 | Liquid→0；PDF include；HTML title | done | 1 处 pdf-embed 静态化 |
 | M1-06 | 文章路由 + legacy map | done | 含日期错位文 `/2017/04/24/...` |
 | M1-07 | PostLayout 与文章组件集 | done | Intro/PostContainer/Sidebar/… |
@@ -267,7 +267,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `src/content/posts/*` | M1 | 唯一博文源（`.md`） |
 | `src/data/lastmod.json` | M1 | 冻结 lastmod（filename key） |
 | `src/lib/posts.ts` | M1 | URL/排序/prev-next |
-| `src/lib/rehype-rouge-compat.mjs` | M1 | S1 高亮 DOM |
+| ~~`src/lib/rehype-rouge-compat.mjs`~~ | M1 | 已删除；样式改为 Prism `pre.language-*` |
 | `src/layouts/PostLayout.astro` | M1 | 文章布局 |
 | `src/components/{IntroHeader,PostContainer,Sidebar,FeaturedTags,Comment,Katex,AnchorJS}.astro` | M1 | 文章组件 |
 | `src/pages/[year]/[month]/[day]/[slug]/index.astro` | M1 | 文章路由 |

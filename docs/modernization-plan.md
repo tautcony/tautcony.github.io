@@ -740,7 +740,7 @@ npm run ci           # lint + typecheck + build
 | `ts/entries/blog.ts` | 主前端入口 |
 | `ts/pages/*`, `ts/Lib/*` | 业务与工具 |
 | `ts/particle404/modern-scene.ts` | 当前 404 粒子（现代 Three.js） |
-| `ts/particle404/{bootstrap,scene,shell,mask}.ts` | 已不可达的 r56 迁移实现，待删除 |
+| `ts/particle404/{bootstrap,scene,shell,mask}.ts` | **已删除**（P1 清债；现行入口 `modern-scene.ts`） |
 | `less/*` | 主题样式源 |
 | `build/webpack.*` | 当前打包 |
 | `js/tcupdate.js` | 工具页（Vue） |

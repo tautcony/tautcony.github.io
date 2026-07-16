@@ -1,14 +1,16 @@
 # TC Blog → Astro 迁移计划
 
-> 状态：**实施中**（见 [PROGRESS.md](./PROGRESS.md)）
+> 状态：**完成待发布**（代码侧 M0–M5 done；见 [PROGRESS.md](./PROGRESS.md)）
 > 原则：**视觉样式冻结** — 现有 `styles/*.scss`、class 名与静态资源视为只读契约
 > 对应战略：现代化方案路径 B（见 `docs/modernization-plan.md`）
 > 仓库：`tautcony/tautcony.github.io`
 > 集成分支：`feat/astro-mig`
 
-> 2026-07-13 修订：已锁定 Astro 7/Node 22.12+、preserve 路由输出、双栈复制策略、Content Layer/schema、全量 route/resource compare 和可演练回滚。未满足 M0 前置门禁时，不得直接搬移 `_posts` 或根静态资源。
+> 2026-07-13 修订：已锁定 Astro 7/Node 22.12+、preserve 路由输出、双栈复制策略、Content Layer/schema、全量 route/resource compare 和可演练回滚。
 >
 > 2026-07-14：开始 M0/PR1 实施；**进度与接续入口统一写在 [PROGRESS.md](./PROGRESS.md)**。
+>
+> 2026-07-16：P1 清债后以 **PROGRESS 为准**。下列分册（`00`–`09`）保留双栈期设计叙述（如 `migrate-posts.mjs`、`@astrojs/vue`、excerpts fixture）；**现状事实**：内容唯一源 `src/content/posts/`，`tcupdate` 为纯 TS（无 Vue），摘要由 `src/lib/excerpts.ts` 运行时生成，404 仅 `modern-scene.ts`。
 
 ---
 

@@ -1,6 +1,6 @@
 /**
- * Site constants migrated from `_config.yml` (see mig/03-mapping-tables.md §4).
- * Keep keys in sync; dual-stack period treats this as the Astro source of truth.
+ * Site constants (from legacy `_config.yml`; see mig/03-mapping-tables.md §4).
+ * Single source of truth for Astro builds.
  */
 export const site = {
     title: "踢锡部落格",
@@ -56,7 +56,6 @@ export const site = {
     excerptSeparator: "<!--more-->",
     googleSiteVerification: "k_t-1fgBwmMc3UsE3yUU5zGQbRN2a0cl-HljKO2odqY",
     gaMeasurementId: "G-D7DJK0DHRY",
-    baTrackId: "" as string | undefined,
     anchorjs: true,
     particle404: true,
     utteranc: {
@@ -78,35 +77,3 @@ export const site = {
 } as const;
 
 export type Site = typeof site;
-
-/** Mapping report keys for audit (M0 site.ts completeness). */
-export const siteConfigMapping = {
-    title: "title",
-    SEOTitle: "seoTitle",
-    description: "description",
-    keyword: "keyword",
-    url: "url",
-    baseurl: "baseurl",
-    "header-img": "headerImg",
-    email: "email",
-    "author.twitter": "author.twitter",
-    "author.github": "author.github",
-    RSS: "rss",
-    SocialAccount: "socialAccount",
-    sidebar: "sidebar",
-    "sidebar-about-description": "sidebarAboutDescription",
-    "sidebar-avatar": "sidebarAvatar",
-    "featured-tags": "featuredTags",
-    "featured-condition-size": "featuredConditionSize",
-    friends: "friends",
-    excerpt_separator: "excerptSeparator",
-    "google-site-verification": "googleSiteVerification",
-    ga_measurement_id: "gaMeasurementId",
-    anchorjs: "anchorjs",
-    particle404: "particle404",
-    "utteranc.repo": "utteranc.repo",
-    "utteranc.issue-term": "utteranc.issueTerm",
-    "utteranc.theme": "utteranc.theme",
-    katex: "katex",
-    paginate: "paginate",
-} as const;

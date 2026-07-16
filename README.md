@@ -27,13 +27,13 @@ npm run dev
 
 Open the URL printed by Astro (default <http://localhost:4321>).
 
-`npm run dev` / `npm run build` use the committed legacy assets in `public/` directly. Their public URLs (`/img/`, `/attach/`, `/fonts/`, `/css/`, `/json/`, …) remain stable.
+`npm run dev` / `npm run build` use committed assets in `public/` directly. Public URLs (`/img/`, `/attach/`, `/fonts/`, `/css/`, `/json/`, …) stay stable.
 
 ### Useful scripts
 
 | Script | Description |
 |--------|-------------|
-| `npm run dev` | Sync public assets + Astro dev server |
+| `npm run dev` | Astro dev server |
 | `npm run build` | Production SSG → `dist/` |
 | `npm run preview` | Serve `dist/` locally |
 | `npm run check:astro` | `astro check` |
@@ -78,11 +78,11 @@ ts/
   entries/          Client entries (blog, page404, tcupdate)
   pages/            Per-page UI modules
   Lib/              Shared utilities
-  particle404/      Particle 404 scene
-styles/             Site SCSS (frozen during migration; still at repo root)
-public/             Stable legacy assets and runtime-static files
+  particle404/      Modern Three.js 404 scene
+styles/             Site SCSS (frozen contract; repo root)
+public/             Stable static assets (historical URLs)
 mig/                Migration docs, fixtures, PROGRESS.md
-scripts/            content/ (migration + metadata), test/ (verification)
+scripts/            content/ (metadata), test/ (verification)
 ```
 
 ### Client entry roles

@@ -35,11 +35,7 @@
     "eval:consistency:selftest": "node scripts/test/eval-consistency.mjs --self-test",
     "eval:visual": "node scripts/test/eval-visual.mjs",
     "eval:all": "npm run eval:consistency && npm run eval:visual",
-    "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run math:check && npm run lastmod:check && npm run build && npm run verify:routes && npm run verify:assets && npm run verify:routes:selftest && npm run verify:assets:selftest",
-    "dev:astro": "npm run dev",
-    "build:astro": "npm run build",
-    "preview:astro": "npm run preview",
-    "ci:astro": "npm run ci"
+    "ci": "npm run eslint && npm run typecheck && npm run check:astro && npm run math:check && npm run lastmod:check && npm run build && npm run verify:routes && npm run verify:assets && npm run verify:routes:selftest && npm run verify:assets:selftest"
   },
   "browserslist": [
     "defaults",

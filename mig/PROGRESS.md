@@ -13,7 +13,7 @@
 |------|-----|
 | 当前阶段 | **完成待发布**（M0–M5 代码完成；**合 master + 线上 7 日观察**） |
 | 当前 PR 切片 | 开 PR → master；M4-05 / M5-02 为线上动作 |
-| 上次更新 | 2026-07-15 |
+| 上次更新 | 2026-07-16 |
 | 可接续入口 | 见下方「下一步（接续指令）」 |
 | 阻塞 | 无（合入 master 为人工门禁） |
 
@@ -88,7 +88,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | M0-04 | `astro.config.mjs` + `src/env.d.ts` | done | preserve + unified markdown |
 | M0-05 | `_config.yml` exclude Astro 路径 | done | src/public/dist/astro/mig |
 | M0-06 | `sync-public` + public 同步 | done | M0 历史方案；PR5 已删除同步脚本并提交 `public/` |
-| M0-07 | `src/data/site.ts` 全量映射 | done | 含 `siteConfigMapping` |
+| M0-07 | `src/data/site.ts` 全量映射 | done | 站点常量；M0 审计表 `siteConfigMapping` 已于 P1 删除 |
 | M0-08 | BaseLayout + Head + Meta + Nav + Footer + Sns | done | class 契约对齐 |
 | M0-09 | 引入 `styles/tc-blog.scss` + heti | done | 根路径 import；不搬 styles/ |
 | M0-10 | 验证脚本骨架 | done | 三脚本均 `--self-test` 绿 |
@@ -131,7 +131,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 
 - [x] 42 篇生成；schema/URL/lastmod 全命中
 - [x] 文章 route diff = 0；Liquid = 0
-- [x] excerpts fixture 已写 `mig/fixtures/excerpts.json`
+- [x] 摘要由 `src/lib/excerpts.ts` 运行时生成（无独立 `excerpts.json` fixture）
 
 ---
 
@@ -139,7 +139,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 
 | ID | 任务 | 状态 | 备注 |
 |----|------|------|------|
-| M2-01 | 首页 + 摘要 | done | `excerpts.json`；首/末帖序对齐 Jekyll |
+| M2-01 | 首页 + 摘要 | done | `src/lib/excerpts.ts`；首/末帖序对齐 Jekyll |
 | M2-02 | 分页 `page2+` | done | `/page2/`…`/page5/`；无 `/page/n` |
 | M2-03 | archive 标签筛选 DOM | done | 41 tags + Show All；encode 与 Jekyll 一致 |
 | M2-04 | about + APlayer + Comment | done | utterances + kon/qr 容器 |
@@ -211,7 +211,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 |----|------|------|------|
 | M5-01 | 仅删运行时重复源；保留 fixtures/compare | **done** | 删 `_posts`/`_drafts`/`_data`；草稿→`mig/legacy/drafts`；内容唯一源 `src/content/posts` |
 | M5-02 | Sentry release 观察 7 天 | **todo** | release 已注入；观察 runbook `mig/11-sentry-observe.md`（合 master 后起算） |
-| M5-03 | 可选后续优化（独立 PR） | **n/a** | fonts 子集 / tcupdate 去 Vue / Shiki — 不绑迁移 |
+| M5-03 | 可选后续优化（独立 PR） | **n/a** | fonts 子集 / Shiki；**tcupdate 去 Vue 已完成**（纯 TS） |
 
 ### M5 交付勾选
 
@@ -239,6 +239,7 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | 2026-07-16 | 404 | 切换现代 Three.js 验收；退役 r56 专用 `disc`、`particle_tr`、`inner_bck`，当前资源契约 108 项 |
 | 2026-07-16 | CI | Actions 更新至 checkout/setup-node v7、Pages v5、CodeQL v4；移除 compare fixture snapshot 上传与 full-history checkout |
 | 2026-07-16 | PDF | 移除 PDF.js canvas 预览；点击后挂载浏览器原生矢量 PDF viewer，并保留打开/下载 fallback |
+| 2026-07-16 | P1 | 删 r56 particle404 死代码；去 `_drafts` 重复、`.lesshintrc`、`baTrackId`、`siteConfigMapping`、`*:astro` 别名；订正 excerpts/Vue/migrate-posts 文档漂移 |
 
 ---
 
@@ -262,18 +263,17 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `src/pages/index.astro` | M0 | 占位首页 |
 | `scripts/test/compare-routes.mjs` | M0 | 路由 diff 骨架 |
 | `scripts/test/compare-assets.mjs` | M0 | 资源 diff 骨架 |
-| `scripts/content/migrate-posts.mjs` | M1 | 写盘 + PDF/Liquid/excerpt/lastmod |
 | `src/content.config.ts` | M1 | posts collection schema |
-| `src/content/posts/*` | M1 | 迁移副本（保留 .md/.markdown） |
-| `src/data/lastmod.json` | M1 | 冻结 lastmod（sourceFilename key） |
+| `src/content/posts/*` | M1 | 唯一博文源（`.md`） |
+| `src/data/lastmod.json` | M1 | 冻结 lastmod（filename key） |
 | `src/lib/posts.ts` | M1 | URL/排序/prev-next |
 | `src/lib/rehype-rouge-compat.mjs` | M1 | S1 高亮 DOM |
 | `src/layouts/PostLayout.astro` | M1 | 文章布局 |
 | `src/components/{IntroHeader,PostContainer,Sidebar,FeaturedTags,Comment,Katex,AnchorJS}.astro` | M1 | 文章组件 |
 | `src/pages/[year]/[month]/[day]/[slug]/index.astro` | M1 | 文章路由 |
-| `mig/fixtures/excerpts.json` | M1 | 摘要 fixture（供 M2） |
+| `src/lib/excerpts.ts` | M2 | 运行时摘要（无 excerpts.json fixture） |
 | `src/data/pages.ts` | M2 | 非文章页 title/description/header |
-| `src/lib/pagination.ts` / `excerpts.ts` | M2 | 分页与摘要 |
+| `src/lib/pagination.ts` | M2 | 分页 |
 | `src/layouts/PageLayout.astro` | M2 | page 布局 + sidebar |
 | `src/components/PostList.astro` | M2 | 首页列表 + pager |
 | `src/pages/index.astro` | M2 | 首页第 1 页 |
@@ -283,8 +283,9 @@ Baseline：`mig/baselines/jekyll-site/`（gitignore）+ `jekyll-site.meta.json`
 | `src/pages/feed.xml.ts` | M2 | RSS |
 | `src/pages/sitemap.xml.ts` | M2 | 固定 `/sitemap.xml` |
 | `src/pages/404.astro` | M3 | `/404.html` 粒子页 |
-| `src/pages/tcupdate.astro` | M3 | `/tcupdate.html` Vue 工具页 |
+| `src/pages/tcupdate.astro` | M3 | `/tcupdate.html` 工具页（纯 TS，无 Vue） |
 | `src/components/PdfEmbed.astro` | M3 | PDF 占位组件（帖文已静态化） |
+| `ts/particle404/modern-scene.ts` | M3/P1 | 现行 404 粒子；r56 bootstrap/scene/shell 已删 |
 | `mig/fixtures/assets-jekyll.json` | M3+ | 当前需继续发布的静态资源 baseline（108） |
 | `.github/workflows/build.yml` | M4 | Astro Pages：dist + verify |
 | `Dockerfile` / `.dockerignore` | M4 | node build → nginx |
@@ -315,5 +316,4 @@ npm run verify:routes
 npm run verify:assets
 node scripts/test/compare-routes.mjs --self-test
 node scripts/test/compare-assets.mjs --self-test
-node scripts/content/migrate-posts.mjs --self-test
 ```

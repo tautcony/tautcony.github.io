@@ -1160,25 +1160,39 @@ canvas {
     padding: 0;
 }
 
-// Fenced code: Astro Prism emits <pre class="language-X">…</pre> (no Rouge wrappers).
+// Fenced code: Astro Prism emits <pre class="language-X" data-language="X">…</pre>
+// (no Rouge wrappers). Language tab sits on pre::before above the box — keep pre
+// overflow visible so heti's `.heti pre { overflow: auto }` does not clip it.
+// Horizontal scroll is on `pre > code` (see syntax.scss).
+//
+// Alignment: bottom:100% + margin-bottom:-1px tucks the tab onto the pre top border
+// (same idea as legacy `.highlighter-rouge > .highlight { transform: translateY(-2px) }`).
+// left:-1px lines up with the outer left border edge (containing block is the padding box).
 .post-content pre[class*="language-"] {
     position: relative;
-    margin-top: 1.75em;
+    // Room for the tab above the box (line-height 1.4 + padding + a little slack).
+    margin-top: 2em;
     border-top-left-radius: 0;
+    overflow: visible;
 
     &::before {
         position: absolute;
-        top: -1.45em;
-        left: 0;
+        bottom: 100%;
+        left: -1px;
+        z-index: 1;
+        margin-bottom: -1px;
         padding: 2px 7px;
         font-size: 0.9em;
         font-weight: 700;
+        line-height: 1.4;
         color: #616161;
         background: #ededed;
         content: "Code";
+        border: 1px solid #cccccc;
+        border-bottom: 0;
         border-radius: 5px 5px 0 0;
-        line-height: 1.4;
         font-family: "Arial", "Helvetica Neue", sans-serif;
+        box-sizing: border-box;
     }
 
     &.language-bash::before {

@@ -68,13 +68,6 @@ export default defineConfig({
         resolve: {
             extensions: [".mjs", ".js", ".ts", ".json", ".scss", ".css"],
         },
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    quietDeps: true,
-                    silenceDeprecations: ["import", "mixed-decls", "global-builtin", "legacy-js-api"],
-                },
-            },
-        },
     },
 });
+

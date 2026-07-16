@@ -6,7 +6,7 @@
 push/PR → checkout (shallow)
         → setup-node 22.12+
         → npm ci
-        → npm run ci      # lint/typecheck/check/build/route+asset gates
+        → npm run ci      # lint/typecheck/check/math/lastmod/build
         → upload-pages-artifact (path: dist)
         → (master) deploy-pages
 ```
@@ -78,7 +78,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 | `npm start` (jekyll serve) | `npm run dev` (astro dev) |
 | `npm run build` (vite only) | `npm run build` (astro build；lastmod 由 CI 单独校验) |
 | `npm run jekyll:build` | 删除 |
-| `npm run ci` | eslint + typecheck + astro check + lastmod + build + route/resource compare + compare self-test |
+| `npm run ci` | eslint + typecheck + astro check + math + lastmod + build |
+| `npm run verify:legacy` | 可选：route/resource 与 Jekyll fixtures 比对（不进 CI） |
 
 ## 8. 切流当日 runbook
 

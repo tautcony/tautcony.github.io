@@ -4,7 +4,8 @@
  * Styles remain at repo-root `styles/` (see mig/04-styles-freeze.md).
  */
 import "../../styles/tc-blog.scss";
-import "heti/lib/heti.scss";
+// Prefer heti's published CSS — packaging SCSS still uses deprecated @import / global builtins.
+import "heti/umd/heti.min.css";
 import Head from "../components/Head.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";

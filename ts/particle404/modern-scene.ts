@@ -135,7 +135,7 @@ function setParticleToRandomMaskPixel(
     particle: ParticleState,
     mask: MaskState
 ): void {
-    let pixelIndex = 0;
+    let pixelIndex: number;
     do {
         pixelIndex = Math.floor(Math.random() * mask.data.length);
     } while (255 * Math.random() > mask.data[pixelIndex]);

@@ -1,6 +1,5 @@
 import eslint from "@eslint/js";
-import stylisticJs from "@stylistic/eslint-plugin-js";
-import stylisticTs from "@stylistic/eslint-plugin-ts";
+import stylistic from "@stylistic/eslint-plugin";
 import tsEslint from "typescript-eslint";
 import tsParser from "@typescript-eslint/parser";
 import globals from "globals";
@@ -35,16 +34,14 @@ export default [
             },
         },
         plugins: {
-            "@stylistic/js": stylisticJs,
-            "@stylistic/ts": stylisticTs,
+            "@stylistic": stylistic,
         },
         rules: {
             "no-undef": "off",
-            "import/no-unresolved": "off",
             "lines-between-class-members": ["off"],
-            "@stylistic/ts/lines-between-class-members": ["off"],
-            "@stylistic/ts/indent": ["error", 4],
-            "@stylistic/ts/comma-dangle": ["error", {
+            "@stylistic/lines-between-class-members": ["off"],
+            "@stylistic/indent": ["error", 4],
+            "@stylistic/comma-dangle": ["error", {
                 arrays: "always-multiline",
                 objects: "always-multiline",
                 imports: "always-multiline",
@@ -53,8 +50,7 @@ export default [
                 functions: "never",
             }],
             quotes: "off",
-            "@stylistic/ts/quotes": ["error", "double"],
-            "import/extensions": ["off"],
+            "@stylistic/quotes": ["error", "double"],
             "max-classes-per-file": ["off"],
             "no-param-reassign": ["off"],
             "max-len": ["off"],

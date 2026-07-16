@@ -1,5 +1,7 @@
 // Minimal layout + utility layer replacing Bootstrap 3 grid/components used by the theme.
 // Keep historical class names so Liquid templates stay stable.
+@use "variables" as *;
+
 
 *,
 *::before,

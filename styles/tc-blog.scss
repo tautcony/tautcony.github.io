@@ -1,9 +1,9 @@
-@import "variables";
-@import "mixins";
-@import "layout";
-@import "sidebar";
-@import "side-catalog";
-@import "syntax";
+@use "variables" as *;
+@use "mixins" as *;
+@use "layout";
+@use "sidebar";
+@use "side-catalog";
+@use "syntax";
 
 // Global Components
 

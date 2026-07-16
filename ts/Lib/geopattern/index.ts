@@ -6,23 +6,11 @@ import PatternGenerator, { Pattern, IPatternOption } from "./pattern-generator";
  * options: {}
  */
 function optArgs(cb: (str: string, options?: IPatternOption) => Pattern) {
-    return function opt(str: string | IPatternOption, options?: IPatternOption) {
-        let strVal: string | null = null;
-        let optionsVal = {} as IPatternOption | undefined;
+    return function opt(str?: string | IPatternOption, options?: IPatternOption) {
         if (typeof str === "string") {
-            strVal = str;
-            optionsVal = options;
-        } else {
-            strVal = null;
-            optionsVal = str;
+            return cb(str, options);
         }
-        if (strVal === null || strVal === undefined) {
-            strVal = (new Date()).toString();
-        }
-        if (!options) {
-            options = {} as IPatternOption;
-        }
-        return cb(strVal, optionsVal);
+        return cb(new Date().toString(), str);
     };
 }
 

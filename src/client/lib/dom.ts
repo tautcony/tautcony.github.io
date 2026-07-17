@@ -189,22 +189,3 @@ export function el<K extends keyof HTMLElementTagNameMap>(
     return element;
 }
 
-export function isExternal(url: string): boolean {
-    if (url.length <= 1) {
-        return false;
-    }
-    // Relative paths / same-document links are never external.
-    if (url.startsWith("#") || url.startsWith("?") || url.startsWith("/")) {
-        if (url.startsWith("//")) {
-            // Protocol-relative absolute URL
-        } else {
-            return false;
-        }
-    }
-    try {
-        const target = new URL(url, window.location.href);
-        return target.origin !== window.location.origin;
-    } catch {
-        return false;
-    }
-}

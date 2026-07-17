@@ -1,68 +1,63 @@
-import { el } from "../lib/dom";
-
 /**
- * Shared page chrome: responsive tables (in post content), gotop, navbar scroll.
- * Side-catalog lives in `features/catalog.ts`.
+ * Site chrome: gotop, sticky navbar, side-catalog (fixed + fold).
+ * Tables / catalog links are SSG; this module only binds interaction.
  */
 
-function wrapTable(table: HTMLTableElement): void {
-    const wrapper = el("div", { class: "table-responsive" });
-    table.replaceWith(wrapper);
-    wrapper.append(table);
-}
+const DESKTOP_MIN_WIDTH = 1170;
 
-function smoothScrollTo(top: number): void {
-    window.scrollTo({ top, behavior: "smooth" });
-}
-
-export function init(): void {
-    // Only article tables — avoid wrapping unrelated layout tables.
-    const tableRoot = document.querySelector(".post-content") ?? document.querySelector(".post-container");
-    if (tableRoot) {
-        for (const table of tableRoot.querySelectorAll("table")) {
-            table.classList.add("table");
-            wrapTable(table);
-        }
-    }
-
+function bindGotop(): void {
     const gotop = document.getElementById("gotop");
-    if (gotop instanceof HTMLButtonElement) {
-        gotop.addEventListener("click", () => {
-            smoothScrollTo(0);
-        });
+    if (!(gotop instanceof HTMLButtonElement)) {
+        return;
     }
+    gotop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+}
 
-    const MQL = 1170;
-    const navbarEl = document.querySelector(".navbar-custom");
-    const catalogEl = document.querySelector(".side-catalog");
-    const bannerEl = document.querySelector(".intro-header .container");
+function bindCatalogFold(catalog: HTMLElement): void {
+    document.querySelector(".catalog-toggle")?.addEventListener("click", event => {
+        event.preventDefault();
+        catalog.classList.toggle("fold");
+    });
+}
 
-    if (!(navbarEl instanceof HTMLElement) || !(bannerEl instanceof HTMLElement)) {
+function bindScrollChrome(): void {
+    const navbar = document.querySelector(".navbar-custom");
+    const banner = document.querySelector(".intro-header .container");
+    if (!(navbar instanceof HTMLElement) || !(banner instanceof HTMLElement)) {
         return;
     }
 
-    const navbar = navbarEl;
+    const catalogEl = document.querySelector(".side-catalog");
     const catalog = catalogEl instanceof HTMLElement ? catalogEl : null;
-    const headerHeight = navbar.clientHeight;
-    const bannerHeight = bannerEl.clientHeight;
+    if (catalog) {
+        bindCatalogFold(catalog);
+    }
 
-    function updateBanner(currentTop: number, previousTop: number): void {
+    const gotop = document.getElementById("gotop");
+    const headerHeight = navbar.clientHeight;
+    const bannerHeight = banner.clientHeight;
+    let lastScrollY = 0;
+    let framePending = false;
+
+    const paint = (scrollY: number, previousY: number): void => {
         if (gotop instanceof HTMLButtonElement) {
-            gotop.disabled = currentTop < 300;
+            gotop.disabled = scrollY < 300;
         }
-        if (window.innerWidth <= MQL) {
+        if (window.innerWidth <= DESKTOP_MIN_WIDTH) {
             return;
         }
 
-        if (currentTop - previousTop <= 0) {
-            if (currentTop > 0 && navbar.classList.contains("is-fixed")) {
+        if (scrollY - previousY <= 0) {
+            if (scrollY > 0 && navbar.classList.contains("is-fixed")) {
                 navbar.classList.add("is-visible");
             } else {
                 navbar.classList.remove("is-visible", "is-fixed");
             }
         } else {
             navbar.classList.remove("is-visible");
-            if (currentTop > headerHeight && !navbar.classList.contains("is-fixed")) {
+            if (scrollY > headerHeight && !navbar.classList.contains("is-fixed")) {
                 navbar.classList.add("is-fixed");
             }
         }
@@ -71,24 +66,26 @@ export function init(): void {
             return;
         }
         catalog.style.display = "block";
-        catalog.classList.toggle("fixed", currentTop > bannerHeight);
-    }
+        catalog.classList.toggle("fixed", scrollY > bannerHeight);
+    };
 
-    let lastKnownScrollPosition = 0;
-    let ticking = false;
-
-    const onScrollOrResize = () => {
-        if (!ticking) {
-            const previousTop = lastKnownScrollPosition;
+    const onScrollOrResize = (): void => {
+        if (!framePending) {
+            const previousY = lastScrollY;
             window.requestAnimationFrame(() => {
-                updateBanner(window.scrollY, previousTop);
-                ticking = false;
+                paint(window.scrollY, previousY);
+                framePending = false;
             });
-            ticking = true;
+            framePending = true;
         }
-        lastKnownScrollPosition = window.scrollY;
+        lastScrollY = window.scrollY;
     };
 
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
     window.addEventListener("resize", onScrollOrResize);
+}
+
+export function init(): void {
+    bindGotop();
+    bindScrollChrome();
 }

@@ -4,7 +4,7 @@ The scripts are grouped by when they are used:
 
 - `content/`: content and metadata maintenance. These scripts refresh or check frozen data; they are run intentionally, not on every build.
   - `lastmod:refresh` ignores pure **rename (R\*)** and **copy (C\*)** commits so path migrations do not bump “Update on”. Real content edits (A/M) still update; an existing freeze is kept when history since it is only path moves.
-  - `quotes:build` / `quotes:check`: compile `src/data/quotes.yml` → `public/json/quote.json` (edit YAML, rebuild, commit both).
+  - `quotes:check`: validate `src/data/quotes.yml`. JSON is emitted by Astro (`src/pages/json/quote.json.ts`) on `dev` / `build`.
 - `test/`: verification and consistency checks. The `compare-*` scripts check routes/assets, while `eval-*` scripts compare content and rendered screenshots. Their self-tests can run without a build.
 
 The npm scripts are the supported entry points, so callers do not need to depend on these paths directly.

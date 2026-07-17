@@ -1,15 +1,20 @@
-// Custom mobile navbar (no Bootstrap JS). Material-style open/close animation in CSS.
+/** Mobile navbar (no Bootstrap JS). Open/close animation is CSS-driven. */
+
 const CLOSE_ANIMATION_MS = 400;
 
 export function init(): void {
     const root = document.querySelector("#blog_navbar");
     const toggle = document.querySelector(".navbar-toggle");
     const collapse = document.querySelector(".navbar-collapse");
-    if (!(root instanceof HTMLElement) || !(toggle instanceof HTMLButtonElement) || !(collapse instanceof HTMLElement)) {
+    if (
+        !(root instanceof HTMLElement)
+        || !(toggle instanceof HTMLButtonElement)
+        || !(collapse instanceof HTMLElement)
+    ) {
         return;
     }
 
-    const close = () => {
+    const close = (): void => {
         toggle.classList.add("is-collapsed");
         toggle.setAttribute("aria-expanded", "false");
         root.classList.remove("in");
@@ -20,15 +25,15 @@ export function init(): void {
         }, CLOSE_ANIMATION_MS);
     };
 
-    const open = () => {
+    const open = (): void => {
         root.classList.add("in");
         toggle.classList.remove("is-collapsed");
         toggle.setAttribute("aria-expanded", "true");
         collapse.style.height = "auto";
     };
 
-    toggle.addEventListener("click", e => {
-        e.stopPropagation();
+    toggle.addEventListener("click", event => {
+        event.stopPropagation();
         if (root.classList.contains("in")) {
             close();
         } else {
@@ -36,8 +41,8 @@ export function init(): void {
         }
     });
 
-    document.addEventListener("click", e => {
-        const target = e.target;
+    document.addEventListener("click", event => {
+        const target = event.target;
         if (!(target instanceof Node)) {
             return;
         }
@@ -47,8 +52,8 @@ export function init(): void {
         close();
     });
 
-    document.addEventListener("keydown", e => {
-        if (e.key === "Escape") {
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
             close();
             toggle.focus();
         }

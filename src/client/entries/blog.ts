@@ -33,17 +33,19 @@ const TITLE_JOKES = [
     "_( -ω-` )⌒)_",
 ] as const;
 
-/**
- * Shell features always run. Page-local features load via dynamic import only when
- * their mount points exist (keeps ownership readable and enables code-splitting).
- */
+/** Page-local features: load only when the mount point exists. */
+const PAGE_FEATURES = [
+    { match: "#tag_cloud", load: () => import("../features/archive") },
+    { match: "#kon-container", load: () => import("../features/about") },
+    { match: ".pdf-embed", load: () => import("../features/pdf-embed") },
+] as const;
+
 function bootShell(): void {
     navbar.init();
     pageChrome.init();
     title.init(TITLE_JOKES);
     quote.init({ intervalMs: 10_000 });
 
-    // Optional Crisp chat widget (injected only when the third-party snippet is present).
     window.$crisp?.push(["safe", true]);
 
     if (typeof XPathResult !== "undefined") {
@@ -52,33 +54,11 @@ function bootShell(): void {
 }
 
 async function bootPageFeatures(): Promise<void> {
-    const tasks: Promise<unknown>[] = [];
-
-    if (document.querySelector(".catalog-body")) {
-        tasks.push(import("../features/catalog").then(m => m.init()));
-    }
-    if (document.querySelector(".post-content")) {
-        tasks.push(import("../features/post").then(m => m.init()));
-    }
-    if (document.querySelector("#tag_cloud")) {
-        tasks.push(
-            import("../features/archive").then(m => m.init()),
-            import("../features/tag-cloud").then(m =>
-                m.init(document.querySelectorAll("#tag_cloud a"), {
-                    color: { start: "#999999", end: "#0085a1" },
-                    size: { start: 1, end: 1.1, unit: "em" },
-                })
-            )
-        );
-    }
-    if (document.querySelector("#kon-container")) {
-        tasks.push(import("../features/about").then(m => m.init()));
-    }
-    if (document.querySelector(".pdf-embed")) {
-        tasks.push(import("../features/pdf-embed").then(m => m.init()));
-    }
-
-    await Promise.all(tasks);
+    await Promise.all(
+        PAGE_FEATURES
+            .filter(({ match }) => document.querySelector(match))
+            .map(({ load }) => load().then(mod => mod.init()))
+    );
 }
 
 function boot(): void {

@@ -1,22 +1,20 @@
 /**
- * Build / check footer quotes.
- *
- * Source of truth: src/data/quotes.yml
- * Generated:      public/json/quote.json  (fetched at runtime by quote.ts)
+ * Validate footer quotes YAML (source of truth: src/data/quotes.yml).
+ * Runtime JSON is produced by Astro at `/json/quote.json`
+ * (`src/pages/json/quote.json.ts`) during `astro dev` / `astro build`.
  *
  * Usage:
- *   node scripts/content/build-quotes.mjs           # write public JSON
- *   node scripts/content/build-quotes.mjs --check    # fail if public is stale
+ *   node scripts/content/build-quotes.mjs           # load + report count
+ *   node scripts/content/build-quotes.mjs --check    # same (CI gate)
  *   node scripts/content/build-quotes.mjs --self-test
  */
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { load as loadYaml } from "js-yaml";
 
 const root = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const SOURCE = path.join(root, "src/data/quotes.yml");
-const OUT = path.join(root, "public/json/quote.json");
 
 /**
  * @typedef {{ text: string[], author: string, source?: string }} QuoteEntry
@@ -64,14 +62,6 @@ export function normalizeQuotes(raw) {
         }
         return entry;
     });
-}
-
-/**
- * Stable pretty JSON for git-friendly diffs.
- * @param {QuoteEntry[]} quotes
- */
-export function serializeQuotes(quotes) {
-    return `${JSON.stringify(quotes, null, 4)}\n`;
 }
 
 /**
@@ -134,6 +124,7 @@ function main() {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
         console.log("Usage: node scripts/content/build-quotes.mjs [--check] [--self-test]");
+        console.log("Validates src/data/quotes.yml. JSON is emitted by Astro at /json/quote.json.");
         process.exit(0);
     }
     if (args.selfTest) {
@@ -146,28 +137,14 @@ function main() {
     }
 
     const quotes = loadQuotesFromYaml(SOURCE);
-    const body = serializeQuotes(quotes);
-
-    if (args.check) {
-        if (!fs.existsSync(OUT)) {
-            console.error(`[build-quotes] missing ${path.relative(root, OUT)}; run npm run quotes:build`);
-            process.exit(1);
-        }
-        const current = fs.readFileSync(OUT, "utf8");
-        if (current !== body) {
-            console.error(
-                `[build-quotes] ${path.relative(root, OUT)} is out of date with ${path.relative(root, SOURCE)}`
-            );
-            console.error("Run: npm run quotes:build");
-            process.exit(1);
-        }
-        console.log(`[build-quotes] check OK — ${quotes.length} entries`);
-        process.exit(0);
-    }
-
-    fs.mkdirSync(path.dirname(OUT), { recursive: true });
-    fs.writeFileSync(OUT, body, "utf8");
-    console.log(`[build-quotes] wrote ${path.relative(root, OUT)} (${quotes.length} entries)`);
+    // --check and default: same gate (YAML must load + normalize).
+    console.log(
+        `[build-quotes] ${args.check ? "check OK" : "OK"} — ${quotes.length} entries ` +
+            `(served via Astro /json/quote.json)`
+    );
 }
 
-main();
+const entry = process.argv[1] ? path.resolve(process.argv[1]) : "";
+if (entry && import.meta.url === pathToFileURL(entry).href) {
+    main();
+}

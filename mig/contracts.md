@@ -53,8 +53,9 @@
 ## 6b. 页脚语录
 
 - 可编辑源：`src/data/quotes.yml`
-- 发布产物：`public/json/quote.json`（`npm run quotes:build`；CI `quotes:check`）
-- 运行时：`src/client/features/quote.ts` fetch 该 JSON
+- 发布产物：`dist/json/quote.json`（Astro 路由 `src/pages/json/quote.json.ts`，`dev`/`build` 自动生成）
+- 校验：CI `quotes:check` 校验 YAML；无需单独 compile 步骤
+- 运行时：`src/client/features/quote.ts` fetch `/json/quote.json`
 
 ## 7. 明确不在契约内
 

@@ -5,6 +5,7 @@ import PostContainer from "../components/PostContainer.astro";
 import Sidebar from "../components/Sidebar.astro";
 import AnchorJS from "../components/AnchorJS.astro";
 import Katex from "../components/Katex.astro";
+import type { MarkdownHeading } from "astro";
 import type { PostEntry } from "../lib/posts";
 import {
     collectTagCounts,
@@ -15,14 +16,23 @@ import {
 interface Props {
     post: PostEntry;
     allPosts: PostEntry[];
+    /** From `render(post).headings` — SSG side catalog when `catalog: true`. */
+    headings?: MarkdownHeading[];
 }
 
-const { post, allPosts } = Astro.props;
+const { post, allPosts, headings = [] } = Astro.props;
 const d = post.data;
 const url = postUrl(post);
 const { previous, next } = getPrevNext(post, allPosts);
 const tagCounts = collectTagCounts(allPosts);
 const description = d.subtitle || undefined;
+const catalogItems = d.catalog
+    ? headings.map(h => ({
+        depth: h.depth,
+        slug: h.slug,
+        text: h.text.trim() || h.slug,
+    }))
+    : [];
 ---
 
 <BaseLayout
@@ -66,7 +76,15 @@ const description = d.subtitle || undefined;
                                 <h5>
                                     <a class="catalog-toggle" href="#">CATALOG</a>
                                 </h5>
-                                <ul class="catalog-body" />
+                                <ul class="catalog-body">
+                                    {
+                                        catalogItems.map(item => (
+                                            <li class={`h${item.depth}_nav`}>
+                                                <a href={`#${item.slug}`}>{item.text}</a>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
                             </div>
                         </div>
                     )

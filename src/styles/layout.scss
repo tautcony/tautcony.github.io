@@ -440,11 +440,16 @@ a {
     }
 }
 
-// External link marker
+// External link marker (class set at SSG by rehype-post-enhancements)
 a.external::after {
     content: "↗";
     font-family: inherit;
     font-size: 0.85em;
     margin-left: 0.25em;
     opacity: 0.7;
+}
+
+// Author asides: paragraphs whose text starts with // (SSG class, was client inline style)
+.post-content p.comment-line {
+    color: #339966;
 }

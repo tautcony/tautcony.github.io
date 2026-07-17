@@ -7,6 +7,7 @@ import rehypeRaw from "rehype-raw";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { site as siteConfig } from "./src/data/site.ts";
+import { rehypePostEnhancements } from "./src/lib/rehype-post-enhancements.ts";
 
 function sentryRelease() {
     try {
@@ -46,8 +47,8 @@ export default defineConfig({
         processor: unified({
             gfm: true,
             remarkPlugins: [remarkGfm],
-            // raw before slug so ids apply to raw HTML headings too when possible
-            rehypePlugins: [rehypeRaw, rehypeSlug],
+            // raw → slug → post polish (// asides, external link class)
+            rehypePlugins: [rehypeRaw, rehypeSlug, rehypePostEnhancements],
         }),
         // Native Astro Prism: pre.language-* > code.language-* > .token (see src/styles/syntax.scss).
         syntaxHighlight: "prism",

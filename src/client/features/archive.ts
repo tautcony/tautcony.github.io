@@ -1,4 +1,9 @@
-/** Normalize tag key for comparison (trim; decode once if still percent-encoded). */
+/**
+ * Archive tag filter (`#tag_cloud` + `.js-result`).
+ * Tag-cloud font/color is SSG (`lib/tag-cloud`); this only filters + `?tag=`.
+ */
+
+/** Normalize tag key (trim; decode once if still percent-encoded). */
 function normalizeTagKey(raw: string | null | undefined): string {
     if (raw === null || raw === undefined) {
         return "";
@@ -7,7 +12,6 @@ function normalizeTagKey(raw: string | null | undefined): string {
     if (!text) {
         return "";
     }
-    // Legacy pages may store data-encode as encodeURIComponent(tag); query is decoded.
     if (/%[0-9A-Fa-f]{2}/.test(text)) {
         try {
             text = decodeURIComponent(text);
@@ -18,14 +22,13 @@ function normalizeTagKey(raw: string | null | undefined): string {
     return text;
 }
 
-function queryAll(selectors: string, parent: ParentNode | null = document): Element[] {
+function queryAll(selector: string, parent: ParentNode | null): Element[] {
     if (!parent) {
         return [];
     }
-    return Array.from(parent.querySelectorAll(selectors));
+    return [...parent.querySelectorAll(selector)];
 }
 
-/** Update `?tag=` while preserving path/hash and other params. */
 function setTagQuery(tag?: string): void {
     const url = new URL(window.location.href);
     if (tag) {
@@ -37,28 +40,22 @@ function setTagQuery(tag?: string): void {
 }
 
 class ArchiveFilter {
-    private tagsRoot: Element | null = null;
-    private articleTagButtons: Element[] = [];
-    private showAllButton: Element | null = null;
-    private resultRoot: Element | null = null;
-    private sections: Element[] = [];
-    private sectionArticles: Element[][] = [];
-    /** Pre-normalized tags per article (sectionIndex → articleIndex → tags). */
-    private articleTagKeys: string[][][] = [];
+    private readonly articleTagButtons: Element[];
+    private readonly showAllButton: Element | null;
+    private readonly resultRoot: Element | null;
+    private readonly sections: Element[];
+    private readonly sectionArticles: Element[][];
+    private readonly articleTagKeys: string[][][];
     private lastFocusedButton: Element | null = null;
-    private isInitialized = false;
-    private hasTagCloud = false;
+    private revealed = false;
 
-    public constructor() {
-        if (document.querySelector("#tag_cloud") === null) {
-            return;
-        }
-        this.hasTagCloud = true;
-        this.tagsRoot = document.querySelector(".js-tags");
-        this.articleTagButtons = queryAll(".tag-button", this.tagsRoot);
-        this.showAllButton = queryAll(".tag-button--all", this.tagsRoot)[0] ?? null;
+    public constructor(tagsRoot: Element) {
+        this.articleTagButtons = queryAll(".tag-button", tagsRoot);
+        this.showAllButton = queryAll(".tag-button--all", tagsRoot)[0] ?? null;
         this.resultRoot = document.querySelector(".js-result");
         this.sections = queryAll("section", this.resultRoot);
+        this.sectionArticles = [];
+        this.articleTagKeys = [];
 
         for (const section of this.sections) {
             const items = queryAll(".item", section);
@@ -72,22 +69,17 @@ class ArchiveFilter {
                 )
             );
         }
-    }
 
-    public init(): void {
-        if (!this.hasTagCloud) {
-            return;
-        }
-        // From /post → /archive/?tag=编程 (or C%2B%2B); URLSearchParams already decodes.
-        const queryTag = normalizeTagKey(new URLSearchParams(window.location.search).get("tag"));
-        this.selectTag(queryTag);
-
-        for (const tag of queryAll("a", this.tagsRoot)) {
+        for (const tag of queryAll("a", tagsRoot)) {
             tag.addEventListener("click", event => {
                 event.preventDefault();
                 this.selectTag(tag.getAttribute("data-encode"), tag);
             });
         }
+
+        // From /post → /archive/?tag=编程; URLSearchParams already decodes.
+        const queryTag = normalizeTagKey(new URLSearchParams(window.location.search).get("tag"));
+        this.selectTag(queryTag);
     }
 
     private findButtonByTag(tag: string | null): Element | null {
@@ -130,9 +122,9 @@ class ArchiveFilter {
             this.sections[sectionIndex].classList.toggle("d-none", !sectionVisible);
         }
 
-        if (!this.isInitialized && this.resultRoot !== null) {
+        if (!this.revealed && this.resultRoot !== null) {
             this.resultRoot.classList.remove("d-none");
-            this.isInitialized = true;
+            this.revealed = true;
         }
 
         if (target) {
@@ -146,5 +138,9 @@ class ArchiveFilter {
 }
 
 export function init(): void {
-    new ArchiveFilter().init();
+    const tagsRoot = document.querySelector(".js-tags") ?? document.querySelector("#tag_cloud");
+    if (tagsRoot === null) {
+        return;
+    }
+    new ArchiveFilter(tagsRoot);
 }

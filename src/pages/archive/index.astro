@@ -9,6 +9,11 @@ import {
     sortPostsDesc,
     type PostEntry,
 } from "../../lib/posts";
+import {
+    ARCHIVE_TAG_CLOUD,
+    tagBadgeColors,
+    tagBadgeStyleAttr,
+} from "../../lib/tag-cloud";
 
 const allPosts = await getAllPosts();
 const ordered = sortPostsDesc(allPosts);
@@ -19,6 +24,11 @@ const tags = [...collectTagCounts(allPosts).entries()].sort(
     (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
 );
 const postTotal = allPosts.length;
+// Weight color only on count badges (角标); label text stays neutral gray.
+const badgeColors = tagBadgeColors(
+    tags.map(([, size]) => size),
+    ARCHIVE_TAG_CLOUD
+);
 
 /** Canonical tag key for data-* attributes (raw UTF-8). URL query still uses encodeURIComponent. */
 function tagKey(tag: string) {
@@ -62,7 +72,7 @@ for (const post of ordered) {
                         <sup>{postTotal}</sup>
                     </a>
                     {
-                        tags.map(([tag, size]) => {
+                        tags.map(([tag, size], index) => {
                             const sortKey = String(postTotal - size).padStart(4, "0").slice(-4);
                             return (
                                 <a
@@ -71,6 +81,7 @@ for (const post of ordered) {
                                     class="tag-button"
                                     title={tag}
                                     rel={String(size)}
+                                    style={tagBadgeStyleAttr(badgeColors[index])}
                                 >
                                     {tag}
                                     <sup>{size}</sup>

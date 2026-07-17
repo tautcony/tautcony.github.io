@@ -2,6 +2,7 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 import Comment from "../../components/Comment.astro";
 import { pageMeta } from "../../data/pages";
+import { KON_BLOCKS, KON_META } from "../../data/kon";
 import { getAllPosts } from "../../lib/posts";
 
 const allPosts = await getAllPosts();
@@ -17,9 +18,34 @@ const meta = pageMeta.about;
 >
     <div id="player1" class="aplayer" style="float: right;"></div>
 
-    <!-- Language Selector (hydrated by client/features/about) -->
-    <select id="langSelect"></select>
-    <div id="kon-container"></div>
+    <!-- Options + quote blocks SSG; preferred language + hide/show via client/features/about -->
+    <select id="langSelect">
+        {
+            KON_BLOCKS.map((block, index) => (
+                <option value={String(index)}>{block.title}</option>
+            ))
+        }
+    </select>
+    <div id="kon-container">
+        {
+            KON_BLOCKS.map((block, index) => (
+                <div
+                    class={index === 0 ? KON_META.className : `${KON_META.className} none`}
+                    title={block.title}
+                    lang={block.lang}
+                >
+                    <blockquote>{block.blockquote}</blockquote>
+                    {block.content.map(line => (
+                        <p>{line}</p>
+                    ))}
+                    <p style="text-align: right;" title={KON_META.title}>
+                        ——{" "}
+                        <a href={KON_META.url}>{KON_META.title}</a>
+                    </p>
+                </div>
+            ))
+        }
+    </div>
 
     <link
         rel="stylesheet"

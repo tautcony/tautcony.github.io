@@ -9,6 +9,12 @@ interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
 
+/** Vite raw imports (e.g. quotes.yml → string for js-yaml). */
+declare module "*?raw" {
+    const content: string;
+    export default content;
+}
+
 /** Optional third-party Crisp chat widget (`window.$crisp`). */
 interface Window {
     $crisp?: (string | number | boolean)[][];

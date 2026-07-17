@@ -44,6 +44,8 @@
 
 }
 // tag_cloud
+// Label text is neutral gray; weight scale only on count badges via --tc-badge-color
+// (lib/tag-cloud). Selected / hover fill uses $brand-primary (same end of the badge ramp).
 #tag_cloud {
     margin: 24px 0 18px;
     padding-top: 6px;
@@ -71,7 +73,8 @@
             border-color: $brand-primary;
             background-color: $brand-primary !important;
             > sup {
-                background-color: $gray-dark;
+                // Selected chrome: dark badge on brand fill
+                background-color: $gray-dark !important;
             }
         }
         &.focus {
@@ -79,7 +82,7 @@
             border-color: $brand-primary;
             background-color: $brand-primary !important;
             > sup {
-                background-color: $gray-dark;
+                background-color: $gray-dark !important;
             }
         }
         > sup {
@@ -95,10 +98,15 @@
             margin: 0;
             padding: 0;
             color: white;
+            // Default / Show All: selected brand color
             background-color: $brand-primary;
             font-size: 10px !important;
             font-weight: 700;
             line-height: 16px;
+        }
+        &.tag-button > sup {
+            // Weight ramp (SSG --tc-badge-color); high count → $brand-primary
+            background-color: var(--tc-badge-color, #{$brand-primary});
         }
         &.tag-button--all {
             font-weight: 700;

@@ -40,8 +40,7 @@ Dev and production builds serve committed files under `public/` as-is. Public pa
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lastmod:check` | Validate `src/data/lastmod.json` against post files |
 | `npm run lastmod:refresh` | Regenerate `lastmod.json` from git history |
-| `npm run quotes:build` | Compile `src/data/quotes.yml` → `public/json/quote.json` |
-| `npm run quotes:check` | Ensure published quotes match the YAML source |
+| `npm run quotes:check` | Validate `src/data/quotes.yml` (JSON via Astro `/json/quote.json`) |
 | `npm run ci` | Lint + typecheck + astro check + math + quotes + lastmod + build |
 
 ## Deploy
@@ -105,7 +104,7 @@ scripts/            content checks and optional utilities
 - PDF previews use `.pdf-embed` placeholders and the browser’s native PDF viewer.
 - Comments use **utterances**; math uses **KaTeX** when enabled on a post.
 - Code highlighting uses **Prism** styles under `src/styles/syntax.scss`.
-- Footer quotes: edit `src/data/quotes.yml`, then `npm run quotes:build` (CI runs `quotes:check`).
+- Footer quotes: edit `src/data/quotes.yml` (Astro serves `/json/quote.json` on `dev`/`build`; CI runs `quotes:check`).
 - Sentry `release` is `tc-blog@<version>+<gitsha>`.
 
 ## License

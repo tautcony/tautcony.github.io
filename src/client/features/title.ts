@@ -1,8 +1,14 @@
+/** Tab-title jokes when the document is hidden. */
+
 export function init(titles: readonly string[]): void {
+    if (titles.length === 0) {
+        return;
+    }
+
     const initialTitle = document.title;
     let restoreTimerId: number | null = null;
 
-    const clearRestoreTimer = () => {
+    const clearRestoreTimer = (): void => {
         if (restoreTimerId !== null) {
             clearTimeout(restoreTimerId);
             restoreTimerId = null;

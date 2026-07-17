@@ -6,9 +6,9 @@
 #   text:                   # required, ≥1 lines; runtime picks entry then line
 #     - "..."
 #
-# After editing, run:
-#   npm run quotes:build    # write public/json/quote.json
-#   npm run quotes:check    # assert public matches this file (used in CI)
+# Served automatically by Astro at /json/quote.json (dev + build).
+# No manual compile step — edit this file and restart/refresh.
+# CI: npm run quotes:check  (validates this YAML)
 
 - author: Adam Smith
   source: The Wealth of Nations

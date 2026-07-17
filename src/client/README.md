@@ -8,10 +8,10 @@ Do **not** import `entries/*` from Astro frontmatter — they touch `document` /
 src/
   client/          Browser runtime (this tree)
     entries/       Page bootstraps
-    features/      UI & page behaviors
+    features/      UI & page behaviors (interaction only)
     lib/           Shared client helpers (dom)
     types/         Ambient shims (e.g. heti)
-  lib/             Build-time helpers (posts, pagination, excerpts, geopattern, url)
+  lib/             Build-time helpers (posts, tag-cloud, rehype, geopattern, …)
   components/      Astro components
   layouts/
   pages/
@@ -20,44 +20,55 @@ src/
 
 | Entry | Mounted from | Bootstraps |
 |-------|--------------|------------|
-| `entries/blog.ts` | `layouts/BaseLayout.astro` | shell always; page features via dynamic import |
+| `entries/blog.ts` | `layouts/BaseLayout.astro` | shell always; page features via `PAGE_FEATURES` |
 | `entries/page404.ts` | `pages/404.astro` | `features/particle404` |
-| `entries/tcupdate.ts` | `pages/tcupdate/index.astro` (`/tcupdate/`; `/tcupdate.html` redirects) | GitHub release UI |
+| `entries/tcupdate.ts` | `pages/tcupdate/index.astro` | GitHub release UI |
 
 ## Blog entry ownership
 
-`entries/blog.ts` always runs:
+**Shell** (always, static imports):
 
-- `navbar`, `page-chrome` (tables / gotop / scroll), `title`, `quote`, Heti, Sentry
+| Feature | Role |
+|---------|------|
+| `navbar` | mobile menu |
+| `page-chrome` | gotop, sticky nav, side-catalog fold/fixed |
+| `title` | tab title jokes |
+| `quote` | footer quote rotation (fetches `/json/quote.json`) |
+| Heti / Sentry / Crisp | third-party |
 
-Page-local modules load only when mount points exist:
+**Page features** (dynamic import when `match` exists):
 
-| Mount point | Feature |
-|-------------|---------|
-| `.catalog-body` | `catalog` |
-| `.post-content` | `post` |
-| `#tag_cloud` | `archive` + `tag-cloud` |
-| `#kon-container` | `about` |
-| `.pdf-embed` | `pdf-embed` |
+| `match` | Module |
+|---------|--------|
+| `#tag_cloud` | `archive` — tag filter + `?tag=` |
+| `#kon-container` | `about` — language select |
+| `.pdf-embed` | `pdf-embed` — click-to-embed |
 
-Header GeoPattern fallback is **SSG-only** (`src/lib/geopattern` via `IntroHeader`).
+## SSG-only (no client feature)
 
-## Naming conventions
+| Concern | Where |
+|---------|--------|
+| Header GeoPattern fallback | `src/lib/geopattern` via `IntroHeader` |
+| “Update on” dates | `src/data/lastmod.json` |
+| `//` tint, `a.external`, table wrap | `src/lib/rehype-post-enhancements` |
+| Tag count badge weight colors | `src/lib/tag-cloud` → archive `#tag_cloud` 角标 |
+| Side-catalog heading list | `render(post).headings` → `PostLayout` |
+| K-ON quote blocks | `src/data/kon.ts` → about page |
 
-| Kind | Convention | Examples |
-|------|------------|----------|
-| Files (multi-word) | `kebab-case` | `tag-cloud.ts`, `page-chrome.ts` |
-| Feature public API | named `export function init(...)` | `navbar.init()`, `quote.init({ intervalMs })` |
-| Types / interfaces | `PascalCase`, no `I` prefix | `QuoteEntry`, `PatternOptions`, `Rgb` |
-| Classes | `PascalCase` | `ArchiveFilter`, `XmlNode`, `Svg` |
-| Functions / methods | `camelCase` | `hexToRgb`, `findHeadingById` |
-| Booleans | `isX` / `hasX` | `isInitialized`, `hasTagCloud` |
-| Timer / id fields | `*Id` | `timerId`, `restoreTimerId` |
-| Constants | `SCREAMING_SNAKE_CASE` | `STORAGE_KEY`, `TITLE_JOKES`, `STRUCTURE_NAMES` |
+## Feature API
 
-Prefer namespace imports for features in entries:
+Each feature module exports a single **`init(...args)`** as the public entry. Internals use private helpers / constructors; avoid `new Foo().init()`.
 
 ```ts
 import * as navbar from "../features/navbar";
 navbar.init();
 ```
+
+| Kind | Convention | Examples |
+|------|------------|----------|
+| Files (multi-word) | `kebab-case` | `page-chrome.ts` |
+| Public entry | `export function init(...)` | `navbar.init()`, `quote.init({ intervalMs })` |
+| Types | `PascalCase` | `QuoteEntry`, `QuoteOptions` |
+| Classes | `PascalCase` | `ArchiveFilter`, `QuoteRotator` |
+| Helpers | `camelCase` / `bindX` | `bindGotop`, `setTagQuery` |
+| Constants | `SCREAMING_SNAKE_CASE` | `TITLE_JOKES`, `PAGE_FEATURES` |

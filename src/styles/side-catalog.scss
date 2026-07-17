@@ -1,4 +1,10 @@
 // Directory Section
+// Catalog <li> list is SSG'd from Markdown headings; fold toggle is client-only.
+
+// Clear fixed navbar when jumping to in-article anchors (catalog / hash).
+.post-content :is(h1, h2, h3, h4, h5, h6) {
+    scroll-margin-top: 4.5rem;
+}
 
 .catalog-container {
     padding: 0;

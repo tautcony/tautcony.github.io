@@ -8,7 +8,7 @@ export interface QuoteEntry {
     source?: string;
 }
 
-export interface QuoteInitOptions {
+export interface QuoteOptions {
     containerSelector?: string;
     className?: string;
     /** Rotation interval in milliseconds. */
@@ -24,7 +24,7 @@ async function fetchJson(url: string): Promise<unknown> {
 }
 
 /**
- * Accept either a bare array (public/json/quote.json) or `{ quotes: [...] }`.
+ * Accept either a bare array (`/json/quote.json` from Astro) or `{ quotes: [...] }`.
  */
 export function parseQuotePayload(data: unknown): QuoteEntry[] {
     const list = Array.isArray(data)
@@ -89,14 +89,14 @@ class QuoteRotator {
         document.querySelector(containerSelector)?.append(container);
     }
 
-    public init(intervalMs: number): void {
-        void this.fetchQuotes().then(() => {
-            this.updateQuote();
-            this.startInterval(intervalMs);
+    public start(intervalMs: number): void {
+        void this.loadQuotes().then(() => {
+            this.paint();
+            this.timerId = window.setInterval(() => this.paint(), intervalMs);
         });
     }
 
-    public updateQuote(): void {
+    private paint(): void {
         const quote = pickRandom(this.quotes);
         if (quote === undefined) {
             if (this.timerId !== undefined) {
@@ -114,15 +114,10 @@ class QuoteRotator {
         this.author.textContent = author;
     }
 
-    private startInterval(intervalMs: number): void {
-        this.timerId = window.setInterval(() => {
-            this.updateQuote();
-        }, intervalMs);
-    }
-
-    private async fetchQuotes(): Promise<void> {
+    private async loadQuotes(): Promise<void> {
         const baseMeta = document.head.querySelector("meta[name=baseurl]");
         const baseUrl = baseMeta instanceof HTMLMetaElement ? baseMeta.content : "";
+        // Built/served by `src/pages/json/quote.json.ts` from `src/data/quotes.yml`.
         const url = `${baseUrl}/json/quote.json`;
 
         try {
@@ -133,15 +128,16 @@ class QuoteRotator {
     }
 }
 
-const DEFAULT_QUOTE_OPTIONS = {
+const DEFAULTS = {
     containerSelector: ".copyright",
     className: "quote",
     intervalMs: 10_000,
 } as const;
 
-export function init(options: QuoteInitOptions = {}): void {
-    const containerSelector = options.containerSelector ?? DEFAULT_QUOTE_OPTIONS.containerSelector;
-    const className = options.className ?? DEFAULT_QUOTE_OPTIONS.className;
-    const intervalMs = options.intervalMs ?? DEFAULT_QUOTE_OPTIONS.intervalMs;
-    new QuoteRotator(containerSelector, className).init(intervalMs);
+export function init(options: QuoteOptions = {}): void {
+    const rotator = new QuoteRotator(
+        options.containerSelector ?? DEFAULTS.containerSelector,
+        options.className ?? DEFAULTS.className
+    );
+    rotator.start(options.intervalMs ?? DEFAULTS.intervalMs);
 }

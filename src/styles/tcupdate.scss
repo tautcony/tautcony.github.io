@@ -8,6 +8,14 @@ body {
     padding:     0;
 }
 
+// Cloud-download glyph (src/assets/icons/cloud-download.svg) via mask so
+// both static buttons and JS-built history rows share one SVG asset.
+@mixin cloud-download-icon {
+    background-color: currentColor;
+    -webkit-mask: url("../assets/icons/cloud-download.svg") center / contain no-repeat;
+    mask: url("../assets/icons/cloud-download.svg") center / contain no-repeat;
+}
+
 html, body {
     font-family: "Iosevka Web", monospace;
 }
@@ -127,7 +135,10 @@ section {
                 text-align: left;
                 .icon {
                     display: inline-block;
+                    width: 1em;
+                    height: 1em;
                     vertical-align: -0.1em;
+                    @include cloud-download-icon;
                 }
             }
             & > ul > li {
@@ -167,20 +178,25 @@ section {
             width: 10em;
         }
         .icon {
-            display:    inline-block;
+            // Match legacy simple-line-icons sizing: font-size 1.5em, then a
+            // 1em box (em relative to that font-size → 1.5× body text).
+            display:    block;
             font-size:  1.5em;
+            width:      1em;
+            height:     1em;
             left:       0.5em;
             margin-top: -0.5em;
             position:   absolute;
             top:        50%;
+            @include cloud-download-icon;
         }
-        span {
+        // Date line under the version (must not target the icon span).
+        span[data-release-date] {
             display:   block;
             font-size: 60%;
         }
         .release-version {
             display: inline;
-            font-size: inherit;
         }
     }
 }

@@ -6,8 +6,10 @@ interface Props {
 }
 
 const { owner, repo, width } = Astro.props;
+const displayName = repo.replace(/-/g, "");
 ---
 
+{/* Tool list is static — render immediately; script only fills latest version. */}
 <a
     class={width}
     href={`https://github.com/${owner}/${repo}/releases`}
@@ -16,11 +18,10 @@ const { owner, repo, width } = Astro.props;
     data-latest-release
     data-owner={owner}
     data-repo={repo}
-    hidden
 >
-    <div class="icon icon-cloud-download"></div>
-    {repo.replace(/-/g, "")}
+    <span class="icon" aria-hidden="true"></span>
+    {displayName}
     <br />
-    version <span class="release-version" data-release-version>Loading...</span>
-    <span data-release-date>Updated Loading...</span>
+    version <span class="release-version" data-release-version>…</span>
+    <span data-release-date></span>
 </a>

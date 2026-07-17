@@ -46,8 +46,10 @@ function formatDisplayDate(value: string): string {
 
 function createHistoryItem(release: GitHubRelease): HTMLLIElement {
     const item = document.createElement("li");
-    const icon = document.createElement("div");
-    icon.className = "icon icon-cloud-download";
+    // Icon is painted by CSS (mask) — no SVG markup in JS.
+    const icon = document.createElement("span");
+    icon.className = "icon";
+    icon.setAttribute("aria-hidden", "true");
     const link = document.createElement("a");
     link.className = "link";
     link.href = releaseDownloadUrl(release, false);
@@ -69,6 +71,7 @@ async function loadRepository(owner: string, repo: string): Promise<void> {
     try {
         const releases = await fetchReleases(owner, repo);
         const latest = releases[0];
+        // Buttons are already rendered; only fill latest version metadata.
         if (latestElement && latest) {
             latestElement.setAttribute("href", releaseDownloadUrl(latest, true));
             const version = latestElement.querySelector("[data-release-version]");
@@ -79,7 +82,6 @@ async function loadRepository(owner: string, repo: string): Promise<void> {
             if (date) {
                 date.textContent = `Updated ${formatDisplayDate(latest.published_at)}.`;
             }
-            latestElement.hidden = false;
         }
 
         if (historyElement) {
@@ -88,6 +90,12 @@ async function loadRepository(owner: string, repo: string): Promise<void> {
         }
     } catch (error) {
         console.error(`[tcupdate] Failed to load ${owner}/${repo}`, error);
+        if (latestElement) {
+            const version = latestElement.querySelector("[data-release-version]");
+            if (version && version.textContent === "…") {
+                version.textContent = "n/a";
+            }
+        }
     }
 }
 

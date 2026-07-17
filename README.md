@@ -105,6 +105,7 @@ scripts/            content checks and optional utilities
 - “Update on” dates come from `src/data/lastmod.json` (`lastmod:check` in CI; refresh with `lastmod:refresh` when needed).
 - Site-wide config is `src/data/site.ts` (title, SNS, RSS footer icon, etc.).
 - PDF previews use `.pdf-embed` placeholders and the browser’s native PDF viewer.
+- Heading anchors, KaTeX, and footer quotes are SSG (client only rotates quotes / switches about language).
 - Comments use **utterances**; math uses **KaTeX** when enabled on a post.
 - Code highlighting uses **Prism** styles under `src/styles/syntax.scss`.
 - Footer quotes: edit `src/data/quotes.yml` (Astro serves `/json/quote.json` on `dev`/`build`; CI runs `quotes:check`).

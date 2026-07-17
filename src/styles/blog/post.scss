@@ -6,6 +6,27 @@
     margin-bottom: 15px;
 }
 
+// SSG heading anchors (was AnchorJS CDN). Hide on narrow viewports.
+@media all and (min-width: 800px) {
+    .post-content .anchorjs-link {
+        position: absolute;
+        left: -1em;
+        font-size: 1.1em;
+        text-decoration: none;
+        opacity: 0.55;
+
+        &:hover,
+        &:focus {
+            opacity: 1;
+            text-decoration: none;
+        }
+    }
+
+    .post-content :is(h1, h2, h3, h4, h5, h6) {
+        position: relative;
+    }
+}
+
 // In the post.
 .post-container {
     // Only body prose — not .pager / comments below the article.

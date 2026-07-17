@@ -1,32 +1,24 @@
-import { el } from "../lib/dom";
+/**
+ * Footer quote rotation. Initial paint is SSG (`Footer.astro`);
+ * quotes payload is `#site-quotes` JSON (no network fetch).
+ */
 
-/** One author/work with one or more interchangeable lines. */
 export interface QuoteEntry {
     text: string[];
     author: string;
-    /** Optional work / speech title; omitted when unknown. */
     source?: string;
 }
 
 export interface QuoteOptions {
-    containerSelector?: string;
-    className?: string;
+    /** Root `.quote` selector. */
+    quoteSelector?: string;
     /** Rotation interval in milliseconds. */
     intervalMs?: number;
+    /** JSON script id produced by Footer. */
+    dataScriptId?: string;
 }
 
-async function fetchJson(url: string): Promise<unknown> {
-    const response = await fetch(url, { credentials: "omit" });
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status} for ${url}`);
-    }
-    return response.json() as Promise<unknown>;
-}
-
-/**
- * Accept either a bare array (`/json/quote.json` from Astro) or `{ quotes: [...] }`.
- */
-export function parseQuotePayload(data: unknown): QuoteEntry[] {
+function parseQuotePayload(data: unknown): QuoteEntry[] {
     const list = Array.isArray(data)
         ? data
         : data !== null && typeof data === "object" && Array.isArray((data as { quotes?: unknown }).quotes)
@@ -60,11 +52,27 @@ export function parseQuotePayload(data: unknown): QuoteEntry[] {
     });
 }
 
+function readQuotesFromDom(scriptId: string): QuoteEntry[] {
+    const el = document.getElementById(scriptId);
+    if (!(el instanceof HTMLScriptElement) || !el.textContent?.trim()) {
+        throw new Error(`#${scriptId} missing or empty`);
+    }
+    return parseQuotePayload(JSON.parse(el.textContent) as unknown);
+}
+
 function pickRandom<T>(items: readonly T[]): T | undefined {
     if (items.length === 0) {
         return undefined;
     }
     return items[Math.floor(Math.random() * items.length)];
+}
+
+function formatAttribution(quote: QuoteEntry): string {
+    let author = `—— ${quote.author}`;
+    if (quote.source) {
+        author += `《${quote.source}》`;
+    }
+    return author;
 }
 
 class QuoteRotator {
@@ -73,27 +81,18 @@ class QuoteRotator {
     private quotes: QuoteEntry[] = [];
     private timerId: number | undefined;
 
-    public constructor(containerSelector: string, className: string) {
-        this.content = el("div", {
-            class: "quote-content",
-            style: { marginTop: "2em" },
-        });
-        this.author = el("div", {
-            class: "quote-author",
-            style: {
-                marginLeft: "16em",
-                fontSize: "85%",
-            },
-        });
-        const container = el("div", { class: className }, this.content, this.author);
-        document.querySelector(containerSelector)?.append(container);
+    public constructor(content: HTMLElement, author: HTMLElement) {
+        this.content = content;
+        this.author = author;
     }
 
-    public start(intervalMs: number): void {
-        void this.loadQuotes().then(() => {
-            this.paint();
-            this.timerId = window.setInterval(() => this.paint(), intervalMs);
-        });
+    public start(quotes: QuoteEntry[], intervalMs: number): void {
+        this.quotes = quotes;
+        if (this.quotes.length === 0) {
+            return;
+        }
+        // First interval only — SSG already painted the initial line.
+        this.timerId = window.setInterval(() => this.paint(), intervalMs);
     }
 
     private paint(): void {
@@ -105,39 +104,37 @@ class QuoteRotator {
             }
             return;
         }
-        const line = pickRandom(quote.text) ?? "";
-        let author = `—— ${quote.author}`;
-        if (quote.source) {
-            author += `《${quote.source}》`;
-        }
-        this.content.textContent = line;
-        this.author.textContent = author;
-    }
-
-    private async loadQuotes(): Promise<void> {
-        const baseMeta = document.head.querySelector("meta[name=baseurl]");
-        const baseUrl = baseMeta instanceof HTMLMetaElement ? baseMeta.content : "";
-        // Built/served by `src/pages/json/quote.json.ts` from `src/data/quotes.yml`.
-        const url = `${baseUrl}/json/quote.json`;
-
-        try {
-            this.quotes = parseQuotePayload(await fetchJson(url));
-        } catch (error) {
-            console.warn("Failed to load quote.json", error);
-        }
+        this.content.textContent = pickRandom(quote.text) ?? "";
+        this.author.textContent = formatAttribution(quote);
     }
 }
 
 const DEFAULTS = {
-    containerSelector: ".copyright",
-    className: "quote",
+    quoteSelector: "footer .quote",
     intervalMs: 10_000,
+    dataScriptId: "site-quotes",
 } as const;
 
 export function init(options: QuoteOptions = {}): void {
-    const rotator = new QuoteRotator(
-        options.containerSelector ?? DEFAULTS.containerSelector,
-        options.className ?? DEFAULTS.className
+    const root = document.querySelector<HTMLElement>(
+        options.quoteSelector ?? DEFAULTS.quoteSelector
     );
-    rotator.start(options.intervalMs ?? DEFAULTS.intervalMs);
+    const content = root?.querySelector<HTMLElement>(".quote-content");
+    const author = root?.querySelector<HTMLElement>(".quote-author");
+    if (!root || !content || !author) {
+        return;
+    }
+
+    let quotes: QuoteEntry[];
+    try {
+        quotes = readQuotesFromDom(options.dataScriptId ?? DEFAULTS.dataScriptId);
+    } catch (error) {
+        console.warn("Failed to read site quotes", error);
+        return;
+    }
+
+    new QuoteRotator(content, author).start(
+        quotes,
+        options.intervalMs ?? DEFAULTS.intervalMs
+    );
 }

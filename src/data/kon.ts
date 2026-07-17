@@ -1,6 +1,7 @@
 /**
  * About-page K-ON multi-language quote blocks (SSG content).
- * Client only handles preferred-language pick + select switching.
+ * Default visible language is SSG (`DEFAULT_KON_INDEX`); client only switches
+ * when `navigator.language` prefers another block.
  */
 
 export interface KonBlock {
@@ -54,3 +55,6 @@ export const KON_META = {
     title: "K-ON!! EP12",
     url: "https://www.tbs.co.jp/anime/k-on/k-on_tv/story/story212.html",
 } as const;
+
+/** SSG default: 中文. Client may override from `navigator.language`. */
+export const DEFAULT_KON_INDEX = 0;

@@ -3,7 +3,6 @@ import BaseLayout from "./BaseLayout.astro";
 import IntroHeader from "../components/IntroHeader.astro";
 import PostContainer from "../components/PostContainer.astro";
 import Sidebar from "../components/Sidebar.astro";
-import AnchorJS from "../components/AnchorJS.astro";
 import Katex from "../components/Katex.astro";
 import type { MarkdownHeading } from "astro";
 import type { PostEntry } from "../lib/posts";
@@ -12,6 +11,7 @@ import {
     getPrevNext,
     postUrl,
 } from "../lib/posts";
+import { site } from "../data/site";
 
 interface Props {
     post: PostEntry;
@@ -114,6 +114,5 @@ const pageTitle = draft ? `[Draft] ${d.title}` : d.title;
         </div>
     </article>
 
-    <AnchorJS />
-    <Katex math={d.math} />
+    {site.katex && d.math === true && <Katex />}
 </BaseLayout>

@@ -24,5 +24,22 @@ footer {
             }
         }
     }
+
+    // SSG quote (sibling of .copyright; previously injected inside it → inherited 14px)
+    .quote {
+        font-size: 14px;
+        text-align: center;
+        color: $gray; // same as .text-muted on copyright
+        margin-bottom: 0;
+
+        .quote-content {
+            margin-top: 2em;
+        }
+
+        .quote-author {
+            margin-left: 16em;
+            font-size: 85%;
+        }
+    }
 }
 

@@ -1,7 +1,7 @@
 /**
  * Static (and dev) endpoint: `/json/quote.json`
  * Source: `src/data/quotes.yml` via `src/lib/quotes.ts`.
- * Client: `src/client/features/quote.ts` fetches this URL.
+ * Footer client reads inline `#site-quotes`; this URL remains for external consumers.
  */
 import type { APIRoute } from "astro";
 import { loadQuotes, serializeQuotes } from "../../lib/quotes";

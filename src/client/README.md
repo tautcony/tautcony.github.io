@@ -33,7 +33,7 @@ src/
 | `navbar` | mobile menu |
 | `page-chrome` | gotop, sticky nav, side-catalog fold/fixed |
 | `title` | tab title jokes |
-| `quote` | footer quote rotation (fetches `/json/quote.json`) |
+| `quote` | footer quote rotation (reads `#site-quotes`; first paint SSG) |
 | Heti / Sentry / Crisp | third-party |
 
 **Page features** (dynamic import when `match` exists):
@@ -51,9 +51,12 @@ src/
 | Header GeoPattern fallback | `src/lib/geopattern` via `IntroHeader` |
 | “Update on” dates | `src/data/lastmod.json` |
 | `//` tint, `a.external`, table wrap, PDF mount shell | `src/lib/rehype-post-enhancements` |
+| Heading ¶ anchors | `rehype-autolink-headings` (was AnchorJS CDN) |
+| KaTeX formulas | `remark-math` + `rehype-katex` (`math: true` + `Katex.astro` CSS) |
+| Footer quote first paint + JSON | `Footer.astro` + `#site-quotes` |
 | Tag count badge weight colors | `src/lib/tag-cloud` → archive `#tag_cloud` 角标 |
 | Side-catalog heading list | `render(post).headings` → `PostLayout` |
-| K-ON quote blocks | `src/data/kon.ts` → about page |
+| K-ON quote blocks + default lang | `src/data/kon.ts` → about page |
 
 ## Feature API
 

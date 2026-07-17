@@ -1,6 +1,7 @@
 /**
  * About-page language switcher.
- * Quote markup is SSG (`src/data/kon.ts` → `pages/about`).
+ * Default block is SSG-visible (`DEFAULT_KON_INDEX` / `data-default-lang-index`).
+ * Client only re-paints when navigator.language prefers another block, or on select.
  */
 
 export function init(): void {
@@ -15,13 +16,21 @@ export function init(): void {
         return;
     }
 
+    const defaultIndex = Number.parseInt(
+        container.dataset.defaultLangIndex ?? "0",
+        10
+    );
+
     const show = (index: number): void => {
         if (!blocks[index]) {
             return;
         }
         for (const [i, block] of blocks.entries()) {
-            block.classList.toggle("none", i !== index);
+            const on = i === index;
+            block.classList.toggle("none", !on);
+            block.hidden = !on;
         }
+        select.selectedIndex = index;
     };
 
     select.addEventListener("change", () => {
@@ -30,9 +39,11 @@ export function init(): void {
 
     const preferred = blocks.findIndex(block => {
         const lang = block.getAttribute("lang") ?? "";
-        return lang !== "" && navigator.language.includes(lang);
+        return lang !== "" && navigator.language.toLowerCase().includes(lang.toLowerCase());
     });
-    const index = preferred >= 0 ? preferred : 0;
-    select.selectedIndex = index;
-    show(index);
+
+    // Only override SSG default when the browser prefers a different language.
+    if (preferred >= 0 && preferred !== defaultIndex) {
+        show(preferred);
+    }
 }

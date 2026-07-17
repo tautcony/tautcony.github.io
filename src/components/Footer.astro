@@ -1,8 +1,16 @@
 ---
 import { site } from "../data/site";
 import Sns from "./Sns.astro";
+import {
+    initialQuotePaint,
+    loadQuotes,
+    serializeQuotesCompact,
+} from "../lib/quotes";
 
 const year = new Date().getFullYear();
+const quotes = loadQuotes();
+const initial = initialQuotePaint(quotes);
+const quotesJson = serializeQuotesCompact(quotes);
 ---
 
 <!-- Footer -->
@@ -29,6 +37,19 @@ const year = new Date().getFullYear();
                     {" "}|{" "}
                     <a href={site.url}>TautCony</a>
                 </p>
+                {
+                    initial && (
+                        <div class="quote">
+                            <div class="quote-content">{initial.line}</div>
+                            <div class="quote-author">{initial.attribution}</div>
+                        </div>
+                    )
+                }
+                <script
+                    type="application/json"
+                    id="site-quotes"
+                    set:html={quotesJson}
+                />
             </div>
         </div>
     </div>

@@ -2,8 +2,11 @@
 import { defineConfig } from "astro/config";
 import { unified } from "@astrojs/markdown-remark";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import rehypeSlug from "rehype-slug";
 import rehypeRaw from "rehype-raw";
+import rehypeKatex from "rehype-katex";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { site as siteConfig } from "./src/data/site.ts";
@@ -26,6 +29,32 @@ function sentryRelease() {
     }
 }
 
+/** @type {import('astro').RehypePlugins} */
+const rehypePlugins = [
+    rehypeRaw,
+    // Math HTML from remark-math → KaTeX (before slug/autolink polish).
+    rehypeKatex,
+    rehypeSlug,
+    ...(siteConfig.anchorjs
+        ? [
+            [
+                rehypeAutolinkHeadings,
+                {
+                    behavior: "append",
+                    properties: {
+                        className: ["anchorjs-link"],
+                        ariaHidden: "true",
+                        tabIndex: -1,
+                    },
+                    content: { type: "text", value: "¶" },
+                },
+            ],
+        ]
+        : []),
+    // // asides, external class, table wrap, pdf-embed mount shell
+    rehypePostEnhancements,
+];
+
 /**
  * Astro SSG config for TC Blog.
  * Canonical host comes from `src/data/site.ts` (`site` / `base` mirror url + baseurl).
@@ -43,12 +72,10 @@ export default defineConfig({
         format: "preserve",
     },
     markdown: {
-        // Full content pipeline lands in M1; lock plugin versions from M0.
         processor: unified({
             gfm: true,
-            remarkPlugins: [remarkGfm],
-            // raw → slug → post polish (// asides, external link class)
-            rehypePlugins: [rehypeRaw, rehypeSlug, rehypePostEnhancements],
+            remarkPlugins: [remarkGfm, remarkMath],
+            rehypePlugins,
         }),
         // Native Astro Prism: pre.language-* > code.language-* > .token (see src/styles/syntax.scss).
         syntaxHighlight: "prism",
@@ -69,4 +96,3 @@ export default defineConfig({
         },
     },
 });
-

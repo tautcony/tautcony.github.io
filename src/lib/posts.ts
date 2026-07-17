@@ -1,11 +1,69 @@
-/** Shared post ordering / URL helpers (homepage, archive, prev-next). */
+/**
+ * Shared post ordering / URL helpers (homepage, archive, prev-next).
+ * Drafts live in collection `drafts` and are optional at preview time.
+ */
 import { getCollection, type CollectionEntry } from "astro:content";
 
-export type PostEntry = CollectionEntry<"posts">;
+export type PublishedPost = CollectionEntry<"posts">;
+export type DraftPost = CollectionEntry<"drafts">;
+/** Any renderable post (published or draft). */
+export type PostEntry = PublishedPost | DraftPost;
 
-/** Single place for collection fetch + typing (pages should not re-cast). */
-export async function getAllPosts(): Promise<PostEntry[]> {
+/**
+ * Whether draft pages should be generated and listed at `/drafts/`.
+ *
+ * On when any of:
+ * - `astro dev` (`import.meta.env.DEV` / non-production NODE_ENV)
+ * - `PREVIEW_DRAFTS=1` or `true` (for `astro build` / CI preview deploys)
+ *
+ * Force off with `PREVIEW_DRAFTS=0` even in dev (rare).
+ */
+export function draftsEnabled(): boolean {
+    const flag = String(
+        process.env.PREVIEW_DRAFTS ?? import.meta.env.PREVIEW_DRAFTS ?? ""
+    ).toLowerCase();
+    if (flag === "0" || flag === "false") {
+        return false;
+    }
+    if (flag === "1" || flag === "true") {
+        return true;
+    }
+    // Vite: DEV true / PROD false under `astro dev`
+    if (import.meta.env.DEV || import.meta.env.MODE === "development") {
+        return true;
+    }
+    // Fallback: some tooling only sets NODE_ENV
+    if (typeof process !== "undefined" && process.env.NODE_ENV === "development") {
+        return true;
+    }
+    return false;
+}
+
+export function isDraft(post: PostEntry): boolean {
+    return post.collection === "drafts";
+}
+
+/** Published posts only (listings, feed, sitemap, tag counts). */
+export async function getAllPosts(): Promise<PublishedPost[]> {
     return getCollection("posts");
+}
+
+/** Drafts collection (may be empty). Caller must gate with `draftsEnabled()`. */
+export async function getDraftPosts(): Promise<DraftPost[]> {
+    return getCollection("drafts");
+}
+
+/**
+ * Posts available as full pages for the current build mode.
+ * Listings still use `getAllPosts()` so drafts stay out of the public index.
+ */
+export async function getRenderablePosts(): Promise<PostEntry[]> {
+    const published = await getAllPosts();
+    if (!draftsEnabled()) {
+        return published;
+    }
+    const drafts = await getDraftPosts();
+    return [...published, ...drafts];
 }
 
 function postSlug(post: PostEntry): string {
@@ -71,12 +129,18 @@ export function parsePostUrl(url: string): {
     return { year, month, day, slug };
 }
 
+/**
+ * Prev/next among published posts only (drafts do not enter the public chain).
+ */
 export function getPrevNext(post: PostEntry, all: PostEntry[]): {
     previous: PostEntry | undefined;
     next: PostEntry | undefined;
 } {
-    const ordered = sortPostsAsc(all);
-    const idx = ordered.findIndex(p => p.id === post.id);
+    if (isDraft(post)) {
+        return { previous: undefined, next: undefined };
+    }
+    const ordered = sortPostsAsc(all.filter(p => !isDraft(p)));
+    const idx = ordered.findIndex(p => p.id === post.id && p.collection === post.collection);
     if (idx < 0) return { previous: undefined, next: undefined };
     return {
         previous: ordered[idx - 1],
@@ -87,6 +151,7 @@ export function getPrevNext(post: PostEntry, all: PostEntry[]): {
 export function collectTagCounts(posts: PostEntry[]): Map<string, number> {
     const map = new Map<string, number>();
     for (const p of posts) {
+        if (isDraft(p)) continue;
         for (const t of p.data.tags ?? []) {
             map.set(t, (map.get(t) ?? 0) + 1);
         }

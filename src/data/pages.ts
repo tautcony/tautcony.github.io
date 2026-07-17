@@ -25,6 +25,13 @@ export const pageMeta = {
         path: "/archive/",
         shortHeader: true,
     },
+    drafts: {
+        title: "Drafts",
+        description: "Preview-only · not on home / archive / feed / sitemap",
+        headerImg: site.headerImg,
+        path: "/drafts/",
+        shortHeader: true,
+    },
     notFound: {
         title: undefined as string | undefined,
         description: "何を探すんの？ここは何もいないよ",

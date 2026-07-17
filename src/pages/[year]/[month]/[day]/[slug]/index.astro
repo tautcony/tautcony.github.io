@@ -3,22 +3,26 @@ import { render } from "astro:content";
 import PostLayout from "../../../../../layouts/PostLayout.astro";
 import {
     getAllPosts,
+    getRenderablePosts,
+    isDraft,
     parsePostUrl,
     postUrl,
     type PostEntry,
 } from "../../../../../lib/posts";
 
 export async function getStaticPaths() {
-    const posts = await getAllPosts();
-    if (posts.length === 0) {
+    const renderable = await getRenderablePosts();
+    const published = await getAllPosts();
+    if (published.length === 0) {
         throw new Error("No posts in collection; expected Markdown under src/content/posts/");
     }
 
-    return posts.map((post) => {
+    // Listings / prev-next use published posts only.
+    return renderable.map(post => {
         const { year, month, day, slug } = parsePostUrl(postUrl(post));
         return {
             params: { year, month, day, slug },
-            props: { post, allPosts: posts },
+            props: { post, allPosts: published },
         };
     });
 }
@@ -30,8 +34,9 @@ interface Props {
 
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
+const draft = isDraft(post);
 ---
 
-<PostLayout post={post} allPosts={allPosts} headings={headings}>
+<PostLayout post={post} allPosts={allPosts} headings={headings} draft={draft}>
     <Content />
 </PostLayout>

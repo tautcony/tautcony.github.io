@@ -1,0 +1,48 @@
+---
+/**
+ * Draft index — same shell + list chrome as the homepage.
+ * Only lists posts when draftsEnabled() (dev or PREVIEW_DRAFTS=1).
+ */
+import PageLayout from "../../layouts/PageLayout.astro";
+import PostList from "../../components/PostList.astro";
+import { pageMeta } from "../../data/pages";
+import {
+    draftsEnabled,
+    getAllPosts,
+    getDraftPosts,
+    sortPostsDesc,
+} from "../../lib/posts";
+
+const meta = pageMeta.drafts;
+const enabled = draftsEnabled();
+const published = await getAllPosts();
+const drafts = enabled ? sortPostsDesc(await getDraftPosts()) : [];
+---
+
+<PageLayout
+    title={meta.title}
+    description={meta.description}
+    headerImg={meta.headerImg}
+    pageUrl={meta.path}
+    shortHeader={meta.shortHeader}
+    allPosts={published}
+    noindex={true}
+>
+    {
+        !enabled && (
+            <p class="text-muted">
+                Draft preview is off in this build. Use <code>npm run dev</code> or{" "}
+                <code>npm run build:drafts</code> (<code>PREVIEW_DRAFTS=1</code>).
+            </p>
+        )
+    }
+    {
+        enabled && drafts.length === 0 && (
+            <p class="text-muted">
+                No drafts in <code>src/content/drafts/</code> (use{" "}
+                <code>YYYY-MM-DD-slug.md</code>).
+            </p>
+        )
+    }
+    {enabled && drafts.length > 0 && <PostList posts={drafts} />}
+</PageLayout>

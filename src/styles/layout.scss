@@ -453,3 +453,23 @@ a.external::after {
 .post-content p.comment-line {
     color: #339966;
 }
+
+// Draft preview banner (`content/drafts` when draftsEnabled)
+.draft-banner {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 0.65rem 0;
+    color: #5c3b00;
+    background: #fff3cd;
+    border-bottom: 1px solid #f0d78c;
+    font-size: 0.9rem;
+    line-height: 1.4;
+
+    code {
+        font-size: 0.85em;
+        padding: 0.1em 0.35em;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 2px;
+    }
+}

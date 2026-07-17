@@ -18,6 +18,7 @@ interface Props {
     /** When false, match sidebar enable=false layout (archive-like). Default: site.sidebar */
     sidebar?: boolean;
     allPosts?: PostEntry[];
+    noindex?: boolean;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
     shortHeader = false,
     sidebar = site.sidebar,
     allPosts = [],
+    noindex = false,
 } = Astro.props;
 
 const tagCounts = collectTagCounts(allPosts);
@@ -39,6 +41,7 @@ const postTotal = allPosts.length;
     description={description}
     headerImg={headerImg}
     pageUrl={pageUrl}
+    noindex={noindex}
 >
     <IntroHeader
         type="page"

@@ -19,6 +19,8 @@ interface Props {
     feature?: boolean;
     pageUrl?: string;
     bodyClass?: string;
+    /** Draft / private preview pages — robots noindex. */
+    noindex?: boolean;
 }
 
 const props = Astro.props;

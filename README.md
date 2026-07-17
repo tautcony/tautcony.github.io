@@ -32,8 +32,10 @@ Dev and production builds serve committed files under `public/` as-is. Public pa
 | Script | Description |
 |--------|-------------|
 | `npm run dev` | Astro dev server |
-| `npm run build` | Production SSG → `dist/` |
+| `npm run build` | Production SSG → `dist/` (published posts only) |
+| `npm run build:drafts` | SSG including `src/content/drafts/` (`PREVIEW_DRAFTS=1`) |
 | `npm run preview` | Serve `dist/` locally |
+| `npm run preview:drafts` | Build with drafts, then preview |
 | `npm run check:astro` | `astro check` |
 | `npm run math:check` | Reject display-math delimiters embedded in prose |
 | `npm run eslint` | ESLint on `src/` + scripts |
@@ -99,6 +101,7 @@ scripts/            content checks and optional utilities
 ## Content notes
 
 - Posts live in `src/content/posts/` (`YYYY-MM-DD-slug.md`). Public post URLs are `/YYYY/MM/DD/slug/` via `postUrl()`; the filename date is an archive id and may differ from the URL date.
+- Drafts live in `src/content/drafts/` (`YYYY-MM-DD-slug.md`, same frontmatter as posts). Local preview: **`npm run dev` → open `/drafts/`**. Production `build` omits draft routes; use `npm run build:drafts` to include them. Never on home/archive/feed/sitemap; pages are `noindex`.
 - “Update on” dates come from `src/data/lastmod.json` (`lastmod:check` in CI; refresh with `lastmod:refresh` when needed).
 - Site-wide config is `src/data/site.ts` (title, SNS, RSS footer icon, etc.).
 - PDF previews use `.pdf-embed` placeholders and the browser’s native PDF viewer.

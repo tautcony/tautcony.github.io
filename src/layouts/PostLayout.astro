@@ -18,9 +18,11 @@ interface Props {
     allPosts: PostEntry[];
     /** From `render(post).headings` — SSG side catalog when `catalog: true`. */
     headings?: MarkdownHeading[];
+    /** WIP under `content/drafts` — banner + noindex; not in listings. */
+    draft?: boolean;
 }
 
-const { post, allPosts, headings = [] } = Astro.props;
+const { post, allPosts, headings = [], draft = false } = Astro.props;
 const d = post.data;
 const url = postUrl(post);
 const { previous, next } = getPrevNext(post, allPosts);
@@ -33,15 +35,33 @@ const catalogItems = d.catalog
         text: h.text.trim() || h.slug,
     }))
     : [];
+const pageTitle = draft ? `[Draft] ${d.title}` : d.title;
 ---
 
 <BaseLayout
-    title={d.title}
+    title={pageTitle}
     description={description}
     subtitle={d.subtitle}
     headerImg={d.headerImg}
     pageUrl={url}
+    noindex={draft}
 >
+    {
+        draft && (
+            <div class="draft-banner" role="status">
+                <div class="container">
+                    <strong>Draft</strong>
+                    {" — "}
+                    work in progress; not on home / archive / feed.
+                    {" "}
+                    <a href="/drafts/">All drafts</a>
+                    {" · "}
+                    Move to <code>src/content/posts/</code> to publish.
+                </div>
+            </div>
+        )
+    }
+
     <IntroHeader
         type="post"
         title={d.title}

@@ -10,6 +10,7 @@ interface Props {
     headerImg?: string;
     feature?: boolean;
     pageUrl?: string;
+    noindex?: boolean;
 }
 
 const props = Astro.props;
@@ -58,9 +59,10 @@ const canonical = new URL(canonicalPath, site.url).href.replace(/\/index\.html$/
     <meta name="description" content={pageDescription} />
     <meta name="baseurl" content={site.baseurl} />
     <meta name="theme-color" content="#000000" />
+    {props.noindex && <meta name="robots" content="noindex, nofollow" />}
     <Meta {...props} pageUrl={canonicalPath} />
     <link rel="icon" href={`${site.baseurl}/img/favicon.svg`} type="image/svg+xml" />
     <link rel="alternate icon" href={`${site.baseurl}/img/favicon.ico`} type="image/x-icon" />
     <link rel="shortcut icon" href={`${site.baseurl}/img/favicon.ico`} type="image/x-icon" />
-    <link rel="canonical" href={canonical} />
+    {!props.noindex && <link rel="canonical" href={canonical} />}
 </head>

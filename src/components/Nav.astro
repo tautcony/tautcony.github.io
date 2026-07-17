@@ -1,5 +1,8 @@
 ---
 import { site } from "../data/site";
+import { draftsEnabled } from "../lib/posts";
+
+const showDraftsNav = draftsEnabled();
 ---
 
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -33,6 +36,15 @@ import { site } from "../data/site";
                                 <a href={`${site.baseurl}${page.href}`}>{page.title}</a>
                             </li>
                         ))
+                    }
+                    {
+                        showDraftsNav && (
+                            <li>
+                                <a href={`${site.baseurl}/drafts/`} title="Local / preview only">
+                                    Drafts
+                                </a>
+                            </li>
+                        )
                     }
                 </ul>
             </div>

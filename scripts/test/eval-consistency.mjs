@@ -449,9 +449,13 @@ function extractMainHtml(html) {
         /class=["']pager["']|id=["']disqus_thread["']|class=["']comments?["']|id=["']comments?["']|utteranc|side-catalog|id=["']tag_cloud["']|<footer\b|id=["']secondary["']|class=["']col-lg-3[^"']*sidebar/i
     )[0];
     // Interactive embed labels are UI chrome, not article prose. The PDF URL
-    // contract is checked separately below.
+    // contract is checked separately below. Strip host + placeholder + mount shell.
     chunk = chunk.replace(
-        /<div\b(?=[^>]*\bclass=["'][^"']*\bpdf-embed\b)[^>]*>[\s\S]*?<\/div>\s*<\/div>/gi,
+        /<div\b(?=[^>]*\bclass=["'][^"']*\bpdf-embed\b)(?![^>]*pdf-embed__)[^>]*>[\s\S]*?<\/object>\s*<p\b[^>]*pdf-embed__actions[\s\S]*?<\/p>\s*<\/div>\s*<\/div>/gi,
+        ""
+    );
+    chunk = chunk.replace(
+        /<div\b(?=[^>]*\bclass=["'][^"']*\bpdf-embed\b)(?![^>]*pdf-embed__)[^>]*>[\s\S]*?<\/div>\s*<\/div>/gi,
         ""
     );
     return chunk;
@@ -768,8 +772,16 @@ function layerL3(legacyDir, distDir) {
             if (!pdfL || pdfL !== pdfD) {
                 failed.push({ route, reason: "pdf-embed URL mismatch", legacy: pdfL, dist: pdfD });
             }
-            if (/<object\b[^>]*type=["']application\/pdf/i.test(hd)) {
-                failed.push({ route, reason: "pdf-embed is not lazy in static HTML" });
+            // Dormant <object type=application/pdf> is OK; lazy means no data/src yet.
+            const objectTags = hd.match(/<object\b[^>]*type=["']application\/pdf[^>]*>/gi) || [];
+            for (const tag of objectTags) {
+                if (/\b(?:data|src)=["'][^"']+/i.test(tag)) {
+                    failed.push({
+                        route,
+                        reason: "pdf-embed is not lazy in static HTML (object has data/src)",
+                    });
+                    break;
+                }
             }
         }
     }

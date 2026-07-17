@@ -8,7 +8,8 @@
 
 // In the post.
 .post-container {
-    a {
+    // Only body prose — not .pager / comments below the article.
+    .post-content a {
         display: inline-block;
         color: #337ab7;
         // different to $brand-primary

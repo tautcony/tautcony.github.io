@@ -404,13 +404,18 @@ canvas {
     }
 }
 
-// Lazy native PDF embed (see PdfEmbed.astro + src/client/features/pdf-embed.ts)
+// Lazy native PDF embed (one idle placeholder; hidden mount → object on click)
 .pdf-embed {
     margin: 1.5em 0;
     border: 1px solid #e5e5e5;
     border-radius: 4px;
     background: #fafafa;
     overflow: hidden;
+
+    // Prebuilt viewer shell — never painted; client moves children into host.
+    &__mount[hidden] {
+        display: none !important;
+    }
 
     &__placeholder {
         display: flex;
@@ -460,6 +465,15 @@ canvas {
         background: #525659;
     }
 
+    &__nosupport {
+        margin: 0;
+        padding: 2em 1em;
+        color: $gray;
+        font-size: 0.95em;
+        text-align: center;
+        background: #fafafa;
+    }
+
     &__actions {
         box-sizing: border-box;
         display: flex;
@@ -476,16 +490,20 @@ canvas {
 
     // Beat Heti's paragraph/link selectors without changing global prose links.
     & &__label,
-    & &__alt {
+    & &__alt,
+    & &__nosupport {
         margin: 0;
     }
 
     & &__alt a,
     & &__placeholder a,
+    & &__nosupport a,
     & &__alt a:hover,
     & &__alt a:focus,
     & &__placeholder a:hover,
-    & &__placeholder a:focus {
+    & &__placeholder a:focus,
+    & &__nosupport a:hover,
+    & &__nosupport a:focus {
         padding-block-end: 0;
         border-block-end: 0;
         color: $brand-primary;
@@ -496,7 +514,9 @@ canvas {
     & &__alt a:hover,
     & &__alt a:focus,
     & &__placeholder a:hover,
-    & &__placeholder a:focus {
+    & &__placeholder a:focus,
+    & &__nosupport a:hover,
+    & &__nosupport a:focus {
         text-decoration-line: underline;
         text-decoration-thickness: 1px;
     }

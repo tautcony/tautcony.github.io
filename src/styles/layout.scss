@@ -440,8 +440,9 @@ a {
     }
 }
 
-// External link marker (class set at SSG by rehype-post-enhancements)
-a.external::after {
+// External link marker (class set at SSG by rehype-post-enhancements).
+// Scoped to body prose so pager / chrome below the article are never decorated.
+.post-content a.external::after {
     content: "↗";
     font-family: inherit;
     font-size: 0.85em;
@@ -452,6 +453,19 @@ a.external::after {
 // Author asides: paragraphs whose text starts with // (SSG class, was client inline style)
 .post-content p.comment-line {
     color: #339966;
+}
+
+// Heti paints link underlines with padding-block-end + border-block-end on hover.
+// Post body links are `display: inline-block` (see post.scss), so that extra box
+// height reflows everything after the link — including the pager under the article.
+// Prefer paint-only text-decoration; same idea as .pdf-embed link overrides.
+.post-content.heti a:hover,
+.post-content.heti a:focus {
+    padding-block-end: 0;
+    border-block-end: 0;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
 }
 
 // Draft preview banner (`content/drafts` when draftsEnabled)

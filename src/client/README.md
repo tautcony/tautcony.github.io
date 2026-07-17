@@ -42,7 +42,7 @@ src/
 |---------|--------|
 | `#tag_cloud` | `archive` — tag filter + `?tag=` |
 | `#kon-container` | `about` — language select |
-| `.pdf-embed` | `pdf-embed` — click-to-embed |
+| `.pdf-embed` | `pdf-embed` — promote mount shell + set `object.data` |
 
 ## SSG-only (no client feature)
 
@@ -50,7 +50,7 @@ src/
 |---------|--------|
 | Header GeoPattern fallback | `src/lib/geopattern` via `IntroHeader` |
 | “Update on” dates | `src/data/lastmod.json` |
-| `//` tint, `a.external`, table wrap | `src/lib/rehype-post-enhancements` |
+| `//` tint, `a.external`, table wrap, PDF mount shell | `src/lib/rehype-post-enhancements` |
 | Tag count badge weight colors | `src/lib/tag-cloud` → archive `#tag_cloud` 角标 |
 | Side-catalog heading list | `render(post).headings` → `PostLayout` |
 | K-ON quote blocks | `src/data/kon.ts` → about page |

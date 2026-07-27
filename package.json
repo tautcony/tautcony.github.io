@@ -45,7 +45,7 @@
     "astro": "^7.1.0",
     "dat.gui": "^0.7.9",
     "heti": "^0.9.6",
-    "js-yaml": "5.2.1",
+    "js-yaml": "5.2.2",
     "katex": "^0.17.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-katex": "^7.0.1",

@@ -16,11 +16,12 @@ footer {
         text-align: center;
         margin-bottom: 0;
         a {
-            color: #337ab7;
-            // different to $brand-primary
+            color: $brand-primary;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
             &:hover,
             &:focus {
-                color: $brand-primary;
+                color: $gray-dark;
             }
         }
     }
@@ -42,4 +43,3 @@ footer {
         }
     }
 }
-

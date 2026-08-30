@@ -43,9 +43,9 @@ const shellClass = enable
         enable && (
             <section class="visible-md visible-lg">
                 <hr />
-                <h5>
+                <h2 class="sidebar-heading">
                     <a href={`${site.baseurl}/about/`}>ABOUT ME</a>
-                </h5>
+                </h2>
                 <div class="short-about">
                     {site.sidebarAvatar && (
                         <Image
@@ -69,7 +69,7 @@ const shellClass = enable
         friends.length > 0 && (
             <>
                 <hr />
-                <h5>FRIENDS</h5>
+                <h2 class="sidebar-heading">FRIENDS</h2>
                 <ul class="list-inline">
                     {friends.map((friend) => (
                         <li>

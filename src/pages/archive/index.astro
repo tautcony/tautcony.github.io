@@ -67,15 +67,16 @@ for (const post of ordered) {
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div id="tag_cloud" class="tags tags-sup js-tags">
-                    <a class="tag-button--all" data-encode="">
+                    <button type="button" class="tag-button--all" data-encode="">
                         Show All
                         <sup>{postTotal}</sup>
-                    </a>
+                    </button>
                     {
                         tags.map(([tag, size], index) => {
                             const sortKey = String(postTotal - size).padStart(4, "0").slice(-4);
                             return (
-                                <a
+                                <button
+                                    type="button"
                                     data-sort={sortKey}
                                     data-encode={tagKey(tag)}
                                     class="tag-button"
@@ -85,7 +86,7 @@ for (const post of ordered) {
                                 >
                                     {tag}
                                     <sup>{size}</sup>
-                                </a>
+                                </button>
                             );
                         })
                     }

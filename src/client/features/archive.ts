@@ -70,7 +70,7 @@ class ArchiveFilter {
             );
         }
 
-        for (const tag of queryAll("a", tagsRoot)) {
+        for (const tag of queryAll("button", tagsRoot)) {
             tag.addEventListener("click", event => {
                 event.preventDefault();
                 this.selectTag(tag.getAttribute("data-encode"), tag);

@@ -151,31 +151,35 @@ section {
 }
 
 #downlinks {
-    display:         flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    width: 100%;
     a {
         background:  black;
         color:       white;
         display:     block;
-        flex:        none;
+        box-sizing: border-box;
         line-height: 1em;
-        margin:      0.5em;
+        margin:      0;
+        min-height: 5.5em;
+        overflow-wrap: anywhere;
         padding:     0.5em 0.5em 0.5em 3em;
         position:    relative;
         text-align:  left;
         text-shadow: none;
-        width:       10em;
+        width:       100%;
         &:hover {
             background: #333333;
         }
         &.wide {
-            width: 14em;
+            width: 100%;
         }
         &.middle {
-            width: 12em;
+            width: 100%;
         }
         &.narrow {
-            width: 10em;
+            width: 100%;
         }
         .icon {
             // Match legacy simple-line-icons sizing: font-size 1.5em, then a
@@ -203,10 +207,7 @@ section {
 
 @media screen and (max-width: 768px) {
     #downlinks {
-        display: block;
-        a {
-            margin: 0.5em auto !important;
-        }
+        gap: 0.75rem;
     }
     section#tool-downloads h2 {
         font-size: 1.7rem !important;
@@ -216,6 +217,12 @@ section {
     }
     .all-releases-w li {
         font-size: 0.8em !important;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    #downlinks {
+        grid-template-columns: 1fr;
     }
 }
 

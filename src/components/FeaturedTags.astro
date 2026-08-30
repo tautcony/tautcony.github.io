@@ -23,9 +23,9 @@ const featured = entries
     site.featuredTags && (
         <section>
             {bottom && <hr class="hidden-sm hidden-xs" />}
-            <h5>
+            <h2 class="sidebar-heading">
                 <a href={`${site.baseurl}/archive/`}>FEATURED TAGS</a>
-            </h5>
+            </h2>
             <div class="tags">
                 {featured.map(([tag, size]) => {
                     const sortKey = String(postTotal - size).padStart(4, "0").slice(-4);

@@ -7,7 +7,7 @@
 }
 .tags {
     margin-bottom: -5px;
-    a, .tag {
+    a, button, .tag {
         display: inline-block;
         border: 1px solid rgba(255, 255, 255, 0.8);
         border-radius: 999em;
@@ -19,6 +19,8 @@
         margin: 0 1px;
         margin-bottom: 6px;
         cursor: pointer;
+        font-family: inherit;
+        background: transparent;
         > sup {
             margin-left: -2px;
             font-weight: 700;
@@ -51,7 +53,7 @@
     padding-top: 6px;
     padding-bottom: 18px;
     border-bottom: 1px solid $gray-light;
-    a, .tag {
+    a, button, .tag {
         @include sans-serif;
         position: relative;
         box-sizing: border-box;
@@ -195,4 +197,3 @@
         }
     }
 }
-

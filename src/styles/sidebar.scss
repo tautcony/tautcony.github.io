@@ -16,11 +16,11 @@
 
 // Container of Sidebar, also Friends
 .sidebar-container {
-    color: $gray-l;
+    color: $gray-dark;
     font-size: 14px;
     align-self: flex-start;
 
-    h5 {
+    .sidebar-heading {
         color: $gray;
         font-size: 14px;
         margin: 10px 0;
@@ -31,7 +31,7 @@
         }
     }
     a {
-        color: $gray-l !important;
+        color: $gray-dark !important;
         &:hover, &:active{
             color: $brand-primary !important;
         }

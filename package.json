@@ -2,6 +2,7 @@
   "name": "tc-blog",
   "title": "TC Blog",
   "version": "1.1.0",
+  "type": "module",
   "homepage": "https://tautcony.github.io/",
   "author": "TautCony",
   "license": "Apache-2.0",

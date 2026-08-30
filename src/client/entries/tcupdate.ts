@@ -85,7 +85,7 @@ function formatDisplayDate(value: string): string {
 function renderReleases(
     owner: string,
     repo: string,
-    releases: GitHubRelease[],
+    releases: GitHubRelease[]
 ): void {
     const latestElement = document.querySelector<HTMLElement>(
         `[data-latest-release][data-owner="${owner}"][data-repo="${repo}"]`

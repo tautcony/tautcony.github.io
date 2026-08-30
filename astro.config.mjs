@@ -83,7 +83,8 @@ export default defineConfig({
     vite: {
         build: {
             // The isolated 404 entry includes the Three.js WebGL renderer.
-            chunkSizeWarningLimit: 550,
+            // Keep the warning useful while allowing its known ~568 kB chunk.
+            chunkSizeWarningLimit: 600,
         },
         // Expose release to client entries (Sentry). Prefer env override in CI.
         define: {

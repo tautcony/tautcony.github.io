@@ -1,0 +1,39 @@
+src/components/Sidebar.astro
+  s_d92b9dff2213e0::t_8c9e230538fd89 46,48,72
+src/styles/blog/footer.scss
+  s_d92b9dff2213e0::t_8c9e230538fd89 19-21,24
+src/styles/tcupdate.scss
+  s_d92b9dff2213e0::t_17a0f3be1a1b35 176,179,182
+  s_d92b9dff2213e0::t_226921c8319cf3 154-157,162,164,171,210,223-225,228
+  s_d92b9dff2213e0::t_22aa9067d8e0fd 165-166
+  s_d92b9dff2213e0::t_8bee0cdacec9e8 226-227
+src/pages/archive/index.astro
+  s_d92b9dff2213e0::t_8c9e230538fd89 70,73,78-79,89
+src/layouts/PostLayout.astro
+  s_d92b9dff2213e0::t_8c9e230538fd89 96,98
+src/client/features/archive.ts
+  s_d92b9dff2213e0::t_8c9e230538fd89 73
+src/styles/blog/tags.scss
+  s_d92b9dff2213e0::t_8c9e230538fd89 10,22-23
+  s_d92b9dff2213e0::t_f896a716a9472f 56
+src/styles/sidebar.scss
+  s_d92b9dff2213e0::t_8c9e230538fd89 19,23,34
+src/components/FeaturedTags.astro
+  s_d92b9dff2213e0::t_8c9e230538fd89 26,28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "b4e681df57c81492cc30c8f45bc6f15a4a304b07",
+  "prompts": {},
+  "sessions": {
+    "s_d92b9dff2213e0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0517b-1939-7952-bb09-5c727bd2753b",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "TautCony <i@tautcony.xyz>"
+    }
+  }
+}

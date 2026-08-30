@@ -1,0 +1,14 @@
+src/client/entries/tcupdate.ts
+  h_3705811fa4502c 88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "db805dc9367db8c17252ab4d0e08df6b4f12a021",
+  "prompts": {},
+  "humans": {
+    "h_3705811fa4502c": {
+      "author": "TautCony <i@tautcony.xyz>"
+    }
+  }
+}

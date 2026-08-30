@@ -122,6 +122,20 @@ section {
                 width:          1em;
             }
         }
+        #release-status {
+            border-left: 0;
+            color: #555555;
+            font-size: 0.8rem;
+            margin: -1.5rem 0 1.5rem;
+            padding-left: 0;
+            text-align: center;
+            &.is-error {
+                background: #f7f7f7;
+                border-left: dotted 3px #888888;
+                padding: 0.5rem 0.75rem;
+                text-align: left;
+            }
+        }
         li {
             a.link {
                 font-weight: bold;
@@ -130,6 +144,19 @@ section {
         }
         .all-releases-w {
             text-align: center;
+            .release-history-toggle {
+                background: transparent;
+                border: 1px solid #888888;
+                color: #333333;
+                cursor: pointer;
+                font: inherit;
+                margin: 0.75rem 0 0;
+                padding: 0.25rem 0.75rem;
+                &:hover,
+                &:focus {
+                    background: #eeeeee;
+                }
+            }
             li {
                 padding:    0.5em 0;
                 text-align: left;
@@ -158,7 +185,8 @@ section {
     a {
         background:  black;
         color:       white;
-        display:     block;
+        display:     flex;
+        align-items: center;
         box-sizing: border-box;
         line-height: 1em;
         margin:      0;
@@ -193,6 +221,13 @@ section {
             position:   absolute;
             top:        50%;
             @include cloud-download-icon;
+        }
+        .release-info {
+            display: block;
+            min-width: 0;
+        }
+        .release-name {
+            overflow-wrap: anywhere;
         }
         // Date line under the version (must not target the icon span).
         span[data-release-date] {

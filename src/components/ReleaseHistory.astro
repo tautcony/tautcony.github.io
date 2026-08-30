@@ -10,3 +10,14 @@ const { owner, repo } = Astro.props;
 <ul data-release-history data-owner={owner} data-repo={repo} hidden>
     <li>Loading...</li>
 </ul>
+<button
+    type="button"
+    class="release-history-toggle"
+    data-release-history-toggle
+    data-owner={owner}
+    data-repo={repo}
+    aria-expanded="false"
+    hidden
+>
+    Show older releases
+</button>

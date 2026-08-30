@@ -20,8 +20,10 @@ const displayName = repo.replace(/-/g, "");
     data-repo={repo}
 >
     <span class="icon" aria-hidden="true"></span>
-    {displayName}
-    <br />
-    version <span class="release-version" data-release-version>…</span>
-    <span data-release-date></span>
+    <span class="release-info">
+        <span class="release-name">{displayName}</span>
+        <br />
+        version <span class="release-version" data-release-version>…</span>
+        <span class="release-date" data-release-date></span>
+    </span>
 </a>

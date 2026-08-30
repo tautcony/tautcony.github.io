@@ -1,0 +1,43 @@
+src/pages/tcupdate/index.astro
+  s_d92b9dff2213e0::t_b2b46184533a17 34
+  h_3705811fa4502c 145
+src/styles/tcupdate.scss
+  s_d92b9dff2213e0::t_6ef50c30a53b31 132-137
+  s_d92b9dff2213e0::t_3300ab46de6655 147-159
+  s_d92b9dff2213e0::t_5893ca070d219e 125-131,138
+  s_d92b9dff2213e0::t_5cbd9cf02e1312 225-231
+  s_d92b9dff2213e0::t_509632882b7635 188-189
+src/client/entries/tcupdate.ts
+  s_d92b9dff2213e0::t_6ef50c30a53b31 134-135,137
+  s_d92b9dff2213e0::t_b2b46184533a17 166,195
+  s_d92b9dff2213e0::t_28972aa014204b 178-183
+  s_d92b9dff2213e0::t_5893ca070d219e 15-43,85-95,99-108,115,129-133,138-139,157-160,164-165,169-171
+  s_d92b9dff2213e0::t_3affbbc9bc50b6 136
+  s_d92b9dff2213e0::t_3300ab46de6655 96-98,109-114,116-128
+  s_d92b9dff2213e0::t_9c1da03e7d2449 57-66
+src/components/ToolDownload.astro
+  s_d92b9dff2213e0::t_5cbd9cf02e1312 23-28
+src/components/ReleaseHistory.astro
+  s_d92b9dff2213e0::t_3300ab46de6655 13-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "99b92852c64c9f72965802768cd9aa697aca537b",
+  "prompts": {},
+  "humans": {
+    "h_3705811fa4502c": {
+      "author": "TautCony <i@tautcony.xyz>"
+    }
+  },
+  "sessions": {
+    "s_d92b9dff2213e0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0517b-1939-7952-bb09-5c727bd2753b",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "TautCony <i@tautcony.xyz>"
+    }
+  }
+}

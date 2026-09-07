@@ -41,9 +41,9 @@
   ],
   "dependencies": {
     "@astrojs/check": "0.9.10",
-    "@astrojs/markdown-remark": "7.2.4",
+    "@astrojs/markdown-remark": "7.3.0",
     "@sentry/browser": "^10.72.0",
-    "astro": "^7.2.9",
+    "astro": "^7.3.1",
     "dat.gui": "^0.7.9",
     "heti": "^0.9.6",
     "js-yaml": "5.4.1",

@@ -47,7 +47,7 @@
     "dat.gui": "^0.7.9",
     "heti": "^0.9.6",
     "js-yaml": "5.4.1",
-    "katex": "^0.18.4",
+    "katex": "^0.18.5",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-katex": "^7.0.1",
     "rehype-raw": "7.0.0",

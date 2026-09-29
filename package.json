@@ -41,12 +41,12 @@
   ],
   "dependencies": {
     "@astrojs/check": "0.9.10",
-    "@astrojs/markdown-remark": "7.2.4",
-    "@sentry/browser": "^10.72.0",
+    "@astrojs/markdown-remark": "^7.3.1",
+    "@sentry/browser": "^11.1.0",
     "astro": "^7.2.9",
     "dat.gui": "^0.7.9",
     "heti": "^0.9.6",
-    "js-yaml": "5.4.1",
+    "js-yaml": "^5.4.2",
     "katex": "^0.18.4",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-katex": "^7.0.1",
@@ -54,7 +54,7 @@
     "rehype-slug": "6.0.0",
     "remark-gfm": "4.0.1",
     "remark-math": "^6.0.0",
-    "three": "^0.185.1"
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -62,7 +62,7 @@
     "@types/dat.gui": "^0.7.13",
     "@types/js-yaml": "4.0.9",
     "@types/node": "^26.4.0",
-    "@types/three": "^0.185.4",
+    "@types/three": "^0.186.0",
     "@typescript-eslint/parser": "^8.68.0",
     "eslint": "^10.9.1",
     "globals": "^17.11.0",

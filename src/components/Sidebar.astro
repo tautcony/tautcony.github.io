@@ -70,11 +70,17 @@ const shellClass = enable
             <>
                 <hr />
                 <h2 class="sidebar-heading">FRIENDS</h2>
-                <ul class="list-inline">
+                <ul class="friends-list">
                     {friends.map((friend) => (
                         <li>
-                            <a href={friend.href} target="_blank" rel="noopener">
-                                {friend.title}
+                            <a
+                                href={friend.href}
+                                target="_blank"
+                                rel="noopener"
+                                class="friend-card"
+                            >
+                                <span class="friend-name">{friend.title}</span>
+                                <span class="friend-arrow" aria-hidden="true">↗</span>
                             </a>
                         </li>
                     ))}

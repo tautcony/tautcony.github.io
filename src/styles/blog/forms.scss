@@ -106,17 +106,19 @@ form .row:first-child .floating-label-form-group {
         }
 
         > a {
-            color: $gray-dark;
+            color: #000;
+            border: 2px solid #000;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
         > a:hover,
         > a:focus {
-            color: white;
-            background-color: $brand-primary;
-            border: 1px solid $brand-primary;
+            color: #fff;
+            background-color: #000;
+            border: 2px solid #000;
 
             // V1.6 display title
             > span {
-                color: white;
+                color: #fff;
             }
         }
     }

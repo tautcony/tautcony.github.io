@@ -1,7 +1,9 @@
 ---
 import type { PostEntry } from "../lib/posts";
-import { formatPostDate, postUrl } from "../lib/posts";
+import { postUrl } from "../lib/posts";
 import { getExcerptHtml } from "../lib/excerpts";
+import { MONSTER_COUNT, getMonsterSrc } from "../data/monsters";
+import { formatViews, getPathViews } from "../data/views";
 import { site } from "../data/site";
 
 interface Props {
@@ -21,31 +23,48 @@ const previews = await Promise.all(
 ---
 
 {
-    previews.map(({ post, excerptHtml }) => {
+    previews.map(({ post, excerptHtml }, index) => {
         const url = postUrl(post);
-        const author = post.data.author || site.title;
-        const date = formatPostDate(post.data.publishedDate);
+        const category = post.data.tags?.[0] ?? "POST";
+        const dotDate = post.data.publishedDate.split("-").map(Number).join(".");
         const titleHtml = post.data.titleHtml;
+        const monsterSrc = getMonsterSrc(((index * 7) % MONSTER_COUNT) + 1, site.baseurl);
+        const views = getPathViews(url);
         return (
-            <>
-                <div class="post-preview">
-                    <a href={url}>
-                        {titleHtml ? (
-                            <h2 class="post-title" set:html={titleHtml} />
-                        ) : (
-                            <h2 class="post-title">{post.data.title}</h2>
-                        )}
-                        {post.data.subtitle ? (
-                            <h3 class="post-subtitle">{post.data.subtitle}</h3>
-                        ) : null}
-                    </a>
-                    <div class="post-content-preview" set:html={excerptHtml} />
-                    <p class="post-meta">
-                        Posted by {author} on {date}
-                    </p>
-                </div>
-                <hr />
-            </>
+            <article class="post-preview rand_wrap">
+                <a href={url}>
+                    <div class="post-meta">
+                        <span class="post-cat">{category}</span>
+                        <time class="post-date" datetime={post.data.publishedDate}>
+                            {dotDate}
+                        </time>
+                        {
+                            views !== undefined && (
+                                <span class="post-views">{formatViews(views)} views</span>
+                            )
+                        }
+                    </div>
+                    {titleHtml ? (
+                        <h2 class="post-title" set:html={titleHtml} />
+                    ) : (
+                        <h2 class="post-title">{post.data.title}</h2>
+                    )}
+                    {post.data.subtitle ? (
+                        <h3 class="post-subtitle">{post.data.subtitle}</h3>
+                    ) : null}
+                </a>
+                <div class="post-content-preview" set:html={excerptHtml} />
+                <a
+                    href={url}
+                    class="rand_body js-rand-transition"
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
+                    <span class="rand_img">
+                        <img src={monsterSrc} alt="" width="58" height="58" class="image" loading="lazy" decoding="async" />
+                    </span>
+                </a>
+            </article>
         );
     })
 }

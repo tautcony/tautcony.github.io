@@ -32,6 +32,13 @@ export const pageMeta = {
         path: "/drafts/",
         shortHeader: true,
     },
+    tcupdate: {
+        title: "Tool",
+        description: "Hope you enjoy using these tools.",
+        headerImg: site.headerImg,
+        path: "/tcupdate/",
+        shortHeader: true,
+    },
     notFound: {
         title: undefined as string | undefined,
         description: "何を探すんの？ここは何もいないよ",

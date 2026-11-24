@@ -32,9 +32,13 @@ const catalogItems = d.catalog
     ? headings.map(h => ({
         depth: h.depth,
         slug: h.slug,
-        text: h.text.trim() || h.slug,
+        text: h.text.replace(/\s*¶+\s*$/g, "").trim() || h.slug,
     }))
     : [];
+const minCatalogDepth = catalogItems.length > 0
+    ? Math.min(...catalogItems.map(item => item.depth))
+    : 2;
+const catalogCollapsible = catalogItems.length > 10;
 const pageTitle = draft ? `[Draft] ${d.title}` : d.title;
 ---
 
@@ -89,24 +93,38 @@ const pageTitle = draft ? `[Draft] ${d.title}` : d.title;
                     <slot />
                 </PostContainer>
                 {
-                    d.catalog && (
-                        <div class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container">
-                            <div class="side-catalog">
-                                <hr class="hidden-sm hidden-xs" />
-                                <h2 class="sidebar-heading">
-                                    <a class="catalog-toggle" href="#">CATALOG</a>
-                                </h2>
-                                <ul class="catalog-body">
-                                    {
-                                        catalogItems.map(item => (
-                                            <li class={`h${item.depth}_nav`}>
-                                                <a href={`#${item.slug}`}>{item.text}</a>
-                                            </li>
-                                        ))
-                                    }
-                                </ul>
+                    d.catalog && catalogItems.length > 0 && (
+                        <aside class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container" aria-label="文章目录">
+                            <div class:list={["side-catalog", catalogCollapsible && "is-collapsible"]}>
+                                <div class="catalog-header">
+                                    <button type="button" class="catalog-toggle" aria-expanded="true">
+                                        <span class="catalog-title">文章目录</span>
+                                        <span class="catalog-progress" aria-hidden="true">0%</span>
+                                    </button>
+                                </div>
+                                <div class="catalog-track-wrap">
+                                    <svg class="catalog-svg" aria-hidden="true"></svg>
+                                    <ul class="catalog-body">
+                                        {
+                                            catalogItems.map(item => {
+                                                const level = Math.min(Math.max(item.depth - minCatalogDepth, 0), 3);
+                                                return (
+                                                    <li
+                                                        class={`h${item.depth}_nav catalog-item level-${level}`}
+                                                        data-level={level}
+                                                        data-slug={item.slug}
+                                                    >
+                                                        <a href={`#${item.slug}`} title={item.text}>
+                                                            {item.text}
+                                                        </a>
+                                                    </li>
+                                                );
+                                            })
+                                        }
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                        </aside>
                     )
                 }
                 <Sidebar enable={false} tagCounts={tagCounts} postTotal={allPosts.length} />

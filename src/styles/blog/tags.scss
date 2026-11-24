@@ -39,11 +39,10 @@
 }
 
 #tag-heading {
-    padding: 95px 0 70px;
-    @media only screen and (min-width: 768px) {
-        padding: 150px 0;
-    }
-
+    padding:
+        clamp(95px, calc(41.6667vw - 225px), 150px)
+        0
+        clamp(70px, calc(60.6061vw - 395.45px), 150px);
 }
 // tag_cloud
 // Label text is neutral gray; weight scale only on count badges via --tc-badge-color
@@ -113,7 +112,7 @@
         &.tag-button--all {
             font-weight: 700;
             color: $brand-primary !important;
-            border-color: rgba(0, 133, 161, 0.45);
+            border-color: rgba(0, 0, 0, 0.35);
             &:hover, &:active, &.focus {
                 color: white !important;
                 border-color: $brand-primary;
@@ -143,15 +142,110 @@
     }
 }
 .listing-seperator {
-    color: #0085a1;
-    font-size: 21px !important;
-    &:before {
-        margin-right: 5px;
+    color: #000;
+    font-size: 20px !important;
+    line-height: 1.4 !important;
+}
+
+.archive-year-group {
+    margin-bottom: 32px;
+}
+
+.archive-year-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 0 10px;
+    margin: 0 0 4px;
+    border-bottom: 2px solid #000;
+
+    .tag-text {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #000;
     }
-    @media only screen and (min-width: 768px) {
-        font-size: 20px !important;
-        line-height: 2 !important;
+
+    .archive-year-count {
+        font-size: 12px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: $gray-l;
     }
+}
+
+.archive-item {
+    border-bottom: 1px solid $gray-light;
+}
+
+.archive-item-link {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 6px;
+    text-decoration: none !important;
+    color: $gray-dark;
+    transition: background-color 0.18s ease, padding-left 0.18s ease;
+
+    &:hover,
+    &:focus {
+        background-color: #f7f7f7;
+        padding-left: 12px;
+        color: #000;
+
+        .archive-date {
+            color: #000;
+        }
+    }
+}
+
+.archive-date {
+    flex-shrink: 0;
+    width: 46px;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: $gray-l;
+    transition: color 0.18s ease;
+}
+
+.archive-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.archive-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: $gray-dark;
+}
+
+.archive-subtitle {
+    font-size: 13px;
+    line-height: 1.4;
+    color: $gray;
+}
+
+.archive-item-tags {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.archive-item-tag {
+    display: inline-block;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    color: $gray;
+    border: 1px solid $gray-light;
+    background: #fff;
 }
 
 // Customize Style for Posts in One-Tag-List

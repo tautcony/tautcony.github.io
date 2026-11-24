@@ -455,17 +455,38 @@ a {
     color: #339966;
 }
 
-// Heti paints link underlines with padding-block-end + border-block-end on hover.
-// Post body links are `display: inline-block` (see post.scss), so that extra box
-// height reflows everything after the link — including the pager under the article.
-// Prefer paint-only text-decoration; same idea as .pdf-embed link overrides.
-.post-content.heti a:hover,
-.post-content.heti a:focus {
+// Prefer paint-only text-decoration on post body links.
+.post-content a:hover,
+.post-content a:focus {
     padding-block-end: 0;
     border-block-end: 0;
     text-decoration: underline;
     text-underline-offset: 0.15em;
     text-decoration-thickness: 1px;
+}
+
+// Compile-time Heti spacing & punctuation squeeze elements
+.post-content {
+    heti-spacing {
+        display: inline;
+    }
+    .heti-spacing-start {
+        margin-inline-end: 0.25em;
+    }
+    .heti-spacing-end {
+        margin-inline-start: 0.25em;
+    }
+    heti-adjacent {
+        display: inline;
+        text-spacing-trim: space-all;
+        unicode-bidi: isolate;
+    }
+    .heti-adjacent-half {
+        margin-inline-end: -0.5em;
+    }
+    .heti-adjacent-quarter {
+        margin-inline-end: -0.25em;
+    }
 }
 
 // Draft preview banner (`content/drafts` when draftsEnabled)

@@ -149,7 +149,10 @@ function createHistoryItem(release: GitHubRelease): HTMLLIElement {
     link.target = "_blank";
     link.rel = "noopener";
     link.textContent = release.name || release.tag_name;
-    item.append(icon, link, ` (${formatDisplayDate(release.published_at)})`);
+    const dateSpan = document.createElement("span");
+    dateSpan.className = "release-history-date";
+    dateSpan.textContent = formatDisplayDate(release.published_at);
+    item.append(icon, link, dateSpan);
     return item;
 }
 

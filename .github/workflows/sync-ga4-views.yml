@@ -1,0 +1,40 @@
+name: Sync GA4 Views
+
+on:
+  schedule:
+    # Run weekly on Monday at 00:00 UTC (08:00 CST)
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-views:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Sync GA4 page views
+        if: ${{ secrets.GA4_PROPERTY_ID != '' && secrets.GA4_SERVICE_ACCOUNT_JSON != '' }}
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/content/sync-ga4-views.mjs
+
+      - name: Commit updated views.json
+        if: ${{ secrets.GA4_PROPERTY_ID != '' && secrets.GA4_SERVICE_ACCOUNT_JSON != '' }}
+        run: |
+          if ! git diff --quiet src/data/views.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add src/data/views.json
+            git commit -m "chore: sync GA4 page view stats"
+            git push
+          fi

@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import { formatViews, siteViews } from "../data/views";
 import Sns from "./Sns.astro";
 import {
     initialQuotePaint,
@@ -37,6 +38,16 @@ const quotesJson = serializeQuotesCompact(quotes);
                     {" "}|{" "}
                     <a href={site.url}>TautCony</a>
                 </p>
+                {
+                    siteViews.totalViews > 0 && (
+                        <p class="site-views text-muted">
+                            Total {formatViews(siteViews.totalViews)} views
+                            {siteViews.totalUsers > 0
+                                ? ` · ${formatViews(siteViews.totalUsers)} visitors`
+                                : ""}
+                        </p>
+                    )
+                }
                 {
                     initial && (
                         <div class="quote">

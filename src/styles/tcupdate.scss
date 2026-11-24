@@ -1,12 +1,4 @@
-html {
-    font-size: 1em;
-}
-body {
-    font-feature-settings: "locl";
-    line-height: 1.5;
-    margin:      0;
-    padding:     0;
-}
+@use "variables" as *;
 
 // Cloud-download glyph (src/assets/icons/cloud-download.svg) via mask so
 // both static buttons and JS-built history rows share one SVG asset.
@@ -16,254 +8,228 @@ body {
     mask: url("../assets/icons/cloud-download.svg") center / contain no-repeat;
 }
 
-html, body {
-    font-family: "Iosevka Web", monospace;
-}
+section#tool-downloads {
+    font-feature-settings: "locl";
+    padding: 8px 0 32px;
 
-[hidden] {
-    display: none !important;
-}
-
-p {
-    margin: 1rem 0;
-    border-left: dotted;
-    padding-left: 10px;
-}
-
-a {
-    background-image:    linear-gradient(white 50%, #888888 50%);
-    background-position: 0 1.075em;
-    background-repeat:   repeat-x;
-    background-size:     2px 2px;
-    color: black;
-    text-decoration: none;
-    text-shadow:     white -1px 0 0, white 1px 0 0;
-    &:hover {
-        background-image: linear-gradient(white 50%, black 50%);
+    [hidden] {
+        display: none !important;
     }
-}
 
-pre, code {
-    font-family: inherit;
-}
+    #release-status {
+        margin: 0 0 22px;
+        font-size: 13px;
+        color: $gray;
 
-section {
-    margin:    0 auto;
-    max-width: 40rem;
-    padding:   4rem 1rem;
-    &+section {
-        &:before {
-            background: #eeeeee;
-            content:    " ";
-            display:    block;
-            height:     1px;
-            left:       0;
-            right:      0;
-            margin-top: -4rem;
-            position:   absolute;
+        &.is-error {
+            background: #f7f7f7;
+            border-left: 3px solid #000;
+            padding: 8px 12px;
+            color: $gray-dark;
         }
     }
 
-    &#descriptions {
-        display: flex;
-        justify-content: space-between;
-        h2 {
-            font-weight: bold !important;
-            margin: 3rem 0 0.5rem;
+    #downlinks {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 32px;
 
-            &+p {
-                margin-top: 0.5rem;
-            }
+        @media screen and (max-width: 600px) {
+            grid-template-columns: 1fr;
         }
-        ul.col {
-            flex:       none;
-            list-style: none;
-            margin:  0;
-            padding: 0;
-            width: calc((100% - 2rem) / 2);
-            &>li {
-                &:first-child h2 {
-                    margin-top: 0;
-                }
+
+        > a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border: 2px solid #000;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            text-shadow: none;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+            &:hover,
+            &:focus {
+                background: #000;
+                color: #fff;
+                text-decoration: none;
+                transform: translateY(-2px);
+            }
+
+            .icon {
+                flex-shrink: 0;
+                display: block;
+                width: 28px;
+                height: 28px;
+                @include cloud-download-icon;
+            }
+
+            .release-info {
+                display: block;
+                min-width: 0;
+                font-size: 13px;
+                line-height: 1.45;
+            }
+
+            .release-name {
+                display: inline-block;
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 1.3;
+                overflow-wrap: anywhere;
+            }
+
+            .release-version {
+                display: inline;
+                font-weight: 600;
+            }
+
+            span[data-release-date] {
+                display: block;
+                margin-top: 2px;
+                font-size: 11px;
+                opacity: 0.65;
             }
         }
     }
 
-    &#tool-downloads {
-        h2 {
-            font-size:     1.7rem;
-            font-weight:   200;
-            margin-bottom: 3rem;
-            margin-top:    0;
-            text-align: center;
-            @media screen and (min-width: 700px) {
-                &:before, &:after {
-                    border-bottom:  1px solid #dddddd;
-                    content:        "";
-                    display:        inline-block;
-                    margin:         0 0.2em;
-                    vertical-align: 0.3em;
-                    width:          1em;
-                }
+    > p {
+        margin: 18px 0 10px;
+        font-size: 15px;
+        line-height: 1.75;
+        color: $gray-dark;
+
+        a {
+            color: #000;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+            text-decoration-thickness: 1px;
+
+            &:hover,
+            &:focus {
+                opacity: 0.6;
             }
         }
+    }
+
+    .tool-note {
+        margin: 0 0 20px;
+        padding: 10px 14px;
+        background: #f7f7f7;
+        border-left: 3px solid #000;
+        font-size: 13px;
+        line-height: 1.7;
+        color: $gray;
+
+        a {
+            color: #000;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+
+            &:hover,
+            &:focus {
+                opacity: 0.6;
+            }
+        }
+    }
+
+    .tool-history-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px 24px;
+        margin-top: 32px;
+
+        @media screen and (max-width: 767px) {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+    }
+
+    .tool-history-block {
+        min-width: 0;
 
         h3 {
-            font-size:   1em;
-            font-weight: normal;
-            margin-top:  8rem;
-            text-align:  center;
-            &:before, &:after {
-                border-bottom:  1px solid #dddddd;
-                content:        "";
-                display:        inline-block;
-                margin:         0 0.2em;
-                vertical-align: 0.3em;
-                width:          1em;
-            }
+            margin: 0 0 10px;
+            padding-bottom: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
         }
-        #release-status {
-            border-left: 0;
-            color: #555555;
-            font-size: 0.8rem;
-            margin: -1.5rem 0 1.5rem;
-            padding-left: 0;
-            text-align: center;
-            &.is-error {
-                background: #f7f7f7;
-                border-left: dotted 3px #888888;
-                padding: 0.5rem 0.75rem;
-                text-align: left;
-            }
+    }
+
+    .all-releases-w {
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
+
         li {
-            a.link {
-                font-weight: bold;
-                margin-left: 5px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            padding: 8px 4px;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid #f0f0f0;
+            color: $gray-dark;
+
+            .icon {
+                flex-shrink: 0;
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                transform: translateY(2px);
+                @include cloud-download-icon;
             }
-        }
-        .all-releases-w {
-            text-align: center;
-            .release-history-toggle {
-                background: transparent;
-                border: 1px solid #888888;
-                color: #333333;
-                cursor: pointer;
-                font: inherit;
-                margin: 0.75rem 0 0;
-                padding: 0.25rem 0.75rem;
+
+            a.link {
+                flex: 1;
+                min-width: 0;
+                color: #000;
+                font-weight: 600;
+                text-decoration: underline;
+                text-underline-offset: 0.15em;
+                overflow-wrap: anywhere;
+
                 &:hover,
                 &:focus {
-                    background: #eeeeee;
+                    opacity: 0.6;
                 }
             }
-            li {
-                padding:    0.5em 0;
-                text-align: left;
-                .icon {
-                    display: inline-block;
-                    width: 1em;
-                    height: 1em;
-                    vertical-align: -0.1em;
-                    @include cloud-download-icon;
-                }
-            }
-            & > ul > li {
-                text-align: center;
-                list-style: none;
-                margin:     0;
+
+            .release-history-date {
+                flex-shrink: 0;
+                margin-left: auto;
+                white-space: nowrap;
+                font-size: 12px;
+                color: $gray-l;
+                font-variant-numeric: tabular-nums;
             }
         }
-    }
-}
 
-#downlinks {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-    width: 100%;
-    a {
-        background:  black;
-        color:       white;
-        display:     flex;
-        align-items: center;
-        box-sizing: border-box;
-        line-height: 1em;
-        margin:      0;
-        min-height: 5.5em;
-        overflow-wrap: anywhere;
-        padding:     0.5em 0.5em 0.5em 3em;
-        position:    relative;
-        text-align:  left;
-        text-shadow: none;
-        width:       100%;
-        &:hover {
-            background: #333333;
-        }
-        &.wide {
-            width: 100%;
-        }
-        &.middle {
-            width: 100%;
-        }
-        &.narrow {
-            width: 100%;
-        }
-        .icon {
-            // Match legacy simple-line-icons sizing: font-size 1.5em, then a
-            // 1em box (em relative to that font-size → 1.5× body text).
-            display:    block;
-            font-size:  1.5em;
-            width:      1em;
-            height:     1em;
-            left:       0.5em;
-            margin-top: -0.5em;
-            position:   absolute;
-            top:        50%;
-            @include cloud-download-icon;
-        }
-        .release-info {
-            display: block;
-            min-width: 0;
-        }
-        .release-name {
-            overflow-wrap: anywhere;
-        }
-        // Date line under the version (must not target the icon span).
-        span[data-release-date] {
-            display:   block;
-            font-size: 60%;
-        }
-        .release-version {
-            display: inline;
-        }
-    }
-}
+        .release-history-toggle {
+            margin: 12px 0 0;
+            padding: 6px 14px;
+            border: 1px solid #000;
+            background: #fff;
+            color: #000;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
 
-@media screen and (max-width: 768px) {
-    #downlinks {
-        gap: 0.75rem;
+            &:hover,
+            &:focus {
+                background: #000;
+                color: #fff;
+            }
+        }
     }
-    section#tool-downloads h2 {
-        font-size: 1.7rem !important;
-    }
-    section#tool-downloads h3 {
-        font-size: 0.9rem !important;
-    }
-    .all-releases-w li {
-        font-size: 0.8em !important;
-    }
-}
-
-@media screen and (max-width: 420px) {
-    #downlinks {
-        grid-template-columns: 1fr;
-    }
-}
-
-#copyright-line {
-    font-size:     0.8rem;
-    margin-bottom: 1em;
-    opacity:       0.4;
-    text-align:    center;
 }

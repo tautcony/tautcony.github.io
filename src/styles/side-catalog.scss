@@ -1,7 +1,7 @@
-// Directory Section
-// Catalog <li> list is SSG'd from Markdown headings; fold toggle is client-only.
+// Article Table of Contents (文章目录)
+// Stepped silk-thread SVG rail + active node + reading progress + section auto-expand.
 
-// Clear fixed navbar when jumping to in-article anchors (catalog / hash).
+// Clear fixed navbar when jumping to in-article anchors.
 .post-content :is(h1, h2, h3, h4, h5, h6) {
     scroll-margin-top: 4.5rem;
 }
@@ -12,75 +12,212 @@
 
 .side-catalog {
     display: block;
-    overflow: auto;
-    height: 100%;
-    padding-bottom: 40px;
-    width: 195px;
+    width: 220px;
+    max-height: calc(100vh - 56px);
+    padding: 4px 0 24px;
+    overflow: hidden;
+
     &.fixed {
         position: fixed;
-        top: 20px;
+        top: 28px;
+        transition: top 0.3s ease;
+
+        &.has-navbar {
+            top: 76px;
+        }
     }
+
     &.fold {
-        .catalog-toggle::before {
-            content: "+";
-        }
-        .catalog-body {
-            visibility: hidden;
+        .catalog-track-wrap {
+            max-height: 0;
             opacity: 0;
-            transform: scaleY(0);
+            pointer-events: none;
         }
     }
-    .catalog-toggle::before {
-        content: "−";
-        position: relative;
-        margin-right: 5px;
-        bottom: 1px;
+
+    .catalog-header {
+        margin: 0 0 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e5e5e5;
     }
-    .catalog-body {
-        visibility: visible;
+
+    .catalog-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #000;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        text-align: left;
+
+        &:hover {
+            opacity: 0.65;
+        }
+    }
+
+    .catalog-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        &::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #000;
+        }
+    }
+
+    .catalog-progress {
+        font-size: 11px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: #888;
+    }
+
+    .catalog-track-wrap {
+        position: relative;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        overflow-x: hidden;
         opacity: 1;
+        transition: max-height 0.28s ease, opacity 0.22s ease;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .catalog-svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+        pointer-events: none;
+        overflow: visible;
+        shape-rendering: geometricPrecision;
+
+        .catalog-thread-bg {
+            fill: none;
+            stroke: #e5e5e5;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .catalog-thread-fg {
+            fill: none;
+            stroke: #000;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke-dashoffset 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .catalog-node {
+            fill: #fff;
+            stroke: #ccc;
+            stroke-width: 1.5;
+            transition: fill 0.2s ease, stroke 0.2s ease, r 0.2s ease;
+
+            &.is-passed {
+                fill: #000;
+                stroke: #000;
+            }
+
+            &.is-active {
+                fill: #000;
+                stroke: #fff;
+                stroke-width: 2;
+            }
+        }
+    }
+
+    .catalog-body {
         position: relative;
+        z-index: 1;
         list-style: none;
-        height: auto;
-        overflow: hidden;
-        padding-left: 0;
-        padding-right: 5px;
-        text-indent: 0;
-        transform-origin: top;
-        transition: all .2s cubic-bezier(.47,0,.4,.99) 0ms;
-        li {
-            position: relative;
-            list-style: none;
-            a {
-                padding-left: 10px;
-                max-width: 180px;
-                display: inline-block;
-                vertical-align: middle;
-                height: 30px;
-                line-height: 30px;
-                overflow: hidden;
-                text-decoration: none;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-        .h1_nav, .h2_nav, .h3_nav {
-            margin-left: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .catalog-item {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        a {
+            display: block;
+            padding: 6px 10px 6px 20px;
             font-size: 13px;
-            font-weight: bold;
-        }
-        .h4_nav, .h5_nav, .h6_nav {
-            margin-left: 10px;
-            font-size: 12px;
-            a {
-                max-width: 170px;
+            line-height: 1.4;
+            color: #777 !important;
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-radius: 6px;
+            transition: color 0.18s ease, background-color 0.18s ease;
+
+            &:hover {
+                color: #000 !important;
             }
         }
-        .active {
-            border-radius: 4px;
-            background-color: #f5f5f5;
-            a {
-                color: #0085a1 !important;
+
+        // Hug the stepped thread at each level: x = 8 + level * 14
+        &.level-0 > a {
+            margin-left: 18px;
+            padding-left: 10px;
+            font-weight: 600;
+            color: #444 !important;
+        }
+
+        &.level-1 > a {
+            margin-left: 32px;
+            padding-left: 10px;
+            font-size: 12px;
+        }
+
+        &.level-2 > a {
+            margin-left: 46px;
+            padding-left: 10px;
+            font-size: 12px;
+        }
+
+        &.level-3 > a {
+            margin-left: 60px;
+            padding-left: 10px;
+            font-size: 12px;
+        }
+
+        &.active > a {
+            color: #000 !important;
+            font-weight: 700;
+            background-color: #f3f3f3;
+        }
+    }
+
+    // Auto-collapse deeper headings on long posts; expand the active branch
+    &.is-collapsible {
+        .catalog-item:not(.level-0) {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.24s ease, opacity 0.2s ease;
+
+            &.is-expanded {
+                max-height: 36px;
+                opacity: 1;
             }
         }
     }

@@ -3,6 +3,7 @@ import { site } from "../data/site";
 import { formatPostDate } from "../lib/posts";
 import { absoluteUrl } from "../lib/url";
 import { lastmodMap } from "../data/lastmod";
+import { formatViews, getPathViews } from "../data/views";
 import { generate as generateGeoPattern } from "../lib/geopattern";
 
 interface Props {
@@ -66,6 +67,7 @@ const displayTitle = title ?? site.title;
 const postedBy = author || site.title;
 const postedOn = publishedDate ? formatPostDate(publishedDate) : "";
 const lastmod = postId ? lastmodMap[postId] : undefined;
+const postViews = type === "post" ? getPathViews(pageUrl) : undefined;
 const maskAlpha = headerMask != null && headerMask !== "" ? headerMask : 0;
 const isTextStyle = headerStyle === "text";
 
@@ -112,22 +114,29 @@ function tagHref(tag: string) {
                                 ) : (
                                     <h1>{displayTitle}</h1>
                                 )}
-                                <h2 class="subheading">{subtitle}</h2>
-                                <span class="meta">
-                                    Posted by {postedBy} on {postedOn}
-                                </span>
-                                <span class="meta">
-                                    Update on{" "}
-                                    <span id="update-date">
+                                {subtitle && <h2 class="subheading">{subtitle}</h2>}
+                                <div class="post-meta-bar">
+                                    <span class="meta-item">
+                                        {postedBy} · {postedOn}
+                                    </span>
+                                    <span class="meta-item" id="update-date">
+                                        Updated{" "}
                                         {lastmod
                                             ? `${lastmod.display}${
                                                 lastmod.short_sha
-                                                    ? ` with commit ${lastmod.short_sha}`
+                                                    ? ` (${lastmod.short_sha})`
                                                     : ""
                                             }`
                                             : postedOn}
                                     </span>
-                                </span>
+                                    {
+                                        postViews !== undefined && (
+                                            <span class="meta-item meta-views">
+                                                {formatViews(postViews)} views
+                                            </span>
+                                        )
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>

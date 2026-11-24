@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
-import Heti from "heti/js/heti-addon";
 
+import * as cursorPointer from "../features/cursor-pointer";
 import * as navbar from "../features/navbar";
 import * as pageChrome from "../features/page-chrome";
 import * as quote from "../features/quote";
@@ -38,19 +38,17 @@ const PAGE_FEATURES = [
     { match: "#tag_cloud", load: () => import("../features/archive") },
     { match: "#kon-container", load: () => import("../features/about") },
     { match: ".pdf-embed", load: () => import("../features/pdf-embed") },
+    { match: ".rand_wrap", load: () => import("../features/rand-monster") },
 ] as const;
 
 function bootShell(): void {
+    cursorPointer.init();
     navbar.init();
     pageChrome.init();
     title.init(TITLE_JOKES);
     quote.init({ intervalMs: 10_000 });
 
     window.$crisp?.push(["safe", true]);
-
-    if (typeof XPathResult !== "undefined") {
-        new Heti(".heti").autoSpacing();
-    }
 }
 
 async function bootPageFeatures(): Promise<void> {

@@ -15,17 +15,23 @@ export function init(): void {
     }
 
     const close = (): void => {
+        if (!root.classList.contains("in")) {
+            return;
+        }
         toggle.classList.add("is-collapsed");
         toggle.setAttribute("aria-expanded", "false");
+        root.classList.add("is-closing");
         root.classList.remove("in");
         window.setTimeout(() => {
             if (!root.classList.contains("in")) {
+                root.classList.remove("is-closing");
                 collapse.style.height = "0";
             }
         }, CLOSE_ANIMATION_MS);
     };
 
     const open = (): void => {
+        root.classList.remove("is-closing");
         root.classList.add("in");
         toggle.classList.remove("is-collapsed");
         toggle.setAttribute("aria-expanded", "true");

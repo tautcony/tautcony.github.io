@@ -26,6 +26,14 @@ footer {
         }
     }
 
+    .site-views {
+        font-size: 12px;
+        text-align: center;
+        color: $gray-l;
+        margin: 8px 0 0;
+        font-variant-numeric: tabular-nums;
+    }
+
     // SSG quote (sibling of .copyright; previously injected inside it → inherited 14px)
     .quote {
         font-size: 14px;

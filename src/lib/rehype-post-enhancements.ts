@@ -203,13 +203,120 @@ function enhanceInPlace(el: HastElement, siteOrigin: string): void {
     }
 }
 
+const SKIP_SPACING_TAGS = new Set([
+    "pre",
+    "code",
+    "sup",
+    "sub",
+    "kbd",
+    "samp",
+    "script",
+    "style",
+    "textarea",
+    "heti-spacing",
+    "heti-adjacent",
+    "heti-close",
+]);
+
+// Heti typography rules (ported from heti-addon.js for compile-time SSG)
+const CJK = "\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30fa\u30fc-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff";
+const A = "A-Za-z\u0080-\u00ff\u0370-\u03ff";
+const N = "0-9";
+const S = "`~!@#\\$%\\^&\\*\\(\\)-_=\\+\\[\\]{}\\\\\\|;:'\",<.>\\/\\?";
+const ANS = `${A}${N}${S}`;
+
+const REG_CJK_FULL = new RegExp(`(?<=[${CJK}])( *[${ANS}]+(?: +[${ANS}]+)* *)(?=[${CJK}])`, "g");
+const REG_CJK_START = new RegExp(`([${ANS}]+(?: +[${ANS}]+)* *)(?=[${CJK}])`, "g");
+const REG_CJK_END = new RegExp(`(?<=[${CJK}])( *[${ANS}]+(?: +[${ANS}]+)*)`, "g");
+
+const REG_BD_STOP = "。．，、：；！‼？⁇";
+const REG_BD_SEP = "·・‧";
+const REG_BD_OPEN = "「『（《〈【〖〔［｛";
+const REG_BD_CLOSE = "」』）》〉】〗〕］｝";
+const REG_BD_START = `${REG_BD_OPEN}${REG_BD_CLOSE}`;
+const REG_BD_END = `${REG_BD_STOP}${REG_BD_OPEN}${REG_BD_CLOSE}`;
+const REG_BD_HALF_OPEN = "“‘";
+const REG_BD_HALF_CLOSE = "”’";
+const REG_BD_HALF_START = `${REG_BD_HALF_OPEN}${REG_BD_HALF_CLOSE}`;
+
+const REG_ADJACENT_HALF = new RegExp(
+    `([${REG_BD_STOP}])(?=[${REG_BD_START}])|([${REG_BD_OPEN}])(?=[${REG_BD_OPEN}])|([${REG_BD_CLOSE}])(?=[${REG_BD_END}])`,
+    "g"
+);
+const REG_ADJACENT_QUARTER_SEP = new RegExp(
+    `([${REG_BD_SEP}])(?=[${REG_BD_OPEN}])|([${REG_BD_CLOSE}])(?=[${REG_BD_SEP}])`,
+    "g"
+);
+const REG_ADJACENT_QUARTER_QUOTE = new RegExp(
+    `([${REG_BD_STOP}])(?=[${REG_BD_HALF_START}])|([${REG_BD_HALF_OPEN}])(?=[${REG_BD_OPEN}])`,
+    "g"
+);
+
+function wrapMatchesInNodes(
+    nodes: HastNode[],
+    regex: RegExp,
+    tagName: string,
+    classNames: string[]
+): HastNode[] {
+    const out: HastNode[] = [];
+    for (const node of nodes) {
+        if (node.type !== "text") {
+            out.push(node);
+            continue;
+        }
+        const value = (node as HastText).value;
+        regex.lastIndex = 0;
+        let lastIndex = 0;
+        let match: RegExpExecArray | null;
+        while ((match = regex.exec(value)) !== null) {
+            if (match[0].length === 0) {
+                regex.lastIndex++;
+                continue;
+            }
+            if (match.index > lastIndex) {
+                out.push({ type: "text", value: value.slice(lastIndex, match.index) });
+            }
+            const trimmed = match[0].trim();
+            if (trimmed.length > 0) {
+                out.push({
+                    type: "element",
+                    tagName,
+                    properties: { className: classNames },
+                    children: [{ type: "text", value: trimmed }],
+                });
+            }
+            lastIndex = match.index + match[0].length;
+        }
+        if (lastIndex < value.length) {
+            out.push({ type: "text", value: value.slice(lastIndex) });
+        }
+    }
+    return out;
+}
+
+function applyHetiSpacing(value: string): HastNode[] {
+    let nodes: HastNode[] = [{ type: "text", value }];
+    nodes = wrapMatchesInNodes(nodes, REG_CJK_FULL, "heti-spacing", ["heti-spacing-start", "heti-spacing-end"]);
+    nodes = wrapMatchesInNodes(nodes, REG_CJK_START, "heti-spacing", ["heti-spacing-start"]);
+    nodes = wrapMatchesInNodes(nodes, REG_CJK_END, "heti-spacing", ["heti-spacing-end"]);
+    nodes = wrapMatchesInNodes(nodes, REG_ADJACENT_HALF, "heti-adjacent", ["heti-adjacent-half"]);
+    nodes = wrapMatchesInNodes(nodes, REG_ADJACENT_QUARTER_SEP, "heti-adjacent", ["heti-adjacent-quarter"]);
+    nodes = wrapMatchesInNodes(nodes, REG_ADJACENT_QUARTER_QUOTE, "heti-adjacent", ["heti-adjacent-quarter"]);
+    return nodes;
+}
+
 /**
- * Depth-first: enhance nodes, then rewrite each parent's children so bare
- * tables become `.table-responsive` wrappers (skip if already wrapped).
+ * Depth-first: enhance nodes, apply compile-time Heti spacing & punctuation squeeze,
+ * then rewrite each parent's children so bare tables become `.table-responsive` wrappers.
  */
-function walk(node: HastNode, siteOrigin: string): void {
+function walk(node: HastNode, siteOrigin: string, skipSpacing = false): void {
+    let nextSkipSpacing = skipSpacing;
     if (node.type === "element") {
-        enhanceInPlace(node as HastElement, siteOrigin);
+        const el = node as HastElement;
+        enhanceInPlace(el, siteOrigin);
+        if (SKIP_SPACING_TAGS.has(el.tagName) || hasClass(el, "katex") || hasClass(el, "heti-skip")) {
+            nextSkipSpacing = true;
+        }
     }
 
     const children = "children" in node && node.children ? node.children : undefined;
@@ -218,22 +325,26 @@ function walk(node: HastNode, siteOrigin: string): void {
     }
 
     for (const child of children) {
-        walk(child, siteOrigin);
+        walk(child, siteOrigin, nextSkipSpacing);
     }
 
     // Do not re-wrap tables already inside an author/previous wrapper.
-    if (
+    const skipTableWrap = (
         node.type === "element"
         && (node as HastElement).tagName === "div"
         && hasClass(node as HastElement, "table-responsive")
-    ) {
-        return;
-    }
+    );
 
     let changed = false;
     const next: HastNode[] = [];
     for (const child of children) {
-        if (child.type === "element" && (child as HastElement).tagName === "table") {
+        if (child.type === "text" && !nextSkipSpacing) {
+            const transformed = applyHetiSpacing((child as HastText).value);
+            if (transformed.length !== 1 || transformed[0].type !== "text") {
+                changed = true;
+            }
+            next.push(...transformed);
+        } else if (!skipTableWrap && child.type === "element" && (child as HastElement).tagName === "table") {
             next.push({
                 type: "element",
                 tagName: "div",

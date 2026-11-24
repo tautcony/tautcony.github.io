@@ -95,30 +95,43 @@ for (const post of ordered) {
                 <div class="mini-post-list js-result d-none">
                     {
                         groups.map((group) => (
-                            <section>
-                                <span class="fa listing-seperator">
+                            <section class="archive-year-group">
+                                <div class="listing-seperator archive-year-header">
                                     <span class="tag-text">{group.year}</span>
-                                </span>
+                                    <span class="archive-year-count">{group.posts.length}</span>
+                                </div>
                                 {group.posts.map((post) => {
                                     // Comma-separated raw tags; must match ?tag= after URLSearchParams decode.
-                                    const tagEnc = (post.data.tags ?? [])
+                                    const rawTags = (post.data.tags ?? [])
                                         .map(t => tagKey(t))
-                                        .filter(Boolean)
-                                        .join(",");
+                                        .filter(Boolean);
+                                    const tagEnc = rawTags.join(",");
                                     const url = postUrl(post);
+                                    const monthDay = post.data.publishedDate.slice(5).replace("-", ".");
                                     return (
-                                        <div class="post-preview item" data-tags={tagEnc}>
-                                            <a href={url}>
-                                                {post.data.titleHtml ? (
-                                                    <h2 class="post-title" set:html={post.data.titleHtml} />
-                                                ) : (
-                                                    <h2 class="post-title">{post.data.title}</h2>
+                                        <div class="archive-item item" data-tags={tagEnc}>
+                                            <a href={url} class="archive-item-link">
+                                                <time class="archive-date" datetime={post.data.publishedDate}>
+                                                    {monthDay}
+                                                </time>
+                                                <span class="archive-main">
+                                                    {post.data.titleHtml ? (
+                                                        <span class="archive-title" set:html={post.data.titleHtml} />
+                                                    ) : (
+                                                        <span class="archive-title">{post.data.title}</span>
+                                                    )}
+                                                    {post.data.subtitle ? (
+                                                        <span class="archive-subtitle">{post.data.subtitle}</span>
+                                                    ) : null}
+                                                </span>
+                                                {rawTags.length > 0 && (
+                                                    <span class="archive-item-tags hidden-xs">
+                                                        {rawTags.slice(0, 2).map(t => (
+                                                            <span class="archive-item-tag">{t}</span>
+                                                        ))}
+                                                    </span>
                                                 )}
-                                                {post.data.subtitle ? (
-                                                    <h3 class="post-subtitle">{post.data.subtitle}</h3>
-                                                ) : null}
                                             </a>
-                                            <hr />
                                         </div>
                                     );
                                 })}

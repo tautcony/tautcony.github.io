@@ -4,14 +4,44 @@ import { site } from "../data/site";
 
 {
     site.utteranc?.repo && (
-        <script
-            src="https://utteranc.es/client.js"
-            repo={site.utteranc.repo}
-            issue-term={site.utteranc.issueTerm}
-            theme={site.utteranc.theme}
-            crossorigin="anonymous"
-            async
-            is:inline
-        />
+        <div
+            class="utterances-lazy-container"
+            data-repo={site.utteranc.repo}
+            data-issue-term={site.utteranc.issueTerm}
+            data-theme={site.utteranc.theme}
+        >
+            <script is:inline>
+                (() => {
+                    const el = document.currentScript?.parentElement;
+                    if (!el) return;
+                    const load = () => {
+                        if (el.dataset.loaded === "1") return;
+                        el.dataset.loaded = "1";
+                        const s = document.createElement("script");
+                        s.src = "https://utteranc.es/client.js";
+                        s.setAttribute("repo", el.dataset.repo || "");
+                        s.setAttribute("issue-term", el.dataset.issueTerm || "");
+                        s.setAttribute("theme", el.dataset.theme || "");
+                        s.crossOrigin = "anonymous";
+                        s.async = true;
+                        el.appendChild(s);
+                    };
+                    if (!("IntersectionObserver" in window)) {
+                        load();
+                        return;
+                    }
+                    const observer = new IntersectionObserver(
+                        entries => {
+                            if (entries.some(e => e.isIntersecting)) {
+                                observer.disconnect();
+                                load();
+                            }
+                        },
+                        { rootMargin: "200px 0px" }
+                    );
+                    observer.observe(el);
+                })();
+            </script>
+        </div>
     )
 }

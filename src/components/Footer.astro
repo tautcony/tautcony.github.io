@@ -40,12 +40,14 @@ const quotesJson = serializeQuotesCompact(quotes);
                 </p>
                 {
                     siteViews.totalViews > 0 && (
-                        <p class="site-views text-muted">
-                            Total {formatViews(siteViews.totalViews)} views
-                            {siteViews.totalUsers > 0
-                                ? ` · ${formatViews(siteViews.totalUsers)} visitors`
-                                : ""}
-                        </p>
+                        <div class="site-views-wrap">
+                            <span class="site-views">
+                                Total {formatViews(siteViews.totalViews)} views
+                                {siteViews.totalUsers > 0
+                                    ? ` · ${formatViews(siteViews.totalUsers)} visitors`
+                                    : ""}
+                            </span>
+                        </div>
                     )
                 }
                 {

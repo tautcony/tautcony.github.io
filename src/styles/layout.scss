@@ -435,7 +435,7 @@ a {
     &:hover,
     &:focus {
         background: $brand-primary;
-        transform: translateY(-1px);
+        transform: scale(1.08);
         outline: none;
     }
 }

@@ -75,13 +75,20 @@ function formatAttribution(quote: QuoteEntry): string {
     return author;
 }
 
+const FADE_DURATION_MS = 250;
+
 class QuoteRotator {
+    private readonly root: HTMLElement;
     private readonly content: HTMLElement;
     private readonly author: HTMLElement;
     private quotes: QuoteEntry[] = [];
     private timerId: number | undefined;
+    private fadeTimerId: number | undefined;
+    private paused = false;
+    private lockedMinHeight = 0;
 
-    public constructor(content: HTMLElement, author: HTMLElement) {
+    public constructor(root: HTMLElement, content: HTMLElement, author: HTMLElement) {
+        this.root = root;
         this.content = content;
         this.author = author;
     }
@@ -91,21 +98,76 @@ class QuoteRotator {
         if (this.quotes.length === 0) {
             return;
         }
+
+        // Lock initial height monotonically so quote updates never shrink/shift the page above.
+        this.lockedMinHeight = Math.max(this.root.offsetHeight, 88);
+        this.root.style.minHeight = `${this.lockedMinHeight}px`;
+        this.root.setAttribute("title", "点击换一条");
+
+        this.root.addEventListener("mouseenter", () => {
+            this.paused = true;
+        });
+        this.root.addEventListener("mouseleave", () => {
+            this.paused = false;
+        });
+        this.root.addEventListener("click", () => {
+            // Do not rotate if the user is selecting quote text.
+            if (window.getSelection()?.toString()) return;
+            this.paint(true);
+        });
+
         // First interval only — SSG already painted the initial line.
-        this.timerId = window.setInterval(() => this.paint(), intervalMs);
+        this.timerId = window.setInterval(() => {
+            if (!this.paused) {
+                this.paint(false);
+            }
+        }, intervalMs);
     }
 
-    private paint(): void {
-        const quote = pickRandom(this.quotes);
-        if (quote === undefined) {
+    private pickNext(): { line: string; attribution: string } | undefined {
+        const currentLine = this.content.textContent ?? "";
+        for (let attempt = 0; attempt < 5; attempt++) {
+            const quote = pickRandom(this.quotes);
+            if (!quote) return undefined;
+            const line = pickRandom(quote.text) ?? "";
+            if (line !== currentLine || this.quotes.length === 1) {
+                return { line, attribution: formatAttribution(quote) };
+            }
+        }
+        const fallback = pickRandom(this.quotes);
+        if (!fallback) return undefined;
+        return {
+            line: pickRandom(fallback.text) ?? "",
+            attribution: formatAttribution(fallback),
+        };
+    }
+
+    private paint(immediate: boolean): void {
+        const next = this.pickNext();
+        if (!next) {
             if (this.timerId !== undefined) {
                 clearInterval(this.timerId);
                 this.timerId = undefined;
             }
             return;
         }
-        this.content.textContent = pickRandom(quote.text) ?? "";
-        this.author.textContent = formatAttribution(quote);
+
+        window.clearTimeout(this.fadeTimerId);
+        this.root.classList.add("is-fading");
+
+        this.fadeTimerId = window.setTimeout(() => {
+            this.content.textContent = next.line;
+            this.author.textContent = next.attribution;
+
+            // Never allow height to shrink below what was already rendered.
+            const measured = this.root.scrollHeight;
+            if (measured > this.lockedMinHeight) {
+                this.lockedMinHeight = measured;
+                this.root.style.minHeight = `${this.lockedMinHeight}px`;
+            }
+
+            this.root.classList.remove("is-fading");
+        }, immediate ? 120 : FADE_DURATION_MS);
     }
 }
 
@@ -133,7 +195,7 @@ export function init(options: QuoteOptions = {}): void {
         return;
     }
 
-    new QuoteRotator(content, author).start(
+    new QuoteRotator(root, content, author).start(
         quotes,
         options.intervalMs ?? DEFAULTS.intervalMs
     );

@@ -3,11 +3,22 @@ import PageLayout from "../../layouts/PageLayout.astro";
 import Comment from "../../components/Comment.astro";
 import { pageMeta } from "../../data/pages";
 import { DEFAULT_KON_INDEX, KON_BLOCKS, KON_META } from "../../data/kon";
-import { getAllPosts } from "../../lib/posts";
+import { formatViews, siteViews } from "../../data/views";
+import { collectTagCounts, getAllPosts } from "../../lib/posts";
 
 const allPosts = await getAllPosts();
+const tagCount = collectTagCounts(allPosts).size;
 const meta = pageMeta.about;
 const defaultIndex = DEFAULT_KON_INDEX;
+
+function splitDialogue(line: string): { speaker: string; quote: string } | null {
+    const idx = line.indexOf("「");
+    if (idx <= 0) return null;
+    return {
+        speaker: line.slice(0, idx),
+        quote: line.slice(idx),
+    };
+}
 ---
 
 <PageLayout
@@ -17,43 +28,98 @@ const defaultIndex = DEFAULT_KON_INDEX;
     pageUrl={meta.path}
     allPosts={allPosts}
 >
-    <div id="player1" class="aplayer" style="float: right;"></div>
-
-    <!-- Default language visible at SSG; client may switch on navigator.language -->
-    <select id="langSelect">
-        {
-            KON_BLOCKS.map((block, index) => (
-                <option value={String(index)} selected={index === defaultIndex}>
-                    {block.title}
-                </option>
-            ))
-        }
-    </select>
-    <div id="kon-container" data-default-lang-index={String(defaultIndex)}>
-        {
-            KON_BLOCKS.map((block, index) => (
-                <div
-                    class={
-                        index === defaultIndex
-                            ? KON_META.className
-                            : `${KON_META.className} none`
-                    }
-                    title={block.title}
-                    lang={block.lang}
-                    hidden={index !== defaultIndex ? true : undefined}
-                >
-                    <blockquote>{block.blockquote}</blockquote>
-                    {block.content.map(line => (
-                        <p>{line}</p>
-                    ))}
-                    <p style="text-align: right;" title={KON_META.title}>
-                        ——{" "}
-                        <a href={KON_META.url}>{KON_META.title}</a>
-                    </p>
-                </div>
-            ))
-        }
+    <div class="about-toolbar">
+        <div class="kon-lang-tabs" role="tablist" aria-label="台词语言切换">
+            {
+                KON_BLOCKS.map((block, index) => (
+                    <button
+                        type="button"
+                        role="tab"
+                        class:list={["kon-lang-btn", index === defaultIndex && "is-active"]}
+                        data-lang-index={String(index)}
+                        aria-selected={index === defaultIndex ? "true" : "false"}
+                    >
+                        {block.title}
+                    </button>
+                ))
+            }
+        </div>
+        <select id="langSelect" class="visually-hidden" aria-hidden="true" tabindex="-1">
+            {
+                KON_BLOCKS.map((block, index) => (
+                    <option value={String(index)} selected={index === defaultIndex}>
+                        {block.title}
+                    </option>
+                ))
+            }
+        </select>
+        <div id="player1" class="aplayer about-player"></div>
     </div>
+
+    <div
+        id="kon-container"
+        class="kon-card"
+        data-default-lang-index={String(defaultIndex)}
+        style={`--kon-index: ${defaultIndex};`}
+    >
+        <canvas class="kon-film-track-left" aria-hidden="true"></canvas>
+        <div class="kon-film-viewport">
+            <div class="kon-film-reel">
+                {
+                    KON_BLOCKS.map((block, index) => (
+                        <article
+                            class={`kon-film-frame ${KON_META.className}`}
+                            title={block.title}
+                            lang={block.lang}
+                            aria-hidden={index !== defaultIndex ? "true" : undefined}
+                        >
+                            <div class="kon-film-meta" aria-hidden="true">
+                                <span>{`FRAME 12${String.fromCharCode(65 + index)}`}</span>
+                            </div>
+                            <blockquote class="kon-subtitle">{block.blockquote}</blockquote>
+                            <div class="kon-lines">
+                                {block.content.map(line => {
+                                    const parts = splitDialogue(line);
+                                    return parts ? (
+                                        <p class="kon-line">
+                                            <strong class="kon-speaker">{parts.speaker}</strong>
+                                            <span>{parts.quote}</span>
+                                        </p>
+                                    ) : (
+                                        <p class="kon-line">{line}</p>
+                                    );
+                                })}
+                            </div>
+                            <p class="kon-source" title={KON_META.title}>
+                                —— <a href={KON_META.url} target="_blank" rel="noopener">{KON_META.title}</a>
+                            </p>
+                        </article>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+
+    <section class="about-overview" aria-label="站点统计">
+        <div class="about-stats">
+            <div class="about-stat">
+                <span class="about-stat-value">{allPosts.length}</span>
+                <span class="about-stat-label">文章</span>
+            </div>
+            <div class="about-stat">
+                <span class="about-stat-value">{tagCount}</span>
+                <span class="about-stat-label">标签</span>
+            </div>
+            {
+                siteViews.totalViews > 0 && (
+                    <div class="about-stat">
+                        <span class="about-stat-value">{formatViews(siteViews.totalViews)}</span>
+                        <span class="about-stat-label">总阅读</span>
+                    </div>
+                )
+            }
+        </div>
+    </section>
 
     <link
         rel="stylesheet"
@@ -85,6 +151,8 @@ const defaultIndex = DEFAULT_KON_INDEX;
             },
         });
         ap.volume(0.75);
+        window.__aboutAPlayer = ap;
+        window.dispatchEvent(new CustomEvent("about:aplayer-ready"));
     </script>
 
     <Comment />

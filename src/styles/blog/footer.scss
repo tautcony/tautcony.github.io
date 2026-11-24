@@ -3,51 +3,96 @@
 
 footer {
     font-size: 20px;
-    padding: 50px 0 65px;
+    padding: 44px 0 56px;
+    margin-top: 48px;
+    border-top: 1px solid $gray-light;
+
     .list-inline {
-        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin: 0 0 18px;
         padding: 0;
-        > li + li {
-            margin-left: 10px;
-        }
-    }
-    .copyright {
-        font-size: 14px;
-        text-align: center;
-        margin-bottom: 0;
-        a {
-            color: $brand-primary;
-            text-decoration: underline;
-            text-underline-offset: 0.15em;
-            &:hover,
-            &:focus {
-                color: $gray-dark;
+
+        > li {
+            display: inline-flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+
+            > a {
+                display: inline-flex;
+                align-items: center;
             }
         }
     }
 
-    .site-views {
-        font-size: 12px;
+    .copyright {
+        font-size: 13px;
+        line-height: 1.8;
         text-align: center;
+        color: $gray;
+        margin-bottom: 0;
+
+        a {
+            color: $gray-dark;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+            transition: opacity 0.2s ease;
+
+            &:hover,
+            &:focus {
+                color: #000;
+                opacity: 0.6;
+            }
+        }
+    }
+
+    .site-views-wrap {
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    .site-views {
+        display: inline-block;
+        font-size: 12px;
+        line-height: 1.5;
+        letter-spacing: 0.4px;
         color: $gray-l;
-        margin: 8px 0 0;
         font-variant-numeric: tabular-nums;
     }
 
-    // SSG quote (sibling of .copyright; previously injected inside it → inherited 14px)
     .quote {
-        font-size: 14px;
+        max-width: 540px;
+        min-height: 88px;
+        margin: 22px auto 0;
+        padding-top: 18px;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 13px;
+        line-height: 1.75;
         text-align: center;
-        color: $gray; // same as .text-muted on copyright
-        margin-bottom: 0;
+        color: $gray;
+        cursor: pointer;
+        transition: opacity 0.25s ease;
+
+        &.is-fading {
+            opacity: 0;
+        }
 
         .quote-content {
-            margin-top: 2em;
+            margin-top: 0;
         }
 
         .quote-author {
-            margin-left: 16em;
-            font-size: 85%;
+            margin: 6px 0 0;
+            text-align: right;
+            font-size: 12px;
+            color: $gray-l;
         }
     }
 }

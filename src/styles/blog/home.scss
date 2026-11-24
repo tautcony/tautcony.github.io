@@ -5,15 +5,8 @@
 
 .post-preview {
     position: relative;
-    padding: clamp(22px, 3.8vw, 34px) clamp(72px, 11vw, 112px) clamp(22px, 3.8vw, 34px) 0;
+    padding: clamp(22px, 3.8vw, 34px) 0;
     border-bottom: 1px solid $gray-light;
-
-    .rand_body {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-    }
 
     > a {
         display: block;

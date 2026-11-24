@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import { getMonsterSrc } from "../data/monsters";
 
 interface Props {
     center?: boolean;
@@ -61,5 +62,29 @@ const listClass = center ? "list-inline text-center" : "list-inline";
                 </li>
             );
         })
+    }
+    {
+        center && (
+            <li class="rand_wrap rand_wrap_sns">
+                <a
+                    href={`${site.baseurl}/`}
+                    class="rand_body rand_body_sns js-rand-transition"
+                    aria-label={site.title}
+                    title={site.title}
+                >
+                    <span class="rand_img">
+                        <img
+                            src={getMonsterSrc(1, site.baseurl)}
+                            alt=""
+                            width="44"
+                            height="44"
+                            class="image"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </span>
+                </a>
+            </li>
+        )
     }
 </ul>

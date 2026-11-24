@@ -136,37 +136,57 @@ export function init(): void {
     });
 
     wraps.forEach(wrap => {
+        const alwaysShow = wrap.dataset.randMode === "always-show";
         let swapTimer: number | undefined;
         let resetTimer: number | undefined;
         const circleLink = wrap.querySelector<HTMLAnchorElement>(".js-rand-transition");
         const targetHref = circleLink?.getAttribute("href") ?? null;
 
-        wrap.addEventListener("mouseenter", () => {
-            window.clearTimeout(swapTimer);
-            window.clearTimeout(resetTimer);
-            wrap.classList.add("enter");
-            wrap.classList.remove("leave");
+        if (alwaysShow) {
+            wrap.addEventListener("mouseenter", () => {
+                window.clearTimeout(swapTimer);
+                wrap.classList.add("is-swapping");
 
-            if (targetHref) {
-                prefetchDocument(targetHref);
-            }
-        });
-
-        wrap.addEventListener("mouseleave", () => {
-            wrap.classList.remove("enter");
-            wrap.classList.add("leave");
-
-            swapTimer = window.setTimeout(() => {
-                const img = wrap.querySelector<HTMLImageElement>(".rand_body .image");
-                if (img) {
-                    img.src = getRandomMonsterSrc(site.baseurl);
+                if (targetHref) {
+                    prefetchDocument(targetHref);
                 }
-            }, 200);
 
-            resetTimer = window.setTimeout(() => {
+                swapTimer = window.setTimeout(() => {
+                    const img = wrap.querySelector<HTMLImageElement>(".rand_body .image");
+                    if (img) {
+                        img.src = getRandomMonsterSrc(site.baseurl);
+                    }
+                    wrap.classList.remove("is-swapping");
+                }, 180);
+            });
+        } else {
+            wrap.addEventListener("mouseenter", () => {
+                window.clearTimeout(swapTimer);
+                window.clearTimeout(resetTimer);
+                wrap.classList.add("enter");
                 wrap.classList.remove("leave");
-            }, 400);
-        });
+
+                if (targetHref) {
+                    prefetchDocument(targetHref);
+                }
+            });
+
+            wrap.addEventListener("mouseleave", () => {
+                wrap.classList.remove("enter");
+                wrap.classList.add("leave");
+
+                swapTimer = window.setTimeout(() => {
+                    const img = wrap.querySelector<HTMLImageElement>(".rand_body .image");
+                    if (img) {
+                        img.src = getRandomMonsterSrc(site.baseurl);
+                    }
+                }, 200);
+
+                resetTimer = window.setTimeout(() => {
+                    wrap.classList.remove("leave");
+                }, 400);
+            });
+        }
 
         if (circleLink) {
             circleLink.addEventListener("pointerdown", () => {
